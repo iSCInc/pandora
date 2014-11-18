@@ -47,3 +47,6 @@ An example query from the current Mercury API can be found
  * `pandora.api.*`: API request handlers live here.
  * `pandora.domain.*`: Pure domain logic belongs here.
  * `pandora.gateway.*`: External service client code belongs here.
+ * `pandora.service.*`: Verbs that don’t belong in the domain.
+ * `pandora.utils.*`: Utility functions.
+ * `pandora.homeless`: Needs a home.
