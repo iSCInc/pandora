@@ -42,3 +42,8 @@ An example query from the current Mercury API can be found
 	 these resources and allow them to be expanded via `_embedded`. This seems to
 	 be more the spirit of a hypermedia API.
  
+### Code Layout
+
+ * `pandora.api.*`: API request handlers live here.
+ * `pandora.domain.*`: Pure domain logic belongs here.
+ * `pandora.gateway.*`: External service client code belongs here.
