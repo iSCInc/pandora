@@ -1,10 +1,11 @@
-# pandora
+# Pandora
 
-A Clojure library designed to ... well, that part is up to you.
+An API proxy service for productizing the Mercury API with the
+[guidelines](https://github.com/Wikia/guidelines/tree/master/APIDesign).
 
 ## Usage
 
-FIXME
+FIXME when ready
 
 ## License
 
