@@ -9,7 +9,7 @@ This document provides an overview of the Pandora design.
  	 web.
  # Provide an archetype that can be used for other services.
  # Provide a foundation upon which to expand the service and API to support
-   mobile apps and partners. 
+   mobile apps and partners.
 
 ## Nouns
 
@@ -23,6 +23,13 @@ document](https://docs.google.com/document/d/1N_AFFmdzmjtzTK8g4LOcrC7RdEi9bXy_j-
 
 An example query from the current Mercury API can be found
 [here](http://muppet.wikia.com/api/v1/Mercury/Article?title=Kermit%20the%20Frog).
+This will be used as a reference point for mobile web.
+
+## Milestones
+
+ # `application/hal+json` API for articles
+ # `application/hal+json` API that is feature complete with Mercury and could be
+   used as a replacement
 
 ### Questions
 
@@ -41,6 +48,28 @@ An example query from the current Mercury API can be found
  * Given the above it may also make sense to, by default, only include links to
 	 these resources and allow them to be expanded via `_embedded`. This seems to
 	 be more the spirit of a hypermedia API.
+
+### Architecture & Data Flow
+
+![Pandora Architecture](assets/pandora-arch.png)
+
+This is similar to how the Mercury service is currently designed. Some of the
+content components are called out (comments, media, users as examples) to
+suggest that they may be migrated to separate services in the future. The list
+is not exhaustive.
+
+To improve performance, a caching layer (varnish) will be added between Pandora
+and MediaWiki.
+
+In the near term Pandora will act mostly as a proxy that will
+
+ # Provide a [guidelines](https://github.com/Wikia/guidelines/tree/master/APIDesign) compliant content API to clients.
+ # Enable rapid prototyping and iteration of the above
+ # Decouple content which will enable
+   * Hypermedia API designs
+	 * Better caching
+	 * Ability to fan-out requests
+
  
 ### Code Layout
 
