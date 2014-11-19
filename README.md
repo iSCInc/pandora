@@ -7,7 +7,14 @@ There is a draft design document [here](DESIGN.md).
 
 ## Usage
 
-FIXME when ready
+At the REPL:
+
+```clojure
+; launch the server in dev
+user=> (start)
+...
+user=> (stop)
+```
 
 ## License
 
