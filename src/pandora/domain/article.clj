@@ -1,5 +1,2 @@
-(ns pandora.domain.article)
-
-(defn mercury->article
-  [m]
-  ; title => name )
+(ns pandora.domain.article
+  (:use [environ.core]))

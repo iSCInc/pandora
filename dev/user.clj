@@ -9,7 +9,8 @@
             [ring.mock.request :refer :all]
 						[ring.middleware.reload :as reload]
             [wikia.common.logger :as log]
-						[pandora.http.routes :as r])
+						[pandora.http.routes :as r]
+						[pandora.gateway.mediawiki.mercury :as mercury])
   (:use [environ.core]))
 
 (def default-port 8080)
