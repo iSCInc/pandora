@@ -4,12 +4,12 @@ This document provides an overview of the Pandora design.
 
 ## Goals
 
- # Provide an API that satisfies the [design
- 	 guide](https://github.com/Wikia/guidelines/tree/master/APIDesign) for mobile
- 	 web.
- # Provide an archetype that can be used for other services.
- # Provide a foundation upon which to expand the service and API to support
-   mobile apps and partners.
+ 1. Provide an API that satisfies the [design
+    guide](https://github.com/Wikia/guidelines/tree/master/APIDesign) for mobile
+    web.
+ 2. Provide an archetype that can be used for other services.
+ 3. Provide a foundation upon which to expand the service and API to support
+    mobile apps and partners.
 
 ## Nouns
 
