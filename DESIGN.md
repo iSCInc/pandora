@@ -27,8 +27,8 @@ This will be used as a reference point for mobile web.
 
 ## Milestones
 
- # `application/hal+json` API for articles
- # `application/hal+json` API that is feature complete with Mercury and could be
+ 1. `application/hal+json` API for articles
+ 2. `application/hal+json` API that is feature complete with Mercury and could be
    used as a replacement
 
 ### Questions
@@ -63,12 +63,12 @@ and MediaWiki.
 
 In the near term Pandora will act mostly as a proxy that will
 
- # Provide a [guidelines](https://github.com/Wikia/guidelines/tree/master/APIDesign) compliant content API to clients.
- # Enable rapid prototyping and iteration of the above
- # Decouple content which will enable
-   * Hypermedia API designs
-	 * Better caching
-	 * Ability to fan-out requests
+ * Provide a [guidelines](https://github.com/Wikia/guidelines/tree/master/APIDesign) compliant content API to clients.
+ * Enable rapid prototyping and iteration of the above
+ * Decouple content which will enable
+  * Hypermedia API designs
+  * Better caching
+  * Ability to fan-out requests
 
  
 ### Code Layout
