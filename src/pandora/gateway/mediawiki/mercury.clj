@@ -19,12 +19,21 @@
 
 (defn title
   [p]
-  (get (mercury-map->details p) "title"))
+  (get (details p) "title"))
 
 (defn abstract
   [p]
-  (get (mercury-map->details p) "abstract"))
+  (get (details p) "abstract"))
 
 (defn url
   [p]
-  (get (mercury-map->details p) "url"))
+  (get (details p) "url"))
+
+(defn article
+  [p]
+  (get-in p ["data" "article"]))
+
+(defn content
+  [p]
+  (get (article p) "content"))
+

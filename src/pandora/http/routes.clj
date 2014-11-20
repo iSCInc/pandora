@@ -31,11 +31,14 @@
           (header "Connection" "close")))))
 
 
+(defresource article
+  [name]
+  :available-media-types ["application/hal+json"]
+  :handle-ok (fn [_] (format "the article name was %s\n" name)))
 
 (def app-routes
   (-> (routes
-        (GET article-route request
-             (let [{name :name} (:route-params request)]
-               (-> (response (str "get article: " name "\n")))))
+        (GET "/articles/:name" [name]
+             (article name))
        (not-found "Unrecognized request path!\n"))
       (add-headers)))
