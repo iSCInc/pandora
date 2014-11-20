@@ -10,6 +10,7 @@
 						[ring.mock.request :refer :all]
 						[ring.middleware.reload :as reload]
 						[wikia.common.logger :as log]
+						[pandora.service.article :as article-service]
 						[pandora.http.routes :as r]
 						[pandora.gateway.mediawiki.mercury :as mercury]
 						[pandora.vars :as vars])

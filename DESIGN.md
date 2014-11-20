@@ -70,12 +70,8 @@ In the near term Pandora will act mostly as a proxy that will
   * Better caching
   * Ability to fan-out requests
 
- 
-### Code Layout
+## FAQ
 
- * `pandora.api.*`: API request handlers live here.
- * `pandora.domain.*`: Pure domain logic belongs here.
- * `pandora.gateway.*`: External service client code belongs here.
- * `pandora.service.*`: Verbs that don’t belong in the domain.
- * `pandora.utils.*`: Utility functions.
- * `pandora.homeless`: Needs a home.
+ * Will the article HTML content change from what is now in Mercury?
+   No. At the moment we are planning on leaving the *values* in the mercury
+	 payload intact. The keys however are subject to change.

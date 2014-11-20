@@ -36,4 +36,3 @@
 (defn content
   [p]
   (get (article p) "content"))
-
