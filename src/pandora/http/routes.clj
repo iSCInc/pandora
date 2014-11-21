@@ -12,11 +12,10 @@
             [slingshot.slingshot :refer [try+ throw+]]
             [pandora.service.article :as article-service]
             [pandora.util.mediatype.hal :as domain-hal]
+            [pandora.vars :as vars]
             [halresource.resource :as hal]
-            [wikia.common.logger :as log])
-  (:import [java.net InetAddress]))
+            [wikia.common.logger :as log]))
 
-(def hostname (.getHostName (InetAddress/getLocalHost)))
 (def hal+json "application/hal+json")
 
 ; Liberator
@@ -29,7 +28,7 @@
     (let [response (handler request)]
       (-> response
           (header "Varnish-Logs" "pandora")
-          (header "X-Served-By" hostname)
+          (header "X-Served-By" vars/hostname)
           (header "X-Cache" "ORIGIN")
           (header "X-Cache-Hits" "ORIGIN")
           (header "Connection" "close")))))
@@ -38,11 +37,8 @@
 (defresource article
   [name]
   :available-media-types [hal+json]
-  ;:as-response (fn [data context]
-                 ;(-> (as-response data context)
-                     ;(assoc-in [:headers "Content-Type"] hal+json)))
   :handle-ok (fn [_] {:media-type hal+json
-                      :body (domain-hal/article->hal-resource (article-service/fetch-article! name))}))
+                      :body (domain-hal/record->hal-resource (article-service/fetch-article! name))}))
 
 (def app-routes
   (-> (routes

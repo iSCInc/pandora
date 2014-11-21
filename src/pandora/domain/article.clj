@@ -6,8 +6,4 @@
   [name]
   (format "%s/articles/%s" vars/service-address name))
 
-(defn article-name
-  [article-map]
-  (get article-map :name ""))
-
 (defrecord Article [name headline articleBody url])
