@@ -2,6 +2,21 @@
 
 This document provides an overview of the Pandora design. 
 
+## Table of Contents
+
+- [Pandora Design Document](#pandora-design-document)
+    - [Table of Contents](#table-of-contents)
+    - [What is Pandora?](#what-is-pandora)
+    - [Goals](#goals)
+    - [Nouns](#nouns)
+    - [Existing Mercury API](#existing-mercury-api)
+    - [Milestones](#milestones)
+    - [Implementation Notes](#implementation-notes)
+        - [Architecture & Data Flow](#architecture--data-flow)
+        - [Why Clojure?](#why-clojure)
+    - [Open Questions](#open-questions)
+    - [FAQ](#faq)
+
 ## What is Pandora?
 
 Pandora is a service that provides an
