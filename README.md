@@ -7,6 +7,8 @@ There is a draft design document [here](DESIGN.md).
 
 ## Code Layout
 
+Explore using [system](https://github.com/danielsz/system) for the runtime and state management.
+
  * `pandora.api.*`: API request handlers live here.
  * `pandora.domain.*`: Pure domain logic belongs here.
  * `pandora.gateway.*`: External service client code belongs here.
