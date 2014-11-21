@@ -2,12 +2,29 @@
 
 This document provides an overview of the Pandora design. 
 
+## What is Pandora?
+
+Pandora is a service that provides an
+[facade](http://en.wikipedia.org/wiki/Facade_pattern) in the form of an API for
+the article experience. It will
+
+ * Provide a simplified
+	 [guidelines](https://github.com/Wikia/guidelines/tree/master/APIDesign)
+	 compliant content interface to articles.
+ * Enable rapid prototyping and iteration of the above
+ * Hide the complexity of MediaWiki
+ * Decouple content which will enable
+  * Hypermedia API designs
+  * Better caching
+  * Ability to fan-out requests
+
+
 ## Goals
 
  1. Provide an API that satisfies the [design
     guide](https://github.com/Wikia/guidelines/tree/master/APIDesign) for mobile
     web.
- 2. Provide an archetype that can be used for other services.
+ 2. Provide an archetype API that can be used for other services.
  3. Provide a foundation upon which to expand the service and API to support
     mobile apps and partners.
 
@@ -31,12 +48,6 @@ This will be used as a reference point for mobile web.
  2. `application/hal+json` API that is feature complete with Mercury and could be
    used as a replacement
 
-### Questions
-
- * Is all the data currently being delivered by the Mercury API used?
- * Do we need to support partial payloads and transclusion?
- * What should be embedded and what shouldn’t by default. For example, do we
-	 always need to include both ‘contributors’ and ‘users’?
 
 ## Implementation Notes
 
@@ -61,14 +72,12 @@ is not exhaustive.
 To improve performance, a caching layer (varnish) will be added between Pandora
 and MediaWiki.
 
-In the near term Pandora will act mostly as a proxy that will
+## Open Questions
 
- * Provide a [guidelines](https://github.com/Wikia/guidelines/tree/master/APIDesign) compliant content API to clients.
- * Enable rapid prototyping and iteration of the above
- * Decouple content which will enable
-  * Hypermedia API designs
-  * Better caching
-  * Ability to fan-out requests
+ * Is all the data currently being delivered by the Mercury API used?
+ * Do we need to support partial payloads and transclusion?
+ * What should be embedded and what shouldn’t by default. For example, do we
+	 always need to include both ‘contributors’ and ‘users’?
 
 ## FAQ
 
