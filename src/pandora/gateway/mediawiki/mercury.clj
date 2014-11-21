@@ -12,7 +12,6 @@
   (json/parse-string
     (slurp (format "%s/muppet.Kermit_the_Frog.json" (env :article-fixture-dir default-article-fixture-dir)))))
 
-
 (defn details
   [p]
   (get-in p ["data" "details"]))
@@ -20,6 +19,10 @@
 (defn title
   [p]
   (get (details p) "title"))
+
+(defn id
+  [p]
+  (get (details p) "id"))
 
 (defn abstract
   [p]

@@ -6,4 +6,8 @@
   [name]
   (format "%s/articles/%s" vars/service-address name))
 
-(defrecord Article [name headline articleBody url])
+(defrecord Article [name
+                    id
+                    headline
+                    articleBody
+                    url])

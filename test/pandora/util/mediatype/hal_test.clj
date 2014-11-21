@@ -5,7 +5,7 @@
 
 (facts :record->hal-resource
   (let [url "http://wikia.com/Foo bar"
-        article (article-domain/->Article "Foo bar" "an abstract" "the body" url)
+        article (article-domain/->Article "Foo bar" 50 "an abstract" "the body" url)
         resource (mt-hal/record->hal-resource article)]
     (:href resource) => url
     (:properties resource) => (contains {:name "Foo bar" :headline "an abstract" :articleBody "the body"})))

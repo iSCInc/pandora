@@ -8,5 +8,6 @@
     (when resp
       (let [name (mercury/title resp)
             headline (mercury/abstract resp)
-            articleBody (mercury/content resp)]
+            articleBody (mercury/content resp)
+            id (mercury/id resp)]
         (article/->Article name headline articleBody (article/url name))))))
