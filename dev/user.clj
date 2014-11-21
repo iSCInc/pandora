@@ -10,21 +10,23 @@
 						[ring.mock.request :refer :all]
 						[ring.middleware.reload :as reload]
 						[wikia.common.logger :as log]
+						[pandora.domain.article :as article-domain]
 						[pandora.service.article :as article-service]
 						[pandora.http.routes :as r]
 						[pandora.gateway.mediawiki.mercury :as mercury]
+						[pandora.util.mediatype.hal :as mt-hal]
 						[pandora.vars :as vars])
   (:use [environ.core]))
 
 (def server (atom nil))
 
 (defn run
-  ([app system port]
-   (run-server
-     (app system)
-     {:port port}))
-  ([app system]
-   (run app system vars/default-port)))
+	([app system port]
+	 (run-server
+		 (app system)
+		 {:port port}))
+	([app system]
+	 (run app system vars/default-port)))
 
 (defn start
 	([port]
