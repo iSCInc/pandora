@@ -91,8 +91,9 @@ guidelines](https://github.com/Wikia/guidelines/blob/language-selection/Process/
  3. The industry support for Clojure is good. There are dozens of production
     deployments, several confereces per year (including one in Poland in 2014),
     training courses available and several books. There are 8k+ questions on
-    stackoverflow, and lots of [community
-    resources](http://clojure.org/community). Being a JVM langague it stands on
+    stackoverflow, 14k+ messages in the [mailing
+    list](https://groups.google.com/forum/#!forum/clojure), and lots of [community
+    resources](http://clojure.org/community) resources. Being a JVM langague it stands on
     the shoulders of (industry) giants.
  4. Is there existing organizational expertise for the language? Yes. Both Damon
     and Nelson have experience with production systems written in Clojure.
