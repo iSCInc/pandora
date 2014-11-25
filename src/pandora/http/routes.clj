@@ -15,8 +15,6 @@
             [wikia.common.logger :as log]))
 
 
-
-
 (defn add-headers
   [handler]
   (fn [request]
@@ -27,8 +25,6 @@
           (header "X-Cache" "ORIGIN")
           (header "X-Cache-Hits" "ORIGIN")
           (header "Connection" "close")))))
-
-
 
 (def app-routes
   (-> (routes

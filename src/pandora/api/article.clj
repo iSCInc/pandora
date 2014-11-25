@@ -1,11 +1,14 @@
 (ns pandora.api.article
   (:require [pandora.api.common :refer [create-api-response create-resource]]
-            [pandora.service.article :as article-service]
-            [pandora.util.mediatype.hal :as domain-hal]))
+            [pandora.service.article :as article-service]))
 
+(defn articles
+  "What operations are possible against /articles/"
+  [input])
 
 (defn article
+  "Fetch an article by name."
   [name]
-  (create-resource (fn [_]
+  (create-resource (fn [ctx]
                      (create-api-response
-                       (domain-hal/record->hal-resource (article-service/fetch-article! name))))))
+                       (article-service/fetch-article! name)))))

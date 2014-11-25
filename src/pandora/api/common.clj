@@ -1,13 +1,15 @@
 (ns pandora.api.common
+  "Contains functions common to API request handlers."
   (:require [pandora.vars :as vars]
             [halresource.resource :as hal]
+            [pandora.util.mediatype.hal :as domain-hal]
             [liberator.core :refer  [resource defresource]]
             [liberator.representation :refer [render-map-generic]]))
 
 
 (defn create-api-response
   ([media-type body]
-   {:media-type media-type :body body})
+   {:media-type media-type :body (domain-hal/record->hal-resource body)})
   ([body]
    (create-api-response vars/hal+json body)))
 
