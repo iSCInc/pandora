@@ -10,4 +10,4 @@
             headline (mercury/abstract resp)
             articleBody (mercury/content resp)
             id (mercury/id resp)]
-        (article/->Article name headline articleBody (article/url name))))))
+        (article/->Article name id headline articleBody (article/url name))))))
