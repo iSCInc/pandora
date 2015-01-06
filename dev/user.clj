@@ -1,5 +1,6 @@
 (ns user
 	(:require [cheshire.core :refer :all]
+						[cemerick.url :refer [url-encode]]
 						[halresource.resource :as hal]
 						[clojure.java.io :as io]
 						[org.httpkit.server :refer :all]

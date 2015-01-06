@@ -8,7 +8,7 @@
 
 (defn article
   "Fetch an article by name."
-  [name]
+  [wikia name]
   (create-resource (fn [ctx]
                      (create-api-response
-                       (article-service/fetch-article! name)))))
+                       (article-service/article! wikia name)))))

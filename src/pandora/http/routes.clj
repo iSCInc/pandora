@@ -28,7 +28,8 @@
 
 (def app-routes
   (-> (routes
-        (GET "/articles/:name" [name]
-             (article-api/article name))
+        ; TODO: regex check these as best we can
+        (GET "/:wikia/articles/:name" [wikia name]
+             (article-api/article wikia name))
        (not-found "Unrecognized request path!\n"))
       (add-headers)))

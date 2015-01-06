@@ -6,6 +6,7 @@
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [liberator "0.12.2"]
                  [cheshire "5.3.1"]
+                 [com.cemerick/url "0.1.1"]
                  [halresource "0.1.1-SNAPSHOT"]
                  [prismatic/plumbing "0.3.5"]
                  [wikia/commons "0.1.0-SNAPSHOT"]
