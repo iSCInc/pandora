@@ -1,5 +1,6 @@
 package com.wikia.pandora.api;
 
+import static org.fest.assertions.api.Assertions.assertThat;
 import static io.dropwizard.testing.FixtureHelpers.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
@@ -17,9 +18,8 @@ public class ArticleTest extends TestCase {
                 .title("foo")
                 .id(10)
                 .build();
-        System.out.println(article);
-        System.out.println(MAPPER.readValue(fixture("fixtures/article.json"), Article.class));
-        assertEquals(MAPPER.readValue(fixture("fixtures/article.json"), Article.class), article);
+        final Article deserializedArticle = MAPPER.readValue(fixture("fixtures/article.json"), Article.class);
+        assertThat(article).isEqualsToByComparingFields(deserializedArticle);
     }
 
 

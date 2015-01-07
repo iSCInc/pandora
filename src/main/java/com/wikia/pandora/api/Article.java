@@ -18,15 +18,17 @@ public class Article implements HalResource {
     public final String self;
 
 
+    public String toString() {
+        return String.format("'%s:%d: (%s) %s'", this.self, this.id, this.title, this.content);
+    }
+
     @JsonCreator
-    public Article(@JsonProperty("id") Integer id,
-                   @JsonProperty("title") String title,
-                   @JsonProperty("content") String content,
-                   @JsonProperty("_links") Map<String, Object> links) throws java.io.IOException {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.self = String.format("/articles/%s", URLEncoder.encode(this.title, "UTF-8"));
+    public static Article build(Map<String,Object> props) throws java.io.IOException {
+        return new Article.Builder()
+                .id((Integer)props.get("id"))
+                .title((String)props.get("title"))
+                .content((String)props.get("content"))
+                .build();
     }
 
     private Article(Builder builder) {
@@ -61,5 +63,7 @@ public class Article implements HalResource {
             this.self = String.format("/articles/%s", URLEncoder.encode(this.title, "UTF-8"));
             return new Article(this);
         }
+
+
     }
 }
