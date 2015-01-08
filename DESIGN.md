@@ -42,6 +42,7 @@ the article experience. It will
  2. Provide an archetype API that can be used for other services.
  3. Provide a foundation upon which to expand the service and API to support
     mobile apps and partners.
+ 4. Improve our infrastructure for building and deploying services.
 
 ## Nouns
 
