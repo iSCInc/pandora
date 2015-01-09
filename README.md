@@ -20,6 +20,12 @@ cp pandora.yaml.sample pandora.yaml
 gradle run
 ```
 
+To make a request from the server:
+
+```bash
+curl -v http://localhost:8080/articles/muppet/Kermit%20the%20Frog
+```
+
 To run the tests:
 
 ```bash
