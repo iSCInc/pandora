@@ -3,6 +3,7 @@ package com.wikia.pandora;
 import com.wikia.pandora.api.HalMessageBodyWriter;
 import com.wikia.pandora.gateway.MercuryGateway;
 import com.wikia.pandora.resources.ArticlesResource;
+import com.wikia.pandora.service.ArticleService;
 import io.dropwizard.Application;
 import io.dropwizard.client.HttpClientBuilder;
 import io.dropwizard.setup.Bootstrap;
@@ -31,8 +32,9 @@ public class PandoraApplication extends Application<PandoraConfiguration> {
                 .build("gateway-client");
 
         final MercuryGateway mercuryGateway = new MercuryGateway(httpClient);
+        final ArticleService articleService = new ArticleService(mercuryGateway);
 
-        final ArticlesResource articles = new ArticlesResource(mercuryGateway);
+        final ArticlesResource articles = new ArticlesResource(articleService);
 
         final PandoraHealthCheck healthCheck =
                 new PandoraHealthCheck();

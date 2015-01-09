@@ -20,7 +20,11 @@ public class HalMessageBodyWriter implements MessageBodyWriter<HalResource> {
 
     @Override
     public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
-        return true;
+        if ("com.wikia.pandora.api".equals(type.getPackage().getName())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

@@ -8,6 +8,7 @@ There is a draft design document [here](DESIGN.md).
 ## Code Layout
 
  * `com.wikia.api.*`: API request handlers live here.
+ * `com.wikia.service.*`: Glue between gateways and API handlers.
  * `com.wikia.gateway.*`: External gateways reside here (e.g. MediaWiki client)
 
 ## Usage

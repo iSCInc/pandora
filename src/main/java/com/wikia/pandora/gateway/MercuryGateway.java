@@ -2,9 +2,10 @@ package com.wikia.pandora.gateway;
 
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
+import org.apache.commons.lang.Validate;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -36,11 +37,29 @@ public class MercuryGateway {
         this.articleRequestFormat = MercuryGateway.DEFAULT_MERCURY_ARTICLE_REQUEST_FORMAT;
     }
 
-    public Map<String, Object> getArticle(String wikia, String title) throws IOException {
+    /**
+     * Get an article given a wikia and title.
+     *
+     * FIXME: How do we handle validation of the payload that we received from MediaWiki?
+     * Do we apply JSON schema to the payload when we get it? Do we use some form of manual map validation?
+     *
+     * @param wikia
+     * @param title
+     * @return Map<String, Object>
+     * @throws IOException
+     */
+    public ImmutableMap<String, Object> getArticle(String wikia, String title) throws IOException {
+        final Map<String, Object> article;
         ObjectMapper mapper = new ObjectMapper();
         Optional<String> response = this.getRequestHandler(formatMercuryRequest(wikia, title));
-        Map<String, Object> article = mapper.readValue(response.get(), new TypeReference<HashMap<String, Object>>(){});;
-        return article;
+
+        if (response.isPresent()) {
+            article = mapper.readValue(response.get(), new TypeReference<HashMap<String, Object>>(){});
+        } else {
+            throw new IllegalStateException(String.format("Error, the response for %s/%s is not valid!", wikia, title));
+        }
+
+        return validateMercuryArticleMap(article);
     }
 
     public String formatMercuryRequest(String wikia, String title) {
@@ -77,5 +96,20 @@ public class MercuryGateway {
 
         return Optional.of(this.httpClient.execute(httpGet, responseHandler));
     }
+
+    public ImmutableMap<String, Object> validateMercuryArticleMap(Map article) {
+        Validate.notEmpty(article, "Empty map!");
+        Map<String, Object> dataElement = (Map<String, Object>)article.get("data");
+        Validate.notEmpty(dataElement, "Empty \"data\" element");
+
+        Map<String, Object> detailsElement = (Map<String, Object>)dataElement.get("details");
+        Validate.notEmpty(detailsElement, "Empty \"details\" element");
+
+        Map<String, Object> articleElement = (Map<String, Object>)dataElement.get("article");
+        Validate.notEmpty(articleElement, "Empty \"article\" element");
+
+        return ImmutableMap.copyOf(article);
+    }
+
 
 }
