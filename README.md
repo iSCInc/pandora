@@ -7,29 +7,29 @@ There is a draft design document [here](DESIGN.md).
 
 ## Code Layout
 
-Explore using [system](https://github.com/danielsz/system) for the runtime and state management.
-
- * `pandora.api.*`: API request handlers live here.
- * `pandora.domain.*`: Pure domain logic belongs here.
- * `pandora.gateway.*`: External service client code belongs here.
- * `pandora.service.*`: Verbs that don’t belong in the domain.
- * `pandora.utils.*`: Utility functions.
- * `pandora.homeless`: Needs a home.
+ * `com.wikia.api.*`: API request handlers live here.
+ * `com.wikia.gateway.*`: External gateways reside here (e.g. MediaWiki client)
 
 ## Usage
 
-At the REPL:
+To run the server:
 
-```clojure
-; launch the server in dev
-user=> (start)
-...
-user=> (stop)
+```bash
+cp pandora.yaml.sample pandora.yaml
+# launch the server
+gradle run
 ```
+
+To run the tests:
+
+```bash
+gradle test
+```
+
 
 ## License
 
-Copyright © 2014 FIXME
+Copyright © 2014 Wikia
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
