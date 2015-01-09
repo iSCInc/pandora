@@ -25,7 +25,7 @@ public class HalMessageBodyWriter implements MessageBodyWriter<HalResource> {
 
     @Override
     public long getSize(HalResource data, Class<?> type, Type genericType, Annotation annotations[], MediaType mediaType) {
-        return 0;
+        return -1; // the length cannot be determined in advance
     }
 
     @Override
@@ -42,7 +42,5 @@ public class HalMessageBodyWriter implements MessageBodyWriter<HalResource> {
         out.write(bytes);
         out.flush();
     }
-
-
 
 }

@@ -13,7 +13,6 @@ This document provides an overview of the Pandora design.
     - [Milestones](#milestones)
     - [Implementation Notes](#implementation-notes)
         - [Architecture & Data Flow](#architecture--data-flow)
-        - [Why Clojure?](#why-clojure)
     - [Open Questions](#open-questions)
     - [FAQ](#faq)
 
@@ -49,14 +48,20 @@ the article experience. It will
 The content ontology or nouns are being worked out in [this
 document](https://docs.google.com/document/d/1N_AFFmdzmjtzTK8g4LOcrC7RdEi9bXy_j-UyihKssTs/edit?usp=sharing).
 
+Straw man:
+
  * /articles/Kermit_the_frog
- * /articles/Kermit_the_frog/contributors/
+ * /articles/Kermit_the_frog/users/
+ * /articles/Kermit_the_frog/media/
+ * /articles/Kermit_the_frog/comments/
 
 ## Existing Mercury API
 
 An example query from the current Mercury API can be found
 [here](http://muppet.wikia.com/api/v1/Mercury/Article?title=Kermit%20the%20Frog).
-This will be used as a reference point for mobile web.
+This will be used as a reference point for mobile web. Here is a
+[snapshot](https://gist.github.com/drsnyder/db9649bc0fa2daa2f41e) of the
+payload.
 
 ## Milestones
 
@@ -88,56 +93,6 @@ is not exhaustive.
 
 To improve performance, a caching layer (varnish) will be added between Pandora
 and MediaWiki.
-
-### Why Clojure?
-
-The following answers questions from the [draft language selection
-guidelines](https://github.com/Wikia/guidelines/blob/language-selection/Process/ProgrammingLanguageSelection.md).
-
- 1. Clojure is one of the supported languages. We feel that it is a good choice
-    for this project because of our (@nmonterroso, @drsnyder) experience with
-    Clojure and the availability of execellent
-    [tooling](http://www.http-kit.org/index.html) for
-    [testing](https://github.com/marick/Midje) and
-    [building](http://clojure-liberator.github.io/liberator/)
-    [web](https://github.com/ring-clojure/ring)
-    applications on the JVM.
- 2. How will Clojure be deployed in production? There is an existing deploy
-    tools plugin for Clojure that was created for vignette.
- 3. The industry support for Clojure is good. There are dozens of production
-    deployments, several confereces per year (including one in Poland in 2014),
-    training courses available and several books. There are 8k+ questions on
-    stackoverflow, 14k+ messages in the [mailing
-    list](https://groups.google.com/forum/#!forum/clojure), and lots of [community
-    resources](http://clojure.org/community) resources. Being a JVM langague it stands on
-    the shoulders of (industry) giants.
- 4. Is there existing organizational expertise for the language? Yes. Both Damon
-    and Nelson have experience with production systems written in Clojure.
- 5. Does the language effect the organization’s ability to recruit? Time will
-    tell, but I believe that it will have a positive impact in SF and a neutral
-    to positive impact in Poland.
- 6. What is the expected learning curve for becoming productive in the language?
-    From our experience it takes a week or two to get up to speed. We have had
-    good results from working through [this
-    tutorial](http://iloveponies.github.io/) to get up to speed on the language.
-    Having existing projects to work with and in-house expertise helps to
-    accelerate the time-to-productive learning curve.
- 7. There is external training available and we are working on producing some
-    internal training.
- 8. Are there textbooks and reference materials available. Yes, there are
-    several great books. One of our favorites is [The Joy of
-    Clojure](http://www.joyofclojure.com/).
- 9. You can see the list of companies using clojure
-    [here](http://clojure.org/Companies). The list inclues eBay, Groupon,
-    Heroku, Factual, Intuit, Netflix, Puppet Labs, Prismatic, SoundCloud,
-    ThoughtWorks, Zendesk and many others.
- 10. Is there a pool of developers in both Poland and the US that could be hired
-     to support and expand the development of services written in the language?
-     Although this is difficult to measure I believe the answer is yes. There
-     were at least 3 conferences in Poland in 2014 that included Clojure as
-     topics: [EuroClojure June 2014](http://euroclojure.com/2014/) Kraków,
-     [Polyconf October 2014](http://polyconf.com/) Poznan, and [Lambda Days
-     Februray 2014](http://www.lambdadays.org/) Kraków.
 
 ## Open Questions
 
