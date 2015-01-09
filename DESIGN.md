@@ -72,7 +72,6 @@ payload.
 
 ## Implementation Notes
 
- * The service will be written in [Clojure](http://clojure.org/).
  * The Mercury API
    [payload](http://muppet.wikia.com/api/v1/Mercury/Article?title=Kermit%20the%20Frog)
 	 contains elements that change at different rates which suggests that there might
@@ -81,6 +80,7 @@ payload.
  * Given the above it may also make sense to, by default, only include links to
 	 these resources and allow them to be expanded via `_embedded`. This seems to
 	 be more the spirit of a hypermedia API.
+ * We are using [dropwizard](http://dropwizard.io/).
 
 ### Architecture & Data Flow
 
