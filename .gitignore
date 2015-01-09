@@ -1,0 +1,8 @@
+/.idea
+/.gradle
+/logs
+/build
+*.jar
+*.class
+*.iml
+mobile-configuration.yml
