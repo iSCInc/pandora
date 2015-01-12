@@ -14,6 +14,12 @@ cp mobile-config.yml.sample mobile-config.yml
 gradle run
 ```
 
+To check service health:
+
+```bash
+curl -v http://127.0.0.1:8081/healthcheck
+```
+
 To make a request from the server:
 
 ```bash
