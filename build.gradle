@@ -28,5 +28,5 @@ dependencies {
 }
 
 run {
-    args 'server', 'mobile-configuration.yml'
+    args 'server', 'mobile-config.yml'
 }

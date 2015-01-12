@@ -7,6 +7,6 @@ logging:
       target: stdout
     - type: file
       threshold: INFO
-      currentLogFilename: /tmp/mobile-configuration.log
-      archivedLogFilenamePattern: /tmp/mobile-configuration-%d.log.gz
+      currentLogFilename: /tmp/mobile-config.log
+      archivedLogFilenamePattern: /tmp/mobile-config-%d.log.gz
       archivedFileCount: 5

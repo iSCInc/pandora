@@ -9,7 +9,7 @@ The API provides modules configuration for mobile applications created in Wikia.
 To run the server:
 
 ```bash
-cp mobile-configuration.yml.sample mobile-configuration.yml
+cp mobile-config.yml.sample mobile-config.yml
 # launch the server
 gradle run
 ```
