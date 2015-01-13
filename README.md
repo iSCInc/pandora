@@ -23,7 +23,7 @@ curl -v http://127.0.0.1:8081/healthcheck
 To make a request from the server:
 
 ```bash
-curl -v http://localhost:8080/configuration/v1/ios/id123456789/1.0
+curl -v http://127.0.0.1:8080/configurations/platform/android/app/witcher/version/1.0
 ```
 
 To run the tests:
@@ -37,5 +37,4 @@ gradle test
 
 Copyright © 2014 Wikia
 
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+Distributed under the Eclipse Public License either version 1.0 or (at your option) any later version.
