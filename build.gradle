@@ -21,7 +21,10 @@ dependencies {
     compile 'io.dropwizard:dropwizard-client:0.7.1'
 
     // HAL stuff
-    compile 'ch.halarious:halarious-core:0.11'
+    compile 'com.theoryinpractise:halbuilder-standard:4.0.1'
+    compile ('com.theoryinpractise:halbuilder-jaxrs:1.1.1') {
+        exclude group: 'javax.ws.rs'
+    }
 
     testCompile 'junit:junit:4.11'
     testCompile 'io.dropwizard:dropwizard-testing:0.7.1'

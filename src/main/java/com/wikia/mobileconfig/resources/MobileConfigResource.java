@@ -3,13 +3,16 @@ package com.wikia.mobileconfig.resources;
 import com.codahale.metrics.annotation.Timed;
 
 import com.wikia.mobileconfig.api.MobileApplicationConfig;
-import com.wikia.mobileconfig.utils.MediaTypes;
+
+import com.theoryinpractise.halbuilder.api.Representation;
+import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 
 import javax.ws.rs.*;
 import java.net.URISyntaxException;
 
 @Path("/configurations/platform/{platform}/app/{appTag}/version/{appVersion}")
-@Produces(MediaTypes.HAL)
+@Produces(RepresentationFactory.HAL_JSON)
 public class MobileConfigResource {
 
     /**
@@ -19,17 +22,22 @@ public class MobileConfigResource {
      * @param appTag
      * @param appVersion
      *
-     * @return Representation
-     * @throws java.io.IOException, WebApplicationException
+     * @return String
      */
     @GET
     @Timed
-    public MobileApplicationConfig getMobileApplicationConfig(
+    public String getMobileApplicationConfig(
         @PathParam("platform") String platform,
         @PathParam("appTag") String appTag,
         @PathParam("appVersion") String appVersion
     ) throws java.io.IOException, URISyntaxException {
-        return new MobileApplicationConfig(platform, appTag, appVersion);
+        MobileApplicationConfig cfg = new MobileApplicationConfig();
+        RepresentationFactory representationFactory = new StandardRepresentationFactory();
+        Representation rep = representationFactory.newRepresentation()
+            .withLink("self", cfg.getSelfUrl(platform, appTag, appVersion))
+            .withProperty("modules", cfg.getMockedModules());
+
+        return rep.toString(RepresentationFactory.HAL_JSON);
     }
 
 }

@@ -1,28 +1,19 @@
 package com.wikia.mobileconfig.api;
 
-import ch.halarious.core.HalLink;
-import ch.halarious.core.HalResource;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class MobileApplicationConfig implements HalResource {
-    @JsonProperty
-    public final List<Object> modules;
-
-    @HalLink
-    public final String self;
-
+public class MobileApplicationConfig {
     @JsonCreator
-    public MobileApplicationConfig(String platform, String appTag, String appVersion) throws IOException {
-        this.self = String.format("/configurations/platform/%s/app/%s/version/%s", platform, appTag, appVersion);
-        this.modules = getMockedModules();
+    public MobileApplicationConfig() {
+    }
+
+    public String getSelfUrl(String platform, String appTag, String appVersion) {
+        return String.format("/configurations/platform/%s/app/%s/version/%s", platform, appTag, appVersion);
     }
 
     /**
@@ -30,7 +21,7 @@ public class MobileApplicationConfig implements HalResource {
      * @return
      * @throws IOException
      */
-    private ArrayList getMockedModules() throws IOException {
+    public ArrayList getMockedModules() throws IOException {
         ArrayList modules = new ArrayList();
         ObjectMapper mapper = new ObjectMapper();
 
