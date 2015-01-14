@@ -4,6 +4,7 @@ import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
+import com.wikia.mobileconfig.utils.HalMessageBodyWriter;
 import com.wikia.mobileconfig.resources.MobileConfigResource;
 import com.wikia.mobileconfig.health.MobileConfigHealthCheck;
 
@@ -28,5 +29,6 @@ public class MobileConfigApplication extends Application<MobileConfigConfigurati
 
         final MobileConfigResource mobileConfig = new MobileConfigResource();
         environment.jersey().register(mobileConfig);
+        environment.jersey().register(HalMessageBodyWriter.class);
     }
 }
