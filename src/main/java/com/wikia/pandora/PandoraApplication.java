@@ -1,48 +1,56 @@
 package com.wikia.pandora;
 
-import com.wikia.pandora.api.HalMessageBodyWriter;
-import com.wikia.pandora.gateway.MercuryGateway;
-import com.wikia.pandora.resources.ArticlesResource;
+import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
+import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 import com.wikia.pandora.service.ArticleService;
+import com.wikia.pandora.service.CommentService;
+import com.wikia.pandora.service.factory.MercuryServiceFactory;
+import com.wikia.pandora.health.PandoraHealthCheck;
+import com.wikia.pandora.resources.ArticleResource;
+import com.wikia.pandora.service.factory.ServiceFactory;
+
 import io.dropwizard.Application;
-import io.dropwizard.client.HttpClientBuilder;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import org.apache.http.client.HttpClient;
 
 public class PandoraApplication extends Application<PandoraConfiguration> {
-    public static void main(String[] args) throws Exception {
-        new PandoraApplication().run(args);
-    }
 
-    @Override
-    public String getName() {
-        return "Pandora";
-    }
+  private static RepresentationFactory representationFactory;
 
-    @Override
-    public void initialize(Bootstrap<PandoraConfiguration> bootstrap) {
-    }
+  public static void main(String[] args) throws Exception {
+    new PandoraApplication().run(args);
+  }
 
-    @Override
-    public void run(PandoraConfiguration configuration,
-                    Environment environment) {
+  public static RepresentationFactory getRepresentationFactory() {
+    return representationFactory;
+  }
 
-        final HttpClient httpClient = new HttpClientBuilder(environment).using(configuration.getHttpClientConfiguration())
-                .build("gateway-client");
+  @Override
+  public String getName() {
+    return "Pandora";
+  }
 
-        final MercuryGateway mercuryGateway = new MercuryGateway(httpClient);
-        final ArticleService articleService = new ArticleService(mercuryGateway);
+  @Override
+  public void initialize(Bootstrap<PandoraConfiguration> bootstrap) {
+  }
 
-        final ArticlesResource articles = new ArticlesResource(articleService);
+  @Override
+  public void run(PandoraConfiguration configuration, Environment environment) {
 
-        final PandoraHealthCheck healthCheck =
-                new PandoraHealthCheck();
-        environment.healthChecks().register("pandora", healthCheck);
+    representationFactory = new StandardRepresentationFactory();
 
-        environment.jersey().register(articles);
-        environment.jersey().register(HalMessageBodyWriter.class);
-    }
+    final PandoraHealthCheck healthCheck = new PandoraHealthCheck();
+    environment.healthChecks().register("pandora", healthCheck);
 
+    ServiceFactory serviceFactory = new MercuryServiceFactory(configuration, environment);
 
+    ArticleService articleService = serviceFactory.createArticleService();
+    final ArticleResource articles = new ArticleResource(articleService);
+    environment.jersey().register(articles);
+
+    CommentService commentService = serviceFactory.createCommentService();
+
+    environment.jersey().register(JaxRsHalBuilderSupport.class);
+  }
 }
