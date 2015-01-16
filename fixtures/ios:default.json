@@ -1,0 +1,17 @@
+{
+    "modules": [
+        {
+            "type": "chat",
+            "payload": {
+                "chatUrl": "http://www.community.wikia.com/Special:Chat"
+            }
+        },
+        {
+            "type": "url",
+            "payload": {
+                "url": "http://crimecityios.wikia.com/wiki/Crime_City_iOS",
+                "icon": "http://vignette3.wikia.nocookie.net/crimecityiphone/images/8/86/HoodExpansion.png/revision/latest/scale-to-width/128"
+            }
+        }
+    ]
+}

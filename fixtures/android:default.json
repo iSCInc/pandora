@@ -1,0 +1,17 @@
+{
+    "modules": [
+        {
+            "type": "chat",
+            "payload": {
+                "chatUrl": "http://www.community.wikia.com/Special:Chat"
+            }
+        },
+        {
+            "type": "url",
+            "payload": {
+                "url": "http://android.wikia.com/wiki/Android_Wiki",
+                "icon": "http://img4.wikia.nocookie.net/__cb18/android/images/8/89/Wiki-wordmark.png"
+            }
+        }
+    ]
+}

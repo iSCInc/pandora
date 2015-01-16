@@ -1,0 +1,17 @@
+{
+    "modules": [
+        {
+            "type": "chat",
+            "payload": {
+                "chatUrl": "http://witcher.wikia.com/wiki/Special:Chat"
+            }
+        },
+        {
+            "type": "url",
+            "payload": {
+                "url": "http://witcher.wikia.com/wiki/Witcher_Wiki",
+                "icon": "http://vignette4.wikia.nocookie.net/witcher/images/8/89/Wiki-wordmark.png/revision/latest"
+            }
+        }
+    ]
+}
