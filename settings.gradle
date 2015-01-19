@@ -1,5 +1,0 @@
-rootProject.name = 'mobile-config-service'
-
-include 'main/java/com/wikia/mobileConfiguration'
-rootProject.children.find { it.name == 'main/java/com/wikia/mobileConfiguration' }.name = 'mobileConfiguration'
-
