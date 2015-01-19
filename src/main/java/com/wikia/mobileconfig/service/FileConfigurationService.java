@@ -1,11 +1,11 @@
 package com.wikia.mobileconfig.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wikia.mobileconfig.core.MobileConfiguration;
+import com.wikia.mobileconfig.MobileConfigApplication;
+
 import java.io.File;
 import java.io.IOException;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.wikia.mobileconfig.core.MobileConfiguration;
 
 public class FileConfigurationService implements ConfigurationService {
     private String root;
@@ -36,6 +36,13 @@ public class FileConfigurationService implements ConfigurationService {
 
             return configuration;
         } catch (IOException e) {
+            MobileConfigApplication.logger.info(
+                String.format(
+                    "Configuration for %s not found: falling back to default configuration for %s",
+                    appTag,
+                    platform
+                )
+            );
             return getDefault(platform);
         }
     }
