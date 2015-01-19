@@ -5,4 +5,7 @@
 *.jar
 *.class
 *.iml
+gradlew
+gradlew.bat
+settings.gradle
 mobile-config.yml
