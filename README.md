@@ -15,23 +15,17 @@ gradle run
 ```
 
 To check service health:
-
 ```bash
 curl -v http://127.0.0.1:8081/healthcheck
 ```
+A weird thing which I decided on is a health check for an external service. Our service strongly depends on it,
+so I found it beneficial to implement a health check of it. The health check is called `apps-deployer`
+and can be found on the list returned in a response above.
 
 To make a request from the server:
-
 ```bash
-curl -v http://127.0.0.1:8080/configurations/platform/android/app/witcher/version/1.0
+curl -v http://127.0.0.1:8080/configurations/platform/android/app/witcher
 ```
-
-To run the tests:
-
-```bash
-gradle test
-```
-
 
 ## License
 
