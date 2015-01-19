@@ -1,4 +1,4 @@
-package com.wikia.pandora.service.factory;
+package com.wikia.pandora.service;
 
 import com.wikia.pandora.PandoraConfiguration;
 import com.wikia.pandora.service.ArticleService;

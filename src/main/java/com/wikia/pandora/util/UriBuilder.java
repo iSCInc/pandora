@@ -1,8 +1,6 @@
 package com.wikia.pandora.util;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 
 public class UriBuilder {
 
@@ -49,11 +47,10 @@ public class UriBuilder {
           .path(method)
           .build(path)
           .getPath();
-      return uri;
     } catch (Exception e) {
       e.printStackTrace();
 
     }
-    return "";
+    return uri;
   }
 }

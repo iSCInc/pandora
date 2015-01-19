@@ -1,10 +1,9 @@
 package com.wikia.pandora.service.mercury;
 
-import com.google.common.base.Optional;
-
 import com.sun.jersey.api.NotFoundException;
 import com.wikia.pandora.core.Article;
 import com.wikia.pandora.core.Comment;
+import com.wikia.pandora.core.builder.PojoBuilderFactory;
 import com.wikia.pandora.service.ArticleService;
 
 import java.io.IOException;
@@ -20,7 +19,7 @@ public class MercuryArticlesService extends MercuryService implements ArticleSer
   }
 
   public Article getArticleByTitle(String wikia, String title) {
-    Map<String, Object> responseMap = null;
+    Map<String, Object> responseMap;
     try {
       responseMap = this.mercuryGateway.getArticle(wikia, title);
 
@@ -28,11 +27,11 @@ public class MercuryArticlesService extends MercuryService implements ArticleSer
       Map<String, Object> detailsMap = (Map<String, Object>) dataMap.get("details");
       Map<String, Object> articleMap = (Map<String, Object>) dataMap.get("article");
 
-      Article article = new Article();
-      article.setId((Integer) detailsMap.get("id"));
-      article.setTitle((String) detailsMap.get("title"));
-      article.setContent((String) articleMap.get("content"));
-      return article;
+      return PojoBuilderFactory.getArticleBuilder()
+          .withId((Integer) detailsMap.get("id"))
+          .withTitle((String) detailsMap.get("title"))
+          .withContent((String) articleMap.get("content"))
+          .build();
     } catch (IOException e) {
       throw new NotFoundException("No such article");
     }
@@ -40,20 +39,22 @@ public class MercuryArticlesService extends MercuryService implements ArticleSer
 
   @Override
   public List<Comment> getArticleComments(String wikia, String title) {
-    Map<String, Object> responseMap = null;
+    Map<String, Object> responseMap;
     try {
       responseMap = this.mercuryGateway.getCommentsForArticle(wikia, title);
       Map<String, Object> payload = (Map<String, Object>) responseMap.get("payload");
       List<Map<String, Object>> comments = (List<Map<String, Object>>) payload.get("comments");
       List<Comment> commentList = new ArrayList<Comment>();
       for (Map<String, Object> mercuryComment : comments) {
-        Comment comment = new Comment();
-        comment.setId(Long.valueOf(((Integer) mercuryComment.get("id"))));
-        comment.setText((String) mercuryComment.get("text"));
-        comment.setCreated(Long.valueOf((Integer) mercuryComment.get("created")));
-        comment.setUserName((String) mercuryComment.get("userName"));
-        comment.setWikiaName(wikia);
-        comment.setArticleName(title);
+
+        Comment comment = PojoBuilderFactory.getCommentBuilder()
+            .withId(Long.valueOf(((Integer) mercuryComment.get("id"))))
+            .withText((String) mercuryComment.get("text"))
+            .withCreated(Long.valueOf((Integer) mercuryComment.get("created")))
+            .withUserName((String) mercuryComment.get("userName"))
+            .withWikiaName(wikia)
+            .withArticleName(title)
+            .build();
         commentList.add(comment);
       }
       return commentList;
@@ -64,11 +65,13 @@ public class MercuryArticlesService extends MercuryService implements ArticleSer
 
   @Override
   public Comment getComment(String wikia, String title, Long commentId) {
-    Comment comment = new Comment();
-    comment.setWikiaName(wikia);
-    comment.setArticleName(title);
-    comment.setText("comment test");
-    comment.setId(commentId);
+    Comment comment = PojoBuilderFactory.getCommentBuilder()
+        .withWikiaName(wikia)
+        .withArticleName(title)
+        .withText("comment test")
+        .withId(commentId)
+        .build();
+
     return comment;
   }
 }

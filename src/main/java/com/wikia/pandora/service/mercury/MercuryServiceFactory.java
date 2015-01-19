@@ -1,11 +1,12 @@
-package com.wikia.pandora.service.factory;
+package com.wikia.pandora.service.mercury;
 
 import com.wikia.pandora.PandoraConfiguration;
 import com.wikia.pandora.service.CommentService;
+import com.wikia.pandora.service.ServiceFactory;
 import com.wikia.pandora.service.mercury.MercuryArticlesService;
-import com.wikia.pandora.service.mercury.MercuryCommentService;
 import com.wikia.pandora.service.mercury.MercuryGateway;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.http.client.HttpClient;
 
 import io.dropwizard.client.HttpClientBuilder;
@@ -27,9 +28,7 @@ public class MercuryServiceFactory extends ServiceFactory {
 
   @Override
   public CommentService createCommentService() {
-    final HttpClient httpClient = createHttpClient("gateway-client-comments");
-    MercuryGateway gateway = new MercuryGateway(httpClient);
-    return new MercuryCommentService(gateway);
+    throw new NotImplementedException();
   }
 
   private HttpClient createHttpClient(String name) {

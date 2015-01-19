@@ -13,7 +13,7 @@ public class PandoraConfiguration extends Configuration {
   @Valid
   @NotNull
   @JsonProperty
-  private HttpClientConfiguration httpClient;
+  private final HttpClientConfiguration httpClient;
 
   public PandoraConfiguration() {
     httpClient = new HttpClientConfiguration();

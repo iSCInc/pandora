@@ -16,8 +16,8 @@ import java.io.IOException;
 
 public class ArticleServiceTest {
 
-  @Test
-  public void testLookup() throws IOException {
+//  @Test
+//  public void testLookup() throws IOException {
 //    String wikia = "muppet";
 //    String title = "Kermit the Frog";
 //
@@ -40,6 +40,6 @@ public class ArticleServiceTest {
 //                                                                                "fixtures/mercury-gateway/bogus.json");
 //    ArticleService articleService = new ArticleService(mercuryGateway);
 //    Optional<Article> article = articleService.lookup(wikia, title);
-  }
+//  }
 
 }

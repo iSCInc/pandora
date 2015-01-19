@@ -35,6 +35,4 @@ public class MercuryGatewayTest {
     assertThat(article.get("data")).isNotNull();
     assertThat(((Map<String, Object>) article.get("data")).get("details")).isNotNull();
   }
-
-
 }
