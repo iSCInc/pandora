@@ -24,6 +24,11 @@ import java.util.List;
 public class AppsDeployerList implements AppsListService {
     private static final String APP_DEPLOYER_HEALTH_CHECK_URL = "http://apps-deployer-panel-s1/api/";
     private static final String APPS_DEPLOYER_LIST_URL = "http://apps-deployer-panel-s1/api/app-configuration/";
+
+    private static final String APPS_LIST_RESPONSE_ERROR_FORMAT = "Error, the response for %s is not valid!";
+    private static final String RESPONSE_ERROR_FORMAT = "Empty response body from '%s'!";
+    private static final String HTTP_STATUS_ERROR_FORMAT = "Unexpected response status %d from '%s'.";
+
     private final HttpClient httpClient;
 
     public AppsDeployerList(Environment environment, MobileConfigConfiguration configuration) {
@@ -39,7 +44,7 @@ public class AppsDeployerList implements AppsListService {
             return mapper.readValue(response.get(), new TypeReference<List<HashMap<String, Object>>>() {});
         } else {
             throw new IllegalStateException(
-                String.format("Error, the response for %s is not valid!", APPS_DEPLOYER_LIST_URL)
+                String.format(APPS_LIST_RESPONSE_ERROR_FORMAT, APPS_DEPLOYER_LIST_URL)
             );
         }
     }
@@ -77,16 +82,14 @@ public class AppsDeployerList implements AppsListService {
             int status = response.getStatusLine().getStatusCode();
             if (status == 200) {
                 Optional<HttpEntity> entity = Optional.of(response.getEntity());
+
                 if (!entity.isPresent()) {
-                    throw new ClientProtocolException(
-                        String.format("Empty response body from '%s'!", requestUrl)
-                    );
+                    throw new ClientProtocolException(String.format(RESPONSE_ERROR_FORMAT, requestUrl));
                 }
+
                 return EntityUtils.toString(entity.get());
             } else {
-                throw new ClientProtocolException(
-                    String.format("Unexpected response status %d from '%s'.", status, requestUrl)
-                );
+                throw new ClientProtocolException(String.format(HTTP_STATUS_ERROR_FORMAT, status, requestUrl));
             }
         }
     }
