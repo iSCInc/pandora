@@ -1,7 +1,5 @@
 package com.wikia.mobileconfig.service;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.google.common.base.Optional;
 import com.wikia.mobileconfig.core.MobileConfiguration;
 
 import java.io.IOException;
