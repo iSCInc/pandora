@@ -6,6 +6,7 @@ import com.wikia.mobileconfig.service.AppsListService;
 
 public class AppsDeployerHealthCheck extends HealthCheck {
     private final AppsListService service;
+    private static String CONNECTION_ERROR_MSG = "Cannot connect to apps-deployer-panel";
 
     public AppsDeployerHealthCheck(AppsListService service) {
         this.service = service;
@@ -16,7 +17,7 @@ public class AppsDeployerHealthCheck extends HealthCheck {
         if( this.service.isUp() ) {
             return Result.healthy();
         } else {
-            return Result.unhealthy("Cannot connect to apps-deployer-panel");
+            return Result.unhealthy(CONNECTION_ERROR_MSG);
         }
     }
 }
