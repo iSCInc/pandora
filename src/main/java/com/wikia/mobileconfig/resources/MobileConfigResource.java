@@ -7,7 +7,7 @@ import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.service.ConfigurationService;
-import com.wikia.mobileconfig.service.ConfigurationsListService;
+import com.wikia.mobileconfig.service.AppsListService;
 
 import javax.ws.rs.*;
 import java.net.URISyntaxException;
@@ -16,12 +16,12 @@ import java.net.URISyntaxException;
 @Produces(RepresentationFactory.HAL_JSON)
 public class MobileConfigResource {
 
-    private final ConfigurationService cfgService;
-    private final ConfigurationsListService listService;
+    private final ConfigurationService appConfiguration;
+    private final AppsListService appsList;
 
-    public MobileConfigResource(ConfigurationService service, ConfigurationsListService listService) {
-        this.cfgService = service;
-        this.listService = listService;
+    public MobileConfigResource(ConfigurationService configuration, AppsListService list) {
+        this.appConfiguration = configuration;
+        this.appsList = list;
     }
 
     /**
@@ -38,14 +38,14 @@ public class MobileConfigResource {
         @PathParam("platform") String platform,
         @PathParam("appTag") String appTag
     ) throws java.io.IOException, URISyntaxException {
-        if( !this.listService.isValidAppTag(appTag) ) {
+        if( !this.appsList.isValidAppTag(appTag) ) {
             throw new WebApplicationException(404);
         }
 
         Representation rep = MobileConfigApplication.representationFactory.newRepresentation(
-            this.cfgService.createSelfUrl(platform, appTag)
+            this.appConfiguration.createSelfUrl(platform, appTag)
         ).withBean(
-            this.cfgService.getConfiguration(platform, appTag)
+                this.appConfiguration.getConfiguration(platform, appTag)
         );
 
         return rep;

@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
-public class AppsDeployerList implements ConfigurationsListService {
+public class AppsDeployerList implements AppsListService {
     private static final String APP_DEPLOYER_HEALTH_CHECK_URL = "http://apps-deployer-panel-s1/api/";
     private static final String APPS_DEPLOYER_LIST_URL = "http://apps-deployer-panel-s1/api/app-configuration/";
     private final HttpClient httpClient;

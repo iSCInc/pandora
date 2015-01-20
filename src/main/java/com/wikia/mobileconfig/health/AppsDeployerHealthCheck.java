@@ -2,12 +2,12 @@ package com.wikia.mobileconfig.health;
 
 import com.codahale.metrics.health.HealthCheck;
 
-import com.wikia.mobileconfig.service.ConfigurationsListService;
+import com.wikia.mobileconfig.service.AppsListService;
 
 public class AppsDeployerHealthCheck extends HealthCheck {
-    private final ConfigurationsListService service;
+    private final AppsListService service;
 
-    public AppsDeployerHealthCheck(ConfigurationsListService service) {
+    public AppsDeployerHealthCheck(AppsListService service) {
         this.service = service;
     }
 
