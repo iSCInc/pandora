@@ -1,0 +1,10 @@
+{
+  "id": 10,
+  "title": "foo",
+  "content": "foo content",
+  "_links": {
+    "self": {
+      "href": "/articles/foo"
+    }
+  }
+}

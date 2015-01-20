@@ -1,1 +1,0 @@
-(ns pandora.domain.article)

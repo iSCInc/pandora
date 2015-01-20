@@ -1,0 +1,17 @@
+
+WWWWWWWW                           WWWWWWWWIIIIIIIIIIKKKKKKKKK    KKKKKKKIIIIIIIIII               AAA                                   AAA               PPPPPPPPPPPPPPPPP   IIIIIIIIII
+W::::::W                           W::::::WI::::::::IK:::::::K    K:::::KI::::::::I              A:::A                                 A:::A              P::::::::::::::::P  I::::::::I
+W::::::W                           W::::::WI::::::::IK:::::::K    K:::::KI::::::::I             A:::::A                               A:::::A             P::::::PPPPPP:::::P I::::::::I
+W::::::W                           W::::::WII::::::IIK:::::::K   K::::::KII::::::II            A:::::::A                             A:::::::A            PP:::::P     P:::::PII::::::II
+ W:::::W           WWWWW           W:::::W   I::::I  KK::::::K  K:::::KKK  I::::I             A:::::::::A                           A:::::::::A             P::::P     P:::::P  I::::I
+  W:::::W         W:::::W         W:::::W    I::::I    K:::::K K:::::K     I::::I            A:::::A:::::A                         A:::::A:::::A            P::::P     P:::::P  I::::I
+   W:::::W       W:::::::W       W:::::W     I::::I    K::::::K:::::K      I::::I           A:::::A A:::::A                       A:::::A A:::::A           P::::PPPPPP:::::P   I::::I
+    W:::::W     W:::::::::W     W:::::W      I::::I    K:::::::::::K       I::::I          A:::::A   A:::::A                     A:::::A   A:::::A          P:::::::::::::PP    I::::I
+     W:::::W   W:::::W:::::W   W:::::W       I::::I    K:::::::::::K       I::::I         A:::::A     A:::::A                   A:::::A     A:::::A         P::::PPPPPPPPP      I::::I
+      W:::::W W:::::W W:::::W W:::::W        I::::I    K::::::K:::::K      I::::I        A:::::AAAAAAAAA:::::A                 A:::::AAAAAAAAA:::::A        P::::P              I::::I
+       W:::::W:::::W   W:::::W:::::W         I::::I    K:::::K K:::::K     I::::I       A:::::::::::::::::::::A               A:::::::::::::::::::::A       P::::P              I::::I
+        W:::::::::W     W:::::::::W          I::::I  KK::::::K  K:::::KKK  I::::I      A:::::AAAAAAAAAAAAA:::::A             A:::::AAAAAAAAAAAAA:::::A      P::::P              I::::I
+         W:::::::W       W:::::::W         II::::::IIK:::::::K   K::::::KII::::::II   A:::::A             A:::::A           A:::::A             A:::::A   PP::::::PP          II::::::II
+          W:::::W         W:::::W          I::::::::IK:::::::K    K:::::KI::::::::I  A:::::A               A:::::A         A:::::A               A:::::A  P::::::::P          I::::::::I
+           W:::W           W:::W           I::::::::IK:::::::K    K:::::KI::::::::I A:::::A                 A:::::A       A:::::A                 A:::::A P::::::::P          I::::::::I
+            WWW             WWW            IIIIIIIIIIKKKKKKKKK    KKKKKKKIIIIIIIIIIAAAAAAA                   AAAAAAA     AAAAAAA                   AAAAAAAPPPPPPPPPP          IIIIIIIIII

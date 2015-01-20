@@ -3,16 +3,32 @@
 An API proxy service for productizing the Mercury API with the
 [guidelines](https://github.com/Wikia/guidelines/tree/master/APIDesign).
 
-The master branch doesn't contain much. The current prototype is being developed on
-the [dropwizard-prototype](https://github.com/Wikia/pandora/tree/dropwizard-prototype) branch. Go there for more information and to learn more about the current status.
-
 ## Usage
 
-FIXME when ready
+To run the server:
+
+```bash
+cp pandora.yaml.sample pandora.yaml
+# launch the server
+gradle run
+```
+
+To make a request from the server:
+
+```bash
+curl -v http://localhost:8080/articles/muppet/Kermit%20the%20Frog
+```
+
+To run the tests:
+
+```bash
+gradle test
+```
+
 
 ## License
 
-Copyright © 2014 FIXME
+Copyright © 2014 Wikia
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
