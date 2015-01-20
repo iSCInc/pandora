@@ -46,25 +46,7 @@ public class AppsDeployerList implements AppsListService {
 
     private Optional<String> executeHttpRequest(final String requestUrl) throws IOException {
         HttpGet httpGet = new HttpGet(requestUrl);
-        ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
-            public String handleResponse(final HttpResponse response) throws IOException {
-                int status = response.getStatusLine().getStatusCode();
-                if (status == 200) {
-                    Optional<HttpEntity> entity = Optional.of(response.getEntity());
-                    if (!entity.isPresent()) {
-                        throw new ClientProtocolException(
-                            String.format("Empty response body from '%s'!", requestUrl)
-                        );
-                    }
-                    return EntityUtils.toString(entity.get());
-                } else {
-                    throw new ClientProtocolException(
-                        String.format("Unexpected response status %d from '%s'.", status, requestUrl)
-                    );
-                }
-            }
-        };
-
+        ResponseHandler<String> responseHandler = new StringResponseHandler(requestUrl);
         return Optional.of(this.httpClient.execute(httpGet, responseHandler));
     }
 
@@ -84,4 +66,28 @@ public class AppsDeployerList implements AppsListService {
         }
     }
 
+    private static class StringResponseHandler implements ResponseHandler<String> {
+        private final String requestUrl;
+
+        public StringResponseHandler(String requestUrl) {
+            this.requestUrl = requestUrl;
+        }
+
+        public String handleResponse(final HttpResponse response) throws IOException {
+            int status = response.getStatusLine().getStatusCode();
+            if (status == 200) {
+                Optional<HttpEntity> entity = Optional.of(response.getEntity());
+                if (!entity.isPresent()) {
+                    throw new ClientProtocolException(
+                        String.format("Empty response body from '%s'!", requestUrl)
+                    );
+                }
+                return EntityUtils.toString(entity.get());
+            } else {
+                throw new ClientProtocolException(
+                    String.format("Unexpected response status %d from '%s'.", status, requestUrl)
+                );
+            }
+        }
+    }
 }
