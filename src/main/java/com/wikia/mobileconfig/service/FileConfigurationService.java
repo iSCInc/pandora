@@ -8,6 +8,14 @@ import java.io.File;
 import java.io.IOException;
 
 public class FileConfigurationService implements ConfigurationService {
+    private final static String CONFIGURATION_NOT_FOUND_DEBUG_MESSAGE_FORMAT =
+            "Configuration for %s not found: falling back to default configuration for %s";
+
+    private final static String CONFIGURATIONS_URL_FORMAT = "/configurations/platform/%s/app/%s";
+
+    private final static String CONFIGURATION_DEFAULT_PATH_FORMAT = "%s/%s:default.json";
+    private final static String CONFIGURATION_PATH_FORMAT = "%s/%s:%s.json";
+
     private String root;
     private ObjectMapper mapper;
 
@@ -37,11 +45,7 @@ public class FileConfigurationService implements ConfigurationService {
             return configuration;
         } catch (IOException e) {
             MobileConfigApplication.logger.info(
-                String.format(
-                    "Configuration for %s not found: falling back to default configuration for %s",
-                    appTag,
-                    platform
-                )
+                String.format(CONFIGURATION_NOT_FOUND_DEBUG_MESSAGE_FORMAT, appTag, platform)
             );
             return getDefault(platform);
         }
@@ -49,14 +53,14 @@ public class FileConfigurationService implements ConfigurationService {
 
     @Override
     public String createSelfUrl(String platform, String appTag) {
-        return String.format("/configurations/platform/%s/app/%s", platform, appTag);
+        return String.format(CONFIGURATIONS_URL_FORMAT, platform, appTag);
     }
 
     private String createDefaultFilePath(String platform) {
-        return String.format("%s/%s:default.json", this.root, platform);
+        return String.format(CONFIGURATION_DEFAULT_PATH_FORMAT, this.root, platform);
     }
 
     private String createFilePath(String platform, String appTag) {
-        return String.format("%s/%s:%s.json", this.root, platform, appTag);
+        return String.format(CONFIGURATION_PATH_FORMAT, this.root, platform, appTag);
     }
 }
