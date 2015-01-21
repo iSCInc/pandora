@@ -3,6 +3,7 @@ package com.wikia.mobileconfig.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wikia.mobileconfig.core.MobileConfiguration;
 import com.wikia.mobileconfig.MobileConfigApplication;
+import com.wikia.mobileconfig.core.NullMobileConfiguration;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,12 +28,14 @@ public class FileConfigurationService implements ConfigurationService {
 
   @Override
   public MobileConfiguration getDefault(String platform) throws IOException {
-    MobileConfiguration configuration = this.mapper.readValue(
-        new File(this.createDefaultFilePath(platform)),
-        MobileConfiguration.class
-    );
-
-    return configuration;
+    try {
+      return this.mapper.readValue(
+          new File(this.createDefaultFilePath(platform)),
+          MobileConfiguration.class
+      );
+    } catch (IOException e) {
+      return new NullMobileConfiguration();
+    }
   }
 
   @Override
@@ -48,6 +51,7 @@ public class FileConfigurationService implements ConfigurationService {
       MobileConfigApplication.logger.info(
           String.format(CONFIGURATION_NOT_FOUND_DEBUG_MESSAGE_FORMAT, appTag, platform)
       );
+
       return getDefault(platform);
     }
   }
