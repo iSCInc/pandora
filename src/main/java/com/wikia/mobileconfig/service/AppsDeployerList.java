@@ -7,13 +7,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.google.common.base.Optional;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.util.EntityUtils;
+import org.apache.http.impl.client.BasicResponseHandler;
 
 import io.dropwizard.client.HttpClientBuilder;
 import io.dropwizard.setup.Environment;
@@ -30,10 +28,7 @@ public class AppsDeployerList implements AppsListService {
       "http://apps-deployer-panel-s1/api/app-configuration/";
 
   private static final String
-      APPS_LIST_RESPONSE_ERROR_FORMAT =
-      "Error, the response for %s is not valid!";
-  private static final String RESPONSE_ERROR_FORMAT = "Empty response body from '%s'!";
-  private static final String HTTP_STATUS_ERROR_FORMAT = "Unexpected response status %d from '%s'.";
+      APPS_LIST_RESPONSE_ERROR_FORMAT = "Error, the response for %s is not valid!";
 
   private final HttpClient httpClient;
 
@@ -58,7 +53,7 @@ public class AppsDeployerList implements AppsListService {
 
   private Optional<String> executeHttpRequest(final String requestUrl) throws IOException {
     HttpGet httpGet = new HttpGet(requestUrl);
-    ResponseHandler<String> responseHandler = new StringResponseHandler(requestUrl);
+    ResponseHandler<String> responseHandler = new BasicResponseHandler();
     return Optional.of(this.httpClient.execute(httpGet, responseHandler));
   }
 
@@ -75,31 +70,6 @@ public class AppsDeployerList implements AppsListService {
       return true;
     } catch (ClientProtocolException exception) {
       return false;
-    }
-  }
-
-  private static class StringResponseHandler implements ResponseHandler<String> {
-
-    private final String requestUrl;
-
-    public StringResponseHandler(String requestUrl) {
-      this.requestUrl = requestUrl;
-    }
-
-    public String handleResponse(final HttpResponse response) throws IOException {
-      int status = response.getStatusLine().getStatusCode();
-      if (status == 200) {
-        Optional<HttpEntity> entity = Optional.of(response.getEntity());
-
-        if (!entity.isPresent()) {
-          throw new ClientProtocolException(String.format(RESPONSE_ERROR_FORMAT, requestUrl));
-        }
-
-        return EntityUtils.toString(entity.get());
-      } else {
-        throw new ClientProtocolException(
-            String.format(HTTP_STATUS_ERROR_FORMAT, status, requestUrl));
-      }
     }
   }
 }
