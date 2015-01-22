@@ -3,15 +3,15 @@ package com.wikia.mobileconfig.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wikia.mobileconfig.core.MobileConfiguration;
 import com.wikia.mobileconfig.MobileConfigApplication;
-import com.wikia.mobileconfig.core.NullMobileConfiguration;
+import com.wikia.mobileconfig.core.EmptyMobileConfiguration;
 
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * A class responsible for getting mobile applications' configuration from static files
+ */
 public class FileConfigurationService extends ConfigurationServiceBase {
-
-  private final static String CONFIGURATION_NOT_FOUND_DEBUG_MESSAGE_FORMAT =
-      "Configuration for %s not found: falling back to default configuration for %s";
 
   private final static String CONFIGURATION_DEFAULT_PATH_FORMAT = "%s/%s:default.json";
   private final static String CONFIGURATION_PATH_FORMAT = "%s/%s:%s.json";
@@ -32,7 +32,7 @@ public class FileConfigurationService extends ConfigurationServiceBase {
           MobileConfiguration.class
       );
     } catch (IOException e) {
-      return new NullMobileConfiguration();
+      return new EmptyMobileConfiguration();
     }
   }
 

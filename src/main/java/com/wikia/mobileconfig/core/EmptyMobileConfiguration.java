@@ -2,9 +2,9 @@ package com.wikia.mobileconfig.core;
 
 import java.util.Collections;
 
-public class NullMobileConfiguration extends MobileConfiguration {
+public class EmptyMobileConfiguration extends MobileConfiguration {
 
-  public NullMobileConfiguration() {
+  public EmptyMobileConfiguration() {
     this.setModules(Collections.emptyList());
   }
 
