@@ -1,3 +1,13 @@
+httpClient:
+  timeout: 7s
+  connectionTimeout: 7s
+  timeToLive: 1h
+  cookiesEnabled: false
+  maxConnections: 1024
+  maxConnectionsPerRoute: 1024
+  keepAlive: 0ms
+  retries: 0
+  userAgent: mobile-config (dropwizard)
 logging:
   level: INFO
   appenders:
