@@ -1,7 +1,5 @@
 package com.wikia.mobileconfig.service;
 
-import com.google.common.base.Optional;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.wikia.mobileconfig.MobileConfigApplication;
