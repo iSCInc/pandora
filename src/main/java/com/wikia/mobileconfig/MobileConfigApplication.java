@@ -14,6 +14,7 @@ import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
 import com.wikia.mobileconfig.resources.MobileConfigResource;
 import com.wikia.mobileconfig.health.MobileConfigHealthCheck;
 import com.wikia.mobileconfig.health.AppsDeployerHealthCheck;
+import com.wikia.mobileconfig.service.HttpConfigurationService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +41,10 @@ public class MobileConfigApplication extends Application<MobileConfigConfigurati
 
   @Override
   public void run(MobileConfigConfiguration configuration, Environment environment) {
-    FileConfigurationService fileConfigService = new FileConfigurationService("fixtures");
+    HttpConfigurationService configService = new HttpConfigurationService(
+        environment,
+        configuration
+    );
     AppsDeployerList listService = new AppsDeployerList(environment, configuration);
 
     final MobileConfigHealthCheck healthCheck = new MobileConfigHealthCheck();
@@ -53,7 +57,7 @@ public class MobileConfigApplication extends Application<MobileConfigConfigurati
 
     final MobileConfigResource
         mobileConfig =
-        new MobileConfigResource(fileConfigService, listService);
+        new MobileConfigResource(configService, listService);
     environment.jersey().register(mobileConfig);
     environment.jersey().register(JaxRsHalBuilderSupport.class);
   }
