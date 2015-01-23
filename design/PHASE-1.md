@@ -77,7 +77,6 @@ hypothetical JSON representation. This example is not comprehensive.
         "user_id": 10370,
         "title": "Toughpigs",
         "name": "Toughpigs",
-        "url": "\/wiki\/User:Toughpigs",
         "numberofedits": 128537,
         "avatar": "http:\/\/img3.wikia.nocookie.net\/__cb1313595066\/common\/avatars\/thumb\/b\/b5\/10370.png\/100px-10370.png.jpg"
       },
@@ -88,7 +87,6 @@ hypothetical JSON representation. This example is not comprehensive.
         "user_id": 3275812,
         "title": "WikicontributorHubpup",
         "name": "WikicontributorHubpup",
-        "url": "\/wiki\/User:WikicontributorHubpup",
         "numberofedits": 6201,
         "avatar": "http:\/\/img3.wikia.nocookie.net\/__cb0\/messaging\/images\/thumb\/c\/cf\/Avatar6.jpg\/100px-Avatar6.jpg"
       }
@@ -98,7 +96,19 @@ hypothetical JSON representation. This example is not comprehensive.
 ```
 
 The `GET` request resulting in this representation might take the following
-form `/muppet/articles/Kermit+the+Frog?embed=[users]&renderType=mobile`.
+form
+`/muppet/articles/Kermit+the+Frog?embed=[users]&renderType=mobile&mediaWidth=100`.
+
+Some comments about the request and the payload.
+ * The `embed=[users]` notation is an example of how we might handle
+	 transclusion of data from related resources. The link to the users is also
+	 provided in the `_links` section at the top.
+ * The `renderType=mobile` is an example of how the render type of the article
+	 could be changed.
+ * By specifying the `mediaWidth` the caller can toggle the size of the images
+   included in the representation. See
+	 [PLATFORM-607](https://wikia-inc.atlassian.net/browse/PLATFORM-607) for more
+	 information.
 
 ## Current Status
 
