@@ -1,0 +1,46 @@
+apply plugin: 'java'
+apply plugin: 'application'
+sourceCompatibility = 1.8
+mainClassName = "com.wikia.pandora.examples.PandoraApplication"
+version = "0.1.0"
+
+repositories {
+    jcenter()
+    mavenCentral();
+
+    maven {
+        url "http://repo.surech.ch/content/repositories/hosted.halarious.releases/"
+    }
+}
+
+// In this section you declare the dependencies for your production and test code
+dependencies {
+    compile project(':pandora-core')
+    compile project(':pandora-resources')
+    // The production code uses the SLF4J logging API at compile time
+
+    compile 'org.slf4j:slf4j-api:1.7.5'
+    compile 'io.dropwizard:dropwizard-core:0.7.1'
+    compile 'io.dropwizard:dropwizard-client:0.7.1'
+    compile 'ch.halarious:halarious-core:0.11'
+
+    //HAL builder
+    compile 'com.theoryinpractise:halbuilder-api:4.0.1'
+    compile 'com.theoryinpractise:halbuilder-core:4.0.3'
+    compile 'com.theoryinpractise:halbuilder-json:4.0.2'
+    compile 'com.theoryinpractise:halbuilder-standard:4.0.1'
+
+    compile('com.theoryinpractise:halbuilder-jaxrs:1.1.1') {
+        exclude group: 'javax.ws.rs'
+    }
+
+
+    testCompile 'junit:junit:4.11'
+    testCompile 'io.dropwizard:dropwizard-testing:0.7.1'
+    testCompile 'org.mockito:mockito-core:1.9.5'
+}
+
+
+run {
+    args 'server', 'pandora.yaml'
+}

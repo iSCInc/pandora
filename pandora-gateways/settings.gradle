@@ -1,0 +1,3 @@
+rootProject.name = 'pandora-gateways'
+include 'pandora-core'
+project(':pandora-core').projectDir = new File(settingsDir, '../pandora-core')

@@ -1,0 +1,16 @@
+rootProject.name = 'pandora-examples'
+include ':pandora-core'
+project(':pandora-core').projectDir = new File(settingsDir, '../pandora-core')
+
+include ':pandora-gateways'
+project(':pandora-gateways').projectDir =  new File(settingsDir, '../pandora-gateways')
+
+include ':pandora-resources'
+project(':pandora-resources').projectDir = new File(settingsDir, '../pandora-resources')
+
+
+//include 'pandora-resources'
+//
+
+//include 'pandora-gateways'
+
