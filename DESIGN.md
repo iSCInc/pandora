@@ -8,7 +8,6 @@ This document provides an overview of the Pandora project.
     - [Table of Contents](#table-of-contents)
     - [What is Pandora?](#what-is-pandora)
     - [Goals](#goals)
-    - [Nouns](#nouns)
     - [Existing Mercury API](#existing-mercury-api)
     - [Milestones](#milestones)
     - [Implementation Notes](#implementation-notes)
