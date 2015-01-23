@@ -22,10 +22,10 @@ import java.util.List;
 
 public class AppsDeployerList implements AppsListService {
 
-  private static final String APP_DEPLOYER_HEALTH_CHECK_URL = "http://apps-deployer-panel-s1/api/";
-  private static final String
-      APPS_DEPLOYER_LIST_URL =
-      "http://apps-deployer-panel-s1/api/app-configuration/";
+  private static final String APPS_DEPLOYER_HEALTH_CHECK_URL_FORMAT = "http://%s/api/";
+  private static final String APPS_DEPLOYER_LIST_URL_FORMAT = "http://%s/api/app-configuration/";
+
+  private static String appsDeployerDomain;
 
   private static final String
       APPS_LIST_RESPONSE_ERROR_FORMAT = "Error, the response for %s is not valid!";
@@ -36,17 +36,21 @@ public class AppsDeployerList implements AppsListService {
     this.httpClient = new HttpClientBuilder(environment)
         .using(configuration.getHttpClientConfiguration())
         .build("apps-deployer-list-service");
+
+    this.appsDeployerDomain = configuration.getAppsDeployerDomain();
   }
 
   private List<HashMap<String, Object>> getAppsList() throws IOException {
-    Optional<String> response = this.executeHttpRequest(APPS_DEPLOYER_LIST_URL);
+    String appsDeployerUrl = String.format(APPS_DEPLOYER_LIST_URL_FORMAT, appsDeployerDomain);
+    Optional<String> response = this.executeHttpRequest(appsDeployerUrl);
     ObjectMapper mapper = new ObjectMapper();
+
     if (response.isPresent()) {
       return mapper.readValue(response.get(), new TypeReference<List<HashMap<String, Object>>>() {
       });
     } else {
       throw new IllegalStateException(
-          String.format(APPS_LIST_RESPONSE_ERROR_FORMAT, APPS_DEPLOYER_LIST_URL)
+          String.format(APPS_LIST_RESPONSE_ERROR_FORMAT, appsDeployerUrl)
       );
     }
   }
@@ -66,7 +70,12 @@ public class AppsDeployerList implements AppsListService {
   @Override
   public Boolean isUp() throws IOException {
     try {
-      this.executeHttpRequest(APP_DEPLOYER_HEALTH_CHECK_URL);
+      String appsDeployerHealthCheckUrl = String.format(
+          APPS_DEPLOYER_HEALTH_CHECK_URL_FORMAT,
+          appsDeployerDomain
+      );
+      this.executeHttpRequest(appsDeployerHealthCheckUrl);
+
       return true;
     } catch (ClientProtocolException exception) {
       return false;
