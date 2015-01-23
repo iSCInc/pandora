@@ -51,7 +51,7 @@ has the following objectives:
 
 ## Goals
 
-Short to mid term:
+Short to mid term (see also the [Phase 1 proposal](design/PHASE-1.md)):
 
  1. Provide an API that satisfies the [design
     guide](https://github.com/Wikia/guidelines/tree/master/APIDesign) for mobile
