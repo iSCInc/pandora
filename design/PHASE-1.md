@@ -7,7 +7,7 @@ provide data parity with the mobile APIs developed by the Mercury project.
 
 ## Mercury API
 
-See the [description of the current API](design/CURRENT.md) for reference.
+See the [description of the current API](CURRENT.md) for reference.
 
 ## Proposed Resources
 
