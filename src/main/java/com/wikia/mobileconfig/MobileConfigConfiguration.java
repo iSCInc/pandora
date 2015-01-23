@@ -20,6 +20,14 @@ public class MobileConfigConfiguration extends Configuration {
   @NotNull
   private String appsDeployerDomain;
 
+  @NotEmpty
+  @NotNull
+  private String cephDomain;
+
+  @NotEmpty
+  @NotNull
+  private String cephPort;
+
   public MobileConfigConfiguration() {
     httpClient = new HttpClientConfiguration();
   }
@@ -30,5 +38,13 @@ public class MobileConfigConfiguration extends Configuration {
 
   public String getAppsDeployerDomain() {
     return appsDeployerDomain;
+  }
+
+  public String getCephDomain() {
+    return cephDomain;
+  }
+
+  public String getCephPort() {
+    return cephPort;
   }
 }

@@ -23,11 +23,12 @@ import io.dropwizard.setup.Environment;
 public class HttpConfigurationService extends ConfigurationServiceBase {
 
   private static final String
-      CEPH_URL_FORMAT =
-      "http://public.nandy.wikia-dev.com/public/mobile-configuration-service/%s/%s/config.json";
+      CEPH_URL_FORMAT = "http://%s:%s/mobile-configuration-service/%s/%s/config.json";
 
   private final HttpClient httpClient;
   private final ObjectMapper mapper;
+  private final String cephDomain;
+  private final String cephPort;
 
   public HttpConfigurationService(
       Environment environment,
@@ -37,13 +38,15 @@ public class HttpConfigurationService extends ConfigurationServiceBase {
         .using(configuration.getHttpClientConfiguration())
         .build("http-configuration-service");
     this.mapper = new ObjectMapper();
+    this.cephDomain = configuration.getCephDomain();
+    this.cephPort = configuration.getCephPort();
   }
 
   @Override
   public MobileConfiguration getDefault(String platform) throws IOException {
     try {
       return this.mapper.readValue(
-          this.executeHttpRequest(String.format(CEPH_URL_FORMAT, platform, "_default")),
+          this.executeHttpRequest(createCephUrl(platform, "_default")),
           MobileConfiguration.class
       );
     } catch (IOException e) {
@@ -55,7 +58,7 @@ public class HttpConfigurationService extends ConfigurationServiceBase {
   public MobileConfiguration getConfiguration(String platform, String appTag) throws IOException {
     try {
       MobileConfiguration configuration = this.mapper.readValue(
-          this.executeHttpRequest(String.format(CEPH_URL_FORMAT, platform, appTag)),
+          this.executeHttpRequest(createCephUrl(platform, appTag)),
           MobileConfiguration.class
       );
 
@@ -67,6 +70,10 @@ public class HttpConfigurationService extends ConfigurationServiceBase {
 
       return getDefault(platform);
     }
+  }
+
+  private String createCephUrl(String platform, String appTag) {
+    return String.format(CEPH_URL_FORMAT, cephDomain, cephPort, platform, appTag);
   }
 
   private String executeHttpRequest(final String requestUrl) throws IOException {
