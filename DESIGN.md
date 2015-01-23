@@ -7,7 +7,7 @@ This document provides an overview of the Pandora project.
 - [Pandora Design Document](#pandora-design-document)
     - [Table of Contents](#table-of-contents)
     - [What is Pandora?](#what-is-pandora)
-    - [What is the Service and API Project?](#what-is-the)
+    - [What is the Service and API Project?](#what-is-the-service--api-project)
     - [Goals](#goals)
     - [Existing Mercury API](#existing-mercury-api)
     - [Milestones](#milestones)
