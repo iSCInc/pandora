@@ -1,6 +1,6 @@
 # Pandora Design Document
 
-This document provides an overview of the Pandora design. 
+This document provides an overview of the Pandora project.
 
 ## Table of Contents
 
@@ -32,8 +32,9 @@ the article experience. It will
   * Better caching
   * Ability to fan-out requests
 
-
 ## Goals
+
+Short to mid term:
 
  1. Provide an API that satisfies the [design
     guide](https://github.com/Wikia/guidelines/tree/master/APIDesign) for mobile
@@ -43,17 +44,11 @@ the article experience. It will
     mobile apps and partners.
  4. Improve our infrastructure for building and deploying services.
 
-## Nouns
+Long term:
 
-The content ontology or nouns are being worked out in [this
-document](https://docs.google.com/document/d/1N_AFFmdzmjtzTK8g4LOcrC7RdEi9bXy_j-UyihKssTs/edit?usp=sharing).
+The long-term goal of the Pandora project is to provide a standardized set of
+external API endpoints to all external-facing Wikia functionality.
 
-Straw man:
-
- * /articles/Kermit_the_frog
- * /articles/Kermit_the_frog/users/
- * /articles/Kermit_the_frog/media/
- * /articles/Kermit_the_frog/comments/
 
 ## Existing Mercury API
 
@@ -65,22 +60,12 @@ payload.
 
 ## Milestones
 
- 1. `application/hal+json` API for articles
- 2. `application/hal+json` API that is feature complete with Mercury and could be
-   used as a replacement
-
+ 1. [Phase 1 proposal](design/PHASE-1.md)
 
 ## Implementation Notes
 
- * The Mercury API
-   [payload](http://muppet.wikia.com/api/v1/Mercury/Article?title=Kermit%20the%20Frog)
-	 contains elements that change at different rates which suggests that there might
-	 be different logical groupings and different caching characteristics. What
-	 are these groupings?
- * Given the above it may also make sense to, by default, only include links to
-	 these resources and allow them to be expanded via `_embedded`. This seems to
-	 be more the spirit of a hypermedia API.
- * We are using [dropwizard](http://dropwizard.io/).
+ * The service will be written in Java version 1.8.
+ * We are using [dropwizard](http://dropwizard.io/) as the framework.
 
 ### Architecture & Data Flow
 
@@ -104,5 +89,13 @@ and MediaWiki.
 ## FAQ
 
  * Will the article HTML content change from what is now in Mercury?
-   No. At the moment we are planning on leaving the *values* in the mercury
+   Yes... and no. We plan to provide a toggle for the render type of the article
+   content. See the [phase 1 proposal](design/PHASE-1.md).
+   At the moment we are planning on leaving the *values* in the mercury
 	 payload intact. The keys however are subject to change.
+ * Is Pandora a service or a library?
+   Initially Pandora will be a service. However, some of the components
+   developed in Pandora may become libraries. For example, HTTP clients for
+   MediaWiki and Nirvana will probably be split out as libraries. Similarly,
+   abstractions for building services using dropwizard may also be split out.
+ * Why don’t aren’t we doing this in the MediaWiki stack?
