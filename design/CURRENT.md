@@ -58,3 +58,10 @@ The Merucry API provides the following data.
 		category and several other ‘wiki*’ values), providers (a map), slots (list), and
 		forceProviders (list). The targeting map contains several data elements
 		that are already provided elsewhere.
+
+Note that the `article/content` element in the current Mercury response has
+images elided. This allows for images to be lazy loaded the application running
+in the browser as opposed to being downloaded automatically.
+
+This may not be the format required by all applications. Some form of toggle
+(e.g. query param) will need to be supported.
