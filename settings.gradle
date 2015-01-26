@@ -17,3 +17,13 @@ include 'services:webservice'
 */
 
 rootProject.name = 'pandora'
+include 'pandora-api'
+
+include 'pandora-core'
+
+include 'pandora-resources'
+
+include 'pandora-examples'
+
+include 'pandora-gateways'
+
