@@ -29,3 +29,5 @@ include 'pandora-gateways'
 
 include 'mediawiki-fluent-api'
 
+include 'mercury-api'
+

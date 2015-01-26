@@ -1,6 +1,6 @@
 package com.wikia.mwapi.fluent;
 
-public interface TitlesChoose extends MethodChoose {
+public interface TitlesChoose {
 
-  MethodChoose titles(String... titles);
+  OptionChoose titles(String... titles);
 }

@@ -3,8 +3,12 @@ package com.wikia.pandora.gateway.mercury;
 import com.sun.jersey.api.NotFoundException;
 import com.wikia.pandora.api.service.ArticleService;
 import com.wikia.pandora.core.domains.Article;
+import com.wikia.pandora.core.domains.ArticleWithContent;
+import com.wikia.pandora.core.domains.ArticleWithDescription;
 import com.wikia.pandora.core.domains.Comment;
 import com.wikia.pandora.core.domains.builder.PojoBuilderFactory;
+
+import org.apache.commons.lang.NotImplementedException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,11 +34,20 @@ public class MercuryArticlesService extends MercuryService implements ArticleSer
       return PojoBuilderFactory.getArticleBuilder()
           .withId((Integer) detailsMap.get("id"))
           .withTitle((String) detailsMap.get("title"))
-          .withContent((String) articleMap.get("content"))
           .build();
     } catch (IOException e) {
       throw new NotFoundException("No such article");
     }
+  }
+
+  @Override
+  public ArticleWithDescription getArticleWithDescriptionByTitle(String wikia, String title) {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public ArticleWithContent getArticleWithContentByTitle(String wikia, String title) {
+    throw new NotImplementedException();
   }
 
   @Override
@@ -68,7 +81,7 @@ public class MercuryArticlesService extends MercuryService implements ArticleSer
     Comment comment = PojoBuilderFactory.getCommentBuilder()
         .withWikiaName(wikia)
         .withArticleName(title)
-        .withText("comment test")
+        .withText("TODO LATER")//TODO
         .withId(commentId)
         .build();
 

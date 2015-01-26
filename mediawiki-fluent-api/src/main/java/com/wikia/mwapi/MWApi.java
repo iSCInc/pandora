@@ -2,7 +2,7 @@ package com.wikia.mwapi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wikia.mwapi.fluent.ActionChoose;
-import com.wikia.mwapi.fluent.MethodChoose;
+import com.wikia.mwapi.fluent.OptionChoose;
 import com.wikia.mwapi.fluent.TitlesChoose;
 import com.wikia.mwapi.fluent.WikiaChoose;
 
@@ -20,19 +20,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, MethodChoose {
+public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionChoose {
 
   private static final Logger logger = LoggerFactory.getLogger(MWApi.class);
 
   public static final String QUERY = "query";
+  public static final String REVISIONS = "revisions";
+  public static final String CONTENT = "content";
   private String baseUrl;
 
   private String wikia;
   private String query;
   private String[] titles;
   private String format;
+  private final List<String> prop;
 
   private HttpClient httpClient;
+  private Integer rvLimit;
+  private String rvProp;
 
 
   protected MWApi() {
@@ -43,6 +48,7 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, MethodCho
     this.httpClient = httpClient;
     baseUrl = "http://%s.wikia.com/api.php?%s";
     format = "json";
+    prop = new ArrayList<String>();
   }
 
   public static WikiaChoose createBuilder() {
@@ -66,7 +72,7 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, MethodCho
   }
 
   @Override
-  public MethodChoose titles(String... titles) {
+  public OptionChoose titles(String... titles) {
     this.titles = titles;
     return this;
   }
@@ -88,6 +94,24 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, MethodCho
     return apiResponse;
   }
 
+  @Override
+  public OptionChoose revisions() {
+    prop.add(REVISIONS);
+    return this;
+  }
+
+  @Override
+  public OptionChoose rvLimit(Integer limit) {
+    rvLimit = limit;
+    return this;
+  }
+
+  @Override
+  public OptionChoose rvContent() {
+    rvProp = CONTENT;
+    return this;
+  }
+
   private String buildUrl() {
 
     List<String> params = new ArrayList<String>();
@@ -101,6 +125,19 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, MethodCho
 
     if (format != null) {
       params.add(String.format("format=%s", format));
+    }
+
+    if (prop != null) {
+      String joinProp = String.join("|", prop);
+      params.add(String.format("prop=%s", joinProp));
+    }
+
+    if (rvLimit != null) {
+      params.add(String.format("rvlimit=%s", rvLimit));
+    }
+
+    if (rvProp != null) {
+      params.add(String.format("rvprop=%s", rvProp));
     }
 
     String url = String.format(baseUrl, wikia, String.join("&", params));

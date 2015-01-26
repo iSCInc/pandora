@@ -1,18 +1,20 @@
 package com.wikia.pandora.resources;
 
 import com.codahale.metrics.annotation.Timed;
-
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.wikia.pandora.api.service.ArticleService;
 import com.wikia.pandora.core.domains.Article;
+import com.wikia.pandora.core.domains.ArticleWithContent;
 import com.wikia.pandora.core.domains.Comment;
 import com.wikia.pandora.core.util.UriBuilder;
 
-
 import java.util.List;
 
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 
 // "{wikia}/articles/{title}" -> getArticle article from {wikia} with {title}
 // "{wikia}/articles/{title}/comments" -> getArticleCommentList from {wikia} with {title}
@@ -25,7 +27,7 @@ public class HalArticleResource {
 
 
   private final ArticleService articleService;
-  private RepresentationFactory representationFactory;
+  private final RepresentationFactory representationFactory;
 
   public HalArticleResource(ArticleService articleService,
                             RepresentationFactory representationFactory) {
@@ -33,16 +35,6 @@ public class HalArticleResource {
     this.articleService = articleService;
     this.representationFactory = representationFactory;
   }
-
-  /**
-   * GET /articles/<wikia>/<title> FIXME: Is this the right way to handle the wikia? It's not the
-   * current convention, but it's simple. Do we do any domain magic? Are there any other
-   * considerations?
-   *
-   * Comment: I suggest to use  <wikia>/articles/<title>. Also move title to method annotation
-   *
-   * @throws java.io.IOException, WebApplicationException
-   */
 
   @GET
   @Path("/{title}")
@@ -54,6 +46,18 @@ public class HalArticleResource {
     Representation representation = representationFactory.newRepresentation(uri);
 
     Article article = this.articleService.getArticleByTitle(wikia, title);
+    representation.withBean(article);
+    return representation;
+  }
+
+  @GET
+  @Path("withContent/{title}")
+  @Timed
+  public Object getArticleWithContent(@PathParam("wikia") String wikia,
+                                      @PathParam("title") String title) {
+    String uri = UriBuilder.getSelfUri(wikia, title);
+    Representation representation = representationFactory.newRepresentation(uri);
+    ArticleWithContent article = this.articleService.getArticleWithContentByTitle(wikia, title);
     representation.withBean(article);
     return representation;
   }

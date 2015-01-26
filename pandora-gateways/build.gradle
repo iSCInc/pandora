@@ -16,12 +16,12 @@ repositories {
 // In this section you declare the dependencies for your production and test code
 dependencies {
     compile project(':pandora-core')
+    compile project(':mediawiki-fluent-api')
     
     // The production code uses the SLF4J logging API at compile time
     compile 'org.slf4j:slf4j-api:1.7.5'
     compile 'io.dropwizard:dropwizard-core:0.7.1'
     compile 'io.dropwizard:dropwizard-client:0.7.1'
-    compile 'ch.halarious:halarious-core:0.11'
 
     //HAL builder
     compile 'com.theoryinpractise:halbuilder-api:4.0.1'

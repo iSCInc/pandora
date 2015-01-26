@@ -1,10 +1,10 @@
 package com.wikia.pandora.core.impl.service;
 
 import com.wikia.pandora.api.service.ArticleService;
+import com.wikia.pandora.api.service.CategoryService;
 import com.wikia.pandora.api.service.CommentService;
 import com.wikia.pandora.core.impl.configuration.PandoraConfiguration;
 
-import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
 
 public abstract class ServiceFactory {
@@ -20,6 +20,8 @@ public abstract class ServiceFactory {
 
 
   public abstract ArticleService createArticleService();
+
+  public abstract CategoryService createCategoryService();
 
   public abstract CommentService createCommentService();
 

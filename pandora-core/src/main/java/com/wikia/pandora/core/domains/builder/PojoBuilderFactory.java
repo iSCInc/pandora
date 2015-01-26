@@ -7,6 +7,10 @@ public class PojoBuilderFactory {
     return ArticleBuilder.anArticle();
   }
 
+  public static ArticleWithContentBuilder getArticleWithContentBuilder() {
+    return ArticleWithContentBuilder.anArticleWithContent();
+  }
+
   public static CommentBuilder getCommentBuilder() {
     return CommentBuilder.aComment();
   }

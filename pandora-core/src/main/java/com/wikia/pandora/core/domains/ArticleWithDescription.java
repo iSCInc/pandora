@@ -1,18 +1,19 @@
 package com.wikia.pandora.core.domains;
 
-
-public class Article {
+public class ArticleWithDescription {
 
   private final Integer id;
   private final String title;
   private final Integer ns;
+  private final String description;
 
-  public Article(Integer id, String title, Integer ns) {
+  public ArticleWithDescription(Integer id, String title, Integer ns, String description
+  ) {
     this.id = id;
     this.title = title;
     this.ns = ns;
+    this.description = description;
   }
-
 
   public Integer getId() {
     return id;
@@ -25,5 +26,9 @@ public class Article {
 
   public Integer getNs() {
     return ns;
+  }
+
+  public String getDescription() {
+    return description;
   }
 }
