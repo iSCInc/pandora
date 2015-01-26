@@ -29,7 +29,7 @@ public class MobileConfigResource {
   /**
    * GET /configurations/platform/{platform}/app/{appTag}
    *
-   * @return String
+   * @return Representation
    */
   @GET
   @Timed
