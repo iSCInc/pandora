@@ -1,3 +1,6 @@
+appsDeployerDomain: domain-of-the-api-which-returns-apps-list
+cephDomain: domain-of-the-ceph-http-entry-point
+cephPort: 80
 httpClient:
   timeout: 7s
   connectionTimeout: 7s
