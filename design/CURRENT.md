@@ -23,7 +23,7 @@ The Merucry API provides the following data.
 		 includes the id, user, user_id, and timestamp.
 	 * comments: the number of comments
 	 * type: the article type? in the request above it’s "article"
-	 * abstract: the short article snippit
+	 * abstract: the short article snippet
 	 * thumbnail: a thumbnail that represents the article. How is this selected?
 	 * original_dimensions: a map with the original width and height of the thumbnail.
 	 * metadata: a map with

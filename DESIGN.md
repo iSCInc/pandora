@@ -114,7 +114,7 @@ and MediaWiki.
    developed in Pandora may become libraries. For example, HTTP clients for
    MediaWiki and Nirvana will probably be split out as libraries. Similarly,
    abstractions for building services using dropwizard may also be split out.
- * Why don’t aren’t we doing this in the MediaWiki stack?
+ * Why aren’t we doing this in the MediaWiki stack?
    Other frameworks and languages have better
    [tooling](https://github.com/Netflix/Hystrix) for [creating
    APIs](http://dropwizard.io/) and distributed systems and we are reluctant to
@@ -124,4 +124,4 @@ and MediaWiki.
 
 ## References
  1. Measured using `ab -n 1000 -c 10 -H 'Host: muppet.wikia.com'  -H 'Cookie: UserId=111' 'http://border-http-s4/wikia.php?controller=MercuryApi&action=foo'`
-    from within the datacenter.
+    from within the SJC datacenter.
