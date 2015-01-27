@@ -1,0 +1,30 @@
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'application'
+apply plugin: 'docker'
+apply plugin: 'com.wikia.gradle.marathon'
+
+docker {
+    baseImage = "docker-registry.wikia-prod/wikia/java8"
+    maintainer = "Services & API"
+}
+
+def dockerTargetImage = "docker-registry.wikia-prod/services/${project.name}"
+applicationDefaultJvmArgs = ['-Ddw.server.applicationConnectors[0].port=$PORT0', '-Ddw.server.adminConnectors[0].port=$PORT1']
+
+task deployToProd(type: Marathon){//{}, dependsOn: 'distDocker') {
+    dockerImage = "${dockerTargetImage}:${version}"
+    mem = 400
+    cpus = 1
+    args = ["server", "/${project.name}-${version}/conf/${project.name}.yml"]
+    instances = 3
+    ports = [0, 0]
+    stage = 'prod'
+    volumes = [
+            [path: "/dev/log", mode: 'RW']
+    ]
+}
+
+tasks.distDocker {
+    push = true
+    tag = dockerTargetImage
+}
