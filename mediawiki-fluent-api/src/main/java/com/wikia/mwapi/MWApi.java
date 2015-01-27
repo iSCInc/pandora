@@ -1,6 +1,7 @@
 package com.wikia.mwapi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wikia.mwapi.domain.ApiResponse;
 import com.wikia.mwapi.fluent.ActionChoose;
 import com.wikia.mwapi.fluent.OptionChoose;
 import com.wikia.mwapi.fluent.TitlesChoose;
@@ -10,12 +11,14 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MarkerFactory;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +30,7 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
   public static final String QUERY = "query";
   public static final String REVISIONS = "revisions";
   public static final String CONTENT = "content";
+  public static final String ALLPAGES = "allpages";
   private String baseUrl;
 
   private String wikia;
@@ -38,6 +42,7 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
   private HttpClient httpClient;
   private Integer rvLimit;
   private String rvProp;
+  private String list;
 
 
   protected MWApi() {
@@ -73,15 +78,23 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
 
   @Override
   public OptionChoose titles(String... titles) {
+
     this.titles = titles;
     return this;
+  }
+
+  @Override
+  public OptionChoose allPages() {
+    this.list = ALLPAGES;
+    return this;
+
   }
 
   @Override
   public ApiResponse get() {
     ApiResponse apiResponse = null;
     String url = buildUrl();
-    String result = null;
+
     HttpUriRequest request = new HttpGet(url);
     try {
       HttpResponse response = httpClient.execute(request);
@@ -113,34 +126,57 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
   }
 
   private String buildUrl() {
+    URIBuilder b = null;
+    try {
+      b = new URIBuilder(String.format("http://%s.wikia.com/api.php", wikia));
+    } catch (URISyntaxException e) {
+      e.printStackTrace();
+    }
 
     List<String> params = new ArrayList<String>();
     if (query != null) {
       params.add(String.format("action=%s", query));
+      b.addParameter("action", query);
     }
     if (titles != null) {
       String joinTitles = String.join("|", titles);
       params.add(String.format("titles=%s", joinTitles));
+      b.addParameter("titles", joinTitles);
     }
 
     if (format != null) {
       params.add(String.format("format=%s", format));
+      b.addParameter("format", format);
     }
 
-    if (prop != null) {
+    if (prop != null && prop.size() > 0) {
       String joinProp = String.join("|", prop);
       params.add(String.format("prop=%s", joinProp));
+      b.addParameter("prop", joinProp);
     }
 
     if (rvLimit != null) {
       params.add(String.format("rvlimit=%s", rvLimit));
+      b.addParameter("rvlimit", String.valueOf(rvLimit));
     }
 
     if (rvProp != null) {
       params.add(String.format("rvprop=%s", rvProp));
+      b.addParameter("rvprop", rvProp);
     }
 
-    String url = String.format(baseUrl, wikia, String.join("&", params));
+    if (list != null) {
+      params.add(String.format("list=%s", list));
+      b.addParameter("list", list);
+    }
+
+    String url = null;
+    try {
+      url = b.build().toASCIIString();
+    } catch (URISyntaxException e) {
+      url = String.format(baseUrl, wikia, String.join("&", params));
+    }
+
     logger.debug(MarkerFactory.getMarker("MWApi url"), url);
     return url;
   }

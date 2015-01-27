@@ -4,7 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.wikia.pandora.api.service.CategoryService;
-import com.wikia.pandora.core.domains.Category;
+import com.wikia.pandora.core.domain.Category;
 import com.wikia.pandora.core.util.UriBuilder;
 
 import javax.ws.rs.GET;
@@ -32,8 +32,10 @@ public class HALCategoryResource {
   @Timed
   public Object getCategory(@PathParam("wikia") String wikia,
                             @PathParam("category") String categoryName) {
-    String uri = UriBuilder.getSelfUri(wikia, categoryName);
-    Representation representation = representationFactory.newRepresentation(uri);
+    javax.ws.rs.core.UriBuilder uri = UriBuilder.getSelfUriBuilder(wikia, categoryName);
+    Representation
+        representation =
+        representationFactory.newRepresentation(uri.build(wikia, categoryName));
     Category category = categoryService.getCategory(wikia, categoryName);
     representation.withBean(category);
     return representation;

@@ -1,15 +1,17 @@
 package com.wikia.pandora.gateway.mediawiki;
 
-import com.wikia.mwapi.ApiResponse;
+import com.wikia.mwapi.domain.ApiResponse;
+import com.wikia.mwapi.domain.Page;
 import com.wikia.pandora.api.service.ArticleService;
-import com.wikia.pandora.core.domains.Article;
-import com.wikia.pandora.core.domains.ArticleWithContent;
-import com.wikia.pandora.core.domains.ArticleWithDescription;
-import com.wikia.pandora.core.domains.Comment;
-import com.wikia.pandora.core.domains.builder.PojoBuilderFactory;
+import com.wikia.pandora.core.domain.Article;
+import com.wikia.pandora.core.domain.ArticleWithContent;
+import com.wikia.pandora.core.domain.ArticleWithDescription;
+import com.wikia.pandora.core.domain.Comment;
+import com.wikia.pandora.core.domain.builder.PojoBuilderFactory;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MediawikiArticleService extends MediawikiService implements ArticleService {
@@ -55,5 +57,20 @@ public class MediawikiArticleService extends MediawikiService implements Article
   @Override
   public Comment getComment(String wikia, String title, Long commentId) {
     throw new NotImplementedException();
+  }
+
+  @Override
+  public List<Article> getArticlesFromWikia(String wikia) {
+    ApiResponse apiResponse = this.getGateway().getArticlesFromWikia(wikia);
+    List<Article> articleList = new ArrayList<Article>();
+    for (Page page : apiResponse.getQuery().getAllPages()) {
+      Article article =
+          PojoBuilderFactory.getArticleBuilder()
+              .withId(page.getPageId())
+              .withTitle(page.getTitle())
+              .withNs(page.getNs()).build();
+      articleList.add(article);
+    }
+    return articleList;
   }
 }

@@ -1,7 +1,7 @@
 package com.wikia.pandora.api.service;
 
 
-import com.wikia.pandora.core.domains.Category;
+import com.wikia.pandora.core.domain.Category;
 
 public interface CategoryService {
 

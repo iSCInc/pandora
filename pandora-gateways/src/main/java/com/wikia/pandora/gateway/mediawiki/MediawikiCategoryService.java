@@ -1,9 +1,9 @@
 package com.wikia.pandora.gateway.mediawiki;
 
-import com.wikia.mwapi.ApiResponse;
+import com.wikia.mwapi.domain.ApiResponse;
 import com.wikia.pandora.api.service.CategoryService;
-import com.wikia.pandora.core.domains.Category;
-import com.wikia.pandora.core.domains.builder.CategoryBuilder;
+import com.wikia.pandora.core.domain.Category;
+import com.wikia.pandora.core.domain.builder.CategoryBuilder;
 
 public class MediawikiCategoryService extends MediawikiService implements CategoryService {
 

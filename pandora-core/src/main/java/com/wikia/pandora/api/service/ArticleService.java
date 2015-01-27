@@ -1,10 +1,10 @@
 package com.wikia.pandora.api.service;
 
 
-import com.wikia.pandora.core.domains.Article;
-import com.wikia.pandora.core.domains.ArticleWithContent;
-import com.wikia.pandora.core.domains.ArticleWithDescription;
-import com.wikia.pandora.core.domains.Comment;
+import com.wikia.pandora.core.domain.Article;
+import com.wikia.pandora.core.domain.ArticleWithContent;
+import com.wikia.pandora.core.domain.ArticleWithDescription;
+import com.wikia.pandora.core.domain.Comment;
 
 import java.util.List;
 
@@ -19,4 +19,6 @@ public interface ArticleService {
   List<Comment> getArticleComments(String wikia, String title);
 
   Comment getComment(String wikia, String title, Long commentId);
+
+  List<Article> getArticlesFromWikia(String wikia);
 }

@@ -2,11 +2,11 @@ package com.wikia.pandora.gateway.mercury;
 
 import com.sun.jersey.api.NotFoundException;
 import com.wikia.pandora.api.service.ArticleService;
-import com.wikia.pandora.core.domains.Article;
-import com.wikia.pandora.core.domains.ArticleWithContent;
-import com.wikia.pandora.core.domains.ArticleWithDescription;
-import com.wikia.pandora.core.domains.Comment;
-import com.wikia.pandora.core.domains.builder.PojoBuilderFactory;
+import com.wikia.pandora.core.domain.Article;
+import com.wikia.pandora.core.domain.ArticleWithContent;
+import com.wikia.pandora.core.domain.ArticleWithDescription;
+import com.wikia.pandora.core.domain.Comment;
+import com.wikia.pandora.core.domain.builder.PojoBuilderFactory;
 
 import org.apache.commons.lang.NotImplementedException;
 
@@ -86,5 +86,10 @@ public class MercuryArticlesService extends MercuryService implements ArticleSer
         .build();
 
     return comment;
+  }
+
+  @Override
+  public List<Article> getArticlesFromWikia(String wikia) {
+    return null;
   }
 }

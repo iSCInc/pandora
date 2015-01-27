@@ -1,6 +1,6 @@
 package com.wikia.pandora.gateway.mediawiki;
 
-import com.wikia.mwapi.ApiResponse;
+import com.wikia.mwapi.domain.ApiResponse;
 import com.wikia.mwapi.MWApi;
 import com.wikia.mwapi.fluent.WikiaChoose;
 
@@ -46,6 +46,15 @@ public class MediawikiGateway {
         .wikia(wikia)
         .queryAction()
         .titles(categoryName)
+        .get();
+    return apiResponse;
+  }
+
+  public ApiResponse getArticlesFromWikia(String wikia) {
+    ApiResponse apiResponse = queryBuilder()
+        .wikia(wikia)
+        .queryAction()
+        .allPages()
         .get();
     return apiResponse;
   }
