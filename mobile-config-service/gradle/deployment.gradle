@@ -9,9 +9,15 @@ docker {
 }
 
 def dockerTargetImage = "docker-registry.wikia-prod/services/${project.name}"
-applicationDefaultJvmArgs = ['-Ddw.server.applicationConnectors[0].port=$PORT0', '-Ddw.server.adminConnectors[0].port=$PORT1']
+applicationDefaultJvmArgs = ['-Ddw.server.applicationConnectors[0].port=\$PORT0', '-Ddw.server.adminConnectors[0].port=\$PORT1']
 
-task deployToProd(type: Marathon){//{}, dependsOn: 'distDocker') {
+startScripts {
+    doLast {
+        unixScript.text = unixScript.text.replace('port=\\\$', 'port=\$')
+    }
+}
+
+task deployToProd(type: Marathon, dependsOn: 'distDocker') {
     dockerImage = "${dockerTargetImage}:${version}"
     mem = 400
     cpus = 1
