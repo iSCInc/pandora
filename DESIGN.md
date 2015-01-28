@@ -7,7 +7,6 @@ This document provides an overview of the Pandora project.
 - [Pandora Design Document](#pandora-design-document)
     - [Table of Contents](#table-of-contents)
     - [What is Pandora?](#what-is-pandora)
-    - [What is the Service and API Project?](#what-is-the-service--api-project)
     - [Goals](#goals)
     - [Existing Mercury API](#existing-mercury-api)
     - [Milestones](#milestones)
@@ -31,23 +30,6 @@ the article experience. It will
   * Hypermedia API designs
   * Better caching
   * Ability to fan-out requests
-
-## What is the Service & API Project?
-
-The Service & API Project is a project that is operating within the platform
-group to deliver the Pandora service to production. The Service & API Project
-has the following objectives:
-
- 1. Deliver a replacement API for Mercury that satisfies the [API design
-    guidelines](https://github.com/Wikia/guidelines/tree/master/APIDesign). This
-    is Pandora.
- 2. Improve the “last mile” of service delivery. Configuring, provisioning, and
-    deploying services to production requires [a lot of
-    configuration](https://github.com/Wikia/chef-repo/search?p=2&q=vignette&utf8=%E2%9C%93).
-    The team will provide tooling and documentation to help make this process
-    easier.
- 3. Provide common patterns, tooling and guidelines for service development to
-    the rest of engineering to help accellerate the transition to SOA.
 
 ## Goals
 
@@ -120,6 +102,21 @@ and MediaWiki.
    APIs](http://dropwizard.io/) and distributed systems and we are reluctant to
    invest in adding this to MediaWiki. Also, the 95th percentile on a noop
    controller action in Nirvana is about 65ms[1].
+ * What is the Service and API project?
+   The Service & API Project is a project that is operating within the platform
+   group to deliver the Pandora service to production. The Service & API Project
+   has the following objectives:
+
+   1. Deliver a replacement API for Mercury that satisfies the [API design
+      guidelines](https://github.com/Wikia/guidelines/tree/master/APIDesign). This
+      is Pandora.
+   2. Improve the “last mile” of service delivery. Configuring, provisioning, and
+      deploying services to production requires [a lot of
+      configuration](https://github.com/Wikia/chef-repo/search?p=2&q=vignette&utf8=%E2%9C%93).
+      The team will provide tooling and documentation to help make this process
+      easier.
+   3. Provide common patterns, tooling and guidelines for service development to
+      the rest of engineering to help accellerate the transition to SOA.
 
 
 ## References
