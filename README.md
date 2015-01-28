@@ -3,6 +3,10 @@
 An API proxy service for productizing the Mercury API with the
 [guidelines](https://github.com/Wikia/guidelines/tree/master/APIDesign).
 
+
+There is a draft design document [here](DESIGN.md). If you want to learn more
+about this project that’s a good place to start.
+
 ## Usage
 
 To run the server:
