@@ -29,24 +29,24 @@ dependencies {
 }
 
 task generateNirvanaApi(type: GenerateNirvanaTask) {
-    mavenExecutable = "/Users/nelson/java/apache-maven-3.2.3/bin/mvn"
+    mavenExecutable = MAVEN_EXEC ?: mavenExecutable
 }
 
 import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
+import groovy.util.AntBuilder
 
 class GenerateNirvanaTask extends DefaultTask {
     String swaggerJsonUrl = "https://raw.githubusercontent.com/Wikia/app/swagger2/includes/wikia/api/swagger/nirvana.json"
+    String codegenSource = "https://github.com/Wikia/swagger-codegen/archive/develop_2.0.zip"
     String codegenSubdir = "codegen"
     String hostReplace = null
-    String codegenRepo = "git@github.com:Wikia/swagger-codegen.git"
-    String codegenBranch = "develop_2.0"
     String mavenExecutable = "mvn"
 
     @TaskAction
     def generate() {
         String json = replaceHost(downloadSwaggerJson())
-        cloneCodegenRepo()
+        downloadCodegenRepo()
         generateCode(saveFile(json))
     }
 
@@ -74,20 +74,43 @@ class GenerateNirvanaTask extends DefaultTask {
         return file
     }
 
-    def cloneCodegenRepo() {
-        runCommand("rm -rf ${codegenSubdir}")
-        runCommand("git clone ${codegenRepo}", codegenSubdir)
-        runCommand("git checkout ${codegenBranch}", codegenSubdir)
+    def downloadCodegenRepo() {
+        String zipFilename = codegenSource.tokenize('/')[-1]
+
+        BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(zipFilename))
+        out << new URL(codegenSource).openStream()
+        out.close()
+
+        AntBuilder builder = new AntBuilder()
+
+        builder.sequential {
+            delete(dir: codegenSubdir)
+            unzip(src: zipFilename, dest: codegenSubdir)
+        }
+
+        new File(codegenSubdir).eachDir() { dir ->
+            builder.sequential {
+                move(todir: codegenSubdir) {
+                    fileset(dir: dir.getPath()) {
+                        include(name: "**")
+                    }
+                }
+                delete(dir: dir.getPath())
+            }
+        }
     }
 
     def generateCode(File nirvanaFile) {
         runCommand("${mavenExecutable} package", "codegen")
-        runCommand("java -cp ./target/*:./target/lib/* com.wordnik.swagger.codegen.Codegen -i ${nirvanaFile.getAbsolutePath()} -l com.wikia.codegen.WikiaJavaClientCodegen -o ../", codegenSubdir)
+        runCommand("java -cp ./target/*:./target/lib/* com.wordnik.swagger.codegen.Codegen " +
+                   "-i ${nirvanaFile.getAbsolutePath()} " +
+                   "-l com.wikia.codegen.WikiaJavaClientCodegen " +
+                   "-o ../", codegenSubdir)
     }
 
     def runCommand(String command, String workingDir=null) {
         def process;
-        println "running ${command}"
+        println command
 
         if (workingDir == null) {
             process = command.execute()
@@ -96,8 +119,6 @@ class GenerateNirvanaTask extends DefaultTask {
         }
 
         process.waitFor()
-
-        println "return: ${process.exitValue()}"
 
         if (process.exitValue() != 0) {
             throw new Exception(process.err.text)
