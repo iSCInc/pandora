@@ -9,7 +9,9 @@ pom.xml.asc
 /.lein-*
 /.nrepl-port
 /.idea
-*.iml
+**.iml
+**.ipr
+**.iws
 pandora.yaml
-/.gradle
-/build
+.gradle/
+build/

@@ -1,0 +1,106 @@
+apply plugin: 'groovy'
+apply plugin: 'java'
+apply plugin: 'maven'
+
+sourceCompatibility = 1.8
+group = "com.wikia.nirvana"
+version = '1.0'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://oss.sonatype.org/content/repositories/snapshots'
+    }
+}
+
+dependencies {
+    // these are the dependencies for the generated code
+    String jerseyVersion = '1.7'
+    String jacksonVersion = '2.1.4'
+
+    compile "com.wordnik:swagger-annotations:1.5.0-SNAPSHOT" // from sonatype snapshots
+    compile "com.sun.jersey:jersey-client:${jerseyVersion}"
+    compile "com.sun.jersey.contribs:jersey-multipart:${jerseyVersion}"
+    compile "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+    compile "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
+    compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-joda:2.1.5"
+    compile "joda-time:joda-time:2.3"
+}
+
+task generateNirvanaApi(type: GenerateNirvanaTask) {
+    mavenExecutable = "/Users/nelson/java/apache-maven-3.2.3/bin/mvn"
+}
+
+import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
+
+class GenerateNirvanaTask extends DefaultTask {
+    String swaggerJsonUrl = "https://raw.githubusercontent.com/Wikia/app/swagger2/includes/wikia/api/swagger/nirvana.json"
+    String codegenSubdir = "codegen"
+    String hostReplace = null
+    String codegenRepo = "git@github.com:Wikia/swagger-codegen.git"
+    String codegenBranch = "develop_2.0"
+    String mavenExecutable = "mvn"
+
+    @TaskAction
+    def generate() {
+        String json = replaceHost(downloadSwaggerJson())
+        cloneCodegenRepo()
+        generateCode(saveFile(json))
+    }
+
+    def downloadSwaggerJson() {
+        return new URL(swaggerJsonUrl).getText()
+    }
+
+    def replaceHost(String json) {
+        if (hostReplace == null) {
+            return json
+        }
+
+        JsonSlurper slurper = new JsonSlurper()
+        def swaggerObj = slurper.parseText(json)
+        swaggerObj.host = hostReplace
+
+        return JsonOutput.toJson(swaggerObj)
+    }
+
+    def saveFile(String json) {
+        String filename = swaggerJsonUrl.tokenize("/")[-1]
+        File file = new File(filename)
+        file.write(json)
+
+        return file
+    }
+
+    def cloneCodegenRepo() {
+        runCommand("rm -rf ${codegenSubdir}")
+        runCommand("git clone ${codegenRepo}", codegenSubdir)
+        runCommand("git checkout ${codegenBranch}", codegenSubdir)
+    }
+
+    def generateCode(File nirvanaFile) {
+        runCommand("${mavenExecutable} package", "codegen")
+        runCommand("java -cp ./target/*:./target/lib/* com.wordnik.swagger.codegen.Codegen -i ${nirvanaFile.getAbsolutePath()} -l com.wikia.codegen.WikiaJavaClientCodegen -o ../", codegenSubdir)
+    }
+
+    def runCommand(String command, String workingDir=null) {
+        def process;
+        println "running ${command}"
+
+        if (workingDir == null) {
+            process = command.execute()
+        } else {
+            process = command.execute(null, new File(workingDir))
+        }
+
+        process.waitFor()
+
+        println "return: ${process.exitValue()}"
+
+        if (process.exitValue() != 0) {
+            throw new Exception(process.err.text)
+        }
+    }
+}

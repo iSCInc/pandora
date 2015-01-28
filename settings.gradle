@@ -27,3 +27,5 @@ include 'pandora-examples'
 
 include 'pandora-gateways'
 
+include 'nirvana-api'
+
