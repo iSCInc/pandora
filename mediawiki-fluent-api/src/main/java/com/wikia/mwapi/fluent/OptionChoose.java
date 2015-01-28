@@ -6,6 +6,9 @@ import com.wikia.mwapi.domain.ApiResponse;
 public interface OptionChoose {
   ApiResponse get();
 
+  String url();
+
+
   OptionChoose revisions();
 
   OptionChoose rvLimit(Integer limit);

@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MarkerFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
   public static final String REVISIONS = "revisions";
   public static final String CONTENT = "content";
   public static final String ALLPAGES = "allpages";
-  private String baseUrl;
+  public static final String DEFAULT_BASEURL = "http://%s.wikia.com/api.php";
 
   private String wikia;
   private String query;
@@ -51,7 +52,6 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
 
   public MWApi(HttpClient httpClient) {
     this.httpClient = httpClient;
-    baseUrl = "http://%s.wikia.com/api.php?%s";
     format = "json";
     prop = new ArrayList<String>();
   }
@@ -78,7 +78,6 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
 
   @Override
   public OptionChoose titles(String... titles) {
-
     this.titles = titles;
     return this;
   }
@@ -87,24 +86,33 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
   public OptionChoose allPages() {
     this.list = ALLPAGES;
     return this;
+  }
 
+  @Override
+  public String url() {
+    return buildUrl();
   }
 
   @Override
   public ApiResponse get() {
     ApiResponse apiResponse = null;
+    ObjectMapper mapper = new ObjectMapper();
     String url = buildUrl();
 
-    HttpUriRequest request = new HttpGet(url);
     try {
-      HttpResponse response = httpClient.execute(request);
-      ObjectMapper mapper = new ObjectMapper();
-      apiResponse =
-          mapper.readValue(response.getEntity().getContent(), ApiResponse.class);
+      InputStream response = handleMWRequest(url);
+      apiResponse = mapper.readValue(response, ApiResponse.class);
     } catch (IOException e) {
       logger.debug(e.getMessage(), e);
     }
+
     return apiResponse;
+  }
+
+  public InputStream handleMWRequest(String url) throws IOException {
+    HttpUriRequest request = new HttpGet(url);
+    HttpResponse response = httpClient.execute(request);
+    return response.getEntity().getContent();
   }
 
   @Override
@@ -125,10 +133,10 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
     return this;
   }
 
-  private String buildUrl() {
+  public String buildUrl() {
     URIBuilder b = null;
     try {
-      b = new URIBuilder(String.format("http://%s.wikia.com/api.php", wikia));
+      b = new URIBuilder(String.format(DEFAULT_BASEURL, wikia));
     } catch (URISyntaxException e) {
       e.printStackTrace();
     }
@@ -174,7 +182,7 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
     try {
       url = b.build().toASCIIString();
     } catch (URISyntaxException e) {
-      url = String.format(baseUrl, wikia, String.join("&", params));
+      url = String.format(DEFAULT_BASEURL + "?%s", wikia, String.join("&", params));
     }
 
     logger.debug(MarkerFactory.getMarker("MWApi url"), url);
