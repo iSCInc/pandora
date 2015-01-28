@@ -2,9 +2,6 @@ package com.wikia.pandora.core.domain.builder;
 
 import com.wikia.pandora.core.domain.Category;
 
-/**
- * Created by MHolowiecki on 2015-01-26.
- */
 public class CategoryBuilder {
 
   private int pageId;

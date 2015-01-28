@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wikia.mwapi.domain.ApiResponse;
 import com.wikia.mwapi.fluent.ActionChoose;
 import com.wikia.mwapi.fluent.OptionChoose;
+import com.wikia.mwapi.fluent.PropChoose;
+import com.wikia.mwapi.fluent.RevisionOptionChoose;
 import com.wikia.mwapi.fluent.TitlesChoose;
 import com.wikia.mwapi.fluent.WikiaChoose;
 
@@ -23,7 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionChoose {
+public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionChoose, PropChoose,
+                              RevisionOptionChoose {
 
   private static final Logger logger = LoggerFactory.getLogger(MWApi.class);
 
@@ -31,7 +34,8 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
   public static final String REVISIONS = "revisions";
   public static final String CONTENT = "content";
   public static final String ALLPAGES = "allpages";
-  private String baseUrl;
+  public static final String CATEGORIES = "categories";
+  public static final String IMAGES = "images";
 
   private String wikia;
   private String query;
@@ -51,13 +55,84 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
 
   public MWApi(HttpClient httpClient) {
     this.httpClient = httpClient;
-    baseUrl = "http://%s.wikia.com/api.php?%s";
     format = "json";
     prop = new ArrayList<String>();
   }
 
   public static WikiaChoose createBuilder() {
     return new MWApi();
+  }
+
+  @Override
+  public ApiResponse get() {
+    ApiResponse apiResponse = null;
+
+    try {
+      String url = buildUrl();
+      HttpUriRequest request = new HttpGet(url);
+      HttpResponse response = httpClient.execute(request);
+      ObjectMapper mapper = new ObjectMapper();
+      apiResponse =
+          mapper.readValue(response.getEntity().getContent(), ApiResponse.class);
+    } catch (IOException e) {
+      logger.debug(e.getMessage(), e);
+    } catch (URISyntaxException e) {
+      logger.debug(e.getMessage(), e);
+    }
+    return apiResponse;
+  }
+
+  private String buildUrl() throws URISyntaxException {
+    try {
+      URIBuilder b = new URIBuilder(String.format("http://%s.wikia.com/api.php", wikia));
+
+      if (query != null) {
+        b.addParameter("action", query);
+      }
+
+      if (titles != null) {
+        String joinTitles = String.join("|", titles);
+        b.addParameter("titles", joinTitles);
+      }
+
+      if (format != null) {
+        b.addParameter("format", format);
+      }
+
+      if (prop != null && prop.size() > 0) {
+        String joinProp = String.join("|", prop);
+        b.addParameter("prop", joinProp);
+      }
+
+      if (rvLimit != null) {
+        b.addParameter("rvlimit", String.valueOf(rvLimit));
+      }
+
+      if (rvProp != null) {
+        b.addParameter("rvprop", rvProp);
+      }
+
+      if (list != null) {
+        b.addParameter("list", list);
+      }
+
+      String url = b.build().toASCIIString();
+      logger.debug(MarkerFactory.getMarker("MWApi url"), url);
+      return url;
+
+    } catch (URISyntaxException e) {
+      throw e;
+    }
+  }
+
+  @Override
+  public PropChoose prop() {
+    return this;
+  }
+
+  @Override
+  public RevisionOptionChoose rv() {
+    return this;
   }
 
   public static WikiaChoose createBuilder(HttpClient httpClient) {
@@ -91,25 +166,20 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
   }
 
   @Override
-  public ApiResponse get() {
-    ApiResponse apiResponse = null;
-    String url = buildUrl();
-
-    HttpUriRequest request = new HttpGet(url);
-    try {
-      HttpResponse response = httpClient.execute(request);
-      ObjectMapper mapper = new ObjectMapper();
-      apiResponse =
-          mapper.readValue(response.getEntity().getContent(), ApiResponse.class);
-    } catch (IOException e) {
-      logger.debug(e.getMessage(), e);
-    }
-    return apiResponse;
+  public OptionChoose categories() {
+    prop.add(CATEGORIES);
+    return this;
   }
 
   @Override
   public OptionChoose revisions() {
     prop.add(REVISIONS);
+    return this;
+  }
+
+  @Override
+  public OptionChoose images() {
+    prop.add(IMAGES);
     return this;
   }
 
@@ -123,61 +193,5 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
   public OptionChoose rvContent() {
     rvProp = CONTENT;
     return this;
-  }
-
-  private String buildUrl() {
-    URIBuilder b = null;
-    try {
-      b = new URIBuilder(String.format("http://%s.wikia.com/api.php", wikia));
-    } catch (URISyntaxException e) {
-      e.printStackTrace();
-    }
-
-    List<String> params = new ArrayList<String>();
-    if (query != null) {
-      params.add(String.format("action=%s", query));
-      b.addParameter("action", query);
-    }
-    if (titles != null) {
-      String joinTitles = String.join("|", titles);
-      params.add(String.format("titles=%s", joinTitles));
-      b.addParameter("titles", joinTitles);
-    }
-
-    if (format != null) {
-      params.add(String.format("format=%s", format));
-      b.addParameter("format", format);
-    }
-
-    if (prop != null && prop.size() > 0) {
-      String joinProp = String.join("|", prop);
-      params.add(String.format("prop=%s", joinProp));
-      b.addParameter("prop", joinProp);
-    }
-
-    if (rvLimit != null) {
-      params.add(String.format("rvlimit=%s", rvLimit));
-      b.addParameter("rvlimit", String.valueOf(rvLimit));
-    }
-
-    if (rvProp != null) {
-      params.add(String.format("rvprop=%s", rvProp));
-      b.addParameter("rvprop", rvProp);
-    }
-
-    if (list != null) {
-      params.add(String.format("list=%s", list));
-      b.addParameter("list", list);
-    }
-
-    String url = null;
-    try {
-      url = b.build().toASCIIString();
-    } catch (URISyntaxException e) {
-      url = String.format(baseUrl, wikia, String.join("&", params));
-    }
-
-    logger.debug(MarkerFactory.getMarker("MWApi url"), url);
-    return url;
   }
 }

@@ -3,6 +3,7 @@ package com.wikia.mwapi.domain;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Page {
 
@@ -10,6 +11,8 @@ public class Page {
   private int ns;
   private String title;
   private String missing;
+  private List<Category> categories;
+  private List<Image> images;
 
   private ArrayList<Revision> revisions;
 
@@ -41,5 +44,13 @@ public class Page {
       revision = getRevisions().get(0);
     }
     return revision;
+  }
+
+  public List<Category> getCategories() {
+    return categories;
+  }
+
+  public List<Image> getImages() {
+    return images;
   }
 }

@@ -33,10 +33,11 @@ public class MediawikiGateway {
         .wikia(wikia)
         .queryAction()
         .titles(title)
-        .revisions()
-        .rvLimit(1)
-        .rvContent()
+        .prop().revisions()
+        .rv().rvLimit(1)
+        .rv().rvContent()
         .get();
+
     return apiResponse;
   }
 
@@ -58,4 +59,34 @@ public class MediawikiGateway {
         .get();
     return apiResponse;
   }
+
+  public ApiResponse getArticleCategories(String wikia, String title) {
+    ApiResponse apiResponse = queryBuilder()
+        .wikia(wikia)
+        .queryAction()
+        .titles(title)
+        .prop().categories()
+        .get();
+    return apiResponse;
+  }
+
+  public ApiResponse getArticleImages(String wikia, String title) {
+    ApiResponse apiResponse = queryBuilder()
+        .wikia(wikia)
+        .queryAction().titles(title)
+        .prop().images()
+        .get();
+    return apiResponse;
+  }
+
+  public ApiResponse getArticleRevisions(String wikia, String title) {
+    ApiResponse apiResponse = queryBuilder()
+        .wikia(wikia)
+        .queryAction()
+        .titles(title)
+        .prop().revisions()
+        .get();
+    return apiResponse;
+  }
+  
 }

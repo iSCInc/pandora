@@ -5,7 +5,11 @@ import com.wikia.pandora.api.service.ArticleService;
 import com.wikia.pandora.core.domain.Article;
 import com.wikia.pandora.core.domain.ArticleWithContent;
 import com.wikia.pandora.core.domain.ArticleWithDescription;
+import com.wikia.pandora.core.domain.Category;
 import com.wikia.pandora.core.domain.Comment;
+import com.wikia.pandora.core.domain.Media;
+import com.wikia.pandora.core.domain.Revision;
+import com.wikia.pandora.core.domain.User;
 import com.wikia.pandora.core.domain.builder.PojoBuilderFactory;
 
 import org.apache.commons.lang.NotImplementedException;
@@ -90,6 +94,26 @@ public class MercuryArticlesService extends MercuryService implements ArticleSer
 
   @Override
   public List<Article> getArticlesFromWikia(String wikia) {
-    return null;
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public List<Category> getArticleCategories(String wikia, String title) {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public List<Media> getArticleMedia(String wikia, String title) {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public List<Revision> getArticleRevisions(String wikia, String title) {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public List<User> getArticleUsers(String wikia, String title) {
+    throw new NotImplementedException();
   }
 }

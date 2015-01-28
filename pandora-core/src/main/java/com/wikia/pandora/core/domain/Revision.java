@@ -1,6 +1,5 @@
-package com.wikia.mwapi.domain;
+package com.wikia.pandora.core.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
@@ -14,33 +13,37 @@ public class Revision {
 
   private String content;
 
-  @JsonProperty("*")
-  public String getContent() {
-    return content;
+  public Revision(int revId, int parentId, String user, Date timestamp, String comment,
+                  String content) {
+    this.revId = revId;
+    this.parentId = parentId;
+    this.user = user;
+    this.timestamp = timestamp;
+    this.comment = comment;
+    this.content = content;
   }
 
-  @JsonProperty("revid")
   public int getRevId() {
     return revId;
   }
 
-  @JsonProperty("parentid")
   public int getParentId() {
     return parentId;
   }
 
-  @JsonProperty("user")
   public String getUser() {
     return user;
   }
 
-  @JsonProperty("timestamp")
   public Date getTimestamp() {
     return timestamp;
   }
 
-  @JsonProperty("comment")
   public String getComment() {
     return comment;
+  }
+
+  public String getContent() {
+    return content;
   }
 }
