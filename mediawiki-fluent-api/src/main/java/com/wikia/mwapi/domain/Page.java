@@ -11,7 +11,9 @@ public class Page {
   private int ns;
   private String title;
   private String missing;
+  private String anonContributors;
   private List<Category> categories;
+  private List<User> contributors;
   private List<Image> images;
 
   private ArrayList<Revision> revisions;
@@ -52,5 +54,15 @@ public class Page {
 
   public List<Image> getImages() {
     return images;
+  }
+
+  @JsonProperty("contributors")
+  public List<User> getContributors() {
+    return contributors;
+  }
+
+  @JsonProperty("anoncontributors")
+  public String getAnonContributors() {
+    return anonContributors;
   }
 }

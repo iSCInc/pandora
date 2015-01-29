@@ -7,4 +7,6 @@ public interface PropChoose {
   OptionChoose revisions();
 
   OptionChoose images();
+
+  OptionChoose contributors();
 }

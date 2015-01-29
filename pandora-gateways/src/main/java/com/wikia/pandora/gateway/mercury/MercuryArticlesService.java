@@ -113,7 +113,7 @@ public class MercuryArticlesService extends MercuryService implements ArticleSer
   }
 
   @Override
-  public List<User> getArticleUsers(String wikia, String title) {
+  public List<User> getArticleContributors(String wikia, String title) {
     throw new NotImplementedException();
   }
 }

@@ -22,7 +22,7 @@ import javax.ws.rs.Produces;
 // "{wikia}/articles" -> getArticles get all articles (currently first 10) from {wikia}
 // "{wikia}/articles/{title}" -> getArticle article from {wikia} with {title}
 // "{wikia}/articles/{title}/comments" -> getArticleComments from {wikia} with {title}
-// "{wikia}/articles/{title}/users" -> getArticleUsers from {wikia} with {title}
+// "{wikia}/articles/{title}/users" -> getArticleContributors from {wikia} with {title}
 // "{wikia}/articles/{title}/categories" -> getArticleCategories from {wikia} with {title}
 // "{wikia}/articles/{title}/media" -> getArticleMedia from {wikia} with {title}
 // "{wikia}/articles/{title}/revisions" -> getArticleRevisions from {wikia} with {title}
@@ -188,7 +188,7 @@ public class HalArticleResource {
     Representation
         representation =
         representationFactory.newRepresentation(uri.build(wikia, title));
-    List<User> users = articleService.getArticleUsers(wikia, title);
+    List<User> users = articleService.getArticleContributors(wikia, title);
     for (User user : users) {
       representation.withLink("user",
                               getLinkToUser(wikia, user.getName()),

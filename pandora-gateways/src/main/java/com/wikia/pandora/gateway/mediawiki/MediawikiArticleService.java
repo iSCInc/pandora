@@ -1,6 +1,7 @@
 package com.wikia.pandora.gateway.mediawiki;
 
 import com.wikia.mwapi.domain.ApiResponse;
+import com.wikia.mwapi.domain.User;
 import com.wikia.mwapi.domain.Image;
 import com.wikia.mwapi.domain.Page;
 import com.wikia.pandora.api.service.ArticleService;
@@ -11,7 +12,6 @@ import com.wikia.pandora.core.domain.Category;
 import com.wikia.pandora.core.domain.Comment;
 import com.wikia.pandora.core.domain.Media;
 import com.wikia.pandora.core.domain.Revision;
-import com.wikia.pandora.core.domain.User;
 import com.wikia.pandora.core.domain.builder.PojoBuilderFactory;
 
 import org.apache.commons.lang.NotImplementedException;
@@ -137,8 +137,22 @@ public class MediawikiArticleService extends MediawikiService implements Article
   }
 
   @Override
-  public List<User> getArticleUsers(String wikia, String title) {
-    throw new NotImplementedException();
+  public List<com.wikia.pandora.core.domain.User> getArticleContributors(String wikia, String title) {
+    ApiResponse apiResponse = this.getGateway().getArticleContributors(wikia, title);
+    List<com.wikia.pandora.core.domain.User> users = new ArrayList<>();
+    if (apiResponse.getQuery().getFirstPage() != null
+        && apiResponse.getQuery().getFirstPage().getContributors() != null) {
+      for (User mwUser : apiResponse.getQuery().getFirstPage()
+          .getContributors()) {
+        com.wikia.pandora.core.domain.User user = PojoBuilderFactory.getUserBuilder()
+            .withId(mwUser.getUserId())
+            .withName(mwUser.getName())
+            .build();
+        users.add(user);
+      }
+    }
+
+    return users;
   }
 
 }

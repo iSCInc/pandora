@@ -88,5 +88,14 @@ public class MediawikiGateway {
         .get();
     return apiResponse;
   }
-  
+
+  public ApiResponse getArticleContributors(String wikia, String title) {
+    ApiResponse apiResponse = queryBuilder()
+        .wikia(wikia)
+        .queryAction()
+        .titles(title)
+        .prop().contributors()
+        .get();
+    return apiResponse;
+  }
 }

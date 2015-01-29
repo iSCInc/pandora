@@ -9,6 +9,8 @@ public class ApiResponse {
 
   private QueryContinue queryContinue;
 
+  private Warning warnings;
+
 
   public ApiResponse() {
   }
@@ -20,5 +22,9 @@ public class ApiResponse {
   @JsonProperty("query-continue")
   public QueryContinue getQueryContinue() {
     return queryContinue;
+  }
+
+  public Warning getWarnings() {
+    return warnings;
   }
 }

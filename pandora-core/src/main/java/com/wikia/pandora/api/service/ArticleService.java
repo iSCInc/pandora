@@ -33,5 +33,5 @@ public interface ArticleService {
 
   List<Revision> getArticleRevisions(String wikia, String title);
 
-  List<User> getArticleUsers(String wikia, String title);
+  List<User> getArticleContributors(String wikia, String title);
 }

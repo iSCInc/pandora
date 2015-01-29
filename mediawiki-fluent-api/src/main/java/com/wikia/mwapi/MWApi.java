@@ -36,6 +36,7 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
   public static final String ALLPAGES = "allpages";
   public static final String CATEGORIES = "categories";
   public static final String IMAGES = "images";
+  public static final String CONTRIBUTORS = "contributors";
 
   private String wikia;
   private String query;
@@ -180,6 +181,13 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
   @Override
   public OptionChoose images() {
     prop.add(IMAGES);
+    return this;
+  }
+
+  /// MediaWiki 1.23
+  @Override
+  public OptionChoose contributors() {
+    prop.add(CONTRIBUTORS);
     return this;
   }
 
