@@ -33,6 +33,10 @@ task generateNirvanaApi(type: GenerateNirvanaTask) {
     rootDir = projectDir
 }
 
+clean << {
+    new AntBuilder().delete(dir: "${projectDir}/src")
+}
+
 compileJava.dependsOn('generateNirvanaApi')
 
 import groovy.json.JsonSlurper
@@ -49,6 +53,12 @@ class GenerateNirvanaTask extends DefaultTask {
 
     @TaskAction
     def generate() {
+        if (new File("${rootDir}/src").exists()) {
+            // specifying an output directory does not seem to work when compiling from a project
+            // that depends on this
+            throw new StopExecutionException()
+        }
+
         String json = replaceHost(downloadSwaggerJson())
         downloadCodegenRepo()
         generateCode(saveFile(json))
