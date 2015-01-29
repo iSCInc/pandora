@@ -32,7 +32,12 @@ task generateNirvanaApi(type: GenerateNirvanaTask) {
     mavenExecutable = MAVEN_EXEC ?: mavenExecutable
 }
 
+task deleteNirvanaApi {
+    delete 'src'
+}
+
 compileJava.dependsOn('generateNirvanaApi')
+clean.dependsOn('deleteNirvanaApi')
 
 import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
