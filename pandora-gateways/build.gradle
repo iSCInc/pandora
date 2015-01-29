@@ -4,6 +4,9 @@ sourceCompatibility = 1.8
 version = '1.0'
 
 configurations {
+    // excluded because this can't be found in mavenCentral() or jcenter, but doesn't make sense to
+    // add the sonatype repo everywhere that depends on nirvana-api. this will be removed
+    // once the version of swagger-annotations that nirvana-api depends on becomes final
     compile.exclude group: 'com.wordnik', module: 'swagger-annotations'
 }
 
