@@ -30,6 +30,7 @@ dependencies {
 
 task generateNirvanaApi(type: GenerateNirvanaTask) {
     mavenExecutable = MAVEN_EXEC ?: mavenExecutable
+    rootDir = projectDir
 }
 
 compileJava.dependsOn('generateNirvanaApi')
@@ -39,11 +40,9 @@ import groovy.json.JsonOutput
 import groovy.util.AntBuilder
 
 class GenerateNirvanaTask extends DefaultTask {
-    @OutputDirectory
-    def File outputDir = new File("src")
-
     String swaggerJsonUrl = "https://raw.githubusercontent.com/Wikia/app/swagger2/includes/wikia/api/swagger/nirvana.json"
     String codegenSource = "https://github.com/Wikia/swagger-codegen/archive/develop_2.0.zip"
+    String rootDir = "."
     String codegenSubdir = "codegen"
     String hostReplace = null
     String mavenExecutable = "mvn"
@@ -73,7 +72,7 @@ class GenerateNirvanaTask extends DefaultTask {
 
     def saveFile(String json) {
         String filename = swaggerJsonUrl.tokenize("/")[-1]
-        File file = new File(filename)
+        File file = new File("${rootDir}/${filename}")
         file.write(json)
 
         return file
@@ -89,13 +88,14 @@ class GenerateNirvanaTask extends DefaultTask {
         AntBuilder builder = new AntBuilder()
 
         builder.sequential {
-            delete(dir: codegenSubdir)
-            unzip(src: zipFilename, dest: codegenSubdir)
+            delete(dir: getCodegenDir())
+            unzip(src: zipFilename, dest: getCodegenDir())
+            delete(file: zipFilename)
         }
 
-        new File(codegenSubdir).eachDir() { dir ->
+        new File(getCodegenDir()).eachDir() { dir ->
             builder.sequential {
-                move(todir: codegenSubdir) {
+                move(todir: getCodegenDir()) {
                     fileset(dir: dir.getPath()) {
                         include(name: "**")
                     }
@@ -106,11 +106,16 @@ class GenerateNirvanaTask extends DefaultTask {
     }
 
     def generateCode(File nirvanaFile) {
-        runCommand("${mavenExecutable} package", "codegen")
+        runCommand("${mavenExecutable} package", getCodegenDir())
         runCommand("java -cp ./target/*:./target/lib/* com.wordnik.swagger.codegen.Codegen " +
                    "-i ${nirvanaFile.getAbsolutePath()} " +
                    "-l com.wikia.codegen.WikiaJavaClientCodegen " +
-                   "-o ../", codegenSubdir)
+                   "-o ${rootDir}", getCodegenDir())
+        runCommand("rm -rf ${nirvanaFile.getAbsolutePath()} ${rootDir}/pom.xml ${getCodegenDir()}")
+    }
+
+    def getCodegenDir() {
+        return "${rootDir}/${codegenSubdir}"
     }
 
     def runCommand(String command, String workingDir=null) {
