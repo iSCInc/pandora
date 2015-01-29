@@ -7,6 +7,10 @@ public interface OptionChoose {
 
   ApiResponse get();
 
+  String url();
+
+  OptionChoose revisions();
+  
   PropChoose prop();
 
   RevisionOptionChoose rv();

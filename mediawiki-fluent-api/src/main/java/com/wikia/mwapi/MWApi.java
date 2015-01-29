@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MarkerFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
   public static final String CATEGORIES = "categories";
   public static final String IMAGES = "images";
   public static final String CONTRIBUTORS = "contributors";
+  public static final String DEFAULT_BASEURL = "http://%s.wikia.com/api.php";
 
   private String wikia;
   private String query;
@@ -64,29 +66,115 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
     return new MWApi();
   }
 
+
+  @Override
+  public PropChoose prop() {
+    return this;
+  }
+
+  @Override
+  public RevisionOptionChoose rv() {
+    return this;
+  }
+
+  public static WikiaChoose createBuilder(HttpClient httpClient) {
+    return new MWApi(httpClient);
+  }
+
+  @Override
+  public ActionChoose wikia(String wikia) {
+    this.wikia = wikia;
+    return this;
+  }
+
+  @Override
+  public TitlesChoose queryAction() {
+    this.query = QUERY;
+    return this;
+  }
+
+  @Override
+  public OptionChoose titles(String... titles) {
+    this.titles = titles;
+    return this;
+  }
+
+  @Override
+  public OptionChoose allPages() {
+    this.list = ALLPAGES;
+    return this;
+  }
+
+  @Override
+  public String url() {
+    return buildUrl();
+  }
+
   @Override
   public ApiResponse get() {
     ApiResponse apiResponse = null;
+    ObjectMapper mapper = new ObjectMapper();
+    String url = buildUrl();
 
     try {
-      String url = buildUrl();
-      HttpUriRequest request = new HttpGet(url);
-      HttpResponse response = httpClient.execute(request);
-      ObjectMapper mapper = new ObjectMapper();
-      apiResponse =
-          mapper.readValue(response.getEntity().getContent(), ApiResponse.class);
+      InputStream response = handleMWRequest(url);
+      apiResponse = mapper.readValue(response, ApiResponse.class);
     } catch (IOException e) {
       logger.debug(e.getMessage(), e);
-    } catch (URISyntaxException e) {
-      logger.debug(e.getMessage(), e);
     }
+
     return apiResponse;
   }
 
-  private String buildUrl() throws URISyntaxException {
-    try {
-      URIBuilder b = new URIBuilder(String.format("http://%s.wikia.com/api.php", wikia));
+  @Override
+  public OptionChoose categories() {
+    prop.add(CATEGORIES);
+    return this;
+  }
 
+  public InputStream handleMWRequest(String url) throws IOException {
+    HttpUriRequest request = new HttpGet(url);
+    HttpResponse response = httpClient.execute(request);
+    return response.getEntity().getContent();
+  }
+
+  @Override
+  public OptionChoose revisions() {
+    prop.add(REVISIONS);
+    return this;
+  }
+
+  @Override
+  public OptionChoose images() {
+    prop.add(IMAGES);
+    return this;
+  }
+
+  /// MediaWiki 1.23
+  @Override
+  public OptionChoose contributors() {
+    prop.add(CONTRIBUTORS);
+    return this;
+  }
+
+  @Override
+  public OptionChoose rvLimit(Integer limit) {
+    rvLimit = limit;
+    return this;
+  }
+
+  @Override
+  public OptionChoose rvContent() {
+    rvProp = CONTENT;
+    return this;
+  }
+
+  public String buildUrl() {
+     
+    try {
+      URIBuilder b = new URIBuilder(String.format(DEFAULT_BASEURL, wikia));
+
+      List<String> params = new ArrayList<String>();
       if (query != null) {
         b.addParameter("action", query);
       }
@@ -120,86 +208,9 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
       String url = b.build().toASCIIString();
       logger.debug(MarkerFactory.getMarker("MWApi url"), url);
       return url;
-
-    } catch (URISyntaxException e) {
+    }
+    catch (URISyntaxException e) {
       throw e;
     }
-  }
-
-  @Override
-  public PropChoose prop() {
-    return this;
-  }
-
-  @Override
-  public RevisionOptionChoose rv() {
-    return this;
-  }
-
-  public static WikiaChoose createBuilder(HttpClient httpClient) {
-    return new MWApi(httpClient);
-  }
-
-  @Override
-  public ActionChoose wikia(String wikia) {
-    this.wikia = wikia;
-    return this;
-  }
-
-  @Override
-  public TitlesChoose queryAction() {
-    this.query = QUERY;
-    return this;
-  }
-
-  @Override
-  public OptionChoose titles(String... titles) {
-
-    this.titles = titles;
-    return this;
-  }
-
-  @Override
-  public OptionChoose allPages() {
-    this.list = ALLPAGES;
-    return this;
-
-  }
-
-  @Override
-  public OptionChoose categories() {
-    prop.add(CATEGORIES);
-    return this;
-  }
-
-  @Override
-  public OptionChoose revisions() {
-    prop.add(REVISIONS);
-    return this;
-  }
-
-  @Override
-  public OptionChoose images() {
-    prop.add(IMAGES);
-    return this;
-  }
-
-  /// MediaWiki 1.23
-  @Override
-  public OptionChoose contributors() {
-    prop.add(CONTRIBUTORS);
-    return this;
-  }
-
-  @Override
-  public OptionChoose rvLimit(Integer limit) {
-    rvLimit = limit;
-    return this;
-  }
-
-  @Override
-  public OptionChoose rvContent() {
-    rvProp = CONTENT;
-    return this;
   }
 }

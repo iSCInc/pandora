@@ -8,9 +8,6 @@ repositories {
     jcenter()
     mavenCentral();
 
-    maven {
-        url "http://repo.surech.ch/content/repositories/hosted.halarious.releases/"
-    }
 }
 
 // In this section you declare the dependencies for your production and test code
