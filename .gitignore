@@ -13,5 +13,5 @@ pom.xml.asc
 **.ipr
 **.iws
 pandora.yaml
-.gradle/
-build/
+**/.gradle
+**/build
