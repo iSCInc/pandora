@@ -107,19 +107,24 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
 
   @Override
   public String url() {
-    return buildUrl();
+    try {
+      return buildUrl();
+    } catch (URISyntaxException e) {
+      logger.debug(e.getMessage(), e);
+      return "";
+    }
   }
 
   @Override
   public ApiResponse get() {
     ApiResponse apiResponse = null;
     ObjectMapper mapper = new ObjectMapper();
-    String url = buildUrl();
 
     try {
+      String url = buildUrl();
       InputStream response = handleMWRequest(url);
       apiResponse = mapper.readValue(response, ApiResponse.class);
-    } catch (IOException e) {
+    } catch (IOException | URISyntaxException e) {
       logger.debug(e.getMessage(), e);
     }
 
@@ -169,8 +174,8 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
     return this;
   }
 
-  public String buildUrl() {
-     
+  public String buildUrl() throws URISyntaxException {
+
     try {
       URIBuilder b = new URIBuilder(String.format(DEFAULT_BASEURL, wikia));
 
@@ -208,8 +213,7 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
       String url = b.build().toASCIIString();
       logger.debug(MarkerFactory.getMarker("MWApi url"), url);
       return url;
-    }
-    catch (URISyntaxException e) {
+    } catch (URISyntaxException e) {
       throw e;
     }
   }
