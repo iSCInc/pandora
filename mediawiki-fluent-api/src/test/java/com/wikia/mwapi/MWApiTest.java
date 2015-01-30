@@ -32,7 +32,7 @@ public class MWApiTest {
   }
 
   @Test
-  public void testGet() throws IOException {
+  public void testGetWithTitle() throws IOException {
     String wikia = "muppet";
     String title = "Kermit the Frog";
     String url = MWApi.createBuilder()
@@ -40,18 +40,8 @@ public class MWApiTest {
         .queryAction()
         .titles(title)
         .url();
-    HttpUriRequest request = new HttpGet(url);
 
-    HttpClient httpClient = Mockito.mock(HttpClient.class);
-    HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-    HttpEntity httpEntity = Mockito.mock(HttpEntity.class);
-
-    InputStream jsonStream = new ByteArrayInputStream(
-        FixtureHelpers.fixture("fixtures/kermit-the-frog-title.json").getBytes(StandardCharsets.UTF_8)
-    );
-    Mockito.when(httpEntity.getContent()).thenReturn(jsonStream);
-    Mockito.when(httpResponse.getEntity()).thenReturn(httpEntity);
-    Mockito.when(httpClient.execute(Mockito.any(HttpUriRequest.class))).thenReturn(httpResponse);
+    HttpClient httpClient = mockHttpClientForHandleMwRequest("fixtures/kermit-the-frog-title.json");
 
     ApiResponse response = MWApi.createBuilder(httpClient)
         .wikia(wikia)
@@ -64,6 +54,23 @@ public class MWApiTest {
     ArgumentCaptor<HttpUriRequest> argument = ArgumentCaptor.forClass(HttpUriRequest.class);
     Mockito.verify(httpClient).execute(argument.capture());
     assertEquals(url, argument.getValue().getURI().toString());
+  }
+
+
+  public HttpClient mockHttpClientForHandleMwRequest(String fixturePath) throws IOException {
+    HttpClient httpClient = Mockito.mock(HttpClient.class);
+    HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
+    HttpEntity httpEntity = Mockito.mock(HttpEntity.class);
+
+    InputStream jsonStream = new ByteArrayInputStream(
+        FixtureHelpers.fixture(fixturePath).getBytes(StandardCharsets.UTF_8)
+    );
+
+    Mockito.when(httpEntity.getContent()).thenReturn(jsonStream);
+    Mockito.when(httpResponse.getEntity()).thenReturn(httpEntity);
+    Mockito.when(httpClient.execute(Mockito.any(HttpUriRequest.class))).thenReturn(httpResponse);
+
+    return httpClient;
   }
 
 }
