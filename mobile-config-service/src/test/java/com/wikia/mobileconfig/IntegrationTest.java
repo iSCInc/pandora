@@ -23,7 +23,7 @@ public class IntegrationTest {
     Client client = new Client();
 
     ClientResponse response = client.resource(
-        String.format("http://localhost:%d/configurations/platform/test-platform/app/test-app/", RULE.getLocalPort()))
+        String.format("http://localhost:%d/configurations/platform/test-platform/app/test-app?ui-lang=en-us&content-lang=en-us", RULE.getLocalPort()))
         .get(ClientResponse.class);
 
     assertThat(response.getStatus()).isEqualTo(404);

@@ -47,21 +47,21 @@ public class MobileConfigResourceTest {
     }
 
     verify(appsListMock, times(1)).isValidAppTag("test-app");
-    verify(httpServiceMock, never()).getConfiguration("test-platform", "test-app");
+    verify(httpServiceMock, never()).getConfiguration("test-platform", "test-app", "en-us", "en-us");
     reset(appsListMock, httpServiceMock);
   }
 
   @Test
   public void getMobileApplicationConfigFails_notFound() throws IOException {
     when(appsListMock.isValidAppTag("test-app")).thenReturn(true);
-    when(httpServiceMock.getConfiguration("test-platform", "test-app"))
+    when(httpServiceMock.getConfiguration("test-platform", "test-app", "en-us", "en-us"))
         .thenReturn(new EmptyMobileConfiguration());
     when(httpServiceMock.createSelfUrl("test-platform", "test-app"))
-        .thenReturn("/configurations/platform/test-platform/app/test-app");
+        .thenReturn("/configurations/platform/test-platform/app/test-app?ui-lang=en-us&content-lang=en-us");
 
     try {
       resources.client()
-        .resource("/configurations/platform/test-platform/app/test-app")
+        .resource("/configurations/platform/test-platform/app/test-app?ui-lang=en-us&content-lang=en-us")
         .get(String.class);
       fail("404 - missing invalid modules exception");
     } catch (Exception e) {
@@ -69,7 +69,7 @@ public class MobileConfigResourceTest {
     }
 
     verify(appsListMock).isValidAppTag("test-app");
-    verify(httpServiceMock).getConfiguration("test-platform", "test-app");
+    verify(httpServiceMock).getConfiguration("test-platform", "test-app", "en-us", "en-us");
     verify(httpServiceMock, never()).getDefault("test-platform");
     reset(appsListMock, httpServiceMock);
   }
@@ -84,18 +84,18 @@ public class MobileConfigResourceTest {
 
     when(appsListMock.isValidAppTag("test-app")).thenReturn(true);
     when(httpServiceMock.createSelfUrl("test-platform", "test-app"))
-      .thenReturn("/configurations/platform/test-platform/app/test-app");
-    when(httpServiceMock.getConfiguration("test-platform", "test-app"))
+      .thenReturn("/configurations/platform/test-platform/app/test-app?ui-lang=en-us&content-lang=en-us");
+    when(httpServiceMock.getConfiguration("test-platform", "test-app", "en-us", "en-us"))
         .thenReturn(cfgMock);
 
     resources.client()
-      .resource("/configurations/platform/test-platform/app/test-app")
+      .resource("/configurations/platform/test-platform/app/test-app?ui-lang=en-us&content-lang=en-us")
       .get(String.class);
 
     //TODO: assert - the client response is our HAL object
 
     verify(appsListMock).isValidAppTag("test-app");
-    verify(httpServiceMock).getConfiguration("test-platform", "test-app");
+    verify(httpServiceMock).getConfiguration("test-platform", "test-app", "en-us", "en-us");
     verify(httpServiceMock, never()).getDefault("test-platform");
     reset(appsListMock, httpServiceMock);
   }

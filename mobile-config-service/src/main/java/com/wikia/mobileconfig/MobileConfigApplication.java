@@ -1,8 +1,10 @@
 package com.wikia.mobileconfig;
 
+import com.wikia.mobileconfig.resources.ImageResource;
 import com.wikia.mobileconfig.service.AppsDeployerList;
 import com.wikia.mobileconfig.service.FileConfigurationService;
 
+import com.wikia.mobileconfig.service.ImageService;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -45,6 +47,10 @@ public class MobileConfigApplication extends Application<MobileConfigConfigurati
         environment,
         configuration
     );
+    ImageService imageService = new ImageService(
+        environment,
+        configuration
+    );
     AppsDeployerList listService = new AppsDeployerList(environment, configuration);
 
     final MobileConfigHealthCheck healthCheck = new MobileConfigHealthCheck();
@@ -58,7 +64,12 @@ public class MobileConfigApplication extends Application<MobileConfigConfigurati
     final MobileConfigResource
         mobileConfig =
         new MobileConfigResource(configService, listService);
+
+    final ImageResource
+        image =
+        new ImageResource(imageService);
     environment.jersey().register(mobileConfig);
+    environment.jersey().register(image);
     environment.jersey().register(JaxRsHalBuilderSupport.class);
   }
 }
