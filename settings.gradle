@@ -29,3 +29,5 @@ include 'pandora-gateways'
 
 include 'nirvana-api'
 
+include 'mobile-config-service'
+
