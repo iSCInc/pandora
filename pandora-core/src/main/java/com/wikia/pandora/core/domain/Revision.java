@@ -5,11 +5,11 @@ import java.util.Date;
 
 public class Revision {
 
-  private int revId;
-  private int parentId;
-  private String user;
-  private Date timestamp;
-  private String comment;
+  private final int revId;
+  private final int parentId;
+  private final String user;
+  private final Date timestamp;
+  private final String comment;
 
   private String content;
 

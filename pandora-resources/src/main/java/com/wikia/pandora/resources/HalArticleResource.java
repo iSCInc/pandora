@@ -10,6 +10,7 @@ import com.wikia.pandora.core.domain.Comment;
 import com.wikia.pandora.core.domain.Media;
 import com.wikia.pandora.core.domain.Revision;
 import com.wikia.pandora.core.domain.User;
+import com.wikia.pandora.core.util.RepresentationHelper;
 import com.wikia.pandora.core.util.UriBuilder;
 
 import java.util.List;
@@ -51,13 +52,12 @@ public class HalArticleResource {
     Representation representation = representationFactory.newRepresentation(uri.build(wikia));
     List<Article> articleList = articleService.getArticlesFromWikia(wikia);
     for (Article article : articleList) {
-      representation.withLink(
+
+      RepresentationHelper.withLinkAndTitle(
+          representation,
           "articles",
-          getLinkToArticle(wikia, article.getTitle())
-          , null
-          , article.getTitle()
-          , null
-          , null);
+          getLinkToArticle(wikia, article.getTitle()),
+          article.getTitle());
     }
 
     return representation;
@@ -99,13 +99,11 @@ public class HalArticleResource {
 
     List<Category> categories = articleService.getArticleCategories(wikia, title);
     for (Category category : categories) {
-      representation.withLink("category",
-                              getLinkToCategory(wikia, category.getTitle()),
-                              null,
-                              category.getTitle(),
-                              null,
-                              null
-      );
+      RepresentationHelper
+          .withLinkAndTitle(representation,
+                            "category",
+                            getLinkToCategory(wikia, category.getTitle()),
+                            category.getTitle());
     }
 
     return representation;
@@ -124,12 +122,12 @@ public class HalArticleResource {
         .replacePath("{wikia}/articles/{title}").build(wikia, title));
     List<Comment> comments = articleService.getArticleComments(wikia, title);
     for (Comment comment : comments) {
-      representation.withLink("comment",
-                              getLinkToComment(wikia, comment.getId()),
-                              null,
-                              comment.getText(),
-                              null,
-                              null);
+      RepresentationHelper
+          .withLinkAndTitle(
+              representation,
+              "comment",
+              getLinkToComment(wikia, comment.getId()),
+              comment.getText());
     }
 
     return representation;
@@ -146,12 +144,13 @@ public class HalArticleResource {
         representationFactory.newRepresentation(uri.build(wikia, title));
     List<Media> mediaList = articleService.getArticleMedia(wikia, title);
     for (Media media : mediaList) {
-      representation.withLink("media",
-                              getLinkToMedia(wikia, media.getTitle()),
-                              null,
-                              media.getTitle(),
-                              null,
-                              null);
+      RepresentationHelper
+          .withLinkAndTitle(
+              representation,
+              "media",
+              getLinkToMedia(wikia, media.getTitle()),
+              media.getTitle()
+          );
     }
 
     return representation;
@@ -168,12 +167,13 @@ public class HalArticleResource {
         representationFactory.newRepresentation(uri.build(wikia, title));
     List<Revision> revisions = articleService.getArticleRevisions(wikia, title);
     for (Revision revision : revisions) {
-      representation.withLink("revision",
-                              getLinkToRevision(wikia, title, revision.getRevId()),
-                              null,
-                              String.format("%s: %s", revision.getUser(), revision.getComment()),
-                              null,
-                              null);
+      RepresentationHelper
+          .withLinkAndTitle(
+              representation,
+              "revision",
+              getLinkToRevision(wikia, title, revision.getRevId()),
+              String.format("%s: %s", revision.getUser(), revision.getComment())
+          );
     }
 
     return representation;
@@ -190,12 +190,11 @@ public class HalArticleResource {
         representationFactory.newRepresentation(uri.build(wikia, title));
     List<User> users = articleService.getArticleContributors(wikia, title);
     for (User user : users) {
-      representation.withLink("user",
-                              getLinkToUser(wikia, user.getName()),
-                              null,
-                              user.getName(),
-                              null,
-                              null);
+      RepresentationHelper
+          .withLinkAndTitle(
+              representation, "user",
+              getLinkToUser(wikia, user.getName()),
+              user.getName());
     }
     return representation;
   }
