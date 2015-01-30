@@ -1,5 +1,5 @@
 # Nirvana API
-This project generates code for requesting resources from Wikia's Nirvana API. Under the hood, it relies on the [swagger](http://swagger.io/) 2.0 definitions of the Nirvana API in Wikia's [MediaWiki repo](https://github.com/Wikia/app/blob/swagger2/includes/wikia/api/swagger/nirvana.json). The code is generated using Wikia's fork of [swagger-codegen](https://github.com/Wikia/swagger-codegen/tree/develop_2.0), which is modified to include a `String wikia` parameter as the first parameter to each API call, before the project's compilation phase.
+This project generates code for requesting resources from Wikia's Nirvana API. Under the hood, it relies on the [swagger](http://swagger.io/) 2.0 definitions of the Nirvana API in Wikia's [MediaWiki repo](https://github.com/Wikia/app/blob/dev/includes/wikia/api/swagger/nirvana.json). The code is generated using Wikia's fork of [swagger-codegen](https://github.com/Wikia/swagger-codegen/tree/develop_2.0), which is modified to include a `String wikia` parameter as the first parameter to each API call, before the project's compilation phase.
 
 ## Using the API
 ### Add nirvana-api as dependency

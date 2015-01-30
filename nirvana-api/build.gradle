@@ -44,7 +44,7 @@ import groovy.json.JsonOutput
 import groovy.util.AntBuilder
 
 class GenerateNirvanaTask extends DefaultTask {
-    String swaggerJsonUrl = "https://raw.githubusercontent.com/Wikia/app/swagger2/includes/wikia/api/swagger/nirvana.json"
+    String swaggerJsonUrl = "https://raw.githubusercontent.com/Wikia/app/dev/includes/wikia/api/swagger/nirvana.json"
     String codegenSource = "https://github.com/Wikia/swagger-codegen/archive/develop_2.0.zip"
     String rootDir = "."
     String codegenSubdir = "codegen"
