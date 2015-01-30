@@ -4,7 +4,11 @@ package com.wikia.pandora.api.service;
 import com.wikia.pandora.core.domain.Article;
 import com.wikia.pandora.core.domain.ArticleWithContent;
 import com.wikia.pandora.core.domain.ArticleWithDescription;
+import com.wikia.pandora.core.domain.Category;
 import com.wikia.pandora.core.domain.Comment;
+import com.wikia.pandora.core.domain.Media;
+import com.wikia.pandora.core.domain.Revision;
+import com.wikia.pandora.core.domain.User;
 
 import java.util.List;
 
@@ -21,4 +25,13 @@ public interface ArticleService {
   Comment getComment(String wikia, String title, Long commentId);
 
   List<Article> getArticlesFromWikia(String wikia);
+
+  List<Category> getArticleCategories(String wikia, String title);
+
+  List<Media> getArticleMedia(String wikia, String title);
+
+
+  List<Revision> getArticleRevisions(String wikia, String title);
+
+  List<User> getArticleContributors(String wikia, String title);
 }

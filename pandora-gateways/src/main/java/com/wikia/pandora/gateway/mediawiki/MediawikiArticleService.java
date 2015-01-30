@@ -1,12 +1,17 @@
 package com.wikia.pandora.gateway.mediawiki;
 
 import com.wikia.mwapi.domain.ApiResponse;
+import com.wikia.mwapi.domain.User;
+import com.wikia.mwapi.domain.Image;
 import com.wikia.mwapi.domain.Page;
 import com.wikia.pandora.api.service.ArticleService;
 import com.wikia.pandora.core.domain.Article;
 import com.wikia.pandora.core.domain.ArticleWithContent;
 import com.wikia.pandora.core.domain.ArticleWithDescription;
+import com.wikia.pandora.core.domain.Category;
 import com.wikia.pandora.core.domain.Comment;
+import com.wikia.pandora.core.domain.Media;
+import com.wikia.pandora.core.domain.Revision;
 import com.wikia.pandora.core.domain.builder.PojoBuilderFactory;
 
 import org.apache.commons.lang.NotImplementedException;
@@ -73,4 +78,81 @@ public class MediawikiArticleService extends MediawikiService implements Article
     }
     return articleList;
   }
+
+  @Override
+  public List<Category> getArticleCategories(String wikia, String title) {
+    ApiResponse apiResponse = this.getGateway().getArticleCategories(wikia, title);
+    List<Category> categoryList = new ArrayList<>();
+    if (apiResponse.getQuery().getFirstPage() != null
+        && apiResponse.getQuery().getFirstPage().getCategories() != null) {
+      for (com.wikia.mwapi.domain.Category mwCategory : apiResponse.getQuery().getFirstPage()
+          .getCategories()) {
+        Category category = PojoBuilderFactory.getCategoryBuilder()
+            .withNs(mwCategory.getNs())
+            .withTitle(mwCategory.getTitle())
+            .build();
+        categoryList.add(category);
+      }
+    }
+    return categoryList;
+  }
+
+  @Override
+  public List<Media> getArticleMedia(String wikia, String title) {
+    ApiResponse apiResponse = this.getGateway().getArticleImages(wikia, title);
+    List<Media> mediaList = new ArrayList<>();
+    if (apiResponse.getQuery().getFirstPage() != null
+        && apiResponse.getQuery().getFirstPage().getImages() != null) {
+      for (Image image : apiResponse.getQuery().getFirstPage().getImages()) {
+        Media media = PojoBuilderFactory.getMediaBuilder()
+            .withNs(image.getNs())
+            .withTitle(image.getTitle())
+            .build();
+        mediaList.add(media);
+      }
+    }
+    return mediaList;
+  }
+
+  @Override
+  public List<Revision> getArticleRevisions(String wikia, String title) {
+    ApiResponse apiResponse = this.getGateway().getArticleRevisions(wikia, title);
+    List<Revision> revisions = new ArrayList<>();
+    if (apiResponse.getQuery().getFirstPage() != null
+        && apiResponse.getQuery().getFirstPage().getRevisions() != null) {
+      for (com.wikia.mwapi.domain.Revision mwRevision : apiResponse.getQuery().getFirstPage()
+          .getRevisions()) {
+        Revision revision = PojoBuilderFactory.getRevisionBuilder()
+            .withComment(mwRevision.getComment())
+            .withContent(mwRevision.getContent())
+            .withParentId(mwRevision.getParentId())
+            .withRevId(mwRevision.getRevId())
+            .withTimestamp(mwRevision.getTimestamp())
+            .withUser(mwRevision.getUser())
+            .build();
+        revisions.add(revision);
+      }
+    }
+    return revisions;
+  }
+
+  @Override
+  public List<com.wikia.pandora.core.domain.User> getArticleContributors(String wikia, String title) {
+    ApiResponse apiResponse = this.getGateway().getArticleContributors(wikia, title);
+    List<com.wikia.pandora.core.domain.User> users = new ArrayList<>();
+    if (apiResponse.getQuery().getFirstPage() != null
+        && apiResponse.getQuery().getFirstPage().getContributors() != null) {
+      for (User mwUser : apiResponse.getQuery().getFirstPage()
+          .getContributors()) {
+        com.wikia.pandora.core.domain.User user = PojoBuilderFactory.getUserBuilder()
+            .withId(mwUser.getUserId())
+            .withName(mwUser.getName())
+            .build();
+        users.add(user);
+      }
+    }
+
+    return users;
+  }
+
 }

@@ -5,7 +5,12 @@ import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.wikia.pandora.api.service.ArticleService;
 import com.wikia.pandora.core.domain.Article;
-import com.wikia.pandora.core.domain.ArticleWithContent;
+import com.wikia.pandora.core.domain.Category;
+import com.wikia.pandora.core.domain.Comment;
+import com.wikia.pandora.core.domain.Media;
+import com.wikia.pandora.core.domain.Revision;
+import com.wikia.pandora.core.domain.User;
+import com.wikia.pandora.core.util.RepresentationHelper;
 import com.wikia.pandora.core.util.UriBuilder;
 
 import java.util.List;
@@ -18,11 +23,10 @@ import javax.ws.rs.Produces;
 // "{wikia}/articles" -> getArticles get all articles (currently first 10) from {wikia}
 // "{wikia}/articles/{title}" -> getArticle article from {wikia} with {title}
 // "{wikia}/articles/{title}/comments" -> getArticleComments from {wikia} with {title}
-// "{wikia}/articles/{title}/users" -> getArticleComments from {wikia} with {title}
-// "{wikia}/articles/{title}/comments" -> getArticleComments from {wikia} with {title}
-// "{wikia}/articles/{title}/comments" -> getArticleComments from {wikia} with {title}
-// "{wikia}/articles/{title}/comments" -> getArticleComments from {wikia} with {title}
-
+// "{wikia}/articles/{title}/users" -> getArticleContributors from {wikia} with {title}
+// "{wikia}/articles/{title}/categories" -> getArticleCategories from {wikia} with {title}
+// "{wikia}/articles/{title}/media" -> getArticleMedia from {wikia} with {title}
+// "{wikia}/articles/{title}/revisions" -> getArticleRevisions from {wikia} with {title}
 
 
 @Path("{wikia}/articles")
@@ -48,27 +52,15 @@ public class HalArticleResource {
     Representation representation = representationFactory.newRepresentation(uri.build(wikia));
     List<Article> articleList = articleService.getArticlesFromWikia(wikia);
     for (Article article : articleList) {
-      representation.withLink(
+
+      RepresentationHelper.withLinkAndTitle(
+          representation,
           "articles",
-          getLinkToArticle(wikia, article.getTitle())
-          , null
-          , article.getTitle()
-          , null
-          , null);
+          getLinkToArticle(wikia, article.getTitle()),
+          article.getTitle());
     }
 
     return representation;
-  }
-
-  private String getLinkToArticle(String wikia, String title) {
-    return
-        javax.ws.rs.core.UriBuilder
-            .fromResource(HalArticleResource.class)
-            .path("/{title}")
-            .build(wikia, title)
-            .getPath();
-
-
   }
 
   @GET
@@ -101,6 +93,18 @@ public class HalArticleResource {
     Representation
         representation =
         representationFactory.newRepresentation(uri.build(wikia, title));
+    representation.withLink("article", uri.clone()
+        .replacePath("{wikia}/articles/{title}")
+        .build(wikia, title));
+
+    List<Category> categories = articleService.getArticleCategories(wikia, title);
+    for (Category category : categories) {
+      RepresentationHelper
+          .withLinkAndTitle(representation,
+                            "category",
+                            getLinkToCategory(wikia, category.getTitle()),
+                            category.getTitle());
+    }
 
     return representation;
   }
@@ -114,6 +118,17 @@ public class HalArticleResource {
     Representation
         representation =
         representationFactory.newRepresentation(uri.build(wikia, title));
+    representation.withLink("article", uri.clone()
+        .replacePath("{wikia}/articles/{title}").build(wikia, title));
+    List<Comment> comments = articleService.getArticleComments(wikia, title);
+    for (Comment comment : comments) {
+      RepresentationHelper
+          .withLinkAndTitle(
+              representation,
+              "comment",
+              getLinkToComment(wikia, comment.getId()),
+              comment.getText());
+    }
 
     return representation;
   }
@@ -127,6 +142,16 @@ public class HalArticleResource {
     Representation
         representation =
         representationFactory.newRepresentation(uri.build(wikia, title));
+    List<Media> mediaList = articleService.getArticleMedia(wikia, title);
+    for (Media media : mediaList) {
+      RepresentationHelper
+          .withLinkAndTitle(
+              representation,
+              "media",
+              getLinkToMedia(wikia, media.getTitle()),
+              media.getTitle()
+          );
+    }
 
     return representation;
   }
@@ -140,6 +165,16 @@ public class HalArticleResource {
     Representation
         representation =
         representationFactory.newRepresentation(uri.build(wikia, title));
+    List<Revision> revisions = articleService.getArticleRevisions(wikia, title);
+    for (Revision revision : revisions) {
+      RepresentationHelper
+          .withLinkAndTitle(
+              representation,
+              "revision",
+              getLinkToRevision(wikia, title, revision.getRevId()),
+              String.format("%s: %s", revision.getUser(), revision.getComment())
+          );
+    }
 
     return representation;
   }
@@ -153,24 +188,56 @@ public class HalArticleResource {
     Representation
         representation =
         representationFactory.newRepresentation(uri.build(wikia, title));
-
+    List<User> users = articleService.getArticleContributors(wikia, title);
+    for (User user : users) {
+      RepresentationHelper
+          .withLinkAndTitle(
+              representation, "user",
+              getLinkToUser(wikia, user.getName()),
+              user.getName());
+    }
     return representation;
   }
 
+  private String getLinkToArticle(String wikia, String title) {
+    return
+        javax.ws.rs.core.UriBuilder
+            .fromResource(HalArticleResource.class)
+            .path("/{title}")
+            .build(wikia, title)
+            .getPath();
 
-  @GET
-  @Path("withContent/{title}")
-  @Timed
-  public Object getArticleWithContent(@PathParam("wikia") String wikia,
-                                      @PathParam("title") String title) {
-    javax.ws.rs.core.UriBuilder uri = UriBuilder.getSelfUriBuilder(wikia, title);
 
-    Representation
-        representation =
-        representationFactory.newRepresentation(uri.build(wikia, title));
-    ArticleWithContent article = this.articleService.getArticleWithContentByTitle(wikia, title);
-    representation.withBean(article);
+  }
 
-    return representation;
+  private String getLinkToCategory(String wikia, String title) {
+    return javax.ws.rs.core.UriBuilder
+        .fromPath("{wikia}/categories/{title}")
+        .build(wikia, title).getPath();
+  }
+
+  private String getLinkToComment(String wikia, Long id) {
+    return javax.ws.rs.core.UriBuilder
+        .fromPath("{wikia}/comments/{id}")
+        .build(wikia, id).getPath();
+  }
+
+  private String getLinkToMedia(String wikia, String title) {
+    return javax.ws.rs.core.UriBuilder
+        .fromPath("{wikia}/media/{title}")
+        .build(wikia, title).getPath();
+  }
+
+  private String getLinkToUser(String wikia, String name) {
+    return javax.ws.rs.core.UriBuilder
+        .fromPath("{wikia}/users/{name}")
+        .build(wikia, name).getPath();
+  }
+
+
+  private String getLinkToRevision(String wikia, String title, int revId) {
+    return javax.ws.rs.core.UriBuilder
+        .fromPath("{wikia}/articles/{title}/revisions/{revId}")
+        .build(wikia, title, revId).getPath();
   }
 }

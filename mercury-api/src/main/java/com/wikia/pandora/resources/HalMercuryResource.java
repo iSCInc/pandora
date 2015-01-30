@@ -38,7 +38,7 @@ public class HalMercuryResource {
 
     Representation
         articleRepresentation =
-        (Representation) articleResource.getArticleWithContent(wikia, title);
+        (Representation) articleResource.getArticle(wikia, title);
 
     representation.withRepresentation("article", articleRepresentation);
 

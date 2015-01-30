@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wikia.mwapi.domain.ApiResponse;
 import com.wikia.mwapi.fluent.ActionChoose;
 import com.wikia.mwapi.fluent.OptionChoose;
+import com.wikia.mwapi.fluent.PropChoose;
+import com.wikia.mwapi.fluent.RevisionOptionChoose;
 import com.wikia.mwapi.fluent.TitlesChoose;
 import com.wikia.mwapi.fluent.WikiaChoose;
 
@@ -24,7 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionChoose {
+public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionChoose, PropChoose,
+                              RevisionOptionChoose {
 
   private static final Logger logger = LoggerFactory.getLogger(MWApi.class);
 
@@ -32,6 +35,9 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
   public static final String REVISIONS = "revisions";
   public static final String CONTENT = "content";
   public static final String ALLPAGES = "allpages";
+  public static final String CATEGORIES = "categories";
+  public static final String IMAGES = "images";
+  public static final String CONTRIBUTORS = "contributors";
   public static final String DEFAULT_BASEURL = "http://%s.wikia.com/api.php";
 
   private String wikia;
@@ -58,6 +64,17 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
 
   public static WikiaChoose createBuilder() {
     return new MWApi();
+  }
+
+
+  @Override
+  public PropChoose prop() {
+    return this;
+  }
+
+  @Override
+  public RevisionOptionChoose rv() {
+    return this;
   }
 
   public static WikiaChoose createBuilder(HttpClient httpClient) {
@@ -90,23 +107,34 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
 
   @Override
   public String url() {
-    return buildUrl();
+    try {
+      return buildUrl();
+    } catch (URISyntaxException e) {
+      logger.debug(e.getMessage(), e);
+      return "";
+    }
   }
 
   @Override
   public ApiResponse get() {
     ApiResponse apiResponse = null;
     ObjectMapper mapper = new ObjectMapper();
-    String url = buildUrl();
 
     try {
+      String url = buildUrl();
       InputStream response = handleMWRequest(url);
       apiResponse = mapper.readValue(response, ApiResponse.class);
-    } catch (IOException e) {
+    } catch (IOException | URISyntaxException e) {
       logger.debug(e.getMessage(), e);
     }
 
     return apiResponse;
+  }
+
+  @Override
+  public OptionChoose categories() {
+    prop.add(CATEGORIES);
+    return this;
   }
 
   public InputStream handleMWRequest(String url) throws IOException {
@@ -122,6 +150,19 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
   }
 
   @Override
+  public OptionChoose images() {
+    prop.add(IMAGES);
+    return this;
+  }
+
+  /// MediaWiki 1.23
+  @Override
+  public OptionChoose contributors() {
+    prop.add(CONTRIBUTORS);
+    return this;
+  }
+
+  @Override
   public OptionChoose rvLimit(Integer limit) {
     rvLimit = limit;
     return this;
@@ -133,59 +174,47 @@ public class MWApi implements WikiaChoose, ActionChoose, TitlesChoose, OptionCho
     return this;
   }
 
-  public String buildUrl() {
-    URIBuilder b = null;
+  public String buildUrl() throws URISyntaxException {
+
     try {
-      b = new URIBuilder(String.format(DEFAULT_BASEURL, wikia));
+      URIBuilder b = new URIBuilder(String.format(DEFAULT_BASEURL, wikia));
+
+      List<String> params = new ArrayList<String>();
+      if (query != null) {
+        b.addParameter("action", query);
+      }
+
+      if (titles != null) {
+        String joinTitles = String.join("|", titles);
+        b.addParameter("titles", joinTitles);
+      }
+
+      if (format != null) {
+        b.addParameter("format", format);
+      }
+
+      if (prop != null && prop.size() > 0) {
+        String joinProp = String.join("|", prop);
+        b.addParameter("prop", joinProp);
+      }
+
+      if (rvLimit != null) {
+        b.addParameter("rvlimit", String.valueOf(rvLimit));
+      }
+
+      if (rvProp != null) {
+        b.addParameter("rvprop", rvProp);
+      }
+
+      if (list != null) {
+        b.addParameter("list", list);
+      }
+
+      String url = b.build().toASCIIString();
+      logger.debug(MarkerFactory.getMarker("MWApi url"), url);
+      return url;
     } catch (URISyntaxException e) {
-      e.printStackTrace();
+      throw e;
     }
-
-    List<String> params = new ArrayList<String>();
-    if (query != null) {
-      params.add(String.format("action=%s", query));
-      b.addParameter("action", query);
-    }
-    if (titles != null) {
-      String joinTitles = String.join("|", titles);
-      params.add(String.format("titles=%s", joinTitles));
-      b.addParameter("titles", joinTitles);
-    }
-
-    if (format != null) {
-      params.add(String.format("format=%s", format));
-      b.addParameter("format", format);
-    }
-
-    if (prop != null && prop.size() > 0) {
-      String joinProp = String.join("|", prop);
-      params.add(String.format("prop=%s", joinProp));
-      b.addParameter("prop", joinProp);
-    }
-
-    if (rvLimit != null) {
-      params.add(String.format("rvlimit=%s", rvLimit));
-      b.addParameter("rvlimit", String.valueOf(rvLimit));
-    }
-
-    if (rvProp != null) {
-      params.add(String.format("rvprop=%s", rvProp));
-      b.addParameter("rvprop", rvProp);
-    }
-
-    if (list != null) {
-      params.add(String.format("list=%s", list));
-      b.addParameter("list", list);
-    }
-
-    String url = null;
-    try {
-      url = b.build().toASCIIString();
-    } catch (URISyntaxException e) {
-      url = String.format(DEFAULT_BASEURL + "?%s", wikia, String.join("&", params));
-    }
-
-    logger.debug(MarkerFactory.getMarker("MWApi url"), url);
-    return url;
   }
 }
