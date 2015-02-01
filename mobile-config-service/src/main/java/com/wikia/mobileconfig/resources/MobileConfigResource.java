@@ -8,15 +8,13 @@ import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.core.MobileConfiguration;
 import com.wikia.mobileconfig.exceptions.ConfigurationNotFoundException;
+import com.wikia.mobileconfig.exceptions.InvalidApplicationTagException;
 import com.wikia.mobileconfig.service.ConfigurationService;
 import com.wikia.mobileconfig.service.AppsListService;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 @Path("/configurations/platform/{platform}/app/{appTag}")
 @Produces(RepresentationFactory.HAL_JSON)
@@ -43,8 +41,7 @@ public class MobileConfigResource {
   ) throws IOException, ConfigurationNotFoundException {
 
     if (!this.appsList.isValidAppTag(appTag)) {
-      //TODO: make it a cosher application/problem+json exception
-      throw new WebApplicationException(new Exception("Invalid application"), 400);
+      throw new InvalidApplicationTagException(appTag);
     }
 
     MobileConfiguration configuration = this.appConfiguration.getConfiguration(platform, appTag);
