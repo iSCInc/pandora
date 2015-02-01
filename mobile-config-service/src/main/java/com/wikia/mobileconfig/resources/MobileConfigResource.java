@@ -9,6 +9,7 @@ import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.core.MobileConfiguration;
 import com.wikia.mobileconfig.exceptions.ConfigurationNotFoundException;
 import com.wikia.mobileconfig.exceptions.InvalidApplicationTagException;
+import com.wikia.mobileconfig.exceptions.MobileConfigException;
 import com.wikia.mobileconfig.service.ConfigurationService;
 import com.wikia.mobileconfig.service.AppsListService;
 
@@ -38,7 +39,7 @@ public class MobileConfigResource {
   public Representation getMobileApplicationConfig(
       @PathParam("platform") String platform,
       @PathParam("appTag") String appTag
-  ) throws IOException, ConfigurationNotFoundException {
+  ) throws IOException, MobileConfigException {
 
     if (!this.appsList.isValidAppTag(appTag)) {
       throw new InvalidApplicationTagException(appTag);
