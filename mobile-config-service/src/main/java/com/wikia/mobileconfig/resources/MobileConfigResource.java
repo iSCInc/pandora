@@ -7,11 +7,15 @@ import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.core.MobileConfiguration;
+import com.wikia.mobileconfig.exceptions.ConfigurationNotFoundException;
 import com.wikia.mobileconfig.service.ConfigurationService;
 import com.wikia.mobileconfig.service.AppsListService;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 
 @Path("/configurations/platform/{platform}/app/{appTag}")
@@ -36,18 +40,17 @@ public class MobileConfigResource {
   public Representation getMobileApplicationConfig(
       @PathParam("platform") String platform,
       @PathParam("appTag") String appTag
-  ) throws java.io.IOException, URISyntaxException {
+  ) throws IOException, ConfigurationNotFoundException {
 
     if (!this.appsList.isValidAppTag(appTag)) {
       //TODO: make it a cosher application/problem+json exception
-      throw new WebApplicationException(404);
+      throw new WebApplicationException(new Exception("Invalid application"), 400);
     }
 
     MobileConfiguration configuration = this.appConfiguration.getConfiguration(platform, appTag);
 
     if (configuration.getModules().isEmpty()) {
-      //TODO: make it a cosher application/problem+json exception
-      throw new WebApplicationException(404);
+      throw new ConfigurationNotFoundException(platform, appTag);
     }
 
     Representation rep = MobileConfigApplication.representationFactory.newRepresentation(
