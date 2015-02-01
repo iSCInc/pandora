@@ -6,6 +6,9 @@ public class MobileConfiguration {
 
   private List<Object> modules;
 
+  public MobileConfiguration() {
+  }
+
   public MobileConfiguration(List<Object> modules) {
     this.modules = modules;
   }
