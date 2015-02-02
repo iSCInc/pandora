@@ -1,16 +1,16 @@
-package com.wikia.pandora.core.domains;
+package com.wikia.pandora.core.domain;
 
 
 public class Article {
 
   private final Integer id;
   private final String title;
-  private final String content;
+  private final Integer ns;
 
-  public Article(Integer id, String title, String content) {
+  public Article(Integer id, String title, Integer ns) {
     this.id = id;
     this.title = title;
-    this.content = content;
+    this.ns = ns;
   }
 
 
@@ -22,9 +22,8 @@ public class Article {
     return title;
   }
 
-  public String getContent() {
-    return content;
+
+  public Integer getNs() {
+    return ns;
   }
-
-
 }

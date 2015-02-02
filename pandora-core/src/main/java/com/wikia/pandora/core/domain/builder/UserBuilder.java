@@ -1,6 +1,6 @@
-package com.wikia.pandora.core.domains.builder;
+package com.wikia.pandora.core.domain.builder;
 
-import com.wikia.pandora.core.domains.User;
+import com.wikia.pandora.core.domain.User;
 
 public class UserBuilder {
 

@@ -1,7 +1,7 @@
 package com.wikia.pandora.api.service;
 
 
-import com.wikia.pandora.core.domains.Comment;
+import com.wikia.pandora.core.domain.Comment;
 
 import java.util.Optional;
 

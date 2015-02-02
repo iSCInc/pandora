@@ -2,9 +2,17 @@ package com.wikia.pandora.gateway.mercury;
 
 import com.sun.jersey.api.NotFoundException;
 import com.wikia.pandora.api.service.ArticleService;
-import com.wikia.pandora.core.domains.Article;
-import com.wikia.pandora.core.domains.Comment;
-import com.wikia.pandora.core.domains.builder.PojoBuilderFactory;
+import com.wikia.pandora.core.domain.Article;
+import com.wikia.pandora.core.domain.ArticleWithContent;
+import com.wikia.pandora.core.domain.ArticleWithDescription;
+import com.wikia.pandora.core.domain.Category;
+import com.wikia.pandora.core.domain.Comment;
+import com.wikia.pandora.core.domain.Media;
+import com.wikia.pandora.core.domain.Revision;
+import com.wikia.pandora.core.domain.User;
+import com.wikia.pandora.core.domain.builder.PojoBuilderFactory;
+
+import org.apache.commons.lang.NotImplementedException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,11 +38,20 @@ public class MercuryArticlesService extends MercuryService implements ArticleSer
       return PojoBuilderFactory.getArticleBuilder()
           .withId((Integer) detailsMap.get("id"))
           .withTitle((String) detailsMap.get("title"))
-          .withContent((String) articleMap.get("content"))
           .build();
     } catch (IOException e) {
       throw new NotFoundException("No such article");
     }
+  }
+
+  @Override
+  public ArticleWithDescription getArticleWithDescriptionByTitle(String wikia, String title) {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public ArticleWithContent getArticleWithContentByTitle(String wikia, String title) {
+    throw new NotImplementedException();
   }
 
   @Override
@@ -68,10 +85,35 @@ public class MercuryArticlesService extends MercuryService implements ArticleSer
     Comment comment = PojoBuilderFactory.getCommentBuilder()
         .withWikiaName(wikia)
         .withArticleName(title)
-        .withText("comment test")
+        .withText("TODO LATER")//TODO
         .withId(commentId)
         .build();
 
     return comment;
+  }
+
+  @Override
+  public List<Article> getArticlesFromWikia(String wikia) {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public List<Category> getArticleCategories(String wikia, String title) {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public List<Media> getArticleMedia(String wikia, String title) {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public List<Revision> getArticleRevisions(String wikia, String title) {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public List<User> getArticleContributors(String wikia, String title) {
+    throw new NotImplementedException();
   }
 }

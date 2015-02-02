@@ -1,12 +1,12 @@
-package com.wikia.pandora.core.domains.builder;
+package com.wikia.pandora.core.domain.builder;
 
-import com.wikia.pandora.core.domains.Article;
+import com.wikia.pandora.core.domain.Article;
 
 public class ArticleBuilder {
 
   private Integer id;
   private String title;
-  private String content;
+  private Integer ns;
 
   private ArticleBuilder() {
   }
@@ -25,17 +25,17 @@ public class ArticleBuilder {
     return this;
   }
 
-  public ArticleBuilder withContent(String content) {
-    this.content = content;
+  public ArticleBuilder withNs(Integer ns) {
+    this.ns = ns;
     return this;
   }
 
   public ArticleBuilder but() {
-    return anArticle().withId(id).withTitle(title).withContent(content);
+    return anArticle().withId(id).withTitle(title).withNs(ns);
   }
 
   public Article build() {
-    Article article = new Article(id, title, content);
+    Article article = new Article(id, title, ns);
     return article;
   }
 }

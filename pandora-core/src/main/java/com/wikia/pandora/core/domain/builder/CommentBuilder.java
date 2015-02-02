@@ -1,6 +1,6 @@
-package com.wikia.pandora.core.domains.builder;
+package com.wikia.pandora.core.domain.builder;
 
-import com.wikia.pandora.core.domains.Comment;
+import com.wikia.pandora.core.domain.Comment;
 
 public class CommentBuilder {
 

@@ -12,9 +12,9 @@ about this project that’s a good place to start.
 To run the server:
 
 ```bash
-cp pandora.yaml.sample pandora.yaml
+cp pandora-examples/pandora.yaml.sample pandora-examples/pandora.yaml
 # launch the server
-gradle run
+gradle pandora-examples:run
 ```
 
 To make a request from the server:
@@ -28,7 +28,6 @@ To run the tests:
 ```bash
 gradle test
 ```
-
 
 ## License
 

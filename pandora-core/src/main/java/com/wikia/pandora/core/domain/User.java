@@ -1,4 +1,4 @@
-package com.wikia.pandora.core.domains;
+package com.wikia.pandora.core.domain;
 
 public class User {
 

@@ -1,6 +1,9 @@
 rootProject.name = 'pandora-gateways'
-include 'pandora-core'
+include ':pandora-core'
 project(':pandora-core').projectDir = new File(settingsDir, '../pandora-core')
+
+include ':mediawiki-fluent-api'
+project(':mediawiki-fluent-api').projectDir = new File(settingsDir, '../mediawiki-fluent-api')
 
 include 'nirvana-api'
 project(':nirvana-api').projectDir = new File(settingsDir, '../nirvana-api')
