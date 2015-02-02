@@ -1,20 +1,6 @@
-apply plugin: 'java'
-
-sourceCompatibility = 1.8
-version = '1.0'
-
-repositories {
-    mavenCentral()
-}
+apply from: rootProject.file('gradle/pandora_common_deps.gradle')
 
 dependencies {
     compile project(':pandora-core')
     compile project(':pandora-resources')
-    
-    compile 'org.slf4j:slf4j-api:1.7.5'
-    compile 'io.dropwizard:dropwizard-core:0.7.1'
-    compile 'io.dropwizard:dropwizard-client:0.7.1'
-    compile 'com.theoryinpractise:halbuilder-api:4.0.1'
-    compile 'com.theoryinpractise:halbuilder-core:4.0.3'
-    testCompile group: 'junit', name: 'junit', version: '4.11'
 }
