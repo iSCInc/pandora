@@ -1,0 +1,5 @@
+codegen/
+src/
+pom.xml
+nirvana.json
+*.zip
