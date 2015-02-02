@@ -1,6 +1,0 @@
-rootProject.name = 'pandora-resources'
-include 'pandora-core'
-project(':pandora-core').projectDir = new File(settingsDir, '../pandora-core')
-
-include 'pandora-gateways'
-project(':pandora-gateways').projectDir = new File(settingsDir, '../pandora-gateways')

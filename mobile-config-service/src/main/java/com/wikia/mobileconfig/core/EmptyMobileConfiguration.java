@@ -5,7 +5,7 @@ import java.util.Collections;
 public class EmptyMobileConfiguration extends MobileConfiguration {
 
   public EmptyMobileConfiguration() {
-    this.setModules(Collections.emptyList());
+    super(Collections.emptyList());
   }
 
 }

@@ -7,7 +7,7 @@ public class UriBuilder {
 
   /* This is a hack. Waiting for opinion. I will polish it if this will be accepted.
    *
-   * If we do not use this, getSelfUri will be replaced by:
+   * If we do not use this, getSelfUriBuilder will be replaced by:
    * 
    * uri = javax.ws.rs.core.UriBuilder.fromResource(ArticleResource.Class)
    *      .path(ArticleResource.Class.getMethod("NameOfTheMethod", String.Class, String.Class))
@@ -18,8 +18,8 @@ public class UriBuilder {
   */
 
 
-  public static String getSelfUri(Object... path) {
-    String uri = "";
+  public static javax.ws.rs.core.UriBuilder getSelfUriBuilder(Object... path) {
+    javax.ws.rs.core.UriBuilder uri = null;
     Class type = null;
     Method method = null;
 
@@ -44,13 +44,12 @@ public class UriBuilder {
     }
     try {
       uri = javax.ws.rs.core.UriBuilder.fromResource(type)
-          .path(method)
-          .build(path)
-          .getPath();
+          .path(method);
     } catch (Exception e) {
       e.printStackTrace();
-
     }
     return uri;
   }
+
+
 }
