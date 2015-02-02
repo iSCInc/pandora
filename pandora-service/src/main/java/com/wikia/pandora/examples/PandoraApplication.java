@@ -6,20 +6,17 @@ import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 import com.wikia.pandora.api.service.ArticleService;
 import com.wikia.pandora.api.service.CategoryService;
 import com.wikia.pandora.core.impl.configuration.PandoraConfiguration;
-import com.wikia.pandora.core.impl.service.ServiceFactory;
 import com.wikia.pandora.examples.health.PandoraHealthCheck;
-import com.wikia.pandora.gateway.mediawiki.MediawikiServiceFactory;
-import com.wikia.pandora.resources.HALCategoryResource;
 import com.wikia.pandora.resources.HalArticleResource;
-import com.wikia.pandora.resources.HalMercuryResource;
+import com.wikia.pandora.resources.HALCategoryResource;
+import com.wikia.pandora.service.ServiceFactory;
+import com.wikia.pandora.service.mediawiki.MediawikiServiceFactory;
 
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
 public class PandoraApplication extends Application<PandoraConfiguration> {
-
-  private HalMercuryResource mercuryResource;
 
   public static void main(String[] args) throws Exception {
     new PandoraApplication().run(args);
@@ -46,9 +43,6 @@ public class PandoraApplication extends Application<PandoraConfiguration> {
     ArticleService articleService = serviceFactory.createArticleService();
     CategoryService categoryService = serviceFactory.createCategoryService();
     RepresentationFactory representationFactory = new StandardRepresentationFactory();
-
-    mercuryResource = new HalMercuryResource(articleService, representationFactory);
-    environment.jersey().register(mercuryResource);
 
     environment.jersey().register(new HalArticleResource(articleService, representationFactory));
     environment.jersey().register(new HALCategoryResource(categoryService, representationFactory));

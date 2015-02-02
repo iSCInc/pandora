@@ -2,5 +2,4 @@ apply from: rootProject.file('gradle/pandora_common_deps.gradle')
 
 dependencies {
     compile project(':pandora-core')
-    compile project(':pandora-resources')
 }

@@ -6,9 +6,7 @@ mainClassName = "com.wikia.pandora.examples.PandoraApplication"
 dependencies {
     compile project(':pandora-core')
     compile project(':mediawiki-fluent-api')
-    compile project(':pandora-resources')
     compile project(':pandora-gateways')
-    compile project(':mercury-api')
 
 }
 
