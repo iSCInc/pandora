@@ -1,0 +1,147 @@
+apply plugin: 'groovy'
+apply plugin: 'java'
+apply plugin: 'maven'
+
+sourceCompatibility = 1.8
+group = "com.wikia.nirvana"
+version = '1.0'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://oss.sonatype.org/content/repositories/snapshots'
+    }
+}
+
+dependencies {
+    // these are the dependencies for the generated code
+    String jerseyVersion = '1.7'
+    String jacksonVersion = '2.1.4'
+
+    compile "com.wordnik:swagger-annotations:1.5.0-SNAPSHOT" // from sonatype snapshots
+    compile "com.sun.jersey:jersey-client:${jerseyVersion}"
+    compile "com.sun.jersey.contribs:jersey-multipart:${jerseyVersion}"
+    compile "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+    compile "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
+    compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-joda:2.1.5"
+    compile "joda-time:joda-time:2.3"
+}
+
+task generateNirvanaApi(type: GenerateNirvanaTask) {
+    mavenExecutable = MAVEN_EXEC ?: mavenExecutable
+    rootDir = projectDir
+}
+
+clean << {
+    new AntBuilder().delete(dir: "${projectDir}/src")
+}
+
+compileJava.dependsOn('generateNirvanaApi')
+
+import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
+import groovy.util.AntBuilder
+
+class GenerateNirvanaTask extends DefaultTask {
+    String swaggerJsonUrl = "https://raw.githubusercontent.com/Wikia/app/dev/includes/wikia/api/swagger/nirvana.json"
+    String codegenSource = "https://github.com/Wikia/swagger-codegen/archive/develop_2.0.zip"
+    String rootDir = "."
+    String codegenSubdir = "codegen"
+    String hostReplace = null
+    String mavenExecutable = "mvn"
+
+    @TaskAction
+    def generate() {
+        if (new File("${rootDir}/src").exists()) {
+            // specifying an output directory does not seem to work when compiling from a project
+            // that depends on this
+            throw new StopExecutionException()
+        }
+
+        String json = replaceHost(downloadSwaggerJson())
+        downloadCodegenRepo()
+        generateCode(saveFile(json))
+    }
+
+    def downloadSwaggerJson() {
+        return new URL(swaggerJsonUrl).getText()
+    }
+
+    def replaceHost(String json) {
+        if (hostReplace == null) {
+            return json
+        }
+
+        JsonSlurper slurper = new JsonSlurper()
+        def swaggerObj = slurper.parseText(json)
+        swaggerObj.host = hostReplace
+
+        return JsonOutput.toJson(swaggerObj)
+    }
+
+    def saveFile(String json) {
+        String filename = swaggerJsonUrl.tokenize("/")[-1]
+        File file = new File("${rootDir}/${filename}")
+        file.write(json)
+
+        return file
+    }
+
+    def downloadCodegenRepo() {
+        String zipFilename = codegenSource.tokenize('/')[-1]
+
+        BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(zipFilename))
+        out << new URL(codegenSource).openStream()
+        out.close()
+
+        AntBuilder builder = new AntBuilder()
+
+        builder.sequential {
+            delete(dir: getCodegenDir())
+            unzip(src: zipFilename, dest: getCodegenDir())
+            delete(file: zipFilename)
+        }
+
+        new File(getCodegenDir()).eachDir() { dir ->
+            builder.sequential {
+                move(todir: getCodegenDir()) {
+                    fileset(dir: dir.getPath()) {
+                        include(name: "**")
+                    }
+                }
+                delete(dir: dir.getPath())
+            }
+        }
+    }
+
+    def generateCode(File nirvanaFile) {
+        runCommand("${mavenExecutable} package", getCodegenDir())
+        runCommand("java -cp ./target/*:./target/lib/* com.wordnik.swagger.codegen.Codegen " +
+                   "-i ${nirvanaFile.getAbsolutePath()} " +
+                   "-l com.wikia.codegen.WikiaJavaClientCodegen " +
+                   "-o ${rootDir}", getCodegenDir())
+        runCommand("rm -rf ${nirvanaFile.getAbsolutePath()} ${rootDir}/pom.xml ${getCodegenDir()}")
+    }
+
+    def getCodegenDir() {
+        return "${rootDir}/${codegenSubdir}"
+    }
+
+    def runCommand(String command, String workingDir=null) {
+        def process;
+        println command
+
+        if (workingDir == null) {
+            process = command.execute()
+        } else {
+            process = command.execute(null, new File(workingDir))
+        }
+
+        process.waitFor()
+
+        if (process.exitValue() != 0) {
+            throw new Exception(process.err.text)
+        }
+    }
+}

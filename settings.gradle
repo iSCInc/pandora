@@ -31,3 +31,7 @@ include 'mediawiki-fluent-api'
 
 include 'mercury-api'
 
+include 'nirvana-api'
+
+include 'mobile-config-service'
+
