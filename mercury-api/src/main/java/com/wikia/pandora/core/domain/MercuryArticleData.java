@@ -1,5 +1,7 @@
 package com.wikia.pandora.core.domain;
 
+import com.wikia.pandora.domain.User;
+
 import java.util.List;
 
 public class MercuryArticleData {
