@@ -6,11 +6,14 @@ public class MobileConfiguration {
 
   private List<Object> modules;
 
-  public List<Object> getModules() {
-    return modules;
+  public MobileConfiguration() {
   }
 
-  public void setModules(List<Object> modules) {
+  public MobileConfiguration(List<Object> modules) {
     this.modules = modules;
+  }
+
+  public List<Object> getModules() {
+    return modules;
   }
 }
