@@ -4,11 +4,11 @@ apply plugin: 'docker'
 apply plugin: 'com.wikia.gradle.marathon'
 
 docker {
-    baseImage = "docker-registry.wikia-prod/wikia/java8"
+    baseImage = "${dockerRegistryHost}/wikia/java8"
     maintainer = "Services & API"
 }
 
-def dockerTargetImage = "docker-registry.wikia-prod/services/${project.name}"
+def dockerTargetImage = "${dockerRegistryHost}/services/${project.name}"
 applicationDefaultJvmArgs = ['-Ddw.server.applicationConnectors[0].port=\$PORT0', '-Ddw.server.adminConnectors[0].port=\$PORT1']
 
 startScripts {

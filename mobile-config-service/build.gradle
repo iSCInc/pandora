@@ -1,22 +1,21 @@
-apply plugin: 'java'
 apply plugin: 'application'
 
 buildscript {
     repositories {
         jcenter()
-        maven { url "http://pkg-s2.wikia-prod:81/repository/internal" }
+        maven { url "${archivaUrl}/repository/internal" }
     }
     dependencies {
         classpath 'se.transmode.gradle:gradle-docker:1.2'
         classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.0'
-        classpath 'com.wikia.gradle:marathon:0.4.15'
+        classpath 'com.wikia.gradle:marathon:0.4.16'
     }
 }
 
-version = "0.1.7"
+version = "0.1.8"
 mainClassName = "com.wikia.mobileconfig.MobileConfigApplication"
 
-apply from: 'gradle/deployment.gradle'
+apply from: rootProject.file('gradle/marathon_deployment.gradle')
 apply from: rootProject.file('gradle/pandora_common_deps.gradle')
 
 applicationDistribution.from("mobile-config.yml.sample") {
