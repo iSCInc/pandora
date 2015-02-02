@@ -16,8 +16,6 @@ import javax.ws.rs.core.Response;
 
 import java.net.URISyntaxException;
 
-import io.dropwizard.validation.SizeRange;
-
 @Path("/configurations/platform/{platform}/app/{app-tag}")
 @Produces(RepresentationFactory.HAL_JSON)
 public class MobileConfigResource {

@@ -1,22 +1,19 @@
 package com.wikia.mobileconfig.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.MobileConfigConfiguration;
-import com.wikia.mobileconfig.core.EmptyMobileConfiguration;
-import com.wikia.mobileconfig.core.MobileConfiguration;
-import io.dropwizard.client.HttpClientBuilder;
-import io.dropwizard.setup.Environment;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 
 import javax.ws.rs.core.Response;
+
+import io.dropwizard.client.HttpClientBuilder;
+import io.dropwizard.setup.Environment;
 
 /**
  * A class responsible for getting mobile applications images from our Ceph buckets via HTTP
@@ -31,8 +28,8 @@ public class ImageService {
   private final String cephPort;
 
   public ImageService(
-          Environment environment,
-          MobileConfigConfiguration configuration
+      Environment environment,
+      MobileConfigConfiguration configuration
   ) {
     this.httpClient = new HttpClientBuilder(environment)
         .using(configuration.getHttpClientConfiguration())
@@ -66,7 +63,8 @@ public class ImageService {
     if (response.getStatusLine().getStatusCode() != Response.Status.OK.getStatusCode()) {
       String err = response.getStatusLine().toString();
       MobileConfigApplication.logger.debug(
-          String.format("Invalid status code received when requesting Image %s:%s", requestUrl, err));
+          String
+              .format("Invalid status code received when requesting Image %s:%s", requestUrl, err));
       throw new IOException("Invalid response received: " + err);
     }
 

@@ -1,6 +1,5 @@
 package com.wikia.mobileconfig.service;
 
-import com.wikia.mobileconfig.MobileConfigConfiguration;
 import com.wikia.mobileconfig.core.MobileConfiguration;
 import com.wikia.mobileconfig.utils.Translator;
 
