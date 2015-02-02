@@ -6,3 +6,4 @@ include 'mediawiki-fluent-api'
 
 include 'mobile-config-service'
 include 'pandora-service'
+include 'mercury-api'
