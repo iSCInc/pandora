@@ -1,0 +1,17 @@
+apply from: rootProject.file('gradle/pandora_common_deps.gradle')
+apply plugin: 'application'
+
+mainClassName = "com.wikia.pandora.examples.PandoraApplication"
+
+dependencies {
+    compile project(':pandora-core')
+    compile project(':mediawiki-fluent-api')
+    compile project(':pandora-resources')
+    compile project(':pandora-gateways')
+    compile project(':mercury-api')
+
+}
+
+run {
+    args 'server', 'pandora.yaml'
+}

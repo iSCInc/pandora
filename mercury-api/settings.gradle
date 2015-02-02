@@ -1,6 +1,0 @@
-rootProject.name = 'mercury-api'
-include ':pandora-core'
-project(':pandora-core').projectDir = new File(settingsDir, '../pandora-core')
-
-include ':pandora-resources'
-project(':pandora-resources').projectDir = new File(settingsDir, '../pandora-resources')

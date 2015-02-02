@@ -1,0 +1,10 @@
+def sl4jVersion = "1.7.5"
+def junitVersion = "4.11"
+def mockitoVersion = "1.9.5"
+
+dependencies {
+    // The production code uses the SLF4J logging API at compile time
+    compile "org.slf4j:slf4j-api:$sl4jVersion"
+    testCompile "junit:junit:$junitVersion"
+    testCompile "org.mockito:mockito-core:$mockitoVersion"
+}
