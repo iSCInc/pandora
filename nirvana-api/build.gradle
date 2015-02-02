@@ -29,7 +29,7 @@ dependencies {
 }
 
 task generateNirvanaApi(type: GenerateNirvanaTask) {
-    mavenExecutable = MAVEN_EXEC ?: mavenExecutable
+    mavenExecutable = project.hasProperty("MAVEN_EXEC") ? MAVEN_EXEC : mavenExecutable
     rootDir = projectDir
 }
 
