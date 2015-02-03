@@ -8,7 +8,7 @@ import com.wikia.pandora.core.impl.configuration.PandoraConfiguration;
 import com.wikia.pandora.service.ServiceFactory;
 import com.wikia.pandora.gateway.mercury.MercuryGateway;
 
-import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.http.client.HttpClient;
 
 import io.dropwizard.client.HttpClientBuilder;
@@ -30,12 +30,12 @@ public class MercuryServiceFactory extends ServiceFactory {
 
   @Override
   public CategoryService createCategoryService() {
-    throw new NotImplementedException();
+    throw new NotImplementedException("");
   }
 
   @Override
   public CommentService createCommentService() {
-    throw new NotImplementedException();
+    throw new NotImplementedException("");
   }
 
   private HttpClient createHttpClient(String name) {

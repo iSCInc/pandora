@@ -1,10 +1,14 @@
-package com.wikia.mobileconfig;
+package com.wikia.mobileconfig.integration;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
+import com.wikia.mobileconfig.MobileConfigApplication;
+import com.wikia.mobileconfig.MobileConfigConfiguration;
 
 import org.junit.ClassRule;
 import org.junit.Test;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.Response;
 
 import io.dropwizard.testing.junit.DropwizardAppRule;
 
@@ -20,11 +24,12 @@ public class IntegrationTest {
 
   @Test
   public void unexistingResourceRespondsWith404() {
-    Client client = new Client();
+    Client client = ClientBuilder.newClient();
 
-    ClientResponse response = client.resource(
+    Response response = client.target(
         String.format("http://localhost:%d/configurations/platform/test-platform/app/test-app/", RULE.getLocalPort()))
-        .get(ClientResponse.class);
+        .request()
+        .get();
 
     assertThat(response.getStatus()).isEqualTo(404);
   }

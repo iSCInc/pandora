@@ -13,40 +13,20 @@ buildscript {
     }
 }
 
-sourceCompatibility = 1.8
-mainClassName = "com.wikia.mobileconfig.MobileConfigApplication"
 version = "0.1.7"
+mainClassName = "com.wikia.mobileconfig.MobileConfigApplication"
+
 apply from: 'gradle/deployment.gradle'
+apply from: rootProject.file('gradle/pandora_common_deps.gradle')
 
 applicationDistribution.from("mobile-config.yml.sample") {
     rename 'mobile-config.yml.sample', "${project.name}.yml"
     into 'conf'
 }
 
-repositories {
-    jcenter()
-    mavenCentral();
-}
-
 // In this section you declare the dependencies for your production and test code
 dependencies {
-    //compile 'com.orbitz.consul:consul-client:0.8'
     compile 'com.github.dcshock:consul-rest-client:0.5'
-
-    // The production code uses the SLF4J logging API at compile time
-    compile 'org.slf4j:slf4j-api:1.7.5'
-    compile 'io.dropwizard:dropwizard-core:0.7.1'
-    compile 'io.dropwizard:dropwizard-client:0.7.1'
-
-    // HAL stuff
-    compile 'com.theoryinpractise:halbuilder-standard:4.0.1'
-    compile ('com.theoryinpractise:halbuilder-jaxrs:1.1.1') {
-        exclude group: 'javax.ws.rs'
-    }
-
-    testCompile 'junit:junit:4.11'
-    testCompile 'io.dropwizard:dropwizard-testing:0.7.1'
-    testCompile 'org.mockito:mockito-core:1.9.5'
 }
 
 run {

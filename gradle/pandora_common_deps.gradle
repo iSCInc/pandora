@@ -1,5 +1,5 @@
 apply from: rootProject.file('gradle/common_deps.gradle')
-def dropwizardVersion = "0.7.1"
+def dropwizardVersion = "0.8.0-rc2"
 
 dependencies {
     compile "io.dropwizard:dropwizard-core:$dropwizardVersion"
@@ -15,5 +15,6 @@ dependencies {
         exclude group: 'javax.ws.rs'
     }
 
+    testCompile 'org.easytesting:fest-assert-core:2.0M10'
     testCompile "io.dropwizard:dropwizard-testing:$dropwizardVersion"
 }
