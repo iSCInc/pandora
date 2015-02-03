@@ -88,11 +88,11 @@ public class MobileConfigResourceTest {
     when(httpServiceMock.getConfiguration("test-platform", "test-app", "en-us", "en-us"))
         .thenReturn(cfgMock);
 
-    resources.client()
+    String response = resources.client()
       .resource("/configurations/platform/test-platform/app/test-app?ui-lang=en-us&content-lang=en-us")
       .get(String.class);
 
-    //TODO: assert - the client response is our HAL object
+    assert(response).contains("modules");
 
     verify(appsListMock).isValidAppTag("test-app");
     verify(httpServiceMock).getConfiguration("test-platform", "test-app", "en-us", "en-us");

@@ -3,8 +3,8 @@ package com.wikia.mobileconfig.resources;
 import com.google.common.io.Files;
 
 import com.codahale.metrics.annotation.Timed;
+import com.wikia.mobileconfig.exceptions.ImageNotFoundException;
 import com.wikia.mobileconfig.service.ImageService;
-import com.wikia.mobileconfig.utils.RequestValidator;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -34,7 +34,9 @@ public class ImageResource {
 
         byte[] imageBytes = this.imageService.getImage(filename);
 
-        RequestValidator.validate(imageBytes != null && imageBytes.length > 0, "Image not found");
+        if (imageBytes == null || imageBytes.length == 0) {
+            throw new ImageNotFoundException(filename);
+        }
 
         String contentType = "image/" + Files.getFileExtension(filename);
         return Response.ok(imageBytes, MediaType.valueOf(contentType)).build();
