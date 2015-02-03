@@ -1,0 +1,12 @@
+logging:
+  level: INFO
+  appenders:
+    - type: console
+      threshold: ALL
+      timeZone: UTC
+      target: stdout
+    - type: file
+      threshold: INFO
+      currentLogFilename: /tmp/example.log
+      archivedLogFilenamePattern: /tmp/example-%d.log.gz
+      archivedFileCount: 5
