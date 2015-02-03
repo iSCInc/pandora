@@ -15,7 +15,8 @@ import com.wikia.pandora.domain.Revision;
 import com.wikia.pandora.domain.builder.PojoBuilderFactory;
 import com.wikia.pandora.gateway.mediawiki.MediawikiGateway;
 
-import org.apache.commons.lang.NotImplementedException;
+
+import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ public class MediawikiArticleService extends MediawikiService implements Article
 
   @Override
   public ArticleWithDescription getArticleWithDescriptionByTitle(String wikia, String title) {
-    throw new NotImplementedException();
+    throw new NotImplementedException("");
   }
 
   @Override
@@ -57,12 +58,12 @@ public class MediawikiArticleService extends MediawikiService implements Article
 
   @Override
   public List<Comment> getArticleComments(String wikia, String title) {
-    throw new NotImplementedException();
+    throw new NotImplementedException("");
   }
 
   @Override
   public Comment getComment(String wikia, String title, Long commentId) {
-    throw new NotImplementedException();
+    throw new NotImplementedException("");
   }
 
   @Override

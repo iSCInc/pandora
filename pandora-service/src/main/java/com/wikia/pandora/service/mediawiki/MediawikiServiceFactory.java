@@ -4,10 +4,10 @@ import com.wikia.pandora.api.service.ArticleService;
 import com.wikia.pandora.api.service.CategoryService;
 import com.wikia.pandora.api.service.CommentService;
 import com.wikia.pandora.core.impl.configuration.PandoraConfiguration;
-import com.wikia.pandora.service.ServiceFactory;
 import com.wikia.pandora.gateway.mediawiki.MediawikiGateway;
+import com.wikia.pandora.service.ServiceFactory;
 
-import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.http.client.HttpClient;
 
 import io.dropwizard.setup.Environment;
@@ -41,6 +41,6 @@ public class MediawikiServiceFactory extends ServiceFactory {
   @Override
   public CommentService createCommentService() {
 
-    throw new NotImplementedException();
+    throw new NotImplementedException("");
   }
 }

@@ -1,6 +1,6 @@
 def sl4jVersion = "1.7.5"
 def junitVersion = "4.11"
-def mockitoVersion = "1.9.5"
+def mockitoVersion = "1.10.17"
 
 dependencies {
     // The production code uses the SLF4J logging API at compile time
