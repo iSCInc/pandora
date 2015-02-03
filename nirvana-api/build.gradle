@@ -8,9 +8,6 @@ version = '1.0'
 
 repositories {
     mavenCentral()
-    maven {
-        url 'https://oss.sonatype.org/content/repositories/snapshots'
-    }
 }
 
 dependencies {
@@ -18,7 +15,7 @@ dependencies {
     String jerseyVersion = '1.7'
     String jacksonVersion = '2.1.4'
 
-    compile "com.wordnik:swagger-annotations:1.5.0-SNAPSHOT" // from sonatype snapshots
+    compile "com.wordnik:swagger-annotations:1.5.0-M1"
     compile "com.sun.jersey:jersey-client:${jerseyVersion}"
     compile "com.sun.jersey.contribs:jersey-multipart:${jerseyVersion}"
     compile "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
@@ -29,7 +26,7 @@ dependencies {
 }
 
 task generateNirvanaApi(type: GenerateNirvanaTask) {
-    mavenExecutable = project.hasProperty("MAVEN_EXEC") ? MAVEN_EXEC : mavenExecutable
+    hostReplace = project.hasProperty("NIRVANA_API_HOST") ? NIRVANA_API_HOST : hostReplace
     rootDir = projectDir
 }
 
@@ -45,11 +42,10 @@ import groovy.util.AntBuilder
 
 class GenerateNirvanaTask extends DefaultTask {
     String swaggerJsonUrl = "https://raw.githubusercontent.com/Wikia/app/dev/includes/wikia/api/swagger/nirvana.json"
-    String codegenSource = "https://github.com/Wikia/swagger-codegen/archive/develop_2.0.zip"
+    String codegenJar = 'http://pkg-s2.wikia-prod:81/repository/snapshots/com/wikia/swagger/swagger-codegen/1.0-SNAPSHOT/swagger-codegen-1.0-20150203.230841-1.jar'
     String rootDir = "."
     String codegenSubdir = "codegen"
     String hostReplace = null
-    String mavenExecutable = "mvn"
 
     @TaskAction
     def generate() {
@@ -60,7 +56,6 @@ class GenerateNirvanaTask extends DefaultTask {
         }
 
         String json = replaceHost(downloadSwaggerJson())
-        downloadCodegenRepo()
         generateCode(saveFile(json))
     }
 
@@ -88,40 +83,23 @@ class GenerateNirvanaTask extends DefaultTask {
         return file
     }
 
-    def downloadCodegenRepo() {
-        String zipFilename = codegenSource.tokenize('/')[-1]
-
-        BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(zipFilename))
-        out << new URL(codegenSource).openStream()
-        out.close()
-
-        AntBuilder builder = new AntBuilder()
-
-        builder.sequential {
-            delete(dir: getCodegenDir())
-            unzip(src: zipFilename, dest: getCodegenDir())
-            delete(file: zipFilename)
-        }
-
-        new File(getCodegenDir()).eachDir() { dir ->
-            builder.sequential {
-                move(todir: getCodegenDir()) {
-                    fileset(dir: dir.getPath()) {
-                        include(name: "**")
-                    }
-                }
-                delete(dir: dir.getPath())
-            }
-        }
-    }
-
     def generateCode(File nirvanaFile) {
-        runCommand("${mavenExecutable} package", getCodegenDir())
-        runCommand("java -cp ./target/*:./target/lib/* com.wordnik.swagger.codegen.Codegen " +
-                   "-i ${nirvanaFile.getAbsolutePath()} " +
-                   "-l com.wikia.codegen.WikiaJavaClientCodegen " +
-                   "-o ${rootDir}", getCodegenDir())
-        runCommand("rm -rf ${nirvanaFile.getAbsolutePath()} ${rootDir}/pom.xml ${getCodegenDir()}")
+        String jarDownloadDestination = getCodegenDir()+"/"+codegenJar.tokenize('/')[-1]
+
+        new AntBuilder().sequential {
+            delete(dir: getCodegenDir())
+            mkdir(dir: getCodegenDir())
+            get(src: codegenJar, dest: jarDownloadDestination)
+            exec(executable: 'java') {
+                arg(line: "-cp ${getCodegenDir()}/* com.wordnik.swagger.codegen.Codegen")
+                arg(line: "-i ${nirvanaFile.getAbsolutePath()}")
+                arg(line: "-l com.wikia.codegen.WikiaJavaClientCodegen")
+                arg(line: "-o ${rootDir}")
+            }
+            delete(dir: getCodegenDir())
+            delete(file: nirvanaFile.getAbsolutePath())
+            delete(file: "${rootDir}/pom.xml")
+        }
     }
 
     def getCodegenDir() {
