@@ -105,21 +105,4 @@ class GenerateNirvanaTask extends DefaultTask {
     def getCodegenDir() {
         return "${rootDir}/${codegenSubdir}"
     }
-
-    def runCommand(String command, String workingDir=null) {
-        def process;
-        println command
-
-        if (workingDir == null) {
-            process = command.execute()
-        } else {
-            process = command.execute(null, new File(workingDir))
-        }
-
-        process.waitFor()
-
-        if (process.exitValue() != 0) {
-            throw new Exception(process.err.text)
-        }
-    }
 }
