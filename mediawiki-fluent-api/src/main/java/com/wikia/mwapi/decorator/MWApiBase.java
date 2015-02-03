@@ -20,6 +20,7 @@ import org.slf4j.MarkerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 public abstract class MWApiBase implements WikiaChoose, MainModuleOption, MethodOption {
 
@@ -27,10 +28,16 @@ public abstract class MWApiBase implements WikiaChoose, MainModuleOption, Method
   private String wikia;
   private ActionEnum action;
   private FormatEnum format;
+  private String domain;
 
-  public String getWikia() {
-    return wikia;
+  public String getDomain() {
+    if (domain != null && !Objects.equals(domain, "")) {
+      return domain;
+    } else {
+      return String.format("%s.wikia.com", wikia);
+    }
   }
+
 
   public ActionEnum getAction() {
     return action;
@@ -47,16 +54,23 @@ public abstract class MWApiBase implements WikiaChoose, MainModuleOption, Method
   }
 
   @Override
+  public MainModuleOption domain(String domain) {
+    this.domain = domain;
+    return this;
+
+  }
+
+  @Override
   public TitlesChoose queryAction() {
     this.action = ActionEnum.query;
     return new MWApiQuery(this);
   }
 
+
   public MainModuleOption format(FormatEnum format) {
     this.format = format;
     return this;
   }
-
 
   @Override
   public ApiResponse get() {
@@ -100,7 +114,6 @@ public abstract class MWApiBase implements WikiaChoose, MainModuleOption, Method
 
   protected abstract URIBuilder createURIBuilder() throws URISyntaxException;
 
+
   protected abstract InputStream handleMWRequest(String url) throws IOException;
-
-
 }

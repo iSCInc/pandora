@@ -5,4 +5,6 @@ import com.wikia.mwapi.fluent.query.MainModuleOption;
 public interface WikiaChoose {
 
   MainModuleOption wikia(String wikia);
+  
+  MainModuleOption domain(String domain);
 }

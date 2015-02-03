@@ -22,7 +22,7 @@ import java.net.URISyntaxException;
 public class MWApi extends MWApiBase implements MainModuleOption {
 
   private static final Logger logger = LoggerFactory.getLogger(MWApi.class);
-  private static final String DEFAULT_BASEURL = "http://%s.wikia.com/api.php";
+  private static final String DEFAULT_BASEURL = "http://%s/api.php";
   private final HttpClient httpClient;
 
 
@@ -51,7 +51,7 @@ public class MWApi extends MWApiBase implements MainModuleOption {
 
   @Override
   protected URIBuilder createURIBuilder() throws URISyntaxException {
-    return new URIBuilder(String.format(DEFAULT_BASEURL, getWikia()));
+    return new URIBuilder(String.format(DEFAULT_BASEURL, getDomain()));
   }
 
   protected InputStream handleMWRequest(String url) throws IOException {

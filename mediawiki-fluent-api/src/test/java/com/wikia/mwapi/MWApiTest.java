@@ -72,6 +72,20 @@ public class MWApiTest {
   }
 
   @Test
+  public void testUrlWithDomain() {
+    HttpClient clientMock = Mockito.mock(HttpClient.class);
+    String url = MWApi.createBuilder(clientMock)
+        .domain("stargate.custom.domain")
+        .queryAction()
+        .titles("chapa'ai")
+        .url();
+
+    assertEquals(
+        "http://stargate.custom.domain/api.php?action=query&format=json&titles=chapa%27ai",
+        url);
+  }
+
+  @Test
   public void testGetWithTitle() throws IOException {
     String wikia = "muppet";
     String title = "Kermit the Frog";
