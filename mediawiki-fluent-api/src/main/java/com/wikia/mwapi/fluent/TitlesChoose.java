@@ -2,7 +2,7 @@ package com.wikia.mwapi.fluent;
 
 public interface TitlesChoose {
 
-  OptionChoose titles(String... titles);
+  QueryOption titles(String... titles);
 
-  OptionChoose allPages();
+  QueryOption allPages();
 }
