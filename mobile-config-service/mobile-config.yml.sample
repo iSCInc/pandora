@@ -30,3 +30,9 @@ server:
   adminConnectors:
   - type: http
     port: 8081
+consulConfig:
+  tags:
+    - auto_pandora
+  consulUri: http://localhost:8500
+  heartbeatInterval: 2s
+  heartbeatTTL: 5s

@@ -4,6 +4,7 @@ import io.dropwizard.Configuration;
 import io.dropwizard.client.HttpClientConfiguration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.wikia.pandora.core.consul.ConsulConfig;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -28,6 +29,11 @@ public class MobileConfigConfiguration extends Configuration {
   @NotNull
   private String cephPort;
 
+  @Valid
+  @NotNull
+  @JsonProperty
+  private ConsulConfig consulConfig = new ConsulConfig();
+
   public MobileConfigConfiguration() {
     httpClient = new HttpClientConfiguration();
   }
@@ -46,5 +52,9 @@ public class MobileConfigConfiguration extends Configuration {
 
   public String getCephPort() {
     return cephPort;
+  }
+
+  public ConsulConfig getConsulConfig() {
+    return consulConfig;
   }
 }

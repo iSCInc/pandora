@@ -1,1 +1,5 @@
 apply from: rootProject.file('gradle/pandora_common_deps.gradle')
+
+dependencies {
+    compile 'com.orbitz.consul:consul-client:0.8'
+}

@@ -2,9 +2,28 @@ def sl4jVersion = "1.7.5"
 def junitVersion = "4.11"
 def mockitoVersion = "1.10.17"
 
+apply plugin: 'findbugs'
+findbugs {
+    ignoreFailures = true
+}
+
+apply plugin: 'pmd'
+
 dependencies {
     // The production code uses the SLF4J logging API at compile time
     compile "org.slf4j:slf4j-api:$sl4jVersion"
+    compile "com.google.code.findbugs:jsr305:3.0.0"
+    compile "com.google.code.findbugs:annotations:3.0.0"
+
     testCompile "junit:junit:$junitVersion"
     testCompile "org.mockito:mockito-core:$mockitoVersion"
+}
+
+tasks.withType(FindBugs) {
+    reportLevel = "low"
+    effort = "max"
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
 }

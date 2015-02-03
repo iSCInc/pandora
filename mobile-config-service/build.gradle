@@ -12,8 +12,10 @@ buildscript {
     }
 }
 
-version = "0.1.8"
+version = "0.1.11"
 mainClassName = "com.wikia.mobileconfig.MobileConfigApplication"
+
+applicationDefaultJvmArgs = ["-Xms100m", "-Xmn128m", "-Xmx300m", "-XX:+UseNUMA", "-XX:+UseCondCardMark", "-XX:+UseBiasedLocking", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC"]
 
 apply from: rootProject.file('gradle/marathon_deployment.gradle')
 apply from: rootProject.file('gradle/pandora_common_deps.gradle')
@@ -23,9 +25,12 @@ applicationDistribution.from("mobile-config.yml.sample") {
     into 'conf'
 }
 
-// In this section you declare the dependencies for your production and test code
+tasks.deployToProd {
+    mem = 1000
+}
+
 dependencies {
-    compile 'com.github.dcshock:consul-rest-client:0.5'
+    compile project(":pandora-core")
 }
 
 run {
