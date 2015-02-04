@@ -1,15 +1,20 @@
 package com.wikia.pandora.gateway.mercury;
 
 
-import com.wikia.pandora.gateway.mercury.util.MercuryGatewayTestHelper;
+
 
 import org.apache.http.client.HttpClient;
-import org.fest.assertions.api.Assertions;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.fest.assertions.api.Assertions.*;
 import org.junit.Test;
-import org.mockito.Mockito;
+
+import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 import java.util.Map;
+
+import io.dropwizard.testing.FixtureHelpers;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
@@ -17,11 +22,11 @@ public class MercuryGatewayTest {
 
   @Test
   public void testFormatMercuryRequest() {
-    HttpClient httpClient = Mockito.mock(HttpClient.class);
+    HttpClient httpClient = mock(HttpClient.class);
 
-    MercuryGateway mercuryGateway = new MercuryGateway(httpClient);
-    assertThat(mercuryGateway.formatArticleMercuryRequest("muppet", "Kermit the Frog"))
-        .isEqualTo("http://muppet.wikia.com/api/v1/Mercury/Article?title=Kermit+the+Frog");
+    MercuryGateway mercuryGateway = new MercuryGateway(httpClient, "some-internal-host", 80);
+    assertThat(mercuryGateway.formatArticleMercuryRequest("Kermit the Frog"))
+        .isEqualTo("http://some-internal-host:80/api/v1/Mercury/Article?title=Kermit+the+Frog");
   }
 
   @Test
@@ -29,11 +34,21 @@ public class MercuryGatewayTest {
     String wikia = "muppet";
     String title = "Kermit the Frog";
 
-    MercuryGateway mercuryGateway = MercuryGatewayTestHelper.mercuryGatewayMock(wikia, title,
-                                                                                "fixtures/mercury-gateway/kermit-the-frog.json");
-    Map<String, Object> article = mercuryGateway.getArticle(wikia, title);
+    HttpClient httpClient = mock(HttpClient.class);
+    MercuryGateway mercuryGateway = new MercuryGateway(httpClient, "some-internal-host", 80);
 
-    Assertions.assertThat(article.get("data")).isNotNull();
-    Assertions.assertThat(((Map<String, Object>) article.get("data")).get("details")).isNotNull();
+    when(httpClient.execute(any(HttpGet.class), any(ResponseHandler.class))).thenReturn(
+        FixtureHelpers.fixture("fixtures/mercury-gateway/kermit-the-frog.json").toString()
+    );
+
+    Map<String,Object> article = mercuryGateway.getArticle(wikia, title);
+    assertThat(article.get("data")).isNotNull();
+
+    Map<String,Object> data = (Map<String, Object>) article.get("data");
+    assertThat(data.get("details")).isNotNull();
+
+    Map<String,Object> details = (Map<String, Object>) data.get("details");
+    assertThat(details.get("title")).isEqualTo("Kermit the Frog");
+
   }
 }

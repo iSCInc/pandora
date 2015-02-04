@@ -8,19 +8,18 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 
 import org.apache.commons.lang3.Validate;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.util.EntityUtils;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.protocol.HTTP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,30 +28,26 @@ public class MercuryGateway {
 
   private static final Logger logger = LoggerFactory.getLogger(MercuryGateway.class);
 
+  public static final String DEFAULT_WIKIA_HOST_FORMAT = "%s.wikia.com";
+
   public static final String
       DEFAULT_MERCURY_COMMENT_REQUEST_FORMAT =
-      "http://%s.wikia.com/api/v1/Mercury/ArticleComments?title=%s";
+      "http://%s:%d/api/v1/Mercury/ArticleComments?title=%s";
 
   public static final String
       DEFAULT_MERCURY_ARTICLE_REQUEST_FORMAT =
-      "http://%s.wikia.com/api/v1/Mercury/Article?title=%s";
+      "http://%s:%d/api/v1/Mercury/Article?title=%s";
 
   private final HttpClient httpClient;
-  private final String articleRequestFormat;
-  private final String commentsRequestFormat;
+  private final String host;
+  private final Integer port;
 
-  public MercuryGateway(HttpClient httpClient, String articleRequestFormat,
-                        String commentsRequestFormat) {
+  public MercuryGateway(HttpClient httpClient, String host, Integer port) {
     this.httpClient = httpClient;
-    this.articleRequestFormat = articleRequestFormat;
-    this.commentsRequestFormat = commentsRequestFormat;
+    this.host = host;
+    this.port = port;
   }
 
-  public MercuryGateway(HttpClient httpClient) {
-    this.httpClient = httpClient;
-    this.articleRequestFormat = MercuryGateway.DEFAULT_MERCURY_ARTICLE_REQUEST_FORMAT;
-    this.commentsRequestFormat = MercuryGateway.DEFAULT_MERCURY_COMMENT_REQUEST_FORMAT;
-  }
 
   /**
    * Get an article given a wikia and title.
@@ -66,11 +61,10 @@ public class MercuryGateway {
   public ImmutableMap<String, Object> getArticle(String wikia, String title) throws IOException {
     final Map<String, Object> article;
     ObjectMapper mapper = new ObjectMapper();
-    Optional<String> response = this.getRequestHandler(formatArticleMercuryRequest(wikia, title));
+    Optional<String> response = this.executeHttpRequest(wikia, formatArticleMercuryRequest(title));
 
     if (response.isPresent()) {
-      article = mapper.readValue(response.get(), new TypeReference<HashMap<String, Object>>() {
-      });
+      article = mapper.readValue(response.get(), new TypeReference<HashMap<String, Object>>() {});
     } else {
       throw new IllegalStateException(
           String.format("Error, the response for %s/%s is not valid!", wikia, title));
@@ -83,12 +77,11 @@ public class MercuryGateway {
       throws IOException {
     final Map<String, Object> articleComments;
     ObjectMapper mapper = new ObjectMapper();
-    Optional<String> response = this.getRequestHandler(formatCommentMercuryRequest(wikia, title));
+    Optional<String> response = this.executeHttpRequest(wikia, formatCommentMercuryRequest(title));
     logger.info(String.valueOf(response));
     if (response.isPresent()) {
       articleComments =
-          mapper.readValue(response.get(), new TypeReference<HashMap<String, Object>>() {
-          });
+          mapper.readValue(response.get(), new TypeReference<HashMap<String, Object>>() { });
     } else {
       throw new IllegalStateException(
           String.format("Error, the response for %s/%s is not valid!", wikia, title));
@@ -97,46 +90,29 @@ public class MercuryGateway {
     return ImmutableMap.copyOf(articleComments);
   }
 
-  public String formatArticleMercuryRequest(String wikia, String title) {
-    return formatMercuryRequest(wikia, title, this.articleRequestFormat);
+  public String formatArticleMercuryRequest(String title) {
+    return formatMercuryRequest(title, this.DEFAULT_MERCURY_ARTICLE_REQUEST_FORMAT);
   }
 
-  public String formatCommentMercuryRequest(String wikia, String title) {
-    return formatMercuryRequest(wikia, title, this.commentsRequestFormat);
+  public String formatCommentMercuryRequest(String title) {
+    return formatMercuryRequest(title, this.DEFAULT_MERCURY_COMMENT_REQUEST_FORMAT);
   }
 
-  public String formatMercuryRequest(String wikia, String title, String format) {
+  public String formatMercuryRequest(String title, String format) {
     try {
-      return String.format(format, wikia, URLEncoder.encode(title, "UTF-8"));
+      return String.format(format, this.host, this.port,
+                           URLEncoder.encode(title, StandardCharsets.UTF_8.toString()));
     } catch (UnsupportedEncodingException e) {
-      return String.format(format, wikia, title);
+      return String.format(format, title);
     }
   }
 
-  public Optional<String> getRequestHandler(final String requestUrl) throws IOException {
+  public Optional<String> executeHttpRequest(final String wikia, final String requestUrl) throws IOException {
     HttpGet httpGet = new HttpGet(requestUrl);
-    ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
-
-      public String handleResponse(final HttpResponse response) throws IOException {
-        int status = response.getStatusLine().getStatusCode();
-        if (status == 200) {
-          Optional<HttpEntity> entity = Optional.of(response.getEntity());
-          if (!entity.isPresent()) {
-            throw new ClientProtocolException(
-                String.format("Empty response body from '%s'!", requestUrl));
-          }
-          return EntityUtils.toString(entity.get());
-        } else {
-          throw new ClientProtocolException(
-              String.format("Unexpected response status %d from '%s'.", status, requestUrl));
-        }
-      }
-
-    };
-
+    httpGet.setHeader(HTTP.TARGET_HOST, String.format(DEFAULT_WIKIA_HOST_FORMAT, wikia));
+    ResponseHandler<String> responseHandler = new BasicResponseHandler();
     return Optional.of(this.httpClient.execute(httpGet, responseHandler));
   }
-
 
   public ImmutableMap<String, Object> validateMercuryArticleMap(Map article) {
     Validate.notEmpty(article, "Empty map!");

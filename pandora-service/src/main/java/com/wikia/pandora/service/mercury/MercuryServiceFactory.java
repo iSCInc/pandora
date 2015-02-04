@@ -16,21 +16,24 @@ import io.dropwizard.setup.Environment;
 
 public class MercuryServiceFactory extends ServiceFactory {
 
+  private final HttpClient httpClient;
+  private final MercuryGateway gateway;
+
   public MercuryServiceFactory(PandoraConfiguration configuration,
                                Environment environment) {
     super(configuration, environment);
+    this.httpClient = createHttpClient("gateway-client-articles");
+    this.gateway = new MercuryGateway(httpClient, configuration.getMercuryGatewayHost(), configuration.getMercuryGatewayPort());
   }
 
   @Override
   public ArticleService createArticleService() {
-    final HttpClient httpClient = createHttpClient("gateway-client-articles");
-    MercuryGateway gateway = new MercuryGateway(httpClient);
-    return new MercuryArticlesService(gateway);
+    return new MercuryArticlesService(this.gateway);
   }
 
   @Override
   public CategoryService createCategoryService() {
-    throw new NotImplementedException("");
+    return new MercuryCategoryService(this.gateway);
   }
 
   @Override
