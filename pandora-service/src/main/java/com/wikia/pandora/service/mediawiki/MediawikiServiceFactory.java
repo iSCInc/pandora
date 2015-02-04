@@ -40,7 +40,6 @@ public class MediawikiServiceFactory extends ServiceFactory {
 
   @Override
   public CommentService createCommentService() {
-
-    throw new NotImplementedException("");
+    return new MediawikiCommentService(gateway);
   }
 }
