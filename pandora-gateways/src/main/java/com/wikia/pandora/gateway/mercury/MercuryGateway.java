@@ -11,6 +11,7 @@ import org.apache.commons.lang3.Validate;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,6 @@ public class MercuryGateway {
       "/api/v1/Mercury/Article";
 
   private final HttpClient httpClient;
-  private final int port = 80;
 
   public MercuryGateway(HttpClient httpClient) {
     this.httpClient = httpClient;
@@ -72,7 +72,6 @@ public class MercuryGateway {
 
   public ImmutableMap<String, Object> getCommentsForArticle(String wikia, String title)
       throws IOException {
-    Optional<String> response;
     URI requestURI;
     final Map<String, Object> articleComments;
 
@@ -110,24 +109,21 @@ public class MercuryGateway {
 
 
   public URI mercuryArticleRequestURI(String wikia, String title) throws URISyntaxException {
-    return mercuryRequestURI(wikia,
-                             this.DEFAULT_MERCURY_ARTICLE_REQUEST_PATH,
-                             String.format("title=%s", title));
+    return new URIBuilder(mercuryRequestURI(wikia, this.DEFAULT_MERCURY_ARTICLE_REQUEST_PATH))
+        .addParameter("title", title)
+        .build();
   }
 
   public URI mercuryCommentRequestURI(String wikia, String title) throws URISyntaxException {
-    return mercuryRequestURI(wikia,
-                             this.DEFAULT_MERCURY_COMMENT_REQUEST_PATH,
-                             String.format("title=%s", title));
+    return new URIBuilder(mercuryRequestURI(wikia, this.DEFAULT_MERCURY_COMMENT_REQUEST_PATH))
+        .addParameter("title", title)
+        .build();
   }
 
-  public URI mercuryRequestURI(String wikia, String path, String query) throws URISyntaxException {
+  public URI mercuryRequestURI(String wikia, String path) throws URISyntaxException {
     return new URI("http",
-                   null,
                    String.format(this.DEFAULT_WIKIA_HOST_FORMAT, wikia),
-                   this.port,
                    path,
-                   query,
                    null);
   }
 

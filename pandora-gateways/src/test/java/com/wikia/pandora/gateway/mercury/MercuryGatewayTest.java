@@ -26,7 +26,7 @@ public class MercuryGatewayTest {
 
     MercuryGateway mercuryGateway = new MercuryGateway(httpClient);
     assertThat(mercuryGateway.mercuryArticleRequestURI("muppet", "Kermit the Frog").toString())
-        .isEqualTo("http://muppet.wikia.com:80/api/v1/Mercury/Article?title=Kermit%20the%20Frog");
+        .isEqualTo("http://muppet.wikia.com/api/v1/Mercury/Article?title=Kermit+the+Frog");
   }
 
   @Test
