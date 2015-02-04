@@ -14,8 +14,9 @@ public class ExampleResourceTest {
   public void testGetHelloWorld() throws Exception {
     RepresentationFactory representationFactory = new StandardRepresentationFactory();
     ExampleResource resource = new ExampleResource(representationFactory);
+    resource.setGreetingsWord("Hi in Tests");
     Representation representation = resource.getHelloWorld("John");
-    assertEquals(representation.getProperties().get("Greatings"), "John");
+    assertEquals(representation.getProperties().get("Greetings"), "Hi in Tests John");
   }
 
   @Test

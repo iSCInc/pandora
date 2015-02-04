@@ -36,6 +36,7 @@ public class ExampleServiceApplication extends Application<ExampleConfiguration>
 
     StandardRepresentationFactory representationFactory = new StandardRepresentationFactory();
     ExampleResource exampleResource = new ExampleResource(representationFactory);
+    exampleResource.setGreetingsWord(configuration.getGreetingsWord());
     environment.jersey().register(exampleResource);
 
     //Optional

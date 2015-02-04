@@ -1,3 +1,4 @@
+greetingsWord: Welcome not hello
 logging:
   level: INFO
   appenders:

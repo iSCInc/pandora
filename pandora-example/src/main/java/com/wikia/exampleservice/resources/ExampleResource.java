@@ -16,6 +16,7 @@ import javax.ws.rs.Produces;
 public class ExampleResource {
 
   private final RepresentationFactory representationFactory;
+  private String greetingsWord;
 
   public ExampleResource(RepresentationFactory representationFactory) {
     this.representationFactory = representationFactory;
@@ -27,14 +28,13 @@ public class ExampleResource {
   public Representation getHelloWorld(@PathParam("name") String name) {
     Representation representation = representationFactory.newRepresentation();
 
-    representation.withProperty("Greatings", name);
+    representation.withProperty("Greetings", String.format("%s %s", getGreetingsWord(), name));
     return representation;
   }
 
   @GET
   @Path("/SimplePojo/{id}/{name}/{bool}")
   @Timed
-
   public Representation getSimplePojo(
       @PathParam("id") int id,
       @PathParam("name") String name,
@@ -48,5 +48,13 @@ public class ExampleResource {
         .build();
     representation.withBean(pojo);
     return representation;
+  }
+
+  public void setGreetingsWord(String greetingsWord) {
+    this.greetingsWord = greetingsWord;
+  }
+
+  public String getGreetingsWord() {
+    return greetingsWord;
   }
 }
