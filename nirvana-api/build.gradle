@@ -12,12 +12,10 @@ repositories {
 
 dependencies {
     // these are the dependencies for the generated code
-    String jerseyVersion = '1.7'
     String jacksonVersion = '2.1.4'
 
     compile "com.wordnik:swagger-annotations:1.5.0-M1"
-    compile "com.sun.jersey:jersey-client:${jerseyVersion}"
-    compile "com.sun.jersey.contribs:jersey-multipart:${jerseyVersion}"
+    compile "org.glassfish.jersey.core:jersey-client:2.15"
     compile "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
     compile "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
     compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
@@ -42,7 +40,7 @@ import groovy.util.AntBuilder
 
 class GenerateNirvanaTask extends DefaultTask {
     String swaggerJsonUrl = "https://raw.githubusercontent.com/Wikia/app/dev/includes/wikia/api/swagger/nirvana.json"
-    String codegenJar = 'http://pkg-s2.wikia-prod:81/repository/snapshots/com/wikia/swagger/swagger-codegen/1.0-SNAPSHOT/swagger-codegen-1.0-20150203.230841-1.jar'
+    String codegenJar = 'http://pkg-s2.wikia-prod:81/repository/snapshots/com/wikia/swagger/swagger-codegen/1.0.1-SNAPSHOT/swagger-codegen-1.0.1-20150204.214328-1.jar'
     String rootDir = "."
     String codegenSubdir = "codegen"
     String hostReplace = null
