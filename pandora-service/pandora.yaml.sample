@@ -1,5 +1,5 @@
-mercuryGatewayHost: varnish.service-cache.host
-mercuryGatewayPort: 80
+internalProxyHost: varnish.service-cache.host
+internalProxyPort: 80
 logging:
   level: INFO
   appenders:

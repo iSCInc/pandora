@@ -12,14 +12,12 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.protocol.HTTP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,21 +29,18 @@ public class MercuryGateway {
   public static final String DEFAULT_WIKIA_HOST_FORMAT = "%s.wikia.com";
 
   public static final String
-      DEFAULT_MERCURY_COMMENT_REQUEST_FORMAT =
-      "http://%s:%d/api/v1/Mercury/ArticleComments?title=%s";
+      DEFAULT_MERCURY_COMMENT_REQUEST_PATH =
+      "/api/v1/Mercury/ArticleComments";
 
   public static final String
-      DEFAULT_MERCURY_ARTICLE_REQUEST_FORMAT =
-      "http://%s:%d/api/v1/Mercury/Article?title=%s";
+      DEFAULT_MERCURY_ARTICLE_REQUEST_PATH =
+      "/api/v1/Mercury/Article";
 
   private final HttpClient httpClient;
-  private final String host;
-  private final Integer port;
+  private final int port = 80;
 
-  public MercuryGateway(HttpClient httpClient, String host, Integer port) {
+  public MercuryGateway(HttpClient httpClient) {
     this.httpClient = httpClient;
-    this.host = host;
-    this.port = port;
   }
 
 
@@ -59,57 +54,85 @@ public class MercuryGateway {
    * @return Map<String, Object>
    */
   public ImmutableMap<String, Object> getArticle(String wikia, String title) throws IOException {
+    URI requestURI;
     final Map<String, Object> article;
-    ObjectMapper mapper = new ObjectMapper();
-    Optional<String> response = this.executeHttpRequest(wikia, formatArticleMercuryRequest(title));
 
-    if (response.isPresent()) {
-      article = mapper.readValue(response.get(), new TypeReference<HashMap<String, Object>>() {});
-    } else {
+    try {
+      requestURI = mercuryArticleRequestURI(wikia, title);
+    } catch (URISyntaxException e) {
       throw new IllegalStateException(
-          String.format("Error, the response for %s/%s is not valid!", wikia, title));
+          String.format("Error, could not generate a valid URI for wikia %s and title %s!",
+                        wikia, title));
     }
+
+    article = doMercuryAPIGet(requestURI.toString());
 
     return validateMercuryArticleMap(article);
   }
 
   public ImmutableMap<String, Object> getCommentsForArticle(String wikia, String title)
       throws IOException {
+    Optional<String> response;
+    URI requestURI;
     final Map<String, Object> articleComments;
-    ObjectMapper mapper = new ObjectMapper();
-    Optional<String> response = this.executeHttpRequest(wikia, formatCommentMercuryRequest(title));
-    logger.info(String.valueOf(response));
-    if (response.isPresent()) {
-      articleComments =
-          mapper.readValue(response.get(), new TypeReference<HashMap<String, Object>>() { });
-    } else {
+
+    try {
+      requestURI = mercuryCommentRequestURI(wikia, title);
+    } catch (URISyntaxException e) {
       throw new IllegalStateException(
-          String.format("Error, the response for %s/%s is not valid!", wikia, title));
+          String.format("Error, could not generate a valid URI for wikia %s and title %s!",
+                        wikia, title));
     }
+
+    articleComments = doMercuryAPIGet(requestURI.toString());
+
     //todo add validation
     return ImmutableMap.copyOf(articleComments);
   }
 
-  public String formatArticleMercuryRequest(String title) {
-    return formatMercuryRequest(title, this.DEFAULT_MERCURY_ARTICLE_REQUEST_FORMAT);
-  }
+  public Map<String, Object> doMercuryAPIGet(String requestURL) throws IOException {
+    Optional<String> response;
+    final Map<String, Object> mercuryData;
+    ObjectMapper mapper = new ObjectMapper();
 
-  public String formatCommentMercuryRequest(String title) {
-    return formatMercuryRequest(title, this.DEFAULT_MERCURY_COMMENT_REQUEST_FORMAT);
-  }
-
-  public String formatMercuryRequest(String title, String format) {
-    try {
-      return String.format(format, this.host, this.port,
-                           URLEncoder.encode(title, StandardCharsets.UTF_8.toString()));
-    } catch (UnsupportedEncodingException e) {
-      return String.format(format, title);
+    response = this.executeHttpRequest(requestURL);
+    if (response.isPresent()) {
+      mercuryData =
+          mapper.readValue(response.get(), new TypeReference<HashMap<String, Object>>() {
+          });
+    } else {
+      throw new IllegalStateException(
+          String.format("Error, the response for %s is not valid!", requestURL));
     }
+
+    return mercuryData;
   }
 
-  public Optional<String> executeHttpRequest(final String wikia, final String requestUrl) throws IOException {
+
+  public URI mercuryArticleRequestURI(String wikia, String title) throws URISyntaxException {
+    return mercuryRequestURI(wikia,
+                             this.DEFAULT_MERCURY_ARTICLE_REQUEST_PATH,
+                             String.format("title=%s", title));
+  }
+
+  public URI mercuryCommentRequestURI(String wikia, String title) throws URISyntaxException {
+    return mercuryRequestURI(wikia,
+                             this.DEFAULT_MERCURY_COMMENT_REQUEST_PATH,
+                             String.format("title=%s", title));
+  }
+
+  public URI mercuryRequestURI(String wikia, String path, String query) throws URISyntaxException {
+    return new URI("http",
+                   null,
+                   String.format(this.DEFAULT_WIKIA_HOST_FORMAT, wikia),
+                   this.port,
+                   path,
+                   query,
+                   null);
+  }
+
+  public Optional<String> executeHttpRequest(final String requestUrl) throws IOException {
     HttpGet httpGet = new HttpGet(requestUrl);
-    httpGet.setHeader(HTTP.TARGET_HOST, String.format(DEFAULT_WIKIA_HOST_FORMAT, wikia));
     ResponseHandler<String> responseHandler = new BasicResponseHandler();
     return Optional.of(this.httpClient.execute(httpGet, responseHandler));
   }

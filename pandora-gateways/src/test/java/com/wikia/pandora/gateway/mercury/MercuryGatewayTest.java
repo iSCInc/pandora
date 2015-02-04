@@ -6,12 +6,12 @@ package com.wikia.pandora.gateway.mercury;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
-import org.fest.assertions.api.Assertions.*;
 import org.junit.Test;
 
 import static org.mockito.Mockito.*;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Map;
 
 import io.dropwizard.testing.FixtureHelpers;
@@ -21,12 +21,12 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class MercuryGatewayTest {
 
   @Test
-  public void testFormatMercuryRequest() {
+  public void testFormatMercuryRequest() throws URISyntaxException {
     HttpClient httpClient = mock(HttpClient.class);
 
-    MercuryGateway mercuryGateway = new MercuryGateway(httpClient, "some-internal-host", 80);
-    assertThat(mercuryGateway.formatArticleMercuryRequest("Kermit the Frog"))
-        .isEqualTo("http://some-internal-host:80/api/v1/Mercury/Article?title=Kermit+the+Frog");
+    MercuryGateway mercuryGateway = new MercuryGateway(httpClient);
+    assertThat(mercuryGateway.mercuryArticleRequestURI("muppet", "Kermit the Frog").toString())
+        .isEqualTo("http://muppet.wikia.com:80/api/v1/Mercury/Article?title=Kermit%20the%20Frog");
   }
 
   @Test
@@ -35,7 +35,7 @@ public class MercuryGatewayTest {
     String title = "Kermit the Frog";
 
     HttpClient httpClient = mock(HttpClient.class);
-    MercuryGateway mercuryGateway = new MercuryGateway(httpClient, "some-internal-host", 80);
+    MercuryGateway mercuryGateway = new MercuryGateway(httpClient);
 
     when(httpClient.execute(any(HttpGet.class), any(ResponseHandler.class))).thenReturn(
         FixtureHelpers.fixture("fixtures/mercury-gateway/kermit-the-frog.json").toString()

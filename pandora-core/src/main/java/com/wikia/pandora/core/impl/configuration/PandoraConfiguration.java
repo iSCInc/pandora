@@ -2,20 +2,24 @@ package com.wikia.pandora.core.impl.configuration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import org.hibernate.validator.constraints.NotEmpty;
+
 
 import io.dropwizard.Configuration;
 import io.dropwizard.client.HttpClientConfiguration;
 
+import javax.annotation.Nonnull;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 public class PandoraConfiguration extends Configuration {
 
-  @NotEmpty
-  private String mercuryGatewayHost;
+  @Valid
+  @Nonnull
+  private String internalProxyHost;
 
-  private Integer mercuryGatewayPort = 80;
+  @Valid
+  @Nonnull
+  private Integer internalProxyPort = 80;
 
   @Valid
   @NotNull
@@ -27,23 +31,23 @@ public class PandoraConfiguration extends Configuration {
   }
 
   @JsonProperty
-  public String getMercuryGatewayHost() {
-    return mercuryGatewayHost;
+  public String getInternalProxyHost() {
+    return internalProxyHost;
   }
 
   @JsonProperty
-  public void setMercuryGatewayHost(String mercuryGatewayHost) {
-    this.mercuryGatewayHost = mercuryGatewayHost;
+  public void setInternalProxyHost(String internalProxyHost) {
+    this.internalProxyHost = internalProxyHost;
   }
 
   @JsonProperty
-  public Integer getMercuryGatewayPort() {
-    return mercuryGatewayPort;
+  public Integer getInternalProxyPort() {
+    return internalProxyPort;
   }
 
   @JsonProperty
-  public void setMercuryGatewayPort(Integer mercuryGatewayPort) {
-    this.mercuryGatewayPort = mercuryGatewayPort;
+  public void setInternalProxyPort(Integer internalProxyPort) {
+    this.internalProxyPort = internalProxyPort;
   }
 
   public HttpClientConfiguration getHttpClientConfiguration() {
