@@ -10,7 +10,7 @@ import com.wikia.mwapi.fluent.query.MethodOption;
 import com.wikia.mwapi.fluent.TitlesChoose;
 import com.wikia.mwapi.fluent.WikiaChoose;
 
-import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,7 +89,7 @@ public abstract class MWApiBase implements WikiaChoose, MainModuleOption, Method
 
   @Override
   public ApiResponse post() {
-    throw new NotImplementedException();
+    throw new NotImplementedException("");
   }
 
   @Override
