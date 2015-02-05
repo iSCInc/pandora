@@ -4,7 +4,7 @@ import com.wikia.mwapi.fluent.query.PageImagesOption;
 
 public class MWApiPageImages extends MWApiQueryDecorator implements PageImagesOption {
 
-  public MWApiPageImages(MWApiQuery parent) {
+  public MWApiPageImages(MWApiQueryBase parent) {
     super(parent);
   }
 }

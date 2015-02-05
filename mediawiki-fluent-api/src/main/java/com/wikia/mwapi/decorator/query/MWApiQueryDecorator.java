@@ -1,200 +1,180 @@
 package com.wikia.mwapi.decorator.query;
 
-import com.wikia.mwapi.decorator.MWApiDecorator;
 import com.wikia.mwapi.enumtypes.ListEnum;
 import com.wikia.mwapi.enumtypes.PropEnum;
-import com.wikia.mwapi.fluent.query.CategoriesOption;
-import com.wikia.mwapi.fluent.QueryOption;
-import com.wikia.mwapi.fluent.query.CategoryInfoOption;
-import com.wikia.mwapi.fluent.query.ContributorsOption;
-import com.wikia.mwapi.fluent.query.CoordinatesOption;
-import com.wikia.mwapi.fluent.query.DeletedRevisionsOption;
-import com.wikia.mwapi.fluent.query.DuplicateFilesOption;
-import com.wikia.mwapi.fluent.query.ExtLinksOption;
-import com.wikia.mwapi.fluent.query.ExtractsOption;
-import com.wikia.mwapi.fluent.query.FileUsageOption;
-import com.wikia.mwapi.fluent.query.FlaggedOption;
-import com.wikia.mwapi.fluent.query.FlowInfoOption;
-import com.wikia.mwapi.fluent.query.GlobalUsageOption;
-import com.wikia.mwapi.fluent.query.ImageInfoOption;
-import com.wikia.mwapi.fluent.query.ImagesOption;
-import com.wikia.mwapi.fluent.query.InfoOption;
-import com.wikia.mwapi.fluent.query.IWLinksOption;
-import com.wikia.mwapi.fluent.query.LangLinksOption;
-import com.wikia.mwapi.fluent.query.LinksOption;
-import com.wikia.mwapi.fluent.query.LinksHereOption;
-import com.wikia.mwapi.fluent.query.PageImagesOption;
-import com.wikia.mwapi.fluent.query.PagePropsOption;
-import com.wikia.mwapi.fluent.query.PageTermsOption;
-import com.wikia.mwapi.fluent.query.RedirectsOption;
-import com.wikia.mwapi.fluent.query.RevisionsOption;
-import com.wikia.mwapi.fluent.query.StashImageInfoOption;
-import com.wikia.mwapi.fluent.query.TemplatesOption;
-import com.wikia.mwapi.fluent.query.TranscludedInOption;
-import com.wikia.mwapi.fluent.query.TranscodeStatusOption;
-import com.wikia.mwapi.fluent.query.VideoInfoOption;
 
-public class MWApiQueryDecorator extends MWApiDecorator implements QueryOption {
+public class MWApiQueryDecorator extends MWApiQueryBase {
 
-  private MWApiQuery parent;
 
-  public MWApiQueryDecorator(MWApiQuery parent) {
+  private MWApiQueryBase parent;
+
+  public MWApiQueryDecorator(MWApiQueryBase parent) {
     super(parent);
     this.parent = parent;
   }
 
   @Override
-  public QueryOption list(ListEnum... enums) {
-    return parent.list(enums);
+  protected void titlesLogic(String[] titles) {
+    parent.titlesLogic(titles);
   }
 
   @Override
-  public QueryOption prop(PropEnum... propEnums) {
-    return parent.prop(propEnums);
+  protected void allPagesLogic() {
+    parent.allPagesLogic();
   }
 
   @Override
-  public CategoriesOption categories() {
-    return parent.categories();
+  protected void listLogic(ListEnum... enums) {
+    parent.listLogic(enums);
   }
 
   @Override
-  public CategoryInfoOption categoryinfo() {
-    return parent.categoryinfo();
+  protected void propLogic(PropEnum... propEnums) {
+    parent.propLogic(propEnums);
   }
 
   @Override
-  public ContributorsOption contributors() {
-    return parent.contributors();
+  protected void categoriesLogic() {
+    parent.categoriesLogic();
   }
 
   @Override
-  public CoordinatesOption coordinates() {
-    return parent.coordinates();
+  protected void categoryinfoLogic() {
+    parent.categoryinfoLogic();
   }
 
   @Override
-  public DeletedRevisionsOption deletedrevisions() {
-    return parent.deletedrevisions();
+  protected void contributorsLogic() {
+    parent.contributorsLogic();
   }
 
   @Override
-  public DuplicateFilesOption duplicatefiles() {
-    return parent.duplicatefiles();
+  protected void coordinatesLogic() {
+    parent.coordinatesLogic();
   }
 
   @Override
-  public ExtLinksOption extlinks() {
-    return parent.extlinks();
+  protected void deletedrevisionsLogic() {
+    parent.deletedrevisionsLogic();
   }
 
   @Override
-  public ExtractsOption extracts() {
-    return parent.extracts();
+  protected void duplicatefilesLogic() {
+    parent.duplicatefilesLogic();
   }
 
   @Override
-  public FileUsageOption fileusage() {
-    return parent.fileusage();
+  protected void extlinksLogic() {
+    parent.extlinksLogic();
   }
 
   @Override
-  public FlaggedOption flagged() {
-    return parent.flagged();
+  protected void extractsLogic() {
+    parent.extractsLogic();
   }
 
   @Override
-  public FlowInfoOption flowinfo() {
-    return parent.flowinfo();
+  protected void fileusageLogic() {
+    parent.fileusageLogic();
   }
 
   @Override
-  public GlobalUsageOption globalusage() {
-    return parent.globalusage();
+  protected void flaggedLogic() {
+    parent.flaggedLogic();
   }
 
   @Override
-  public ImageInfoOption imageinfo() {
-    return parent.imageinfo();
+  protected void flowinfoLogic() {
+    parent.flowinfoLogic();
   }
 
   @Override
-  public ImagesOption images() {
-    return parent.images();
+  protected void globalusageLogic() {
+    parent.globalusageLogic();
   }
 
   @Override
-  public InfoOption info() {
-    return parent.info();
+  protected void imageinfoLogic() {
+    parent.imageinfoLogic();
   }
 
   @Override
-  public IWLinksOption iwlinks() {
-    return parent.iwlinks();
+  protected void imagesLogic() {
+    parent.imagesLogic();
   }
 
   @Override
-  public LangLinksOption langlinks() {
-    return parent.langlinks();
+  protected void infoLogic() {
+    parent.infoLogic();
   }
 
   @Override
-  public LinksOption links() {
-    return parent.links();
+  protected void iwlinksLogic() {
+    parent.iwlinksLogic();
   }
 
   @Override
-  public LinksHereOption linkshere() {
-    return parent.linkshere();
+  protected void langlinksLogic() {
+    parent.langlinksLogic();
   }
 
   @Override
-  public PageImagesOption pageimages() {
-    return parent.pageimages();
+  protected void linksLogic() {
+    parent.linksLogic();
   }
 
   @Override
-  public PagePropsOption pageprops() {
-    return parent.pageprops();
+  protected void linkshereLogic() {
+    parent.linkshereLogic();
   }
 
   @Override
-  public PageTermsOption pageterms() {
-    return parent.pageterms();
+  protected void pageimagesLogic() {
+    parent.pageimagesLogic();
   }
 
   @Override
-  public RedirectsOption redirects() {
-    return parent.redirects();
+  protected void pagepropsLogic() {
+    parent.pagepropsLogic();
   }
 
   @Override
-  public RevisionsOption revisions() {
-    return parent.revisions();
+  protected void pagetermsLogic() {
+    parent.pagetermsLogic();
   }
 
   @Override
-  public StashImageInfoOption stashimageinfo() {
-    return parent.stashimageinfo();
+  protected void redirectsLogic() {
+    parent.redirectsLogic();
   }
 
   @Override
-  public TemplatesOption templates() {
-    return parent.templates();
+  protected void revisionsLogic() {
+    parent.revisionsLogic();
   }
 
   @Override
-  public TranscludedInOption transcludedin() {
-    return parent.transcludedin();
+  protected void stashimageinfoLogic() {
+    parent.stashimageinfoLogic();
   }
 
   @Override
-  public TranscodeStatusOption transcodestatus() {
-    return parent.transcodestatus();
+  protected void templatesLogic() {
+    parent.templatesLogic();
   }
 
   @Override
-  public VideoInfoOption videoinfo() {
-    return parent.videoinfo();
+  protected void transcludedinLogic() {
+    parent.transcludedinLogic();
+  }
+
+  @Override
+  protected void transcodestatusLogic() {
+    parent.transcodestatusLogic();
+  }
+
+  @Override
+  protected void videoinfoLogic() {
+    parent.videoinfoLogic();
   }
 }

@@ -4,7 +4,7 @@ import com.wikia.mwapi.fluent.query.DuplicateFilesOption;
 
 public class MWApiDuplicateFiles extends MWApiQueryDecorator implements DuplicateFilesOption {
 
-  public MWApiDuplicateFiles(MWApiQuery parent) {
+  public MWApiDuplicateFiles(MWApiQueryBase parent) {
     super(parent);
   }
 }

@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MWApiQuery extends MWApiDecorator implements TitlesChoose, QueryOption {
+public class MWApiQuery extends MWApiQueryBase {
 
   private List<String> titles;
   private List<ListEnum> lists;
@@ -65,200 +65,167 @@ public class MWApiQuery extends MWApiDecorator implements TitlesChoose, QueryOpt
   }
 
   @Override
-  public QueryOption titles(String... titles) {
+  public void titlesLogic(String... titles) {
     Collections.addAll(this.titles, titles);
-    return this;
   }
 
   @Override
-  public QueryOption allPages() {
+  public void allPagesLogic() {
     lists.add(ListEnum.allpages);
-    return this;
   }
 
   @Override
-  public QueryOption list(ListEnum... enums) {
+  public void listLogic(ListEnum... enums) {
     Collections.addAll(lists, enums);
-    return this;
   }
 
   @Override
-  public QueryOption prop(PropEnum... propEnums) {
+  public void propLogic(PropEnum... propEnums) {
     Collections.addAll(props, propEnums);
-    return this;
   }
 
   @Override
-  public CategoriesOption categories() {
+  public void categoriesLogic() {
     this.props.add(PropEnum.categories);
-    return new MWApiCategories(this);
   }
 
   @Override
-  public CategoryInfoOption categoryinfo() {
+  public void categoryinfoLogic() {
     this.props.add(PropEnum.categoryinfo);
-    return new MWApiCategoryInfo(this);
   }
 
   @Override
-  public ContributorsOption contributors() {
+  public void contributorsLogic() {
     this.props.add(PropEnum.contributors);
-    return new MWApiContributors(this);
   }
 
   @Override
-  public CoordinatesOption coordinates() {
+  public void coordinatesLogic() {
     this.props.add(PropEnum.coordinates);
-    return new MWApiCoordinates(this);
   }
 
   @Override
-  public DeletedRevisionsOption deletedrevisions() {
+  public void deletedrevisionsLogic() {
     this.props.add(PropEnum.deletedrevisions);
-    return new MWApiDeletedRevisions(this);
   }
 
   @Override
-  public DuplicateFilesOption duplicatefiles() {
+  public void duplicatefilesLogic() {
     this.props.add(PropEnum.duplicatefiles);
-    return new MWApiDuplicateFiles(this);
   }
 
   @Override
-  public ExtLinksOption extlinks() {
+  public void extlinksLogic() {
     this.props.add(PropEnum.extlinks);
-    return new MWApiExtLinks(this);
   }
 
   @Override
-  public ExtractsOption extracts() {
+  public void extractsLogic() {
     this.props.add(PropEnum.extracts);
-    return new MWApiExtracts(this);
   }
 
   @Override
-  public FileUsageOption fileusage() {
+  public void fileusageLogic() {
     this.props.add(PropEnum.fileusage);
-    return new MWApiFileUsage(this);
   }
 
   @Override
-  public FlaggedOption flagged() {
+  public void flaggedLogic() {
     this.props.add(PropEnum.flagged);
-    return new MWApiFlagged(this);
   }
 
   @Override
-  public FlowInfoOption flowinfo() {
+  public void flowinfoLogic() {
     this.props.add(PropEnum.flowinfo);
-    return new MWApiFlowInfo(this);
   }
 
   @Override
-  public GlobalUsageOption globalusage() {
+  public void globalusageLogic() {
     this.props.add(PropEnum.globalusage);
-    return new MWApiGlobalUsage(this);
   }
 
   @Override
-  public ImageInfoOption imageinfo() {
+  public void imageinfoLogic() {
     this.props.add(PropEnum.imageinfo);
-    return new MWApiImageInfo(this);
   }
 
   @Override
-  public ImagesOption images() {
+  public void imagesLogic() {
     this.props.add(PropEnum.images);
-    return new MWApiImages(this);
   }
 
   @Override
-  public InfoOption info() {
+  public void infoLogic() {
     this.props.add(PropEnum.info);
-    return new MWApiInfo(this);
   }
 
   @Override
-  public IWLinksOption iwlinks() {
+  public void iwlinksLogic() {
     this.props.add(PropEnum.iwlinks);
-    return new MWApiIWLinks(this);
   }
 
   @Override
-  public LangLinksOption langlinks() {
+  public void langlinksLogic() {
     this.props.add(PropEnum.langlinks);
-    return new MWApiLangLinks(this);
   }
 
   @Override
-  public LinksOption links() {
+  public void linksLogic() {
     this.props.add(PropEnum.links);
-    return new MWApiLinks(this);
   }
 
   @Override
-  public LinksHereOption linkshere() {
+  public void linkshereLogic() {
     this.props.add(PropEnum.linkshere);
-    return new MWApiLinksHere(this);
   }
 
   @Override
-  public PageImagesOption pageimages() {
+  public void pageimagesLogic() {
     this.props.add(PropEnum.pageimages);
-    return new MWApiPageImages(this);
   }
 
   @Override
-  public PagePropsOption pageprops() {
+  public void pagepropsLogic() {
     this.props.add(PropEnum.pageprops);
-    return new MWApiPageProps(this);
   }
 
   @Override
-  public PageTermsOption pageterms() {
+  public void pagetermsLogic() {
     this.props.add(PropEnum.pageterms);
-    return new MWApiPageTerms(this);
   }
 
   @Override
-  public RedirectsOption redirects() {
+  public void redirectsLogic() {
     this.props.add(PropEnum.redirects);
-    return new MWApiRedirects(this);
   }
 
   @Override
-  public RevisionsOption revisions() {
+  public void revisionsLogic() {
     this.props.add(PropEnum.revisions);
-    return new MWApiRevisions(this);
   }
 
   @Override
-  public StashImageInfoOption stashimageinfo() {
+  public void stashimageinfoLogic() {
     this.props.add(PropEnum.stashimageinfo);
-    return new MWApiStashImageInfo(this);
   }
 
   @Override
-  public TemplatesOption templates() {
+  public void templatesLogic() {
     this.props.add(PropEnum.templates);
-    return new MWApiTemplates(this);
   }
 
   @Override
-  public TranscludedInOption transcludedin() {
+  public void transcludedinLogic() {
     this.props.add(PropEnum.transcludedin);
-    return new MWApiTranscludedIn(this);
   }
 
   @Override
-  public TranscodeStatusOption transcodestatus() {
+  public void transcodestatusLogic() {
     this.props.add(PropEnum.transcodestatus);
-    return new MWApiTranscodeStatus(this);
   }
 
   @Override
-  public VideoInfoOption videoinfo() {
+  public void videoinfoLogic() {
     this.props.add(PropEnum.videoinfo);
-    return new MWApiVideoInfo(this);
   }
 }

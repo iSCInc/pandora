@@ -4,7 +4,7 @@ import com.wikia.mwapi.fluent.query.FileUsageOption;
 
 public class MWApiFileUsage extends MWApiQueryDecorator implements FileUsageOption {
 
-  public MWApiFileUsage(MWApiQuery parent) {
+  public MWApiFileUsage(MWApiQueryBase parent) {
     super(parent);
   }
 }

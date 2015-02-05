@@ -4,7 +4,7 @@ import com.wikia.mwapi.fluent.query.ExtractsOption;
 
 public class MWApiExtracts extends MWApiQueryDecorator implements ExtractsOption {
 
-  public MWApiExtracts(MWApiQuery parent) {
+  public MWApiExtracts(MWApiQueryBase parent) {
     super(parent);
   }
 }

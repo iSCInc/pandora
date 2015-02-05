@@ -4,7 +4,7 @@ import com.wikia.mwapi.fluent.query.TemplatesOption;
 
 public class MWApiTemplates extends MWApiQueryDecorator implements TemplatesOption {
 
-  public MWApiTemplates(MWApiQuery parent) {
+  public MWApiTemplates(MWApiQueryBase parent) {
     super(parent);
   }
 }

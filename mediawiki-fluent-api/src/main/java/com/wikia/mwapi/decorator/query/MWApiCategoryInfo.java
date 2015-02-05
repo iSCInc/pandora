@@ -4,7 +4,7 @@ import com.wikia.mwapi.fluent.query.CategoryInfoOption;
 
 public class MWApiCategoryInfo extends MWApiQueryDecorator implements CategoryInfoOption {
 
-  public MWApiCategoryInfo(MWApiQuery mwApiQuery) {
+  public MWApiCategoryInfo(MWApiQueryBase mwApiQuery) {
     super(mwApiQuery);
   }
 }

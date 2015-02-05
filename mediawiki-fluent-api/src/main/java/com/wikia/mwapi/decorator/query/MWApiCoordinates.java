@@ -4,7 +4,7 @@ import com.wikia.mwapi.fluent.query.CoordinatesOption;
 
 public class MWApiCoordinates extends MWApiQueryDecorator implements CoordinatesOption {
 
-  public MWApiCoordinates(MWApiQuery parent) {
+  public MWApiCoordinates(MWApiQueryBase parent) {
     super(parent);
   }
 }

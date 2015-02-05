@@ -35,7 +35,7 @@ public class MWApiRevisions extends MWApiQueryDecorator implements RevisionsOpti
   private String tag;
   private String rvContinue;
 
-  public MWApiRevisions(MWApiQuery parent) {
+  public MWApiRevisions(MWApiQueryBase parent) {
     super(parent);
     rvPropsEnums = new ArrayList<>();
   }

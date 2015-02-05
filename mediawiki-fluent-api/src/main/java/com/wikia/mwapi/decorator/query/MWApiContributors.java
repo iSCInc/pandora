@@ -4,7 +4,7 @@ import com.wikia.mwapi.fluent.query.ContributorsOption;
 
 public class MWApiContributors extends MWApiQueryDecorator implements ContributorsOption {
 
-  public MWApiContributors(MWApiQuery parent) {
+  public MWApiContributors(MWApiQueryBase parent) {
     super(parent);
   }
 }

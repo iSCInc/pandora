@@ -4,7 +4,7 @@ import com.wikia.mwapi.fluent.query.FlowInfoOption;
 
 public class MWApiFlowInfo extends MWApiQueryDecorator implements FlowInfoOption {
 
-  public MWApiFlowInfo(MWApiQuery parent) {
+  public MWApiFlowInfo(MWApiQueryBase parent) {
     super(parent);
   }
 }

@@ -22,7 +22,7 @@ public class MWApiCategories extends MWApiQueryDecorator implements CategoriesOp
   private SortDirectionEnum direction;
 
 
-  public MWApiCategories(MWApiQuery parent) {
+  public MWApiCategories(MWApiQueryBase parent) {
     super(parent);
     clPropEnumList = new ArrayList<>();
     clShowEnums = new ArrayList<>();
@@ -67,6 +67,7 @@ public class MWApiCategories extends MWApiQueryDecorator implements CategoriesOp
 
   @Override
   public void buildUrl(URIBuilder builder) {
+    super.buildUrl(builder);
     URIBuilderHelper.addParameter(builder, "clprop", clPropEnumList);
     URIBuilderHelper.addParameter(builder, "clshow", clShowEnums);
     if (clLimit > 0) {

@@ -4,7 +4,7 @@ import com.wikia.mwapi.fluent.query.IWLinksOption;
 
 public class MWApiIWLinks extends MWApiQueryDecorator implements IWLinksOption {
 
-  public MWApiIWLinks(MWApiQuery parent) {
+  public MWApiIWLinks(MWApiQueryBase parent) {
     super(parent);
   }
 }

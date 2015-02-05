@@ -4,7 +4,7 @@ import com.wikia.mwapi.fluent.query.LangLinksOption;
 
 public class MWApiLangLinks extends MWApiQueryDecorator implements LangLinksOption {
 
-  public MWApiLangLinks(MWApiQuery parent) {
+  public MWApiLangLinks(MWApiQueryBase parent) {
     super(parent);
   }
 }

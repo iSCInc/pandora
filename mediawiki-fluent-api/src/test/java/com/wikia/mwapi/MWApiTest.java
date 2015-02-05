@@ -50,8 +50,9 @@ public class MWApiTest {
         .clprop(CLPropEnum.sortkey)
         .url();
 
-    assertEquals("http://stargate.wikia.com/api.php?clprop=sortkey&cllimit=5&clcontinue=test",
-                 url);
+    assertEquals(
+        "http://stargate.wikia.com/api.php?action=query&format=json&list=allpages&prop=categories&clprop=sortkey&cllimit=5&clcontinue=test",
+        url);
 
   }
 
@@ -68,6 +69,22 @@ public class MWApiTest {
         .url();
     assertEquals(
         "http://stargate.wikia.com/api.php?action=query&format=json&titles=Aphofis&prop=revisions&rvprop=content&rvlimit=1",
+        url);
+  }
+
+  @Test
+  public void testSomething() {
+    HttpClient clientMock = Mockito.mock(HttpClient.class);
+    String url = MWApi.createBuilder(clientMock)
+        .domain("jedisomething.de")
+        .queryAction()
+        .titles("something")
+        .revisions()
+        .rvprop(RVPropEnum.user, RVPropEnum.comment, RVPropEnum.content)
+        .categories().cllimit(10)
+        .url();
+    assertEquals(
+        "http://jedisomething.de/api.php?action=query&format=json&titles=something&prop=revisions%7Ccategories&rvprop=user%7Ccomment%7Ccontent&cllimit=10",
         url);
   }
 

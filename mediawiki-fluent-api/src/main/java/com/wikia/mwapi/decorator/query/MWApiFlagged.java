@@ -4,7 +4,7 @@ import com.wikia.mwapi.fluent.query.FlaggedOption;
 
 public class MWApiFlagged extends MWApiQueryDecorator implements FlaggedOption {
 
-  public MWApiFlagged(MWApiQuery parent) {
+  public MWApiFlagged(MWApiQueryBase parent) {
     super(parent);
   }
 }

@@ -4,7 +4,7 @@ import com.wikia.mwapi.fluent.query.VideoInfoOption;
 
 public class MWApiVideoInfo extends MWApiQueryDecorator implements VideoInfoOption {
 
-  public MWApiVideoInfo(MWApiQuery parent) {
+  public MWApiVideoInfo(MWApiQueryBase parent) {
     super(parent);
   }
 }

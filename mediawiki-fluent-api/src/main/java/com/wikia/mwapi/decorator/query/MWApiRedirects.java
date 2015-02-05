@@ -4,7 +4,7 @@ import com.wikia.mwapi.fluent.query.RedirectsOption;
 
 public class MWApiRedirects extends MWApiQueryDecorator implements RedirectsOption {
 
-  public MWApiRedirects(MWApiQuery parent) {
+  public MWApiRedirects(MWApiQueryBase parent) {
     super(parent);
   }
 }

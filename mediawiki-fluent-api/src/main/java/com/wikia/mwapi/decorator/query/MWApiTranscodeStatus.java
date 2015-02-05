@@ -4,7 +4,7 @@ import com.wikia.mwapi.fluent.query.TranscodeStatusOption;
 
 public class MWApiTranscodeStatus extends MWApiQueryDecorator implements TranscodeStatusOption {
 
-  public MWApiTranscodeStatus(MWApiQuery parent) {
+  public MWApiTranscodeStatus(MWApiQueryBase parent) {
     super(parent);
   }
 }

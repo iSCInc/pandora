@@ -4,7 +4,7 @@ import com.wikia.mwapi.fluent.query.InfoOption;
 
 public class MWApiInfo extends MWApiQueryDecorator implements InfoOption {
 
-  public MWApiInfo(MWApiQuery parent) {
+  public MWApiInfo(MWApiQueryBase parent) {
     super(parent);
   }
 }

@@ -5,7 +5,7 @@ import com.wikia.mwapi.fluent.query.DeletedRevisionsOption;
 public class MWApiDeletedRevisions extends MWApiQueryDecorator implements DeletedRevisionsOption {
 
   
-  public MWApiDeletedRevisions(MWApiQuery parent) {
+  public MWApiDeletedRevisions(MWApiQueryBase parent) {
     super(parent);
   }
 }

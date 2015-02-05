@@ -4,7 +4,7 @@ import com.wikia.mwapi.fluent.query.ExtLinksOption;
 
 public class MWApiExtLinks extends MWApiQueryDecorator implements ExtLinksOption {
 
-  public MWApiExtLinks(MWApiQuery parent) {
+  public MWApiExtLinks(MWApiQueryBase parent) {
     super(parent);
   }
 }

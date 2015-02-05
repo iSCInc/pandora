@@ -4,7 +4,7 @@ import com.wikia.mwapi.fluent.query.ImageInfoOption;
 
 public class MWApiImageInfo extends MWApiQueryDecorator implements ImageInfoOption {
 
-  public MWApiImageInfo(MWApiQuery parent) {
+  public MWApiImageInfo(MWApiQueryBase parent) {
     super(parent);
   }
 }
