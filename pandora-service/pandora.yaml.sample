@@ -1,3 +1,5 @@
+internalProxyHost: varnish.service-cache.host
+internalProxyPort: 80
 logging:
   level: INFO
   appenders:

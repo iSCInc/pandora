@@ -25,7 +25,6 @@ public class MercuryArticlesService extends MercuryService implements ArticleSer
 
   public MercuryArticlesService(MercuryGateway mercuryGateway) {
     super(mercuryGateway);
-
   }
 
   public Article getArticleByTitle(String wikia, String title) {
