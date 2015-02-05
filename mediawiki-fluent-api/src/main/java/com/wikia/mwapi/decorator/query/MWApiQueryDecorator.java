@@ -177,4 +177,9 @@ public class MWApiQueryDecorator extends MWApiQueryBase {
   protected void videoinfoLogic() {
     parent.videoinfoLogic();
   }
+
+  @Override
+  protected void categorymembersLogic() {
+    parent.categorymembersLogic();
+  }
 }
