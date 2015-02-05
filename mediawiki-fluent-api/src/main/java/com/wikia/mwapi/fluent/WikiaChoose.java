@@ -1,6 +1,10 @@
 package com.wikia.mwapi.fluent;
 
+import com.wikia.mwapi.fluent.query.MainModuleOption;
+
 public interface WikiaChoose {
 
-  ActionChoose wikia(String wikia);
+  MainModuleOption wikia(String wikia);
+  
+  MainModuleOption domain(String domain);
 }
