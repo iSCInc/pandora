@@ -32,10 +32,11 @@ public class MobileConfigConfiguration extends Configuration {
   @Valid
   @NotNull
   @JsonProperty
-  private ConsulConfig consulConfig = new ConsulConfig();
+  private ConsulConfig consulConfig;
 
   public MobileConfigConfiguration() {
     httpClient = new HttpClientConfiguration();
+    consulConfig = new ConsulConfig();
   }
 
   public HttpClientConfiguration getHttpClientConfiguration() {
