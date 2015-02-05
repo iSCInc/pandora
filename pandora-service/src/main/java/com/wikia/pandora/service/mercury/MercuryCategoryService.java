@@ -1,32 +1,26 @@
-package com.wikia.pandora.service.mediawiki;
+package com.wikia.pandora.service.mercury;
 
-import com.wikia.mwapi.domain.ApiResponse;
 import com.wikia.pandora.api.service.CategoryService;
 import com.wikia.pandora.domain.Article;
 import com.wikia.pandora.domain.Category;
 import com.wikia.pandora.domain.builder.ArticleBuilder;
 import com.wikia.pandora.domain.builder.CategoryBuilder;
-import com.wikia.pandora.gateway.mediawiki.MediawikiGateway;
+import com.wikia.pandora.gateway.mercury.MercuryGateway;
 
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MediawikiCategoryService extends MediawikiService implements CategoryService {
+public class MercuryCategoryService extends MercuryService implements CategoryService {
 
-  public MediawikiCategoryService(MediawikiGateway gateway) {
+  public MercuryCategoryService(MercuryGateway gateway) {
     super(gateway);
   }
 
-
   @Override
-  public Category getCategory(String wikia, String category) {
-    ApiResponse apiResponse = getGateway().getCategoryByName(wikia, category);
-    return CategoryBuilder.aCategory()
-        .withTitle(apiResponse.getQuery().getFirstPage().getTitle())
-        .withNs(apiResponse.getQuery().getFirstPage().getNs())
-        .withPageId(apiResponse.getQuery().getFirstPage().getPageId())
+  public Category getCategory(String wikia, String categoryName) {
+    return CategoryBuilder.aCategory().withTitle(String.format("%s mock", categoryName)).withNs(14)
         .build();
   }
 

@@ -30,7 +30,11 @@ public class MercuryServiceFactory extends ServiceFactory {
 
   @Override
   public CategoryService createCategoryService() {
-    throw new NotImplementedException("");
+    //TODO change using Comment Endpoint Pull request aproach
+    //dont do this now becuse, of merge conflict
+    final HttpClient httpClient = createHttpClient("gateway-client-category");
+    MercuryGateway gateway = new MercuryGateway(httpClient);
+    return new MercuryCategoryService(gateway);
   }
 
   @Override
