@@ -3,13 +3,16 @@ package com.wikia.mobileconfig.service;
 import com.wikia.mobileconfig.core.MobileConfiguration;
 import com.wikia.mobileconfig.utils.Translator;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class ConfigurationServiceBase implements ConfigurationService {
+
   private final static String CONFIGURATIONS_URL_FORMAT = "/configurations/platform/%s/app/%s";
 
   protected final static String CONFIGURATION_NOT_FOUND_DEBUG_MESSAGE_FORMAT =
-          "Configuration for %s not found: falling back to default configuration for %s";
+      "Configuration for %s not found: falling back to default configuration for %s";
 
   @Override
   public String createSelfUrl(String platform, String appTag) {
@@ -26,7 +29,7 @@ public abstract class ConfigurationServiceBase implements ConfigurationService {
   }
 
   protected boolean isTranslationKey(String key) {
-    return key.length() >=3 && key.charAt(0) == '_' && key.charAt(key.length() - 1) == '_';
+    return key.length() >= 3 && key.charAt(0) == '_' && key.charAt(key.length() - 1) == '_';
   }
 
   protected void translateNode(String langCode, Object node) {
@@ -34,7 +37,6 @@ public abstract class ConfigurationServiceBase implements ConfigurationService {
 
       Collection<Map.Entry> entries = ((Map) node).entrySet();
       for (Map.Entry entry : entries) {
-
         if (entry.getValue() instanceof String) {
           if (isTranslationKey((String) entry.getValue())) {
             entry.setValue(translate(langCode, (String) entry.getValue()));
@@ -47,7 +49,6 @@ public abstract class ConfigurationServiceBase implements ConfigurationService {
   }
 
   protected void translateConfiguration(MobileConfiguration config, String langCode) {
-
     for (Object module : config.getModules()) {
       translateNode(langCode, module);
     }

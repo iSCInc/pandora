@@ -9,6 +9,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import javax.ws.rs.core.Response;
 
@@ -38,7 +39,7 @@ public class ImageService {
     this.cephPort = configuration.getCephPort();
   }
 
-  public byte[] getImage(String filename) throws IOException {
+  public Optional<byte[]> getImage(String filename) throws IOException {
 
     byte[] image = null;
 
@@ -50,7 +51,7 @@ public class ImageService {
       );
     }
 
-    return image;
+    return Optional.ofNullable(image);
   }
 
   private String createCephUrl(String filename) {

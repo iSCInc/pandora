@@ -11,7 +11,7 @@ import com.wikia.mobileconfig.exceptions.ConfigurationNotFoundException;
 import com.wikia.mobileconfig.exceptions.InvalidApplicationTagException;
 import com.wikia.mobileconfig.exceptions.MobileConfigException;
 import com.wikia.mobileconfig.service.ConfigurationService;
-import com.wikia.mobileconfig.service.AppsListService;
+import com.wikia.mobileconfig.gateway.AppsListService;
 
 import javax.ws.rs.*;
 
@@ -41,7 +41,7 @@ public class MobileConfigResource {
       @QueryParam("content-lang") String contentLang
   ) throws java.io.IOException, MobileConfigException {
 
-    if (!this.appsList.isValidAppTag(appTag)) {
+    if (!this.appsList.isValidAppTag(platform, appTag)) {
       throw new InvalidApplicationTagException(appTag);
     }
 

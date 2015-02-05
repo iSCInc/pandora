@@ -9,12 +9,22 @@ about this project that’s a good place to start.
 
 ## Usage
 
+Launching unit tests:
+```bash
+./gradlew unitTest
+```
+
+Launching all tests:
+```bash
+./gradlew test
+```
+
 To run the server:
 
 ```bash
 cp pandora-examples/pandora.yaml.sample pandora-examples/pandora.yaml
 # launch the server
-gradle pandora-examples:run
+gradle pandora-service:run
 ```
 
 To make a request from the server:

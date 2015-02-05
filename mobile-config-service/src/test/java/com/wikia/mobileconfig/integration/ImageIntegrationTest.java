@@ -1,14 +1,13 @@
 package com.wikia.mobileconfig.integration;
 
-import com.sun.jersey.api.Responses;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.MobileConfigConfiguration;
 
 import org.junit.ClassRule;
 import org.junit.Test;
 
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Client;
 import javax.ws.rs.core.Response;
 
 import io.dropwizard.testing.junit.DropwizardAppRule;
@@ -25,29 +24,31 @@ public class ImageIntegrationTest {
 
   @Test
   public void unexistingImageResourceRespondsWithError() {
-    Client client = new Client();
+    Client client = ClientBuilder.newClient();
 
-    ClientResponse response = client.resource(
+    Response response = client.target(
         String.format("http://localhost:%d/images/NonExistentImage.png", RULE.getLocalPort()))
-        .get(ClientResponse.class);
+        .request()
+        .get();
 
-    assertThat(response.getStatus()).isEqualTo(Responses.NOT_FOUND);
-    assertThat(response.getType().getType()).isEqualTo("application");
-    assertThat(response.getType().getSubtype()).isEqualTo("problem+json");
-    assertThat(response.getEntity(String.class)).contains("NonExistentImage.png could not be found");
+    String responseData = response.readEntity(String.class);
+    assertThat(response.getStatus()).isEqualTo(Response.Status.NOT_FOUND.getStatusCode());
+    assertThat(response.getHeaderString("content-type")).isEqualTo("application/problem+json");
+    assertThat(responseData).contains("NonExistentImage.png could not be found");
   }
 
   @Test
   public void imageResourceReturnedProperly() {
-    Client client = new Client();
+    Client client = ClientBuilder.newClient();
 
-    ClientResponse response = client.resource(
+    Response response = client.target(
         String.format("http://localhost:%d/images/test.png", RULE.getLocalPort()))
-        .get(ClientResponse.class);
+        .request()
+        .get();
 
+    byte[] responseData = response.readEntity(byte[].class);
     assertThat(response.getStatus()).isEqualTo(Response.Status.OK.getStatusCode());
-    assertThat(response.getType().getType()).isEqualTo("image");
-    assertThat(response.getType().getSubtype()).isEqualTo("png");
-    assertThat(response.getLength()).isGreaterThan(0);
+    assertThat(response.getHeaderString("content-type")).isEqualTo("image/png");
+    assertThat(responseData.length).isGreaterThan(0);
   }
 }

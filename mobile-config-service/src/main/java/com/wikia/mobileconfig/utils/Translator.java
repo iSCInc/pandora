@@ -44,7 +44,6 @@ public class Translator {
   }
 
   private void loadTranslations(String langCode) {
-
     Map<String, String> result;
     try {
       byte[] encoded = Files.readAllBytes(Paths.get(
@@ -66,7 +65,6 @@ public class Translator {
   }
 
   private Map<String, String> getTranslationMap(String langCode) {
-
     if (!translationCache.containsKey(langCode)) {
       loadTranslations(langCode);
     }

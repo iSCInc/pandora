@@ -5,10 +5,10 @@ import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 import com.wikia.mobileconfig.health.AppsDeployerHealthCheck;
 import com.wikia.mobileconfig.health.MobileConfigHealthCheck;
-import com.wikia.mobileconfig.resources.AppListResource;
+import com.wikia.mobileconfig.resources.ApplicationsResource;
 import com.wikia.mobileconfig.resources.ImageResource;
 import com.wikia.mobileconfig.resources.MobileConfigResource;
-import com.wikia.mobileconfig.service.AppsDeployerList;
+import com.wikia.mobileconfig.gateway.AppsDeployerList;
 import com.wikia.mobileconfig.service.FileConfigurationService;
 import com.wikia.mobileconfig.service.HttpConfigurationService;
 import com.wikia.mobileconfig.service.ImageService;
@@ -68,9 +68,9 @@ public class MobileConfigApplication extends Application<MobileConfigConfigurati
         image =
         new ImageResource(imageService);
 
-    final AppListResource
+    final ApplicationsResource
         appList =
-        new AppListResource(listService);
+        new ApplicationsResource(listService);
     environment.jersey().register(mobileConfig);
     environment.jersey().register(image);
     environment.jersey().register(appList);

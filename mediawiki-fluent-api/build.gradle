@@ -1,4 +1,4 @@
-apply from: rootProject.file('gradle/common_deps.gradle')
+apply from: rootProject.file('gradle/pandora_common_deps.gradle')
 
 dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:2.3.3'

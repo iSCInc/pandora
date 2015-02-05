@@ -11,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import java.net.URISyntaxException;
+import java.util.Optional;
 
 @Path("/images/{filename}")
 public class ImageResource {
@@ -32,13 +33,13 @@ public class ImageResource {
         @PathParam("filename") String filename
     ) throws java.io.IOException, URISyntaxException {
 
-        byte[] imageBytes = this.imageService.getImage(filename);
+        Optional<byte[]> imageBytes = this.imageService.getImage(filename);
 
-        if (imageBytes == null || imageBytes.length == 0) {
+        if (!imageBytes.isPresent()) {
             throw new ImageNotFoundException(filename);
         }
 
         String contentType = "image/" + Files.getFileExtension(filename);
-        return Response.ok(imageBytes, MediaType.valueOf(contentType)).build();
+        return Response.ok(imageBytes.get(), MediaType.valueOf(contentType)).build();
     }
 }

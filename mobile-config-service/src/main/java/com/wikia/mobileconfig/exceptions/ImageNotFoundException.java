@@ -1,6 +1,5 @@
 package com.wikia.mobileconfig.exceptions;
 
-import com.sun.jersey.api.Responses;
 import com.wikia.mobileconfig.core.Problem;
 
 import javax.ws.rs.core.Response;
@@ -10,7 +9,7 @@ public class ImageNotFoundException extends MobileConfigException {
 
   public ImageNotFoundException(String filename) {
     super(
-        Response.status(Responses.NOT_FOUND)
+        Response.status(Response.Status.NOT_FOUND.getStatusCode())
             .entity(new Problem("Not found", String.format(EXCEPTION_MESSAGE_FORMAT, filename)))
             .type(RESPONSE_TYPE)
             .build()

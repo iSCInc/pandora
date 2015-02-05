@@ -5,7 +5,7 @@ import com.wikia.pandora.core.domain.MercuryArticle;
 import com.wikia.pandora.core.domain.MercuryArticleData;
 import com.wikia.pandora.core.domain.MercuryArticleDetail;
 import com.wikia.pandora.core.domain.MercuryRelatedPage;
-import com.wikia.pandora.core.domain.User;
+import com.wikia.pandora.domain.User;
 
 import java.util.List;
 

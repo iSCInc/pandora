@@ -1,17 +1,18 @@
 package com.wikia.mobileconfig.resources;
 
-import com.sun.jersey.api.client.UniformInterfaceException;
 import com.wikia.mobileconfig.service.ImageService;
 
 import org.junit.ClassRule;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Optional;
+
+import javax.ws.rs.core.Response;
 
 import io.dropwizard.testing.junit.ResourceTestRule;
 
 import static org.fest.assertions.api.Assertions.assertThat;
-import static org.fest.assertions.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
@@ -33,16 +34,16 @@ public class ImageResourceTest {
   @Test
   public void getMobileImage_notFound() throws IOException {
     when(imageServiceMock.getImage("NonExistentImage.png"))
-        .thenReturn(null);
+        .thenReturn(Optional.empty());
 
-    try {
-      resources.client()
-        .resource("/images/NonExistentImage.png")
-        .get(String.class);
-      fail("Did not get expected exception when requesting invalid resource");
-    } catch (Exception e) {
-      assert(e instanceof UniformInterfaceException);
-    }
+    Response response = resources.client()
+      .target("/images/NonExistentImage.png")
+      .request()
+      .get();
+    String responseData = response.readEntity(String.class);
+
+    assertThat(response.getStatus()).isEqualTo(Response.Status.NOT_FOUND.getStatusCode());
+    assertThat(responseData).contains("NonExistentImage.png could not be found");
 
     verify(imageServiceMock).getImage("NonExistentImage.png");
     reset(imageServiceMock);
@@ -50,15 +51,18 @@ public class ImageResourceTest {
 
   @Test
   public void getMobileApplicationConfigSuccess() throws IOException {
-    byte[] imgResponse = new byte[] {1};
+    Optional<byte[]> imgResponse = Optional.of(new byte[]{1});
     when(imageServiceMock.getImage("TestImage.png"))
         .thenReturn(imgResponse);
 
-    byte[] response = resources.client()
-      .resource("/images/TestImage.png")
-      .get(byte[].class);
+    Response response = resources.client()
+      .target("/images/TestImage.png")
+      .request()
+      .get();
 
-    assertThat(response).isEqualTo(imgResponse);
+    byte[] responseData = response.readEntity(byte[].class);
+
+    assertThat(responseData).isEqualTo(imgResponse.get());
 
     verify(imageServiceMock).getImage("TestImage.png");
     reset(imageServiceMock);

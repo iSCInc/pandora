@@ -7,11 +7,7 @@ subprojects {
     sourceCompatibility = 1.8
     version = "0.1.0"
 
-    // common library versions
-    def sl4jVersion = "1.7.5"
-    def dropwizardVersion = "0.7.1"
-    def junitVersion = "4.11"
-    def mockitoVersion = "1.9.5"
+    task unitTest(type: Test) {
+        exclude '**/integration/**'
+    }
 }
-
-
