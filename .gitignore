@@ -12,5 +12,6 @@ pom.xml.asc
 **.ipr
 **.iws
 pandora.yaml
+pandora-example/example.yaml
 **/.gradle
 **/build
