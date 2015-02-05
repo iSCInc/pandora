@@ -1,0 +1,8 @@
+apply from: rootProject.file('gradle/pandora_common_deps.gradle')
+apply plugin: 'application'
+
+mainClassName = "com.wikia.exampleservice.ExampleServiceApplication"
+
+run {
+    args 'server', 'example.yaml'
+}

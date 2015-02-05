@@ -1,15 +1,18 @@
 package com.wikia.mwapi;
 
 import com.wikia.mwapi.domain.ApiResponse;
+import com.wikia.mwapi.enumtypes.query.properties.CLPropEnum;
+import com.wikia.mwapi.enumtypes.query.properties.RVPropEnum;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+
 import io.dropwizard.testing.FixtureHelpers;
+
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -23,19 +26,88 @@ public class MWApiTest {
 
   @Test
   public void testBuildUrl() {
-    String url = MWApi.createBuilder()
+    HttpClient clientMock = Mockito.mock(HttpClient.class);
+    String url = MWApi.createBuilder(clientMock)
         .wikia("muppet")
         .queryAction()
         .titles("Kermit the Frog")
         .url();
-    assertEquals(url, "http://muppet.wikia.com/api.php?action=query&titles=Kermit+the+Frog&format=json");
+    assertEquals("http://muppet.wikia.com/api.php?action=query&format=json&titles=Kermit+the+Frog",
+                 url);
+  }
+
+  @Test
+  public void testBuildAdvanceUrl() {
+    HttpClient clientMock = Mockito.mock(HttpClient.class);
+
+    String url = MWApi.createBuilder(clientMock)
+        .wikia("stargate")
+        .queryAction()
+        .allPages()
+        .categories()
+        .cllimit(5)
+        .clcontinue("test")
+        .clprop(CLPropEnum.sortkey)
+        .url();
+
+    assertEquals(
+        "http://stargate.wikia.com/api.php?action=query&format=json&list=allpages&prop=categories&clprop=sortkey&cllimit=5&clcontinue=test",
+        url);
+
+  }
+
+  @Test
+  public void testUrlWithRevisions() {
+    HttpClient clientMock = Mockito.mock(HttpClient.class);
+    String url = MWApi.createBuilder(clientMock)
+        .wikia("stargate")
+        .queryAction()
+        .titles("Aphofis")
+        .prop().revisions()
+        .rvlimit(1)
+        .rvprop(RVPropEnum.content)
+        .url();
+    assertEquals(
+        "http://stargate.wikia.com/api.php?action=query&format=json&titles=Aphofis&prop=revisions&rvprop=content&rvlimit=1",
+        url);
+  }
+
+  @Test
+  public void testSomething() {
+    HttpClient clientMock = Mockito.mock(HttpClient.class);
+    String url = MWApi.createBuilder(clientMock)
+        .domain("jedisomething.de")
+        .queryAction()
+        .titles("something")
+        .revisions()
+        .rvprop(RVPropEnum.user, RVPropEnum.comment, RVPropEnum.content)
+        .categories().cllimit(10)
+        .url();
+    assertEquals(
+        "http://jedisomething.de/api.php?action=query&format=json&titles=something&prop=revisions%7Ccategories&rvprop=user%7Ccomment%7Ccontent&cllimit=10",
+        url);
+  }
+
+  @Test
+  public void testUrlWithDomain() {
+    HttpClient clientMock = Mockito.mock(HttpClient.class);
+    String url = MWApi.createBuilder(clientMock)
+        .domain("stargate.custom.domain")
+        .queryAction()
+        .titles("chapa'ai")
+        .url();
+
+    assertEquals(
+        "http://stargate.custom.domain/api.php?action=query&format=json&titles=chapa%27ai",
+        url);
   }
 
   @Test
   public void testGetWithTitle() throws IOException {
     String wikia = "muppet";
     String title = "Kermit the Frog";
-    String url = MWApi.createBuilder()
+    HttpClient clientMock = Mockito.mock(HttpClient.class);
+    String url = MWApi.createBuilder(clientMock)
         .wikia(wikia)
         .queryAction()
         .titles(title)

@@ -2,6 +2,7 @@ package com.wikia.pandora.gateway.mediawiki;
 
 import com.wikia.mwapi.domain.ApiResponse;
 import com.wikia.mwapi.MWApi;
+import com.wikia.mwapi.enumtypes.query.properties.RVPropEnum;
 import com.wikia.mwapi.fluent.WikiaChoose;
 
 import org.apache.http.client.HttpClient;
@@ -33,9 +34,9 @@ public class MediawikiGateway {
         .wikia(wikia)
         .queryAction()
         .titles(title)
-        .prop().revisions()
-        .rv().rvLimit(1)
-        .rv().rvContent()
+        .revisions()
+        .rvlimit(1)
+        .rvprop(RVPropEnum.content)
         .get();
 
     return apiResponse;
@@ -65,7 +66,7 @@ public class MediawikiGateway {
         .wikia(wikia)
         .queryAction()
         .titles(title)
-        .prop().categories()
+        .categories()
         .get();
     return apiResponse;
   }
@@ -74,7 +75,7 @@ public class MediawikiGateway {
     ApiResponse apiResponse = queryBuilder()
         .wikia(wikia)
         .queryAction().titles(title)
-        .prop().images()
+        .images()
         .get();
     return apiResponse;
   }
@@ -84,7 +85,7 @@ public class MediawikiGateway {
         .wikia(wikia)
         .queryAction()
         .titles(title)
-        .prop().revisions()
+        .revisions()
         .get();
     return apiResponse;
   }
@@ -94,7 +95,7 @@ public class MediawikiGateway {
         .wikia(wikia)
         .queryAction()
         .titles(title)
-        .prop().contributors()
+        .contributors()
         .get();
     return apiResponse;
   }

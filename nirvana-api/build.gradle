@@ -25,6 +25,7 @@ dependencies {
 
 task generateNirvanaApi(type: GenerateNirvanaTask) {
     hostReplace = project.hasProperty("NIRVANA_API_HOST") ? NIRVANA_API_HOST : hostReplace
+    swaggerJsonUrl = project.hasProperty("SWAGGER_JSON_URL") ? SWAGGER_JSON_URL : swaggerJsonUrl
     rootDir = projectDir
 }
 

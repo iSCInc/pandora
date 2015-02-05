@@ -1,0 +1,33 @@
+package com.wikia.mwapi.enumtypes;
+
+public enum PropEnum {
+  categories,
+  categoryinfo,
+  contributors,
+  coordinates,
+  deletedrevisions,
+  duplicatefiles,
+  extlinks,
+  extracts,
+  fileusage,
+  flagged,
+  flowinfo,
+  globalusage,
+  imageinfo,
+  images,
+  info,
+  iwlinks,
+  langlinks,
+  links,
+  linkshere,
+  pageimages,
+  pageprops,
+  pageterms,
+  redirects,
+  revisions,
+  stashimageinfo,
+  templates,
+  transcludedin,
+  transcodestatus,
+  videoinfo
+}
