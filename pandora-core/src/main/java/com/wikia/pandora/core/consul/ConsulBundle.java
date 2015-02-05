@@ -35,6 +35,7 @@ public abstract class ConsulBundle<T> implements ConfiguredBundle<T> {
         }).allMatch((val) -> val); // all healthchecks resuts must be true
   }
 
+
   protected void scheduleHeartbeat(Environment environment, ConsulConfig config,
                                    Runnable heartbeat, Boolean runHealthChecks) {
     environment
@@ -53,7 +54,7 @@ public abstract class ConsulBundle<T> implements ConfiguredBundle<T> {
                 logger.warn("Heartbeat failed", ex);
               }
             },
-            0,
+            0, // start delay
             config.getHeartbeatInterval().getQuantity(),
             config.getHeartbeatInterval().getUnit());
   }
