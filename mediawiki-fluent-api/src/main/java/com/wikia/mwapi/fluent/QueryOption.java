@@ -4,6 +4,7 @@ import com.wikia.mwapi.enumtypes.ListEnum;
 import com.wikia.mwapi.enumtypes.PropEnum;
 import com.wikia.mwapi.fluent.query.CategoriesOption;
 import com.wikia.mwapi.fluent.query.CategoryInfoOption;
+import com.wikia.mwapi.fluent.query.CategoryMembersOption;
 import com.wikia.mwapi.fluent.query.ContributorsOption;
 import com.wikia.mwapi.fluent.query.CoordinatesOption;
 import com.wikia.mwapi.fluent.query.DeletedRevisionsOption;
@@ -96,4 +97,6 @@ public interface QueryOption extends MethodOption {
   TranscodeStatusOption transcodestatus();
 
   VideoInfoOption videoinfo();
+
+  CategoryMembersOption categorymembers();
 }

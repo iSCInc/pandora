@@ -1,40 +1,8 @@
 package com.wikia.mwapi.decorator.query;
 
 import com.wikia.mwapi.decorator.MWApiBase;
-import com.wikia.mwapi.decorator.MWApiDecorator;
 import com.wikia.mwapi.enumtypes.ListEnum;
 import com.wikia.mwapi.enumtypes.PropEnum;
-import com.wikia.mwapi.fluent.QueryOption;
-import com.wikia.mwapi.fluent.TitlesChoose;
-import com.wikia.mwapi.fluent.query.CategoriesOption;
-import com.wikia.mwapi.fluent.query.CategoryInfoOption;
-import com.wikia.mwapi.fluent.query.ContributorsOption;
-import com.wikia.mwapi.fluent.query.CoordinatesOption;
-import com.wikia.mwapi.fluent.query.DeletedRevisionsOption;
-import com.wikia.mwapi.fluent.query.DuplicateFilesOption;
-import com.wikia.mwapi.fluent.query.ExtLinksOption;
-import com.wikia.mwapi.fluent.query.ExtractsOption;
-import com.wikia.mwapi.fluent.query.FileUsageOption;
-import com.wikia.mwapi.fluent.query.FlaggedOption;
-import com.wikia.mwapi.fluent.query.FlowInfoOption;
-import com.wikia.mwapi.fluent.query.GlobalUsageOption;
-import com.wikia.mwapi.fluent.query.IWLinksOption;
-import com.wikia.mwapi.fluent.query.ImageInfoOption;
-import com.wikia.mwapi.fluent.query.ImagesOption;
-import com.wikia.mwapi.fluent.query.InfoOption;
-import com.wikia.mwapi.fluent.query.LangLinksOption;
-import com.wikia.mwapi.fluent.query.LinksHereOption;
-import com.wikia.mwapi.fluent.query.LinksOption;
-import com.wikia.mwapi.fluent.query.PageImagesOption;
-import com.wikia.mwapi.fluent.query.PagePropsOption;
-import com.wikia.mwapi.fluent.query.PageTermsOption;
-import com.wikia.mwapi.fluent.query.RedirectsOption;
-import com.wikia.mwapi.fluent.query.RevisionsOption;
-import com.wikia.mwapi.fluent.query.StashImageInfoOption;
-import com.wikia.mwapi.fluent.query.TemplatesOption;
-import com.wikia.mwapi.fluent.query.TranscludedInOption;
-import com.wikia.mwapi.fluent.query.TranscodeStatusOption;
-import com.wikia.mwapi.fluent.query.VideoInfoOption;
 import com.wikia.mwapi.util.URIBuilderHelper;
 
 import org.apache.http.client.utils.URIBuilder;
@@ -227,5 +195,10 @@ public class MWApiQuery extends MWApiQueryBase {
   @Override
   public void videoinfoLogic() {
     this.props.add(PropEnum.videoinfo);
+  }
+
+  @Override
+  protected void categorymembersLogic() {
+    this.lists.add(ListEnum.categorymembers);
   }
 }
