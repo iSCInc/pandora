@@ -15,6 +15,7 @@ public class Page {
   private List<Category> categories;
   private List<User> contributors;
   private List<Image> images;
+  private String type;
 
   private ArrayList<Revision> revisions;
 
@@ -64,5 +65,10 @@ public class Page {
   @JsonProperty("anoncontributors")
   public String getAnonContributors() {
     return anonContributors;
+  }
+
+  
+  public String getType() {
+    return type;
   }
 }

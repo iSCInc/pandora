@@ -11,6 +11,10 @@ public class ApiResponse {
 
   private Warning warnings;
 
+  private String servedby;
+
+  private MWError error;
+
 
   public ApiResponse() {
   }
@@ -26,5 +30,13 @@ public class ApiResponse {
 
   public Warning getWarnings() {
     return warnings;
+  }
+
+  public String getServedby() {
+    return servedby;
+  }
+
+  public MWError getError() {
+    return error;
   }
 }

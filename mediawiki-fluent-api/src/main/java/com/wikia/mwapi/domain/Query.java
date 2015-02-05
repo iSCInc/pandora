@@ -14,6 +14,8 @@ public class Query {
 
   private List<Page> allPages;
 
+  private List<Page> categorymembers;
+
   public ArrayList<Normalized> getNormalized() {
     return normalized;
   }
@@ -33,5 +35,10 @@ public class Query {
       page = getPages().entrySet().iterator().next().getValue();
     }
     return page;
+  }
+
+  @JsonProperty("categorymembers")
+  public List<Page> getCategorymembers() {
+    return categorymembers;
   }
 }

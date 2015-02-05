@@ -5,9 +5,10 @@ import com.wikia.mwapi.decorator.MWApiDecorator;
 import com.wikia.mwapi.enumtypes.ListEnum;
 import com.wikia.mwapi.enumtypes.PropEnum;
 import com.wikia.mwapi.fluent.QueryOption;
-import com.wikia.mwapi.fluent.TitlesChoose;
+import com.wikia.mwapi.fluent.TitlesOrListChoose;
 import com.wikia.mwapi.fluent.query.CategoriesOption;
 import com.wikia.mwapi.fluent.query.CategoryInfoOption;
+import com.wikia.mwapi.fluent.query.CategoryMembersOption;
 import com.wikia.mwapi.fluent.query.ContributorsOption;
 import com.wikia.mwapi.fluent.query.CoordinatesOption;
 import com.wikia.mwapi.fluent.query.DeletedRevisionsOption;
@@ -36,9 +37,7 @@ import com.wikia.mwapi.fluent.query.TranscludedInOption;
 import com.wikia.mwapi.fluent.query.TranscodeStatusOption;
 import com.wikia.mwapi.fluent.query.VideoInfoOption;
 
-import java.util.Collections;
-
-public abstract class MWApiQueryBase extends MWApiDecorator implements TitlesChoose, QueryOption {
+public abstract class MWApiQueryBase extends MWApiDecorator implements TitlesOrListChoose, QueryOption {
 
   public MWApiQueryBase(MWApiBase parent) {
     super(parent);
@@ -305,4 +304,14 @@ public abstract class MWApiQueryBase extends MWApiDecorator implements TitlesCho
   }
 
   protected abstract void videoinfoLogic();
+
+  public CategoryMembersOption categorymembers() {
+    categorymembersLogic();
+    return new MWApiCategoryMembers(this);
+
+  }
+
+  protected abstract void categorymembersLogic();
+
+
 }

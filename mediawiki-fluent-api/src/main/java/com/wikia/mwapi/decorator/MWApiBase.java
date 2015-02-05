@@ -7,7 +7,7 @@ import com.wikia.mwapi.enumtypes.ActionEnum;
 import com.wikia.mwapi.enumtypes.FormatEnum;
 import com.wikia.mwapi.fluent.query.MainModuleOption;
 import com.wikia.mwapi.fluent.query.MethodOption;
-import com.wikia.mwapi.fluent.TitlesChoose;
+import com.wikia.mwapi.fluent.TitlesOrListChoose;
 import com.wikia.mwapi.fluent.WikiaChoose;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -61,7 +61,7 @@ public abstract class MWApiBase implements WikiaChoose, MainModuleOption, Method
   }
 
   @Override
-  public TitlesChoose queryAction() {
+  public TitlesOrListChoose queryAction() {
     this.action = ActionEnum.query;
     return new MWApiQuery(this);
   }
