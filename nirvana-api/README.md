@@ -34,3 +34,14 @@ try {
 
 // do stuff with cr
 ```
+
+## Dependencies
+
+To use the code generation utility you will need `gradle` and `mvn` (Maven)
+installed locally. To do so on OS X using homebrew, do the following:
+
+```sh
+brew update
+brew install maven
+brew install gradle
+```
