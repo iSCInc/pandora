@@ -2,6 +2,36 @@ package com.wikia.mwapi.decorator.query;
 
 import com.wikia.mwapi.decorator.MWApiBase;
 import com.wikia.mwapi.decorator.MWApiDecorator;
+import com.wikia.mwapi.decorator.query.property.MWApiCategories;
+import com.wikia.mwapi.decorator.query.property.MWApiCategoryInfo;
+import com.wikia.mwapi.decorator.query.list.MWApiCategoryMembers;
+import com.wikia.mwapi.decorator.query.property.MWApiContributors;
+import com.wikia.mwapi.decorator.query.property.MWApiCoordinates;
+import com.wikia.mwapi.decorator.query.property.MWApiDeletedRevisions;
+import com.wikia.mwapi.decorator.query.property.MWApiDuplicateFiles;
+import com.wikia.mwapi.decorator.query.property.MWApiExtLinks;
+import com.wikia.mwapi.decorator.query.property.MWApiExtracts;
+import com.wikia.mwapi.decorator.query.property.MWApiFileUsage;
+import com.wikia.mwapi.decorator.query.property.MWApiFlagged;
+import com.wikia.mwapi.decorator.query.property.MWApiFlowInfo;
+import com.wikia.mwapi.decorator.query.property.MWApiGlobalUsage;
+import com.wikia.mwapi.decorator.query.property.MWApiIWLinks;
+import com.wikia.mwapi.decorator.query.property.MWApiImageInfo;
+import com.wikia.mwapi.decorator.query.property.MWApiImages;
+import com.wikia.mwapi.decorator.query.property.MWApiInfo;
+import com.wikia.mwapi.decorator.query.property.MWApiLangLinks;
+import com.wikia.mwapi.decorator.query.property.MWApiLinks;
+import com.wikia.mwapi.decorator.query.property.MWApiLinksHere;
+import com.wikia.mwapi.decorator.query.property.MWApiPageImages;
+import com.wikia.mwapi.decorator.query.property.MWApiPageProps;
+import com.wikia.mwapi.decorator.query.property.MWApiPageTerms;
+import com.wikia.mwapi.decorator.query.property.MWApiRedirects;
+import com.wikia.mwapi.decorator.query.property.MWApiRevisions;
+import com.wikia.mwapi.decorator.query.property.MWApiStashImageInfo;
+import com.wikia.mwapi.decorator.query.property.MWApiTemplates;
+import com.wikia.mwapi.decorator.query.property.MWApiTranscludedIn;
+import com.wikia.mwapi.decorator.query.property.MWApiTranscodeStatus;
+import com.wikia.mwapi.decorator.query.property.MWApiVideoInfo;
 import com.wikia.mwapi.enumtypes.ListEnum;
 import com.wikia.mwapi.enumtypes.PropEnum;
 import com.wikia.mwapi.fluent.QueryOption;
@@ -37,7 +67,8 @@ import com.wikia.mwapi.fluent.query.TranscludedInOption;
 import com.wikia.mwapi.fluent.query.TranscodeStatusOption;
 import com.wikia.mwapi.fluent.query.VideoInfoOption;
 
-public abstract class MWApiQueryBase extends MWApiDecorator implements TitlesOrListChoose, QueryOption {
+public abstract class MWApiQueryBase extends MWApiDecorator
+    implements TitlesOrListChoose, QueryOption {
 
   public MWApiQueryBase(MWApiBase parent) {
     super(parent);
@@ -305,13 +336,357 @@ public abstract class MWApiQueryBase extends MWApiDecorator implements TitlesOrL
 
   protected abstract void videoinfoLogic();
 
+
+  public QueryOption abusefilters() {
+    abusefiltersLogic();
+    return this;
+  }
+
+  protected abstract void abusefiltersLogic();
+
+  public QueryOption abuselog() {
+    abuselogLogic();
+    return this;
+  }
+
+  protected abstract void abuselogLogic();
+
+  public QueryOption allcategories() {
+    allcategoriesLogic();
+    return this;
+  }
+
+  protected abstract void allcategoriesLogic();
+
+  public QueryOption alldeletedrevisions() {
+    alldeletedrevisionsLogic();
+    return this;
+  }
+
+  protected abstract void alldeletedrevisionsLogic();
+
+  public QueryOption allfileusages() {
+    allfileusagesLogic();
+    return this;
+  }
+
+  protected abstract void allfileusagesLogic();
+
+  public QueryOption allimages() {
+    allimagesLogic();
+    return this;
+  }
+
+  protected abstract void allimagesLogic();
+
+  public QueryOption alllinks() {
+    alllinksLogic();
+    return this;
+  }
+
+  protected abstract void alllinksLogic();
+
+  public QueryOption allpages() {
+    allpagesLogic();
+    return this;
+  }
+
+  protected abstract void allpagesLogic();
+
+  public QueryOption allredirects() {
+    allredirectsLogic();
+    return this;
+  }
+
+  protected abstract void allredirectsLogic();
+
+  public QueryOption alltransclusions() {
+    alltransclusionsLogic();
+    return this;
+  }
+
+  protected abstract void alltransclusionsLogic();
+
+  public QueryOption allusers() {
+    allusersLogic();
+    return this;
+  }
+
+  protected abstract void allusersLogic();
+
+  public QueryOption backlinks() {
+    backlinksLogic();
+    return this;
+  }
+
+  protected abstract void backlinksLogic();
+
+  public QueryOption betafeatures() {
+    betafeaturesLogic();
+    return this;
+  }
+
+  protected abstract void betafeaturesLogic();
+
+  public QueryOption blocks() {
+    blocksLogic();
+    return this;
+  }
+
+  protected abstract void blocksLogic();
+
   public CategoryMembersOption categorymembers() {
     categorymembersLogic();
     return new MWApiCategoryMembers(this);
-
   }
 
   protected abstract void categorymembersLogic();
+
+
+  public QueryOption centralnoticelogs() {
+    centralnoticelogsLogic();
+    return this;
+  }
+
+  protected abstract void centralnoticelogsLogic();
+
+  public QueryOption checkuser() {
+    checkuserLogic();
+    return this;
+  }
+
+  protected abstract void checkuserLogic();
+
+  public QueryOption checkuserlog() {
+    checkuserlogLogic();
+    return this;
+  }
+
+  protected abstract void checkuserlogLogic();
+
+  public QueryOption deletedrevs() {
+    deletedrevsLogic();
+    return this;
+  }
+
+  protected abstract void deletedrevsLogic();
+
+  public QueryOption embeddedin() {
+    embeddedinLogic();
+    return this;
+  }
+
+  protected abstract void embeddedinLogic();
+
+  public QueryOption exturlusage() {
+    exturlusageLogic();
+    return this;
+  }
+
+  protected abstract void exturlusageLogic();
+
+  public QueryOption filearchive() {
+    filearchiveLogic();
+    return this;
+  }
+
+  protected abstract void filearchiveLogic();
+
+  public QueryOption gadgetcategories() {
+    gadgetcategoriesLogic();
+    return this;
+  }
+
+  protected abstract void gadgetcategoriesLogic();
+
+  public QueryOption gadgets() {
+    gadgetsLogic();
+    return this;
+  }
+
+  protected abstract void gadgetsLogic();
+
+  public QueryOption geosearch() {
+    geosearchLogic();
+    return this;
+  }
+
+  protected abstract void geosearchLogic();
+
+  public QueryOption gettingstartedgetpages() {
+    gettingstartedgetpagesLogic();
+    return this;
+  }
+
+  protected abstract void gettingstartedgetpagesLogic();
+
+  public QueryOption globalallusers() {
+    globalallusersLogic();
+    return this;
+  }
+
+  protected abstract void globalallusersLogic();
+
+  public QueryOption globalblocks() {
+    globalblocksLogic();
+    return this;
+  }
+
+  protected abstract void globalblocksLogic();
+
+  public QueryOption globalgroups() {
+    globalgroupsLogic();
+    return this;
+  }
+
+  protected abstract void globalgroupsLogic();
+
+  public QueryOption imageusage() {
+    imageusageLogic();
+    return this;
+  }
+
+  protected abstract void imageusageLogic();
+
+  public QueryOption iwbacklinks() {
+    iwbacklinksLogic();
+    return this;
+  }
+
+  protected abstract void iwbacklinksLogic();
+
+  public QueryOption langbacklinks() {
+    langbacklinksLogic();
+    return this;
+  }
+
+  protected abstract void langbacklinksLogic();
+
+  public QueryOption logevents() {
+    logeventsLogic();
+    return this;
+  }
+
+  protected abstract void logeventsLogic();
+
+  public QueryOption mmsites() {
+    mmsitesLogic();
+    return this;
+  }
+
+  protected abstract void mmsitesLogic();
+
+  public QueryOption oldreviewedpages() {
+    oldreviewedpagesLogic();
+    return this;
+  }
+
+  protected abstract void oldreviewedpagesLogic();
+
+  public QueryOption pagepropnames() {
+    pagepropnamesLogic();
+    return this;
+  }
+
+  protected abstract void pagepropnamesLogic();
+
+  public QueryOption pageswithprop() {
+    pageswithpropLogic();
+    return this;
+  }
+
+  protected abstract void pageswithpropLogic();
+
+  public QueryOption prefixsearch() {
+    prefixsearchLogic();
+    return this;
+  }
+
+  protected abstract void prefixsearchLogic();
+
+  public QueryOption protectedtitles() {
+    protectedtitlesLogic();
+    return this;
+  }
+
+  protected abstract void protectedtitlesLogic();
+
+  public QueryOption querypage() {
+    querypageLogic();
+    return this;
+  }
+
+  protected abstract void querypageLogic();
+
+  public QueryOption random() {
+    randomLogic();
+    return this;
+  }
+
+  protected abstract void randomLogic();
+
+  public QueryOption recentchanges() {
+    recentchangesLogic();
+    return this;
+  }
+
+  protected abstract void recentchangesLogic();
+
+  public QueryOption search() {
+    searchLogic();
+    return this;
+  }
+
+  protected abstract void searchLogic();
+
+  public QueryOption tags() {
+    tagsLogic();
+    return this;
+  }
+
+  protected abstract void tagsLogic();
+
+  public QueryOption usercontribs() {
+    usercontribsLogic();
+    return this;
+  }
+
+  protected abstract void usercontribsLogic();
+
+  public QueryOption users() {
+    usersLogic();
+    return this;
+  }
+
+  protected abstract void usersLogic();
+
+  public QueryOption watchlist() {
+    watchlistLogic();
+    return this;
+  }
+
+  protected abstract void watchlistLogic();
+
+  public QueryOption watchlistraw() {
+    watchlistrawLogic();
+    return this;
+  }
+
+  protected abstract void watchlistrawLogic();
+
+  public QueryOption wikigrokrandom() {
+    wikigrokrandomLogic();
+    return this;
+  }
+
+  protected abstract void wikigrokrandomLogic();
+
+  public QueryOption wikisets() {
+    wikisetsLogic();
+    return this;
+  }
+
+  protected abstract void wikisetsLogic();
 
 
 }

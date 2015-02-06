@@ -179,7 +179,252 @@ public class MWApiQueryDecorator extends MWApiQueryBase {
   }
 
   @Override
+  protected void abusefiltersLogic() {
+
+  }
+
+  @Override
+  protected void abuselogLogic() {
+    parent.abuselogLogic();
+  }
+
+  @Override
+  protected void allcategoriesLogic() {
+    parent.allcategoriesLogic();
+  }
+
+  @Override
+  protected void alldeletedrevisionsLogic() {
+    parent.alldeletedrevisionsLogic();
+  }
+
+  @Override
+  protected void allfileusagesLogic() {
+    parent.allfileusagesLogic();
+  }
+
+  @Override
+  protected void allimagesLogic() {
+    parent.allimagesLogic();
+  }
+
+  @Override
+  protected void alllinksLogic() {
+    parent.alllinksLogic();
+  }
+
+  @Override
+  protected void allpagesLogic() {
+    parent.allpagesLogic();
+  }
+
+  @Override
+  protected void allredirectsLogic() {
+    parent.allredirectsLogic();
+  }
+
+  @Override
+  protected void alltransclusionsLogic() {
+    parent.alltransclusionsLogic();
+  }
+
+  @Override
+  protected void allusersLogic() {
+    parent.allusersLogic();
+  }
+
+  @Override
+  protected void backlinksLogic() {
+    parent.backlinksLogic();
+  }
+
+  @Override
+  protected void betafeaturesLogic() {
+    parent.betafeaturesLogic();
+  }
+
+  @Override
+  protected void blocksLogic() {
+    parent.blocksLogic();
+  }
+
+  @Override
   protected void categorymembersLogic() {
     parent.categorymembersLogic();
+  }
+
+  @Override
+  protected void centralnoticelogsLogic() {
+    parent.centralnoticelogsLogic();
+  }
+
+  @Override
+  protected void checkuserLogic() {
+    parent.checkuserLogic();
+  }
+
+  @Override
+  protected void checkuserlogLogic() {
+    parent.checkuserlogLogic();
+  }
+
+  @Override
+  protected void deletedrevsLogic() {
+    parent.deletedrevsLogic();
+  }
+
+  @Override
+  protected void embeddedinLogic() {
+    parent.embeddedinLogic();
+  }
+
+  @Override
+  protected void exturlusageLogic() {
+    parent.exturlusageLogic();
+  }
+
+  @Override
+  protected void filearchiveLogic() {
+    parent.filearchiveLogic();
+  }
+
+  @Override
+  protected void gadgetcategoriesLogic() {
+    parent.gadgetcategoriesLogic();
+  }
+
+  @Override
+  protected void gadgetsLogic() {
+    parent.gadgetsLogic();
+  }
+
+  @Override
+  protected void geosearchLogic() {
+    parent.geosearchLogic();
+  }
+
+  @Override
+  protected void gettingstartedgetpagesLogic() {
+    parent.gettingstartedgetpagesLogic();
+  }
+
+  @Override
+  protected void globalallusersLogic() {
+    parent.globalallusersLogic();
+  }
+
+  @Override
+  protected void globalblocksLogic() {
+    parent.globalblocksLogic();
+  }
+
+  @Override
+  protected void globalgroupsLogic() {
+    parent.globalgroupsLogic();
+  }
+
+  @Override
+  protected void imageusageLogic() {
+    parent.imageusageLogic();
+  }
+
+  @Override
+  protected void iwbacklinksLogic() {
+    parent.iwbacklinksLogic();
+  }
+
+  @Override
+  protected void langbacklinksLogic() {
+    parent.langbacklinksLogic();
+  }
+
+  @Override
+  protected void logeventsLogic() {
+    parent.logeventsLogic();
+  }
+
+  @Override
+  protected void mmsitesLogic() {
+    parent.mmsitesLogic();
+  }
+
+  @Override
+  protected void oldreviewedpagesLogic() {
+    parent.oldreviewedpagesLogic();
+  }
+
+  @Override
+  protected void pagepropnamesLogic() {
+    parent.pagepropnamesLogic();
+  }
+
+  @Override
+  protected void pageswithpropLogic() {
+    parent.pageswithpropLogic();
+  }
+
+  @Override
+  protected void prefixsearchLogic() {
+    parent.prefixsearchLogic();
+  }
+
+  @Override
+  protected void protectedtitlesLogic() {
+    parent.protectedtitlesLogic();
+  }
+
+  @Override
+  protected void querypageLogic() {
+    parent.querypageLogic();
+  }
+
+  @Override
+  protected void randomLogic() {
+    parent.randomLogic();
+  }
+
+  @Override
+  protected void recentchangesLogic() {
+    parent.recentchangesLogic();
+  }
+
+  @Override
+  protected void searchLogic() {
+    parent.searchLogic();
+  }
+
+  @Override
+  protected void tagsLogic() {
+    parent.tagsLogic();
+  }
+
+  @Override
+  protected void usercontribsLogic() {
+    parent.usercontribsLogic();
+  }
+
+  @Override
+  protected void usersLogic() {
+    parent.usersLogic();
+  }
+
+  @Override
+  protected void watchlistLogic() {
+    parent.watchlistLogic();
+  }
+
+  @Override
+  protected void watchlistrawLogic() {
+    parent.watchlistrawLogic();
+  }
+
+  @Override
+  protected void wikigrokrandomLogic() {
+    parent.wikigrokrandomLogic();
+  }
+
+  @Override
+  protected void wikisetsLogic() {
+    parent.wikisetsLogic();
   }
 }
