@@ -2,6 +2,7 @@ package com.wikia.mwapi.decorator.query;
 
 import com.wikia.mwapi.decorator.MWApiBase;
 import com.wikia.mwapi.decorator.MWApiDecorator;
+import com.wikia.mwapi.decorator.query.list.MWApiAllCategories;
 import com.wikia.mwapi.decorator.query.property.MWApiCategories;
 import com.wikia.mwapi.decorator.query.property.MWApiCategoryInfo;
 import com.wikia.mwapi.decorator.query.list.MWApiCategoryMembers;
@@ -36,6 +37,7 @@ import com.wikia.mwapi.enumtypes.ListEnum;
 import com.wikia.mwapi.enumtypes.PropEnum;
 import com.wikia.mwapi.fluent.QueryOption;
 import com.wikia.mwapi.fluent.TitlesOrListChoose;
+import com.wikia.mwapi.fluent.query.AllCategoriesOption;
 import com.wikia.mwapi.fluent.query.CategoriesOption;
 import com.wikia.mwapi.fluent.query.CategoryInfoOption;
 import com.wikia.mwapi.fluent.query.CategoryMembersOption;
@@ -351,9 +353,9 @@ public abstract class MWApiQueryBase extends MWApiDecorator
 
   protected abstract void abuselogLogic();
 
-  public QueryOption allcategories() {
+  public AllCategoriesOption allcategories() {
     allcategoriesLogic();
-    return this;
+    return new MWApiAllCategories(this);
   }
 
   protected abstract void allcategoriesLogic();

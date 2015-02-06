@@ -10,6 +10,7 @@ import com.wikia.pandora.domain.Category;
 import com.wikia.pandora.core.util.UriBuilder;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -22,6 +23,7 @@ import javax.ws.rs.QueryParam;
 @Produces(RepresentationFactory.HAL_JSON)
 public class HALCategoryResource {
 
+  public static final int DEFAULT_LIMIT = 10;
   private final CategoryService categoryService;
   private final RepresentationFactory representationFactory;
 
@@ -32,6 +34,31 @@ public class HALCategoryResource {
     this.representationFactory = representationFactory;
   }
 
+  @GET
+  @Path("/")
+  @Timed
+  public Object getCategoryList(@PathParam("wikia") String wikia,
+                                @DefaultValue("10") @QueryParam("limit") int limit,
+                                @DefaultValue("") @QueryParam("offset") String offset,
+                                @DefaultValue("") @QueryParam("previous") String previous) {
+    javax.ws.rs.core.UriBuilder
+        uri =
+        javax.ws.rs.core.UriBuilder.fromResource(HALCategoryResource.class);
+
+    addLimitAndOffset(uri, limit, offset);
+
+    Representation representation = representationFactory.newRepresentation(uri.build(wikia));
+    List<Category> categoryList = categoryService.getAllCategories(wikia, limit, offset);
+    for (Category category : categoryList) {
+      RepresentationHelper
+          .withLinkAndTitle(representation,
+                            "category",
+                            getCategoryLink(wikia, category.getTitle()),
+                            category.getTitle());
+    }
+
+    return representation;
+  }
 
   @GET
   @Path("/{category}")
@@ -43,9 +70,14 @@ public class HALCategoryResource {
         representation =
         representationFactory.newRepresentation(uri.build(wikia, categoryName));
     Category category = categoryService.getCategory(wikia, categoryName);
+
     representation.withBean(category);
+
+    representation.withLink("articles", uri.path("articles").build(wikia, categoryName));
+
     return representation;
   }
+
 
   @GET
   @Timed
@@ -53,13 +85,21 @@ public class HALCategoryResource {
   public Object getCategoryArticles(@PathParam("wikia") String wikia,
                                     @PathParam("category") String categoryName,
                                     @DefaultValue("10") @QueryParam("limit") int limit,
-                                    @QueryParam("offset") int offset) {
+                                    @DefaultValue("") @QueryParam("offset") String offset,
+                                    @DefaultValue("") @QueryParam("previous") String previous) {
     javax.ws.rs.core.UriBuilder
-        uri = javax.ws.rs.core.UriBuilder.fromPath("/{category}/articles");
+        uri = javax.ws.rs.core.UriBuilder.fromPath("{wikia}/category/{category}/articles");
+
+    addLimitAndOffset(uri, limit, offset);
+
+    if (previous == null || Objects.equals(previous, "")) {
+      uri.queryParam("previous", previous);
+    }
 
     Representation
         representation =
-        representationFactory.newRepresentation(uri.build(wikia, categoryName, limit, offset));
+        representationFactory
+            .newRepresentation(uri.build(wikia, categoryName));
     List<Article>
         articleList =
         categoryService.getCategoryArticles(wikia, categoryName, limit, offset);
@@ -74,9 +114,25 @@ public class HALCategoryResource {
     return representation;
   }
 
+  private void addLimitAndOffset(javax.ws.rs.core.UriBuilder uri, int limit, String offset) {
+    if (limit == DEFAULT_LIMIT || limit == 0) {
+      uri.queryParam("limit", limit);
+    }
+    if (offset == null || Objects.equals(offset, "")) {
+      uri.queryParam("offset", offset);
+    }
+  }
+
+
   private String getArticleLink(String wikia, String title) {
     return javax.ws.rs.core.UriBuilder
         .fromPath("{wikia}/articles/{title}")
+        .build(wikia, title).getPath();
+  }
+
+  private String getCategoryLink(String wikia, String title) {
+    return javax.ws.rs.core.UriBuilder
+        .fromPath("{wikia}/category/{title}")
         .build(wikia, title).getPath();
   }
 }

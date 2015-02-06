@@ -5,10 +5,12 @@ import com.wikia.mwapi.MWApi;
 import com.wikia.mwapi.enumtypes.query.properties.RVPropEnum;
 import com.wikia.mwapi.fluent.WikiaChoose;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.http.client.HttpClient;
 
 public class MediawikiGateway {
 
+  public static final String CATEGORY = "category";
   private final HttpClient httpClient;
 
   public MediawikiGateway(HttpClient httpClient) {
@@ -47,7 +49,7 @@ public class MediawikiGateway {
     ApiResponse apiResponse = queryBuilder()
         .wikia(wikia)
         .queryAction()
-        .titles(categoryName)
+        .titles(String.format("%s:%s", CATEGORY, categoryName))
         .get();
     return apiResponse;
   }
@@ -96,6 +98,31 @@ public class MediawikiGateway {
         .queryAction()
         .titles(title)
         .contributors()
+        .get();
+    return apiResponse;
+  }
+
+  public ApiResponse getCategoryArticles(String wikia, String categoryName, int limit,
+                                         String offset) {
+
+    ApiResponse apiResponse = queryBuilder()
+        .wikia(wikia)
+        .queryAction()
+        .categorymembers()
+        .cmtitle(String.format("%s:%s", CATEGORY, categoryName))
+        .cmcontinue(offset)
+        .cmlimit(limit)
+        .get();
+    return apiResponse;
+  }
+
+  public ApiResponse getCategoriesFromWikia(String wikia, int limit, String offset) {
+    ApiResponse apiResponse = queryBuilder()
+        .wikia(wikia)
+        .queryAction()
+        .allcategories()
+        .aclimit(limit)
+        .accontinue(offset)
         .get();
     return apiResponse;
   }

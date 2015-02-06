@@ -8,6 +8,8 @@ public class QueryContinue {
 
   private AllPages allpages;
 
+  private AllCategories allCategories;
+
   private CategoryMembers categorymembers;
 
   public Revisions getRevisions() {
@@ -22,6 +24,11 @@ public class QueryContinue {
   @JsonProperty("categorymembers")
   public CategoryMembers getCategorymembers() {
     return categorymembers;
+  }
+
+  @JsonProperty("allcategories")
+  public AllCategories getAllCategories() {
+    return allCategories;
   }
 
   public class Revisions {
@@ -50,6 +57,15 @@ public class QueryContinue {
 
     public String getCmcontinue() {
       return cmcontinue;
+    }
+  }
+
+  public class AllCategories {
+
+    private String acfrom;
+
+    public String getAcfrom() {
+      return acfrom;
     }
   }
 }

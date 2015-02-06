@@ -26,18 +26,22 @@ public class MercuryCategoryService extends MercuryService implements CategorySe
 
   @Override
   public List<Article> getCategoryArticles(String wikia, String categoryName, int limit,
-                                           int offset) {
+                                           String offset) {
     List<Article> mockList = new ArrayList<>();
     for (int i = 0; i < limit; i++) {
-      int id = offset + i;
       Article
           article =
           ArticleBuilder.anArticle()
-              .withId(id)
-              .withTitle("mock article" + id)
+              .withId(i)
+              .withTitle("mock article" + offset + i)
               .build();
       mockList.add(article);
     }
     return mockList;
+  }
+
+  @Override
+  public List<Category> getAllCategories(String wikia, int limit, String offset) {
+    throw new NotImplementedException("");
   }
 }

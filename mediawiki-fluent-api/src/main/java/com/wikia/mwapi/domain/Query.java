@@ -14,6 +14,8 @@ public class Query {
 
   private List<Page> allPages;
 
+  private List<CategoryStat> allCategories;
+
   private List<Page> categorymembers;
 
   public ArrayList<Normalized> getNormalized() {
@@ -29,6 +31,11 @@ public class Query {
     return allPages;
   }
 
+  @JsonProperty("allcategories")
+  public List<CategoryStat> getAllCategories() {
+    return allCategories;
+  }
+
   public Page getFirstPage() {
     Page page = null;
     if (getPages() != null && getPages().entrySet().size() > 0) {
@@ -41,4 +48,6 @@ public class Query {
   public List<Page> getCategorymembers() {
     return categorymembers;
   }
+
+
 }
