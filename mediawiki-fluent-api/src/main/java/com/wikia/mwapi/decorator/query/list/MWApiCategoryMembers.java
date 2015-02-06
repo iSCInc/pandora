@@ -1,5 +1,7 @@
-package com.wikia.mwapi.decorator.query;
+package com.wikia.mwapi.decorator.query.list;
 
+import com.wikia.mwapi.decorator.query.MWApiQueryBase;
+import com.wikia.mwapi.decorator.query.MWApiQueryDecorator;
 import com.wikia.mwapi.enumtypes.SortTypeEnum;
 import com.wikia.mwapi.enumtypes.query.properties.CMPropEnum;
 import com.wikia.mwapi.enumtypes.query.properties.CMTypeEnum;
