@@ -11,13 +11,11 @@ import com.wikia.mobileconfig.exceptions.ConfigurationNotFoundException;
 import com.wikia.mobileconfig.exceptions.InvalidApplicationTagException;
 import com.wikia.mobileconfig.exceptions.MobileConfigException;
 import com.wikia.mobileconfig.service.ConfigurationService;
-import com.wikia.mobileconfig.service.AppsListService;
+import com.wikia.mobileconfig.gateway.AppsListService;
 
 import javax.ws.rs.*;
 
-import java.io.IOException;
-
-@Path("/configurations/platform/{platform}/app/{appTag}")
+@Path("/configurations/platform/{platform}/app/{app-tag}")
 @Produces(RepresentationFactory.HAL_JSON)
 public class MobileConfigResource {
 
@@ -30,7 +28,7 @@ public class MobileConfigResource {
   }
 
   /**
-   * GET /configurations/platform/{platform}/app/{appTag}
+   * GET /configurations/platform/{platform}/app/{app-tag}
    *
    * @return Representation
    */
@@ -38,14 +36,17 @@ public class MobileConfigResource {
   @Timed
   public Representation getMobileApplicationConfig(
       @PathParam("platform") String platform,
-      @PathParam("appTag") String appTag
-  ) throws IOException, MobileConfigException {
+      @PathParam("app-tag") String appTag,
+      @QueryParam("ui-lang") String uiLang,
+      @QueryParam("content-lang") String contentLang
+  ) throws java.io.IOException, MobileConfigException {
 
-    if (!this.appsList.isValidAppTag(appTag)) {
+    if (!this.appsList.isValidAppTag(platform, appTag)) {
       throw new InvalidApplicationTagException(appTag);
     }
 
-    MobileConfiguration configuration = this.appConfiguration.getConfiguration(platform, appTag);
+    MobileConfiguration configuration =
+        this.appConfiguration.getConfiguration(platform, appTag, uiLang, contentLang);
 
     if (configuration.getModules().isEmpty()) {
       throw new ConfigurationNotFoundException(platform, appTag);
@@ -57,5 +58,4 @@ public class MobileConfigResource {
 
     return rep;
   }
-
 }

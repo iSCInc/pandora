@@ -55,21 +55,27 @@ public class HttpConfigurationService extends ConfigurationServiceBase {
   }
 
   @Override
-  public MobileConfiguration getConfiguration(String platform, String appTag) throws IOException {
+  public MobileConfiguration getConfiguration(String platform, String appTag, String uiLang, String contentLang) throws IOException {
+
+    MobileConfiguration configuration = null;
+
     try {
-      MobileConfiguration configuration = this.mapper.readValue(
+      configuration = this.mapper.readValue(
           this.executeHttpRequest(createCephUrl(platform, appTag)),
           MobileConfiguration.class
       );
-
-      return configuration;
     } catch (IOException e) {
       MobileConfigApplication.logger.info(
           String.format(CONFIGURATION_NOT_FOUND_DEBUG_MESSAGE_FORMAT, appTag, platform)
       );
 
-      return getDefault(platform);
+      if (configuration == null) {
+        configuration = getDefault(platform);
+      }
     }
+
+    translateConfiguration(configuration, uiLang);
+    return configuration;
   }
 
   private String createCephUrl(String platform, String appTag) {

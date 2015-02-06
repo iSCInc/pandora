@@ -37,7 +37,7 @@ public class FileConfigurationService extends ConfigurationServiceBase {
   }
 
   @Override
-  public MobileConfiguration getConfiguration(String platform, String appTag) throws IOException {
+  public MobileConfiguration getConfiguration(String platform, String appTag, String uiLang, String contentLang) throws IOException {
     try {
       MobileConfiguration configuration = this.mapper.readValue(
           new File(this.createFilePath(platform, appTag)),
