@@ -85,18 +85,21 @@ class GenerateNirvanaTask extends DefaultTask {
 
     def generateCode(File nirvanaFile) {
         String jarDownloadDestination = getCodegenDir()+"/"+codegenJar.tokenize('/')[-1]
+        AntBuilder builder = new AntBuilder()
 
-        new AntBuilder().sequential {
-            delete(dir: getCodegenDir())
-            mkdir(dir: getCodegenDir())
-            get(src: codegenJar, dest: jarDownloadDestination)
+        builder.mkdir(dir: getCodegenDir())
+
+        if (!(new File(jarDownloadDestination).exists())) {
+            builder.get(src: codegenJar, dest: jarDownloadDestination)
+        }
+
+        builder.sequential {
             exec(executable: 'java') {
-                arg(line: "-cp ${getCodegenDir()}/* com.wordnik.swagger.codegen.Codegen")
+                arg(line: "-cp ${jarDownloadDestination} com.wordnik.swagger.codegen.Codegen")
                 arg(line: "-i ${nirvanaFile.getAbsolutePath()}")
                 arg(line: "-l com.wikia.codegen.WikiaJavaClientCodegen")
                 arg(line: "-o ${rootDir}")
             }
-            delete(dir: getCodegenDir())
             delete(file: nirvanaFile.getAbsolutePath())
             delete(file: "${rootDir}/pom.xml")
         }
