@@ -8,7 +8,7 @@ logging:
       target: stdout
     - type: logstash-socket
       host: 127.0.0.1
-      port: 1410
+      #port: 1410
       fieldNames:
         message: rawMessage
         level: rawLevel
