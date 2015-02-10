@@ -20,7 +20,7 @@ public class ExampleServiceApplication extends Application<ExampleConfiguration>
 
   @Override
   public String getName() {
-    return "ExampleService";
+    return "pandora-example"; // no uppercase letters
   }
 
 
