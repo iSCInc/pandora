@@ -5,7 +5,6 @@ import com.wikia.pandora.domain.Revision;
 
 public interface RevisionService {
 
-  Revision getRevisionById(String wikia, Long revId);
+  Revision getRevisionById(String wikia, Long revId, boolean withContent);
 
-  Revision getRevisionByIdWithContent(String wikia, Long revId);
 }

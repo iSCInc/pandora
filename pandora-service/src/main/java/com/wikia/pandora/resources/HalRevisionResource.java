@@ -8,6 +8,8 @@ import com.wikia.pandora.api.service.RevisionService;
 import com.wikia.pandora.core.util.UriBuilder;
 import com.wikia.pandora.domain.Revision;
 
+import java.net.URI;
+
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -42,10 +44,8 @@ public class HalRevisionResource {
         representation =
         representationFactory.newRepresentation(uri.build(wikia, revId, withContent));
 
-    Revision
-        revision =
-        withContent ? revisionService.getRevisionByIdWithContent(wikia, revId)
-                    : revisionService.getRevisionById(wikia, revId);
+    Revision revision = revisionService.getRevisionById(wikia, revId, withContent);
+
     representation.withBean(revision);
 
     representation.withLink("parentRevision", getLinkToRevision(wikia, revision.getParentId()));

@@ -13,42 +13,28 @@ public class MediawikiRevisionService extends MediawikiService implements Revisi
     super(gateway);
   }
 
-  @Override
-  public Revision getRevisionById(String wikia, Long revId) {
-    ApiResponse apiResponse = this.getGateway().getRevisionById(wikia, revId);
+
+  public Revision getRevisionById(String wikia, Long revId, boolean withContent) {
+    ApiResponse apiResponse =
+        withContent ? this.getGateway().getRevisionByIdWithContent(wikia, revId)
+                    : this.getGateway().getRevisionById(wikia, revId);
+
     Page page = apiResponse.getQuery().getFirstPage();
-    com.wikia.mwapi.domain.Revision rev = page.getFirstRevision();
-
-    Revision revision = RevisionBuilder.aRevision()
-        .withUser(rev.getUser())
-        .withRevId(rev.getRevId())
-        .withParentId(rev.getParentId())
-        .withComment(rev.getComment())
-        .withLastRevId(page.getLastrevid())
-        .withTimestamp(rev.getTimestamp())
-        .withTitle(page.getTitle())
-        .withPageId(page.getPageId())
-        .build();
-    return revision;
-  }
-
-  @Override
-  public Revision getRevisionByIdWithContent(String wikia, Long revId) {
-    ApiResponse apiResponse = this.getGateway().getRevisionByIdWithContent(wikia, revId);
-    Page page = apiResponse.getQuery().getFirstPage();
-    com.wikia.mwapi.domain.Revision rev = page.getFirstRevision();
-
-    Revision revision = RevisionBuilder.aRevision()
-        .withUser(rev.getUser())
-        .withRevId(rev.getRevId())
-        .withParentId(rev.getParentId())
-        .withComment(rev.getComment())
-        .withLastRevId(page.getLastrevid())
-        .withTimestamp(rev.getTimestamp())
-        .withTitle(page.getTitle())
-        .withPageId(page.getPageId())
-        .withContent(rev.getContent())
-        .build();
-    return revision;
+    if (page != null) {
+      com.wikia.mwapi.domain.Revision rev = page.getFirstRevision();
+      Revision revision = RevisionBuilder.aRevision()
+          .withUser(rev.getUser())
+          .withRevId(rev.getRevId())
+          .withParentId(rev.getParentId())
+          .withComment(rev.getComment())
+          .withLastRevId(page.getLastrevid())
+          .withTimestamp(rev.getTimestamp())
+          .withTitle(page.getTitle())
+          .withContent(rev.getContent())
+          .withPageId(page.getPageId())
+          .build();
+      return revision;
+    }
+    return null;
   }
 }
