@@ -11,6 +11,9 @@ public class RevisionBuilder {
   private String user;
   private Date timestamp;
   private String comment;
+  private String title;
+  private long pageId;
+  private int lastRevId;
   private String content;
 
   private RevisionBuilder() {
@@ -45,6 +48,21 @@ public class RevisionBuilder {
     return this;
   }
 
+  public RevisionBuilder withTitle(String title) {
+    this.title = title;
+    return this;
+  }
+
+  public RevisionBuilder withPageId(long pageId) {
+    this.pageId = pageId;
+    return this;
+  }
+
+  public RevisionBuilder withLastRevId(int lastRevId) {
+    this.lastRevId = lastRevId;
+    return this;
+  }
+
   public RevisionBuilder withContent(String content) {
     this.content = content;
     return this;
@@ -52,11 +70,14 @@ public class RevisionBuilder {
 
   public RevisionBuilder but() {
     return aRevision().withRevId(revId).withParentId(parentId).withUser(user)
-        .withTimestamp(timestamp).withComment(comment).withContent(content);
+        .withTimestamp(timestamp).withComment(comment).withTitle(title).withPageId(pageId)
+        .withLastRevId(lastRevId).withContent(content);
   }
 
   public Revision build() {
-    Revision revision = new Revision(revId, parentId, user, timestamp, comment, content);
+    Revision
+        revision =
+        new Revision(revId, parentId, user, timestamp, comment, title, pageId, lastRevId, content);
     return revision;
   }
 }

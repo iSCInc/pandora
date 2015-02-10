@@ -16,12 +16,14 @@ public class MWApiQuery extends MWApiQueryBase {
   private List<String> titles;
   private List<ListEnum> lists;
   private List<PropEnum> props;
+  private List<Long> revIds;
 
   public MWApiQuery(MWApiBase parent) {
     super(parent);
     lists = new ArrayList<>();
     props = new ArrayList<>();
     titles = new ArrayList<>();
+    revIds = new ArrayList<>();
   }
 
   @Override
@@ -30,11 +32,17 @@ public class MWApiQuery extends MWApiQueryBase {
     URIBuilderHelper.addParameter(builder, "titles", titles);
     URIBuilderHelper.addParameter(builder, "list", lists);
     URIBuilderHelper.addParameter(builder, "prop", props);
+    URIBuilderHelper.addParameter(builder, "revids", revIds);
   }
 
   @Override
   public void titlesLogic(String... titles) {
     Collections.addAll(this.titles, titles);
+  }
+
+  @Override
+  public void revIdsLogic(Long... revIds) {
+    Collections.addAll(this.revIds, revIds);
   }
 
   @Override

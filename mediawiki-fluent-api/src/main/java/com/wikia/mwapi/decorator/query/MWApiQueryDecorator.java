@@ -19,6 +19,11 @@ public class MWApiQueryDecorator extends MWApiQueryBase {
   }
 
   @Override
+  protected void revIdsLogic(Long... revIds) {
+    parent.revIdsLogic(revIds);
+  }
+
+  @Override
   protected void allPagesLogic() {
     parent.allPagesLogic();
   }

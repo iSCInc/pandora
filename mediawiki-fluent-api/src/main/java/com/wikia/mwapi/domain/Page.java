@@ -3,6 +3,7 @@ package com.wikia.mwapi.domain;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Page {
@@ -16,6 +17,12 @@ public class Page {
   private List<User> contributors;
   private List<Image> images;
   private String type;
+  private Date touched;
+  private int lastrevid;
+  private String counter;
+  private int length;
+  private String redirect;
+
 
   private ArrayList<Revision> revisions;
 
@@ -67,8 +74,28 @@ public class Page {
     return anonContributors;
   }
 
-  
+
   public String getType() {
     return type;
+  }
+
+  public Date getTouched() {
+    return touched;
+  }
+
+  public int getLastrevid() {
+    return lastrevid;
+  }
+
+  public String getCounter() {
+    return counter;
+  }
+
+  public int getLength() {
+    return length;
+  }
+
+  public String getRedirect() {
+    return redirect;
   }
 }

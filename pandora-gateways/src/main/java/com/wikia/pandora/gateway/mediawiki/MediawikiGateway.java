@@ -86,6 +86,7 @@ public class MediawikiGateway {
         .queryAction()
         .titles(title)
         .revisions()
+        .rvlimit(10)
         .get();
     return apiResponse;
   }
@@ -96,6 +97,31 @@ public class MediawikiGateway {
         .queryAction()
         .titles(title)
         .contributors()
+        .get();
+    return apiResponse;
+  }
+
+  public ApiResponse getRevisionById(String wikia, Long revId) {
+    ApiResponse apiResponse = queryBuilder()
+        .wikia(wikia)
+        .queryAction()
+        .revIds(revId)
+        .info()
+        .revisions()
+        .rvprop(RVPropEnum.user, RVPropEnum.ids, RVPropEnum.comment, RVPropEnum.timestamp)
+        .get();
+    return apiResponse;
+  }
+
+  public ApiResponse getRevisionByIdWithContent(String wikia, Long revId) {
+    ApiResponse apiResponse = queryBuilder()
+        .wikia(wikia)
+        .queryAction()
+        .revIds(revId)
+        .info()
+        .revisions()
+        .rvprop(RVPropEnum.user, RVPropEnum.ids, RVPropEnum.comment,
+                RVPropEnum.timestamp, RVPropEnum.content)
         .get();
     return apiResponse;
   }
