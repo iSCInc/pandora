@@ -5,6 +5,8 @@ import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 import com.wikia.exampleservice.configuration.ExampleConfiguration;
 import com.wikia.exampleservice.health.ExampleHealthCheck;
 import com.wikia.exampleservice.resources.ExampleResource;
+import com.wikia.pandora.core.consul.ConsulBundle;
+import com.wikia.pandora.core.consul.ConsulConfig;
 
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
@@ -24,7 +26,12 @@ public class ExampleServiceApplication extends Application<ExampleConfiguration>
 
   @Override
   public void initialize(Bootstrap<ExampleConfiguration> bootstrap) {
-
+    bootstrap.addBundle(new ConsulBundle<ExampleConfiguration>() {
+      @Override
+      protected ConsulConfig narrowConfig(ExampleConfiguration config) {
+        return config.getConsulConfig();
+      }
+    });
   }
 
   @Override

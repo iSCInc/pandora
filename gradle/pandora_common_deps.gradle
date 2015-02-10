@@ -5,6 +5,8 @@ dependencies {
     compile "io.dropwizard:dropwizard-core:$dropwizardVersion"
     compile "io.dropwizard:dropwizard-client:$dropwizardVersion"
 
+    compile 'com.wikia:dropwizard-logstash-encoder:1.0.1'
+
     //HAL builder
     compile 'com.theoryinpractise:halbuilder-api:4.0.1'
     compile 'com.theoryinpractise:halbuilder-core:4.0.3'
