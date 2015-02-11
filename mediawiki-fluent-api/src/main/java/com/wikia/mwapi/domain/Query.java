@@ -14,6 +14,8 @@ public class Query {
 
   private List<Page> allPages;
 
+  private List<CategoryStat> allCategories;
+
   private List<Page> categorymembers;
 
   private LinkedHashMap<String,BadRevId> badRevIds;
@@ -29,6 +31,11 @@ public class Query {
   @JsonProperty("allpages")
   public List<Page> getAllPages() {
     return allPages;
+  }
+
+  @JsonProperty("allcategories")
+  public List<CategoryStat> getAllCategories() {
+    return allCategories;
   }
 
   public Page getFirstPage() {
@@ -48,4 +55,6 @@ public class Query {
   public LinkedHashMap<String, BadRevId> getBadRevIds() {
     return badRevIds;
   }
+
+
 }

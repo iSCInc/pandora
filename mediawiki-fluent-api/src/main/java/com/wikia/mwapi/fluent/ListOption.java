@@ -1,5 +1,6 @@
 package com.wikia.mwapi.fluent;
 
+import com.wikia.mwapi.fluent.query.AllCategoriesOption;
 import com.wikia.mwapi.fluent.query.CategoryMembersOption;
 
 public interface ListOption {
@@ -8,7 +9,7 @@ public interface ListOption {
 
   QueryOption abuselog();
 
-  QueryOption allcategories();
+  AllCategoriesOption allcategories();
 
   QueryOption alldeletedrevisions();
 
