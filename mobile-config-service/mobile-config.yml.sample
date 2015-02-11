@@ -27,7 +27,7 @@ logging:
         tags: rawTags
         context: rawContext
       customFields:
-        appname: pandora-example
+        appname: mobile-config
 server:
   applicationConnectors:
   - type: http

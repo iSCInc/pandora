@@ -12,7 +12,7 @@ buildscript {
     }
 }
 
-version = "0.1.12"
+version = "0.1.17"
 mainClassName = "com.wikia.mobileconfig.MobileConfigApplication"
 
 apply from: rootProject.file('gradle/marathon_deployment.gradle')
@@ -22,14 +22,20 @@ applicationDefaultJvmArgs = [
         '-Ddw.server.applicationConnectors[0].port=\$PORT0', '-Ddw.server.adminConnectors[0].port=\$PORT1',
         "-Xms100m", "-Xmn128m", "-Xmx300m", "-XX:+UseNUMA", "-XX:+UseCondCardMark", "-XX:+UseBiasedLocking", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC"
 ]
+//
+//applicationDistribution.from("mobile-config.yml.sample") {
+//    rename 'mobile-config.yml.sample', "${project.name}.yml"
+//    into 'conf'
+//}
 
-applicationDistribution.from("mobile-config.yml.sample") {
-    rename 'mobile-config.yml.sample', "${project.name}.yml"
+applicationDistribution.from("mobile-config.yml") {
+    rename 'mobile-config.yml', "${project.name}.yml"
     into 'conf'
 }
 
+
 tasks.deployToProd {
-    mem = 400
+    mem = 600
     instances = 2
 }
 
