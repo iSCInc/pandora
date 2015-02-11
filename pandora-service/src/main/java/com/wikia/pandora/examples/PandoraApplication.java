@@ -12,6 +12,13 @@ import com.wikia.pandora.resources.HALCategoryResource;
 import com.wikia.pandora.service.ServiceFactory;
 import com.wikia.pandora.service.mercury.MercuryServiceFactory;
 
+import org.eclipse.jetty.servlets.CrossOriginFilter;
+
+import java.util.EnumSet;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration;
+
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -33,6 +40,17 @@ public class PandoraApplication extends Application<PandoraConfiguration> {
 
   @Override
   public void run(PandoraConfiguration configuration, Environment environment) {
+
+    final FilterRegistration.Dynamic cors =
+        environment.servlets().addFilter("CORS", CrossOriginFilter.class);
+
+    // Configure CORS parameters
+    cors.setInitParameter("allowedOrigins", "*");
+    cors.setInitParameter("allowedHeaders", "X-Requested-With,Content-Type,Accept,Origin");
+    cors.setInitParameter("allowedMethods", "OPTIONS,GET,PUT,POST,DELETE,HEAD");
+
+    // Add URL mapping
+    cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
 
     final PandoraHealthCheck healthCheck = new PandoraHealthCheck();
     environment.healthChecks().register("pandora", healthCheck);
