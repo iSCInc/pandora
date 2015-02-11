@@ -5,6 +5,7 @@ def mockitoVersion = "1.10.17"
 dependencies {
     // The production code uses the SLF4J logging API at compile time
     compile "org.slf4j:slf4j-api:$sl4jVersion"
+
     testCompile "junit:junit:$junitVersion"
     testCompile "org.mockito:mockito-core:$mockitoVersion"
 }

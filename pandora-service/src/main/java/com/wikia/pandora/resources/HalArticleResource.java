@@ -171,7 +171,7 @@ public class HalArticleResource {
           .withLinkAndTitle(
               representation,
               "revision",
-              getLinkToRevision(wikia, title, revision.getRevId()),
+              getLinkToRevision(wikia, revision.getRevId()),
               String.format("%s: %s", revision.getUser(), revision.getComment())
           );
     }
@@ -235,9 +235,9 @@ public class HalArticleResource {
   }
 
 
-  private String getLinkToRevision(String wikia, String title, int revId) {
+  private String getLinkToRevision(String wikia, int revId) {
     return javax.ws.rs.core.UriBuilder
-        .fromPath("{wikia}/articles/{title}/revisions/{revId}")
-        .build(wikia, title, revId).getPath();
+        .fromPath("{wikia}/revision/{revId}")
+        .build(wikia, revId).getPath();
   }
 }

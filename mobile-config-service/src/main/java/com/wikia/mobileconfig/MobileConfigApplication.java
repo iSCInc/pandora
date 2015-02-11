@@ -12,6 +12,8 @@ import com.wikia.mobileconfig.gateway.AppsDeployerList;
 import com.wikia.mobileconfig.service.FileConfigurationService;
 import com.wikia.mobileconfig.service.HttpConfigurationService;
 import com.wikia.mobileconfig.service.ImageService;
+import com.wikia.pandora.core.consul.ConsulConfig;
+import com.wikia.pandora.core.consul.ConsulBundle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +40,12 @@ public class MobileConfigApplication extends Application<MobileConfigConfigurati
 
   @Override
   public void initialize(Bootstrap<MobileConfigConfiguration> bootstrap) {
+    bootstrap.addBundle(new ConsulBundle<MobileConfigConfiguration>() {
+      @Override
+      protected ConsulConfig narrowConfig(MobileConfigConfiguration config) {
+        return config.getConsulConfig();
+      }
+    });
   }
 
   @Override

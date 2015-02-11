@@ -8,4 +8,5 @@ public interface TitlesOrListChoose extends ListOption {
 
   QueryOption allPages();
 
+  QueryOption revIds(Long... revId);
 }

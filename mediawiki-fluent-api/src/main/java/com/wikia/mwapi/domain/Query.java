@@ -18,6 +18,8 @@ public class Query {
 
   private List<Page> categorymembers;
 
+  private LinkedHashMap<String,BadRevId> badRevIds;
+
   public ArrayList<Normalized> getNormalized() {
     return normalized;
   }
@@ -47,6 +49,11 @@ public class Query {
   @JsonProperty("categorymembers")
   public List<Page> getCategorymembers() {
     return categorymembers;
+  }
+
+  @JsonProperty("badrevids")
+  public LinkedHashMap<String, BadRevId> getBadRevIds() {
+    return badRevIds;
   }
 
 

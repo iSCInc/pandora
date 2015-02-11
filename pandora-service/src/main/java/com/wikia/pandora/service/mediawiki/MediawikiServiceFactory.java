@@ -3,6 +3,7 @@ package com.wikia.pandora.service.mediawiki;
 import com.wikia.pandora.api.service.ArticleService;
 import com.wikia.pandora.api.service.CategoryService;
 import com.wikia.pandora.api.service.CommentService;
+import com.wikia.pandora.api.service.RevisionService;
 import com.wikia.pandora.core.impl.configuration.PandoraConfiguration;
 import com.wikia.pandora.gateway.mediawiki.MediawikiGateway;
 import com.wikia.pandora.service.ServiceFactory;
@@ -40,7 +41,11 @@ public class MediawikiServiceFactory extends ServiceFactory {
 
   @Override
   public CommentService createCommentService() {
+    return new MediawikiCommentService(gateway);
+  }
 
-    throw new NotImplementedException("");
+  @Override
+  public RevisionService createRevisionService() {
+    return new MediawikiRevisionService(gateway);
   }
 }
