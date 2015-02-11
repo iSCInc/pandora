@@ -41,7 +41,7 @@ public class MercuryServiceFactory extends ServiceFactory {
 
   @Override
   public CommentService createCommentService() {
-    throw new NotImplementedException("");
+    return new MercuryCommentService(new MercuryGateway(httpClient));
   }
 
   @Override
