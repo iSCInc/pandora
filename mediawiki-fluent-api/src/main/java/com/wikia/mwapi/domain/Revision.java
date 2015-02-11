@@ -13,6 +13,8 @@ public class Revision {
   private String comment;
 
   private String content;
+  private String minor;
+  private String anon;
 
   @JsonProperty("*")
   public String getContent() {
@@ -42,5 +44,15 @@ public class Revision {
   @JsonProperty("comment")
   public String getComment() {
     return comment;
+  }
+
+  @JsonProperty("minor")
+  public String getMinor() {
+    return minor;
+  }
+  
+  @JsonProperty("anon")
+  public String getAnon() {
+    return anon;
   }
 }

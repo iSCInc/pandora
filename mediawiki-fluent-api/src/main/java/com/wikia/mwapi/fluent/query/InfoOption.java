@@ -1,5 +1,7 @@
 package com.wikia.mwapi.fluent.query;
 
-public interface InfoOption {
+import com.wikia.mwapi.fluent.QueryOption;
+
+public interface InfoOption extends QueryOption {
 
 }

@@ -10,12 +10,6 @@ project(':nirvana-api').projectDir = new File(settingsDir, 'relative/path/to/nir
 ```
 In your build.gradle
 ```groovy
-configurations {
-    // excluded because this package can't be found in maven central or jcenter, so this seems better than adding the 
-    // sonatype snapshots repo everywhere. will remove when swagger-annotations makes it to central
-    compile.exclude group: 'com.wordnik', module: 'swagger-annotations'
-}
-
 dependencies {
   compile project(':nirvana-api')
 }
@@ -33,15 +27,4 @@ try {
 } catch (ApiException e) { }
 
 // do stuff with cr
-```
-
-## Dependencies
-
-To use the code generation utility you will need `gradle` and `mvn` (Maven)
-installed locally. To do so on OS X using homebrew, do the following:
-
-```sh
-brew update
-brew install maven
-brew install gradle
 ```
