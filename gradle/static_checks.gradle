@@ -1,24 +1,57 @@
 apply plugin: 'findbugs'
 apply plugin: 'pmd'
+apply plugin: 'checkstyle'
+
+ext {
+// ignoreCheckFailures is used in CI to have more granular control of when build should be marked as failing
+    if (!project.properties.containsKey("ignoreCheckFailures")) {
+        ignoreCheckFailures = false
+    } else {
+        ignoreCheckFailures = ignoreCheckFailures.toBoolean()
+    }
+    if (!project.properties.containsKey("reportsAsHtml")) {
+        reportsAsHtml = false
+    } else {
+        reportsAsHtml = reportsAsHtml.toBoolean()
+    }
+}
 
 findbugs {
-    ignoreFailures = true
+    toolVersion = "3.0.0"
+    ignoreFailures = ignoreCheckFailures
 }
 
 pmd {
-    ignoreFailures = true
+    toolVersion = "5.2.3"
+    ignoreFailures = ignoreCheckFailures
+}
+
+checkstyle {
+    toolVersion = "6.3"
+    ignoreFailures = ignoreCheckFailures
+    config = rootProject.resources.text.fromFile("gradle/google_checks.xml")
 }
 
 dependencies {
+    pmd(
+            'net.sourceforge.pmd:pmd-core:5.2.3',
+            'net.sourceforge.pmd:pmd-java:5.2.3'
+    )
     compile "com.google.code.findbugs:jsr305:3.0.0"
     compile "com.google.code.findbugs:annotations:3.0.0"
 }
 
 tasks.withType(FindBugs) {
-//    reportLevel = "low"
     effort = "max"
     reports {
-        xml.enabled = true
-//        html.enabled = true
+        xml.enabled = !reportsAsHtml
+        html.enabled = reportsAsHtml
+    }
+}
+
+tasks.withType(Pmd) {
+    reports {
+        xml.enabled = !reportsAsHtml
+        html.enabled = reportsAsHtml
     }
 }

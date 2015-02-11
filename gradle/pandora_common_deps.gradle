@@ -1,5 +1,4 @@
 apply from: rootProject.file('gradle/common_deps.gradle')
-apply from: rootProject.file('gradle/static_checks.gradle')
 def dropwizardVersion = "0.8.0-rc2"
 
 dependencies {
