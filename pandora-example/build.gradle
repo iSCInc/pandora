@@ -1,6 +1,6 @@
 apply from: rootProject.file('gradle/pandora_common_deps.gradle')
 apply plugin: 'application'
-version = "0.1.7"
+version = "0.1.9"
 
 // deployment boilerplate
 buildscript {
@@ -23,6 +23,7 @@ dependencies {
 mainClassName = "com.wikia.exampleservice.ExampleServiceApplication"
 
 // configure jvm parameters
+// PORT0 and PORT1 Are set through Marathon, see: https://mesosphere.github.io/marathon/docs/service-discovery-load-balancing.html
 applicationDefaultJvmArgs = [
         '-Ddw.server.applicationConnectors[0].port=\$PORT0', '-Ddw.server.adminConnectors[0].port=\$PORT1',
         "-Xms100m", "-Xmn128m", "-Xmx300m", "-XX:+UseNUMA", "-XX:+UseCondCardMark", "-XX:+UseBiasedLocking", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC"
