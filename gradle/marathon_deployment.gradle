@@ -9,6 +9,7 @@ docker {
 }
 
 def dockerTargetImage = "${dockerRegistryHost}/services/${project.name}"
+//TODO: this should go through helper because otherwise it can be easily overriden
 applicationDefaultJvmArgs = ['-Ddw.server.applicationConnectors[0].port=\$PORT0', '-Ddw.server.adminConnectors[0].port=\$PORT1']
 
 startScripts {
