@@ -18,11 +18,16 @@ logging:
       threshold: ALL
       timeZone: UTC
       target: stdout
-    - type: file
-      threshold: INFO
-      currentLogFilename: /tmp/mobile-config.log
-      archivedLogFilenamePattern: /tmp/mobile-config-%d.log.gz
-      archivedFileCount: 5
+    - type: logstash-socket
+      host: 127.0.0.1
+      port: 1410
+      fieldNames:
+        message: rawMessage
+        level: rawLevel
+        tags: rawTags
+        context: rawContext
+      customFields:
+        appname: mobile-config
 server:
   applicationConnectors:
   - type: http
@@ -32,7 +37,7 @@ server:
     port: 8081
 consulConfig:
   tags:
-    - auto_pandora
+    - auto_test
   consulUri: http://localhost:8500
   heartbeatInterval: 2s
   heartbeatTTL: 5s

@@ -12,7 +12,7 @@ buildscript {
     }
 }
 
-version = "0.1.11"
+version = "0.1.17"
 mainClassName = "com.wikia.mobileconfig.MobileConfigApplication"
 
 apply from: rootProject.file('gradle/marathon_deployment.gradle')
@@ -29,7 +29,8 @@ applicationDistribution.from("mobile-config.yml.sample") {
 }
 
 tasks.deployToProd {
-    mem = 1000
+    mem = 600
+    instances = 2
 }
 
 dependencies {
