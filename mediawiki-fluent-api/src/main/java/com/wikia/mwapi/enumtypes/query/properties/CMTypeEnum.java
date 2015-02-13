@@ -1,7 +1,12 @@
 package com.wikia.mwapi.enumtypes.query.properties;
 
 public enum CMTypeEnum {
-  page,
-  subcat,
-  file
+  PAGE,
+  SUBCAT,
+  FILE;
+
+  @Override
+  public String toString() {
+    return super.toString().toLowerCase();
+  }
 }

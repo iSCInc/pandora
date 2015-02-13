@@ -1,6 +1,11 @@
 package com.wikia.mwapi.enumtypes;
 
 public enum SortTypeEnum {
-  sortkey,
-  timestamp
+  SORTKEY,
+  TIMESTAMP;
+
+  @Override
+  public String toString() {
+    return super.toString().toLowerCase();
+  }
 }

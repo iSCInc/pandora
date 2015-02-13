@@ -21,7 +21,7 @@ public class MWApiCategoryMembersTest {
         .categorymembers()
         .cmtitle("Category:Writers")
         .cmlimit(3)
-        .cmprop(CMPropEnum.ids, CMPropEnum.title, CMPropEnum.type)
+        .cmprop(CMPropEnum.IDS, CMPropEnum.TITLE, CMPropEnum.TYPE)
         .url();
     assertEquals(
         "http://stargate.wikia.com/api.php?action=query&format=json&list=categorymembers&cmtitle=Category%3AWriters&cmprop=ids%7Ctitle%7Ctype&cmlimit=3",

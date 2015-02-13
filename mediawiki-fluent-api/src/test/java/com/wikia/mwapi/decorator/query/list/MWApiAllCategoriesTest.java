@@ -23,7 +23,7 @@ public class MWApiAllCategoriesTest {
         .aclimit(11)
         .acfrom("Earth")
         .acto("Tilk")
-        .acprop(ACPropEnum.size)
+        .acprop(ACPropEnum.SIZE)
         .url();
 
     assertEquals(

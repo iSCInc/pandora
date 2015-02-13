@@ -47,7 +47,7 @@ public class MWApiTest {
         .categories()
         .cllimit(5)
         .clcontinue("test")
-        .clprop(CLPropEnum.sortkey)
+        .clprop(CLPropEnum.SORTKEY)
         .url();
 
     assertEquals(
@@ -65,7 +65,7 @@ public class MWApiTest {
         .titles("Aphofis")
         .prop().revisions()
         .rvlimit(1)
-        .rvprop(RVPropEnum.content)
+        .rvprop(RVPropEnum.CONTENT)
         .url();
     assertEquals(
         "http://stargate.wikia.com/api.php?action=query&format=json&titles=Aphofis&prop=revisions&rvprop=content&rvlimit=1",
@@ -80,7 +80,7 @@ public class MWApiTest {
         .queryAction()
         .titles("something")
         .revisions()
-        .rvprop(RVPropEnum.user, RVPropEnum.comment, RVPropEnum.content)
+        .rvprop(RVPropEnum.USER, RVPropEnum.COMMENT, RVPropEnum.CONTENT)
         .categories().cllimit(10)
         .url();
     assertEquals(

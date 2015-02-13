@@ -32,7 +32,7 @@ public class MWApi extends MWApiBase implements MainModuleOption {
 
   protected MWApi(HttpClient httpClient) {
     this.httpClient = httpClient;
-    format(FormatEnum.json);
+    format(FormatEnum.JSON);
   }
 
   public static WikiaChoose createBuilder() {
