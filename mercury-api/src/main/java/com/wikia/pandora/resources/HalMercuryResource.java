@@ -4,12 +4,12 @@ import com.codahale.metrics.annotation.Timed;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.wikia.pandora.api.service.ArticleService;
-import com.wikia.pandora.core.util.UriBuilder;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.UriBuilder;
 
 @Path("{wikia}/MercuryArticles")
 @Produces(RepresentationFactory.HAL_JSON)
@@ -31,7 +31,7 @@ public class HalMercuryResource {
   @Timed
   public Object getMercuryApiArticle(@PathParam("wikia") String wikia,
                                      @PathParam("title") String title) {
-    javax.ws.rs.core.UriBuilder uriBuilder = UriBuilder.getSelfUriBuilder(wikia, title);
+    UriBuilder uriBuilder = UriBuilder.fromResource(HalMercuryResource.class).path("{title}");
     Representation
         representation =
         representationFactory.newRepresentation(uriBuilder.build(wikia, title));

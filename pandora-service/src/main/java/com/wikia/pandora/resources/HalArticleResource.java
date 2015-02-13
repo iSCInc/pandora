@@ -11,14 +11,15 @@ import com.wikia.pandora.domain.Media;
 import com.wikia.pandora.domain.Revision;
 import com.wikia.pandora.domain.User;
 import com.wikia.pandora.core.util.RepresentationHelper;
-import com.wikia.pandora.core.util.UriBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.UriBuilder;
 
 // "{wikia}/articles" -> getArticles get all articles (currently first 10) from {wikia}
 // "{wikia}/articles/{title}" -> getArticle article from {wikia} with {title}
@@ -48,8 +49,8 @@ public class HalArticleResource {
   @Path("/")
   @Timed
   public Object getArticles(@PathParam("wikia") String wikia) {
-    javax.ws.rs.core.UriBuilder uri = UriBuilder.getSelfUriBuilder(wikia);
-    Representation representation = representationFactory.newRepresentation(uri.build(wikia));
+    URI uri = UriBuilder.fromResource(HalArticleResource.class).build(wikia);
+    Representation representation = representationFactory.newRepresentation(uri);
     List<Article> articleList = articleService.getArticlesFromWikia(wikia);
     for (Article article : articleList) {
 
@@ -68,18 +69,20 @@ public class HalArticleResource {
   @Timed
   public Object getArticle(@PathParam("wikia") String wikia,
                            @PathParam("title") String title) {
-    javax.ws.rs.core.UriBuilder uri = UriBuilder.getSelfUriBuilder(wikia, title);
+    UriBuilder uriBuilder = UriBuilder.fromResource(HalArticleResource.class).path("{title}");
+
     Representation
         representation =
-        representationFactory.newRepresentation(uri.build(wikia, title));
+        representationFactory.newRepresentation(uriBuilder.build(wikia, title));
 
     Article article = this.articleService.getArticleByTitle(wikia, title);
     representation.withBean(article);
-    representation.withLink("categories", uri.clone().path("categories").build(wikia, title));
-    representation.withLink("users", uri.clone().path("users").build(wikia, title));
-    representation.withLink("media", uri.clone().path("media").build(wikia, title));
-    representation.withLink("comments", uri.clone().path("comments").build(wikia, title));
-    representation.withLink("revisions", uri.clone().path("revisions").build(wikia, title));
+    representation
+        .withLink("categories", uriBuilder.clone().path("categories").build(wikia, title));
+    representation.withLink("users", uriBuilder.clone().path("users").build(wikia, title));
+    representation.withLink("media", uriBuilder.clone().path("media").build(wikia, title));
+    representation.withLink("comments", uriBuilder.clone().path("comments").build(wikia, title));
+    representation.withLink("revisions", uriBuilder.clone().path("revisions").build(wikia, title));
 
     return representation;
   }
@@ -89,11 +92,14 @@ public class HalArticleResource {
   @Timed
   public Object getArticleCategories(@PathParam("wikia") String wikia,
                                      @PathParam("title") String title) {
-    javax.ws.rs.core.UriBuilder uri = UriBuilder.getSelfUriBuilder(wikia, title);
+    UriBuilder
+        uriBuilder =
+        UriBuilder.fromResource(HalArticleResource.class)
+            .path("{title}").path("categories");
     Representation
         representation =
-        representationFactory.newRepresentation(uri.build(wikia, title));
-    representation.withLink("article", uri.clone()
+        representationFactory.newRepresentation(uriBuilder.build(wikia, title));
+    representation.withLink("article", uriBuilder.clone()
         .replacePath("{wikia}/articles/{title}")
         .build(wikia, title));
 
@@ -114,11 +120,12 @@ public class HalArticleResource {
   @Timed
   public Object getArticleComments(@PathParam("wikia") String wikia,
                                    @PathParam("title") String title) {
-    javax.ws.rs.core.UriBuilder uri = UriBuilder.getSelfUriBuilder(wikia, title);
+    UriBuilder uriBuilder = UriBuilder.fromResource(HalArticleResource.class)
+        .path("{title}").path("comments");
     Representation
         representation =
-        representationFactory.newRepresentation(uri.build(wikia, title));
-    representation.withLink("article", uri.clone()
+        representationFactory.newRepresentation(uriBuilder.build(wikia, title));
+    representation.withLink("article", uriBuilder.clone()
         .replacePath("{wikia}/articles/{title}").build(wikia, title));
     List<Comment> comments = articleService.getArticleComments(wikia, title);
     for (Comment comment : comments) {
@@ -138,10 +145,11 @@ public class HalArticleResource {
   @Timed
   public Object getArticleMedia(@PathParam("wikia") String wikia,
                                 @PathParam("title") String title) {
-    javax.ws.rs.core.UriBuilder uri = UriBuilder.getSelfUriBuilder(wikia, title);
+    UriBuilder uriBuilder = UriBuilder.fromResource(HalArticleResource.class)
+        .path("{title}").path("media");
     Representation
         representation =
-        representationFactory.newRepresentation(uri.build(wikia, title));
+        representationFactory.newRepresentation(uriBuilder.build(wikia, title));
     List<Media> mediaList = articleService.getArticleMedia(wikia, title);
     for (Media media : mediaList) {
       RepresentationHelper
@@ -161,10 +169,11 @@ public class HalArticleResource {
   @Timed
   public Object getArticleRevisions(@PathParam("wikia") String wikia,
                                     @PathParam("title") String title) {
-    javax.ws.rs.core.UriBuilder uri = UriBuilder.getSelfUriBuilder(wikia, title);
+    UriBuilder uriBuilder = UriBuilder.fromResource(HalArticleResource.class)
+        .path("{title}").path("revisions");
     Representation
         representation =
-        representationFactory.newRepresentation(uri.build(wikia, title));
+        representationFactory.newRepresentation(uriBuilder.build(wikia, title));
     List<Revision> revisions = articleService.getArticleRevisions(wikia, title);
     for (Revision revision : revisions) {
       RepresentationHelper
@@ -184,10 +193,11 @@ public class HalArticleResource {
   @Timed
   public Object getArticleUsers(@PathParam("wikia") String wikia,
                                 @PathParam("title") String title) {
-    javax.ws.rs.core.UriBuilder uri = UriBuilder.getSelfUriBuilder(wikia, title);
+    UriBuilder uriBuilder = UriBuilder.fromResource(HalArticleResource.class)
+        .path("{title}").path("users");
     Representation
         representation =
-        representationFactory.newRepresentation(uri.build(wikia, title));
+        representationFactory.newRepresentation(uriBuilder.build(wikia, title));
     List<User> users = articleService.getArticleContributors(wikia, title);
     for (User user : users) {
       RepresentationHelper
@@ -201,7 +211,7 @@ public class HalArticleResource {
 
   private String getLinkToArticle(String wikia, String title) {
     return
-        javax.ws.rs.core.UriBuilder
+        UriBuilder
             .fromResource(HalArticleResource.class)
             .path("/{title}")
             .build(wikia, title)
@@ -211,32 +221,32 @@ public class HalArticleResource {
   }
 
   private String getLinkToCategory(String wikia, String title) {
-    return javax.ws.rs.core.UriBuilder
+    return UriBuilder
         .fromPath("{wikia}/categories/{title}")
         .build(wikia, title).getPath();
   }
 
   private String getLinkToComment(String wikia, Long id) {
-    return javax.ws.rs.core.UriBuilder
+    return UriBuilder
         .fromPath("{wikia}/comments/{id}")
         .build(wikia, id).getPath();
   }
 
   private String getLinkToMedia(String wikia, String title) {
-    return javax.ws.rs.core.UriBuilder
+    return UriBuilder
         .fromPath("{wikia}/media/{title}")
         .build(wikia, title).getPath();
   }
 
   private String getLinkToUser(String wikia, String name) {
-    return javax.ws.rs.core.UriBuilder
+    return UriBuilder
         .fromPath("{wikia}/users/{name}")
         .build(wikia, name).getPath();
   }
 
 
   private String getLinkToRevision(String wikia, int revId) {
-    return javax.ws.rs.core.UriBuilder
+    return UriBuilder
         .fromPath("{wikia}/revision/{revId}")
         .build(wikia, revId).getPath();
   }

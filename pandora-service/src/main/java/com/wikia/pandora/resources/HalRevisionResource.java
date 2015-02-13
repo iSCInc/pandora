@@ -3,12 +3,8 @@ package com.wikia.pandora.resources;
 import com.codahale.metrics.annotation.Timed;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
-import com.wikia.mwapi.domain.Page;
 import com.wikia.pandora.api.service.RevisionService;
-import com.wikia.pandora.core.util.UriBuilder;
 import com.wikia.pandora.domain.Revision;
-
-import java.net.URI;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -16,6 +12,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.UriBuilder;
 
 @Path("{wikia}/revision")
 @Produces(RepresentationFactory.HAL_JSON)
@@ -39,10 +36,10 @@ public class HalRevisionResource {
   public Object getRevision(@PathParam("wikia") String wikia,
                             @PathParam("revId") Long revId,
                             @QueryParam("content") @DefaultValue("false") Boolean withContent) {
-    javax.ws.rs.core.UriBuilder uri = UriBuilder.getSelfUriBuilder(wikia, revId, withContent);
+    UriBuilder uriBuilder = UriBuilder.fromResource(HalRevisionResource.class).path("{revId}");
     Representation
         representation =
-        representationFactory.newRepresentation(uri.build(wikia, revId, withContent));
+        representationFactory.newRepresentation(uriBuilder.build(wikia, revId, withContent));
 
     Revision revision = revisionService.getRevisionById(wikia, revId, withContent);
 
