@@ -5,7 +5,6 @@ import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.wikia.pandora.api.service.CommentService;
 import com.wikia.pandora.core.util.RepresentationHelper;
-import com.wikia.pandora.core.util.UriBuilder;
 import com.wikia.pandora.domain.Comment;
 
 import java.util.List;
@@ -14,6 +13,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.UriBuilder;
+
 
 @Path("{wikia}/comments")
 @Produces(RepresentationFactory.HAL_JSON)
@@ -36,7 +37,10 @@ public class HalCommentResource {
   public Object getComment(@PathParam("wikia") String wikia,
                            @PathParam("commentId") Long commentId) {
 
-    javax.ws.rs.core.UriBuilder uriBuilder = UriBuilder.getSelfUriBuilder(wikia, commentId);
+    javax.ws.rs.core.UriBuilder
+        uriBuilder =
+        UriBuilder.fromResource(HalCommentResource.class)
+            .path("{commentId}");
     Representation
         representation =
         this.representationFactory
@@ -65,7 +69,9 @@ public class HalCommentResource {
   @Path("/{commentId}/responses")
   public Object getCommentResponses(@PathParam("wikia") String wikia,
                                     @PathParam("commentId") Long commentId) {
-    javax.ws.rs.core.UriBuilder uriBuilder = UriBuilder.getSelfUriBuilder(wikia, commentId);
+    javax.ws.rs.core.UriBuilder
+        uriBuilder =
+        UriBuilder.fromResource(HalCommentResource.class).path("{commentId}").path("responses");
     Representation
         representation =
         this.representationFactory

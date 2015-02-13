@@ -7,7 +7,6 @@ import com.wikia.pandora.api.service.CategoryService;
 import com.wikia.pandora.core.util.RepresentationHelper;
 import com.wikia.pandora.domain.Article;
 import com.wikia.pandora.domain.Category;
-import com.wikia.pandora.core.util.UriBuilder;
 
 import java.util.List;
 import java.util.Objects;
@@ -18,6 +17,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.UriBuilder;
 
 @Path("{wikia}/category")
 @Produces(RepresentationFactory.HAL_JSON)
@@ -41,13 +41,12 @@ public class HALCategoryResource {
                                 @DefaultValue("10") @QueryParam("limit") int limit,
                                 @DefaultValue("") @QueryParam("offset") String offset,
                                 @DefaultValue("") @QueryParam("previous") String previous) {
-    javax.ws.rs.core.UriBuilder
-        uri =
-        javax.ws.rs.core.UriBuilder.fromResource(HALCategoryResource.class);
+    UriBuilder uriBuilder = UriBuilder.fromResource(HALCategoryResource.class);
+    addLimitAndOffset(uriBuilder, limit, offset);
 
-    addLimitAndOffset(uri, limit, offset);
-
-    Representation representation = representationFactory.newRepresentation(uri.build(wikia));
+    Representation
+        representation =
+        representationFactory.newRepresentation(uriBuilder.build(wikia));
     List<Category> categoryList = categoryService.getAllCategories(wikia, limit, offset);
     for (Category category : categoryList) {
       RepresentationHelper
@@ -65,15 +64,15 @@ public class HALCategoryResource {
   @Timed
   public Object getCategory(@PathParam("wikia") String wikia,
                             @PathParam("category") String categoryName) {
-    javax.ws.rs.core.UriBuilder uri = UriBuilder.getSelfUriBuilder(wikia, categoryName);
+    UriBuilder uriBuilder = UriBuilder.fromResource(HALCategoryResource.class).path("{category}");
     Representation
         representation =
-        representationFactory.newRepresentation(uri.build(wikia, categoryName));
+        representationFactory.newRepresentation(uriBuilder.build(wikia, categoryName));
     Category category = categoryService.getCategory(wikia, categoryName);
 
     representation.withBean(category);
 
-    representation.withLink("articles", uri.path("articles").build(wikia, categoryName));
+    representation.withLink("articles", uriBuilder.path("articles").build(wikia, categoryName));
 
     return representation;
   }
@@ -87,19 +86,19 @@ public class HALCategoryResource {
                                     @DefaultValue("10") @QueryParam("limit") int limit,
                                     @DefaultValue("") @QueryParam("offset") String offset,
                                     @DefaultValue("") @QueryParam("previous") String previous) {
-    javax.ws.rs.core.UriBuilder
-        uri = javax.ws.rs.core.UriBuilder.fromPath("{wikia}/category/{category}/articles");
+    UriBuilder uriBuilder = UriBuilder.fromResource(HALCategoryResource.class)
+        .path("{category}").path("articles");
 
-    addLimitAndOffset(uri, limit, offset);
+    addLimitAndOffset(uriBuilder, limit, offset);
 
     if (previous == null || Objects.equals(previous, "")) {
-      uri.queryParam("previous", previous);
+      uriBuilder.queryParam("previous", previous);
     }
 
     Representation
         representation =
         representationFactory
-            .newRepresentation(uri.build(wikia, categoryName));
+            .newRepresentation(uriBuilder.build(wikia, categoryName));
     List<Article>
         articleList =
         categoryService.getCategoryArticles(wikia, categoryName, limit, offset);
@@ -114,12 +113,12 @@ public class HALCategoryResource {
     return representation;
   }
 
-  private void addLimitAndOffset(javax.ws.rs.core.UriBuilder uri, int limit, String offset) {
+  private void addLimitAndOffset(UriBuilder uriBuilder, int limit, String offset) {
     if (limit == DEFAULT_LIMIT || limit == 0) {
-      uri.queryParam("limit", limit);
+      uriBuilder.queryParam("limit", limit);
     }
     if (offset == null || Objects.equals(offset, "")) {
-      uri.queryParam("offset", offset);
+      uriBuilder.queryParam("offset", offset);
     }
   }
 
