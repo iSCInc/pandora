@@ -45,7 +45,7 @@ public class MediawikiGateway {
         .titles(title)
         .revisions()
         .rvlimit(1)
-        .rvprop(RVPropEnum.content)
+        .rvprop(RVPropEnum.CONTENT)
         .get();
 
     return apiResponse;
@@ -144,12 +144,12 @@ public class MediawikiGateway {
   }
 
   private ApiResponse getRevision(String wikia, Long revId, boolean withContent) {
-    List<RVPropEnum> rvPropEnumList = Arrays.asList(RVPropEnum.user,
-                                                    RVPropEnum.ids,
-                                                    RVPropEnum.comment,
-                                                    RVPropEnum.timestamp);
+    List<RVPropEnum> rvPropEnumList = Arrays.asList(RVPropEnum.USER,
+                                                    RVPropEnum.IDS,
+                                                    RVPropEnum.COMMENT,
+                                                    RVPropEnum.TIMESTAMP);
     if (withContent) {
-      rvPropEnumList.add(RVPropEnum.content);
+      rvPropEnumList.add(RVPropEnum.CONTENT);
     }
 
     ApiResponse apiResponse = queryBuilder()

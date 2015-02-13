@@ -1,6 +1,11 @@
 package com.wikia.mwapi.enumtypes.query.properties;
 
 public enum CLShowEnum {
-  hidden,
-  nothidden
+  HIDDEN,
+  NOTHIDDEN;
+
+  @Override
+  public String toString() {
+    return super.toString().toLowerCase();
+  }
 }

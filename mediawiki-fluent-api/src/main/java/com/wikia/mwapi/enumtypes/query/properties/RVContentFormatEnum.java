@@ -1,9 +1,14 @@
 package com.wikia.mwapi.enumtypes.query.properties;
 
 public enum RVContentFormatEnum {
-  text_x_wiki,
-  text_javascript,
-  application_json,
-  text_css,
-  text_plain
+  TEXT_X_WIKI,
+  TEXT_JAVASCRIPT,
+  APPLICATION_JSON,
+  TEXT_CSS,
+  TEXT_PLAIN;
+
+  @Override
+  public String toString() {
+    return super.toString().toLowerCase();
+  }
 }

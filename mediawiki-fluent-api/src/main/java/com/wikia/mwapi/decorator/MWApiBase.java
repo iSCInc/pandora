@@ -62,7 +62,7 @@ public abstract class MWApiBase implements WikiaChoose, MainModuleOption, Method
 
   @Override
   public TitlesOrListChoose queryAction() {
-    this.action = ActionEnum.query;
+    this.action = ActionEnum.QUERY;
     return new MWApiQuery(this);
   }
 

@@ -1,6 +1,11 @@
 package com.wikia.mwapi.enumtypes;
 
 public enum SortDirectionEnum {
-  ascending,
-  descending
+  ASCENDING,
+  DESCENDING;
+
+  @Override
+  public String toString() {
+    return super.toString().toLowerCase();
+  }
 }
