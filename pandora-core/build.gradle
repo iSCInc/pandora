@@ -4,4 +4,5 @@ dependencies {
     compile('com.orbitz.consul:consul-client:0.8') {
         exclude group: 'org.apache.cxf'
     }
+    compile 'net.alchim31:metrics-influxdb:0.6.0'
 }
