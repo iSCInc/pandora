@@ -7,7 +7,22 @@ subprojects {
     sourceCompatibility = 1.8
     version = "0.1.0"
 
+    test {
+        useJUnit {
+            includeCategories 'com.wikia.pandora.test.FastTest'
+        }
+    }
+
     task unitTest(type: Test) {
-        exclude '**/integration/**'
+        useJUnit {
+            includeCategories 'com.wikia.pandora.test.FastTest'
+        }
+    }
+
+    task integrationTest(type: Test) {
+        useJUnit {
+            includeCategories 'com.wikia.pandora.test.IntegrationTest'
+            excludeCategories 'com.wikia.pandora.test.FastTest'
+        }
     }
 }
