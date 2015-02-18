@@ -3,11 +3,13 @@ package com.wikia.mwapi;
 import com.wikia.mwapi.domain.ApiResponse;
 import com.wikia.mwapi.enumtypes.query.properties.CLPropEnum;
 import com.wikia.mwapi.enumtypes.query.properties.RVPropEnum;
+import com.wikia.pandora.test.FastTest;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.junit.experimental.categories.Category;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
@@ -22,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.*;
 
+@Category(FastTest.class)
 public class MWApiTest {
 
   @Test

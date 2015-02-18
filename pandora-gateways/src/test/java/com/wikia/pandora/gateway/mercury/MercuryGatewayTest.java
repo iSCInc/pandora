@@ -3,10 +3,13 @@ package com.wikia.pandora.gateway.mercury;
 
 
 
+import com.wikia.pandora.test.FastTest;
+
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import static org.mockito.Mockito.*;
 
@@ -18,6 +21,7 @@ import io.dropwizard.testing.FixtureHelpers;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
+@Category(FastTest.class)
 public class MercuryGatewayTest {
 
   @Test

@@ -3,8 +3,10 @@ package com.wikia.pandora.core.consul;
 import com.orbitz.consul.AgentClient;
 import com.orbitz.consul.Consul;
 import com.orbitz.consul.NotRegisteredException;
+import com.wikia.pandora.test.FastTest;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -12,6 +14,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
 
+@Category(FastTest.class)
 public class ConsulHeartbeatTest {
 
   @Test
