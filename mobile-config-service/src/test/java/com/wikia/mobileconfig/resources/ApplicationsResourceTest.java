@@ -1,12 +1,14 @@
 package com.wikia.mobileconfig.resources;
 
 import com.wikia.mobileconfig.gateway.AppsDeployerList;
+import com.wikia.pandora.test.FastTest;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.mockito.ArgumentMatcher;
 
 import java.io.IOException;
@@ -25,6 +27,7 @@ import static org.mockito.Mockito.when;
 /**
  * Unit tests for {@link ApplicationsResource}.
  */
+@Category(FastTest.class)
 public class ApplicationsResourceTest {
   private static final HttpClient httpClientMock = mock(HttpClient.class);
 

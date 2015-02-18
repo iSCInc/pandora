@@ -1,9 +1,11 @@
 package com.wikia.mobileconfig.resources;
 
 import com.wikia.mobileconfig.service.ImageService;
+import com.wikia.pandora.test.FastTest;
 
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -21,6 +23,7 @@ import static org.mockito.Mockito.when;
 /**
  * Unit tests for {@link com.wikia.mobileconfig.resources.MobileConfigResource}.
  */
+@Category(FastTest.class)
 public class ImageResourceTest {
 
   private static final ImageService imageServiceMock = mock(

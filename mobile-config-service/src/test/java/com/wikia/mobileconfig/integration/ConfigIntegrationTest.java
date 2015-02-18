@@ -2,9 +2,11 @@ package com.wikia.mobileconfig.integration;
 
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.MobileConfigConfiguration;
+import com.wikia.pandora.test.IntegrationTest;
 
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -14,6 +16,7 @@ import io.dropwizard.testing.junit.DropwizardAppRule;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
+@Category(IntegrationTest.class)
 public class ConfigIntegrationTest {
   @ClassRule
   public static final DropwizardAppRule<MobileConfigConfiguration>
