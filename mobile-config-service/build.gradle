@@ -35,7 +35,6 @@ tasks.deployToProd {
 
 dependencies {
     compile project(":pandora-core")
-    compile project(":pandora-test")
 }
 
 run {
