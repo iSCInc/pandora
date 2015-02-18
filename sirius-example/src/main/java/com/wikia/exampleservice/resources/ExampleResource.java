@@ -3,58 +3,69 @@ package com.wikia.exampleservice.resources;
 import com.codahale.metrics.annotation.Timed;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
-import com.wikia.exampleservice.domain.SimplePojo;
-import com.wikia.exampleservice.domain.builder.SimplePojoBuilder;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.validation.Valid;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriBuilder;
 
-@Path("/")
+@Path("/notification/{name}")
 @Produces(RepresentationFactory.HAL_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class ExampleResource {
 
   private final RepresentationFactory representationFactory;
-  private String greetingsWord;
 
   public ExampleResource(RepresentationFactory representationFactory) {
     this.representationFactory = representationFactory;
   }
 
-  @GET
-  @Path("/HelloWorld/{name}")
-  @Timed
-  public Representation getHelloWorld(@PathParam("name") String name) {
-    Representation representation = representationFactory.newRepresentation();
+    @GET
+    @Timed
+    public Notification show(@PathParam("name") String name) {
+        JedisPool jedisPool = new JedisPool(new JedisPoolConfig(), "dev-damian");
+        String jedisValue;
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedisValue = jedis.get(name);
+        }
+        jedisPool.destroy();
 
-    representation.withProperty("Greetings", String.format("%s %s", getGreetingsWord(), name));
-    return representation;
-  }
+        return new Notification(jedisValue);
+    }
 
-  @GET
-  @Path("/SimplePojo/{id}/{name}/{bool}")
-  @Timed
-  public Representation getSimplePojo(
-      @PathParam("id") int id,
-      @PathParam("name") String name,
-      @PathParam("bool") boolean bool) {
-    Representation representation = representationFactory.newRepresentation();
+    @POST
+    @Timed
+    public Representation update(@PathParam("name") String name, @Valid Notification notification) {
+        JedisPool jedisPool = new JedisPool(new JedisPoolConfig(), "dev-damian");
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.set(name, notification.getText());
+        }
+        jedisPool.destroy();
 
-    SimplePojo pojo = SimplePojoBuilder.aSimplePojo()
-        .withId(id)
-        .withSomeBool(bool)
-        .withSomeString(name)
-        .build();
-    representation.withBean(pojo);
-    return representation;
-  }
 
-  public void setGreetingsWord(String greetingsWord) {
-    this.greetingsWord = greetingsWord;
-  }
+        Representation representation = representationFactory.newRepresentation();
+        representation.withProperty("uri", UriBuilder.fromResource(ExampleResource.class)
+                .build(name));
+        return representation;
+    }
 
-  public String getGreetingsWord() {
-    return greetingsWord;
-  }
+
+    @DELETE
+    @Timed
+    public Representation delete(@PathParam("name") String name) {
+        Representation representation = representationFactory.newRepresentation();
+
+
+        JedisPool jedisPool = new JedisPool(new JedisPoolConfig(), "dev-damian");
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.del(name);
+        }
+        jedisPool.destroy();
+
+        representation.withProperty("status", "ok");
+        return representation;
+    }
 }

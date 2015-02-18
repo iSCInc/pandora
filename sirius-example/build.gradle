@@ -17,6 +17,7 @@ buildscript {
 apply from: rootProject.file('gradle/marathon_deployment.gradle')
 dependencies {
     compile project(":pandora-core")
+    compile 'redis.clients:jedis:2.4.2'
 }
 // end: deployment boilerplate
 

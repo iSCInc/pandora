@@ -5,9 +5,6 @@ import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 import com.wikia.exampleservice.configuration.ExampleConfiguration;
 import com.wikia.exampleservice.health.ExampleHealthCheck;
 import com.wikia.exampleservice.resources.ExampleResource;
-import com.wikia.pandora.core.consul.ConsulBundle;
-import com.wikia.pandora.core.consul.ConsulConfig;
-
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -43,7 +40,6 @@ public class ExampleServiceApplication extends Application<ExampleConfiguration>
 
     StandardRepresentationFactory representationFactory = new StandardRepresentationFactory();
     ExampleResource exampleResource = new ExampleResource(representationFactory);
-    exampleResource.setGreetingsWord(configuration.getGreetingsWord());
     environment.jersey().register(exampleResource);
 
     //Optional
