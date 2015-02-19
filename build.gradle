@@ -8,6 +8,14 @@ subprojects {
     version = "0.1.0"
 
     task unitTest(type: Test) {
-        exclude '**/integration/**'
+        useJUnit {
+            excludeCategories 'com.wikia.pandora.core.test.IntegrationTest'
+        }
+    }
+
+    task integrationTest(type: Test) {
+        useJUnit {
+            includeCategories 'com.wikia.pandora.core.test.IntegrationTest'
+        }
     }
 }
