@@ -5,11 +5,9 @@ import com.wikia.mobileconfig.core.EmptyMobileConfiguration;
 import com.wikia.mobileconfig.core.MobileConfiguration;
 import com.wikia.mobileconfig.gateway.AppsDeployerList;
 import com.wikia.mobileconfig.service.HttpConfigurationService;
-import com.wikia.pandora.test.FastTest;
 
 import org.junit.ClassRule;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +28,6 @@ import static org.mockito.Mockito.when;
 /**
  * Unit tests for {@link MobileConfigResource}.
  */
-@Category(FastTest.class)
 public class MobileConfigResourceTest {
 
   private static final AppsDeployerList appsListMock = mock(AppsDeployerList.class);

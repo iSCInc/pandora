@@ -7,15 +7,9 @@ subprojects {
     sourceCompatibility = 1.8
     version = "0.1.0"
 
-    test {
-        useJUnit {
-            includeCategories 'com.wikia.pandora.test.FastTest'
-        }
-    }
-
     task unitTest(type: Test) {
         useJUnit {
-            includeCategories 'com.wikia.pandora.test.FastTest'
+            excludeCategories 'com.wikia.pandora.test.IntegrationTest'
         }
     }
 
