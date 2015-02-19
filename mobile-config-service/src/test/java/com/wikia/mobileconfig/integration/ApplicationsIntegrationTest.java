@@ -3,7 +3,7 @@ package com.wikia.mobileconfig.integration;
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.MobileConfigConfiguration;
 
-import com.wikia.pandora.test.IntegrationTest;
+import com.wikia.pandora.core.test.IntegrationTest;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;

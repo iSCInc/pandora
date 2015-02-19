@@ -2,7 +2,7 @@ package com.wikia.mobileconfig.integration;
 
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.MobileConfigConfiguration;
-import com.wikia.pandora.test.IntegrationTest;
+import com.wikia.pandora.core.test.IntegrationTest;
 
 import org.junit.ClassRule;
 import org.junit.Test;

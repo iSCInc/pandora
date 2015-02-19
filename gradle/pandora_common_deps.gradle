@@ -19,5 +19,4 @@ dependencies {
 
     testCompile 'org.easytesting:fest-assert-core:2.0M10'
     testCompile "io.dropwizard:dropwizard-testing:$dropwizardVersion"
-    testCompile project(':pandora-test')
 }

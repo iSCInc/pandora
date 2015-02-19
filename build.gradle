@@ -9,13 +9,13 @@ subprojects {
 
     task unitTest(type: Test) {
         useJUnit {
-            excludeCategories 'com.wikia.pandora.test.IntegrationTest'
+            excludeCategories 'com.wikia.pandora.core.test.IntegrationTest'
         }
     }
 
     task integrationTest(type: Test) {
         useJUnit {
-            includeCategories 'com.wikia.pandora.test.IntegrationTest'
+            includeCategories 'com.wikia.pandora.core.test.IntegrationTest'
         }
     }
 }
