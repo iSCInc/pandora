@@ -11,7 +11,7 @@ To run the server:
 ```bash
 cp mobile-config.yml.sample mobile-config.yml
 # launch the server
-gradle run
+../gradlew run
 ```
 
 To check service health:
@@ -25,6 +25,22 @@ and can be found on the list returned in a response above.
 To make a request from the server:
 ```bash
 curl -v http://127.0.0.1:8080/configurations/platform/android/app/witcher
+```
+
+To run tests suit you choose one of below:
+* launching unit tests:
+```bash
+../gradlew unitTest
+```
+
+* launching integration tests:
+```bash
+../gradlew integrationTest
+```
+
+* launching all tests:
+```bash
+../gradlew test
 ```
 
 ## License
