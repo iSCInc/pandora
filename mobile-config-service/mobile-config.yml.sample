@@ -28,6 +28,15 @@ logging:
         context: rawContext
       customFields:
         appname: mobile-config
+metrics:
+  reporters:
+    - type: influxdb
+      host: influxdb-host
+      port: influxdb-port
+      prefix: mobile-config
+      frequency: 5 seconds
+      includes:
+        - com\.wikia\.mobileconfig\.resources\..*
 server:
   applicationConnectors:
   - type: http
