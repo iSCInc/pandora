@@ -19,8 +19,9 @@ task cobertura(type: Test){
     }
 
     systemProperty "net.sourceforge.cobertura.datafile", serFile
-    exclude '**/integration/**'
-
+    useJUnit {
+        excludeCategories 'com.wikia.pandora.core.test.IntegrationTest'
+    }
 }
 
 cobertura.doFirst  {
