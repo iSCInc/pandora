@@ -32,6 +32,9 @@ public class FileConfigurationService extends ConfigurationServiceBase {
           MobileConfiguration.class
       );
     } catch (IOException e) {
+      MobileConfigApplication.LOGGER.info(
+          CONFIGURATION_NOT_FOUND_DEBUG_MESSAGE_FORMAT, platform, e
+      );
       return new EmptyMobileConfiguration();
     }
   }
@@ -47,7 +50,7 @@ public class FileConfigurationService extends ConfigurationServiceBase {
       return configuration;
     } catch (IOException e) {
       MobileConfigApplication.LOGGER.info(
-          String.format(CONFIGURATION_NOT_FOUND_DEBUG_MESSAGE_FORMAT, appTag, platform)
+          CONFIGURATION_FOR_APP_TAG_NOT_FOUND_DEBUG_MESSAGE_FORMAT, appTag, platform, e
       );
 
       return getDefault(platform);
