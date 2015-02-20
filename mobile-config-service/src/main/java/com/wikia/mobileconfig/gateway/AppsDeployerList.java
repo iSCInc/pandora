@@ -4,6 +4,7 @@ import com.google.common.base.Optional;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.MobileConfigConfiguration;
 
 import org.apache.http.client.ClientProtocolException;
@@ -113,6 +114,9 @@ public class AppsDeployerList implements AppsListService {
 
       return true;
     } catch (ClientProtocolException exception) {
+      MobileConfigApplication.LOGGER.error(
+          "Apps deployer host is unreachable", exception
+      );
       return false;
     }
   }
