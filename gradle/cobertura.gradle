@@ -3,19 +3,24 @@ logger.info "Configuring Cobertura Plugin"
 configurations{
     coberturaRuntime {extendsFrom testRuntime}
 }
+repositories {
+    maven {
+        url 'http://oss.sonatype.org/content/repositories/snapshots'
+    }
+}
+def coberturaVersion = '2.1.0-SNAPSHOT'
 
 dependencies {
-    coberturaRuntime 'net.sourceforge.cobertura:cobertura:1.9.4'
+    coberturaRuntime "net.sourceforge.cobertura:cobertura:${coberturaVersion}"
 }
 
 def serFile="${project.buildDir}/cobertura.ser"
 def classes="${project.buildDir}/classes/main"
 def classesCopy="${classes}-copy"
 
-
 task cobertura(type: Test){
     dependencies {
-        testRuntime 'net.sourceforge.cobertura:cobertura:2.0.3'
+        testRuntime "net.sourceforge.cobertura:cobertura:${coberturaVersion}"
     }
 
     systemProperty "net.sourceforge.cobertura.datafile", serFile
