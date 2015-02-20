@@ -42,7 +42,7 @@ public class ApplicationsResource {
 
     Applications bean = new Applications(this.appsList.getAppList(platform));
 
-    Representation rep = MobileConfigApplication.representationFactory.newRepresentation(
+    Representation rep = MobileConfigApplication.REPRESENTATION_FACTORY.newRepresentation(
         this.createSelfUrl(platform)
     ).withBean(bean);
 

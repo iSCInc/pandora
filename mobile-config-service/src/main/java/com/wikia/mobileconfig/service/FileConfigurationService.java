@@ -46,7 +46,7 @@ public class FileConfigurationService extends ConfigurationServiceBase {
 
       return configuration;
     } catch (IOException e) {
-      MobileConfigApplication.logger.info(
+      MobileConfigApplication.LOGGER.info(
           String.format(CONFIGURATION_NOT_FOUND_DEBUG_MESSAGE_FORMAT, appTag, platform)
       );
 

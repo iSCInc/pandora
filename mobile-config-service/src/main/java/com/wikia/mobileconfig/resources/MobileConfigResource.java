@@ -52,7 +52,7 @@ public class MobileConfigResource {
       throw new ConfigurationNotFoundException(platform, appTag);
     }
 
-    Representation rep = MobileConfigApplication.representationFactory.newRepresentation(
+    Representation rep = MobileConfigApplication.REPRESENTATION_FACTORY.newRepresentation(
         this.appConfiguration.createSelfUrl(platform, appTag)
     ).withBean(configuration);
 

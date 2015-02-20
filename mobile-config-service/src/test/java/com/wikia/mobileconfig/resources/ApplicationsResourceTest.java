@@ -26,13 +26,14 @@ import static org.mockito.Mockito.when;
  * Unit tests for {@link ApplicationsResource}.
  */
 public class ApplicationsResourceTest {
-  private static final HttpClient httpClientMock = mock(HttpClient.class);
+  private static final HttpClient HTTP_CLIENT_MOCK = mock(HttpClient.class);
 
-  private static final AppsDeployerList listService = new AppsDeployerList(httpClientMock, "test-domain");
+  private static final AppsDeployerList
+      LIST_SERVICE = new AppsDeployerList(HTTP_CLIENT_MOCK, "test-domain");
 
   @ClassRule
-  public static final ResourceTestRule resources = ResourceTestRule.builder()
-      .addResource(new ApplicationsResource(listService)).build();
+  public static final ResourceTestRule RESOURCES = ResourceTestRule.builder()
+      .addResource(new ApplicationsResource(LIST_SERVICE)).build();
 
   class HttpGetWithURL extends ArgumentMatcher<HttpGet> {
 
@@ -50,19 +51,19 @@ public class ApplicationsResourceTest {
   @Test
   public void getAppList() throws IOException {
 
-    when(httpClientMock.execute(any(HttpGet.class), any(ResponseHandler.class))).thenReturn(
+    when(HTTP_CLIENT_MOCK.execute(any(HttpGet.class), any(ResponseHandler.class))).thenReturn(
         "[{ \"test-key\": \"test data\" }]");
 
     for (int i = 0; i < 10; ++i) {
-      String responseData = resources.client()
+      String responseData = RESOURCES.client()
           .target("/applications/platform/test-platform")
           .request()
           .get(String.class);
       assertThat(responseData).contains("test-key");
     }
 
-    verify(httpClientMock, times(1))
+    verify(HTTP_CLIENT_MOCK, times(1))
         .execute(argThat(new HttpGetWithURL("http://test-domain/api/app-configuration/")), any(ResponseHandler.class));
-    reset(httpClientMock);
+    reset(HTTP_CLIENT_MOCK);
   }
 }

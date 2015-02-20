@@ -65,7 +65,7 @@ public class HttpConfigurationService extends ConfigurationServiceBase {
           MobileConfiguration.class
       );
     } catch (IOException e) {
-      MobileConfigApplication.logger.info(
+      MobileConfigApplication.LOGGER.info(
           String.format(CONFIGURATION_NOT_FOUND_DEBUG_MESSAGE_FORMAT, appTag, platform)
       );
 
