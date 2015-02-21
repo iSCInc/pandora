@@ -47,7 +47,7 @@ public class ImageService {
       image = this.executeHttpRequest(createCephUrl(filename));
     } catch (IOException e) {
       MobileConfigApplication.LOGGER.error(
-          "Exception caught when requesting Image %s:%s", filename, e.toString(), e
+          String.format("Exception caught when requesting Image %s:%s", filename, e.toString()), e
       );
     }
 
