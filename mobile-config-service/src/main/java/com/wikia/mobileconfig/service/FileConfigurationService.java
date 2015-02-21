@@ -41,20 +41,22 @@ public class FileConfigurationService extends ConfigurationServiceBase {
 
   @Override
   public MobileConfiguration getConfiguration(String platform, String appTag, String uiLang, String contentLang) throws IOException {
+    MobileConfiguration configuration;
+
     try {
-      MobileConfiguration configuration = this.mapper.readValue(
+      configuration = this.mapper.readValue(
           new File(this.createFilePath(platform, appTag)),
           MobileConfiguration.class
       );
-
-      return configuration;
     } catch (IOException e) {
       MobileConfigApplication.LOGGER.info(
           CONFIGURATION_FOR_APP_TAG_NOT_FOUND_DEBUG_MESSAGE_FORMAT, appTag, platform, e
       );
 
-      return getDefault(platform);
+      configuration = getDefault(platform);
     }
+
+    return configuration;
   }
 
   private String createDefaultFilePath(String platform) {
