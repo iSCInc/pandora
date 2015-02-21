@@ -1,0 +1,18 @@
+{
+  "id": 1,
+  "name": "Forum With Children",
+  "children": [
+    {
+      "@class": "com.wikia.discussionservice.domain.Forum",
+      "id": 3,
+      "name": "child 1",
+      "children": []
+    },
+    {
+      "@class": "com.wikia.discussionservice.domain.Forum",
+      "id": 4,
+      "name": "child 2",
+      "children": []
+    }
+  ]
+}
