@@ -1,0 +1,56 @@
+apply from: rootProject.file('gradle/pandora_common_deps.gradle')
+apply plugin: 'application'
+version = "0.1.9"
+
+// deployment boilerplate
+buildscript {
+    repositories {
+        jcenter()
+        maven { url "${archivaUrl}/repository/internal" }
+    }
+    dependencies {
+        classpath 'se.transmode.gradle:gradle-docker:1.2'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.0'
+        classpath 'com.wikia.gradle:marathon:0.4.16'
+    }
+}
+apply from: rootProject.file('gradle/marathon_deployment.gradle')
+dependencies {
+    compile project(":pandora-core")
+    compile "org.springframework:spring-web:$springVersion"
+    compile "org.springframework:spring-tx:$springVersion"
+    compile "org.projectlombok:lombok:1.16.2"
+    testCompile 'org.testng:testng:6.8'
+}
+// end: deployment boilerplate
+
+mainClassName = "com.wikia.discussionservice.DiscussionServiceApplication"
+
+// configure jvm parameters
+// PORT0 and PORT1 Are set through Marathon, see: https://mesosphere.github.io/marathon/docs/service-discovery-load-balancing.html
+applicationDefaultJvmArgs = [
+        '-Ddw.server.applicationConnectors[0].port=\$PORT0', '-Ddw.server.adminConnectors[0].port=\$PORT1',
+        "-Xms100m", "-Xmn128m", "-Xmx300m", "-XX:+UseNUMA", "-XX:+UseCondCardMark", "-XX:+UseBiasedLocking", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC"
+]
+tasks.deployToProd {
+    stage = 'test'
+    mem = 400
+    instances = 1
+}
+
+test {
+    useTestNG() {
+        useDefaultListeners = true
+        excludeGroups 'broken'
+    }
+}
+
+// copy example file as a configuration file to the application dist
+applicationDistribution.from("discussionservice.yaml.sample") {
+    rename 'discussionservice.yaml.sample', "${project.name}.yml"
+    into 'conf'
+}
+
+run {
+    args 'server', 'discussionservice.yaml'
+}

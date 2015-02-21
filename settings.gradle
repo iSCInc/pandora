@@ -9,3 +9,5 @@ include 'pandora-service'
 include 'mercury-api'
 include 'nirvana-api'
 include 'pandora-example'
+include 'discussion-service'
+
