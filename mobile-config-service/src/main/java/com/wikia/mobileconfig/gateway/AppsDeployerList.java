@@ -105,6 +105,8 @@ public class AppsDeployerList implements AppsListService {
 
   @Override
   public boolean isUp() throws IOException {
+    Boolean result = false;
+
     try {
       String appsDeployerHealthCheckUrl = String.format(
           APPS_DEPLOYER_HEALTH_CHECK_URL_FORMAT,
@@ -112,12 +114,13 @@ public class AppsDeployerList implements AppsListService {
       );
       this.executeHttpRequest(appsDeployerHealthCheckUrl);
 
-      return true;
+      result = true;
     } catch (ClientProtocolException exception) {
       MobileConfigApplication.LOGGER.error(
           "Apps deployer host is unreachable", exception
       );
-      return false;
     }
+
+    return result;
   }
 }
