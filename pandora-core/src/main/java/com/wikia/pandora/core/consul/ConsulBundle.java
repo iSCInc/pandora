@@ -64,6 +64,7 @@ public abstract class ConsulBundle<T> implements ConfiguredBundle<T> {
     ConsulConfig configuration = narrowConfig(appConfiguration);
 
     if (configuration == null) {
+      logger.warn("Missing Consul configuration - skipping Consul initialization");
       return;
     }
 
