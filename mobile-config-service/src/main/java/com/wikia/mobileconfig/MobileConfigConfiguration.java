@@ -30,13 +30,11 @@ public class MobileConfigConfiguration extends Configuration {
   private String cephPort;
 
   @Valid
-  @NotNull
   @JsonProperty
   private ConsulConfig consulConfig;
 
   public MobileConfigConfiguration() {
     httpClient = new HttpClientConfiguration();
-    consulConfig = new ConsulConfig();
   }
 
   public HttpClientConfiguration getHttpClientConfiguration() {
@@ -57,5 +55,9 @@ public class MobileConfigConfiguration extends Configuration {
 
   public ConsulConfig getConsulConfig() {
     return consulConfig;
+  }
+
+  public void setConsulConfig(ConsulConfig consulConfig) {
+    this.consulConfig = consulConfig;
   }
 }
