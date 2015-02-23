@@ -11,23 +11,23 @@ public class RegexFilter implements MetricFilter {
 
   private Pattern includes;
   private Pattern excludes;
-  private boolean excludeFromInclude;
+  private boolean excludeTakesPrecedence;
 
   public RegexFilter(ImmutableSet<String> includes, ImmutableSet<String> excludes) {
     this(includes, excludes, false);
   }
 
   /**
-   * @param includes           includes patterns
-   * @param excludes           excludes patterns
-   * @param excludeFromInclude if false, all metrics are reported, except those matching a pattern
-   *                           in excludes, unless they also match a pattern in includes. If true,
-   *                           only metrics matching include patterns are reported, unless they also
-   *                           match pattern in excludes
+   * @param includes               includes patterns
+   * @param excludes               excludes patterns
+   * @param excludeTakesPrecedence if true, all metrics are reported, except those matching a
+   *                               pattern in excludes, unless they also match a pattern in
+   *                               includes. If false, only metrics matching include patterns are
+   *                               reported, unless they also match pattern in excludes
    */
   public RegexFilter(ImmutableSet<String> includes, ImmutableSet<String> excludes,
-                     boolean excludeFromInclude) {
-    this.excludeFromInclude = excludeFromInclude;
+                     boolean excludeTakesPrecedence) {
+    this.excludeTakesPrecedence = excludeTakesPrecedence;
     this.includes = compilePatterns(includes);
     this.excludes = compilePatterns(excludes);
   }
@@ -65,10 +65,10 @@ public class RegexFilter implements MetricFilter {
   }
 
   private boolean matchesWithExcludeMethod(String name) {
-    if (excludeFromInclude) {
-      return includesMatches(name) && !excludesMatches(name);
-    } else {
+    if (excludeTakesPrecedence) {
       return includesMatches(name) || !excludesMatches(name);
+    } else {
+      return includesMatches(name) && !excludesMatches(name);
     }
   }
 }

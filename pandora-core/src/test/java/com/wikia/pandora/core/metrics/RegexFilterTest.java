@@ -57,11 +57,10 @@ public class RegexFilterTest {
     assertFalse(regexFilter.matches("simple", null));
     assertFalse(regexFilter.matches("test09", null));
     assertFalse(regexFilter.matches("012", null));
-
   }
 
   @Test
-  public void testIncludeFromExcludeMatches() throws Exception {
+  public void testExcludeTakesPrecedenceMatches() throws Exception {
     ImmutableSet<String> includes = new ImmutableSet.Builder<String>()
         .add("([a-z]){5}[0-9]{2}")
         .add("([0-4]){2}")
@@ -71,7 +70,7 @@ public class RegexFilterTest {
         .add("([0-9]+)")
         .build();
 
-    RegexFilter regexFilter = new RegexFilter(includes, excludes);
+    RegexFilter regexFilter = new RegexFilter(includes, excludes, true);
 
     assertTrue(regexFilter.matches("abcde12", null));
     assertTrue(regexFilter.matches("12", null));
@@ -80,7 +79,7 @@ public class RegexFilterTest {
   }
 
   @Test
-  public void testExcludeFromIncludeMatches() throws Exception {
+  public void testIncludeTakesPrecedenceMatches() throws Exception {
     ImmutableSet<String> includes = new ImmutableSet.Builder<String>()
         .add("([a-z]+)[0-9]{2}")
         .add("([0-9]+)")
@@ -90,7 +89,7 @@ public class RegexFilterTest {
         .add("([0-4]){2}")
         .build();
 
-    RegexFilter regexFilter = new RegexFilter(includes, excludes, true);
+    RegexFilter regexFilter = new RegexFilter(includes, excludes, false);
 
     assertTrue(regexFilter.matches("abcdef12", null));
 
@@ -99,7 +98,7 @@ public class RegexFilterTest {
   }
 
   @Test
-  public void testMatchesWithoutIncludeOrExclude() {
+  public void testMatchesWithoutIncludesOrExcludes() {
     RegexFilter regexFilter = new RegexFilter(null, null);
 
     assertTrue(regexFilter.matches("abcdef", null));
@@ -109,6 +108,5 @@ public class RegexFilterTest {
     assertTrue(regexFilter.matches("simple", null));
     assertTrue(regexFilter.matches("test09", null));
     assertTrue(regexFilter.matches("012", null));
-
   }
 }
