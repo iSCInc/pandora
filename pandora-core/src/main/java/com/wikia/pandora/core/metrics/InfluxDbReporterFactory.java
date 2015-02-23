@@ -1,16 +1,10 @@
 package com.wikia.pandora.core.metrics;
 
-import com.google.common.collect.ImmutableSet;
-
-import com.codahale.metrics.Metric;
 import com.codahale.metrics.MetricFilter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.ScheduledReporter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-
-import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 import javax.validation.constraints.NotNull;
 
@@ -20,6 +14,7 @@ import metrics_influxdb.InfluxdbUdp;
 
 @JsonTypeName("influxdb")
 public class InfluxDbReporterFactory extends BaseFormattedReporterFactory {
+
   @NotNull
   private String host;
 
@@ -30,6 +25,8 @@ public class InfluxDbReporterFactory extends BaseFormattedReporterFactory {
   private String prefix;
 
   private boolean skipIdleMetrics = true;
+
+  private boolean excludeTakesPrecedence = false;
 
   @JsonProperty
   public String getHost() {
@@ -71,9 +68,19 @@ public class InfluxDbReporterFactory extends BaseFormattedReporterFactory {
     this.skipIdleMetrics = skipIdleMetrics;
   }
 
+  @JsonProperty
+  public boolean getExcludeTakesPrecedence() {
+    return excludeTakesPrecedence;
+  }
+
+  @JsonProperty
+  public void setExcludeTakesPrecedence(boolean excludeTakesPrecedence) {
+    this.excludeTakesPrecedence = excludeTakesPrecedence;
+  }
+
   @Override
   public MetricFilter getFilter() {
-    return new RegexFilter(getIncludes(), getExcludes());
+    return new RegexFilter(getIncludes(), getExcludes(), getExcludeTakesPrecedence());
   }
 
   public ScheduledReporter build(MetricRegistry registry) {
