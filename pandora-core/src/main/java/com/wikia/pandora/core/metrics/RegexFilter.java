@@ -20,7 +20,10 @@ public class RegexFilter implements MetricFilter {
   /**
    * @param includes           includes patterns
    * @param excludes           excludes patterns
-   * @param excludeFromInclude if true, exclude from include, if false include from exclude
+   * @param excludeFromInclude if false, all metrics are reported, except those matching a pattern
+   *                           in excludes, unless they also match a pattern in includes. If true,
+   *                           only metrics matching include patterns are reported, unless they also
+   *                           match pattern in excludes
    */
   public RegexFilter(ImmutableSet<String> includes, ImmutableSet<String> excludes,
                      boolean excludeFromInclude) {
