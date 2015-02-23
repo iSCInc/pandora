@@ -5,4 +5,5 @@ dependencies {
         exclude group: 'org.apache.cxf'
     }
     compile 'net.alchim31:metrics-influxdb:0.6.0'
+    compile 'de.thomaskrille.dropwizard:dropwizard-environment-configuration:1.0'
 }

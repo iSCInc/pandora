@@ -15,6 +15,8 @@ import com.wikia.mobileconfig.service.ImageService;
 import com.wikia.pandora.core.consul.ConsulConfig;
 import com.wikia.pandora.core.consul.ConsulBundle;
 
+import de.thomaskrille.dropwizard.environment_configuration.EnvironmentConfigurationFactoryFactory;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +42,7 @@ public class MobileConfigApplication extends Application<MobileConfigConfigurati
 
   @Override
   public void initialize(Bootstrap<MobileConfigConfiguration> bootstrap) {
+    bootstrap.setConfigurationFactoryFactory(new EnvironmentConfigurationFactoryFactory<>());
     bootstrap.addBundle(new ConsulBundle<MobileConfigConfiguration>() {
       @Override
       protected ConsulConfig narrowConfig(MobileConfigConfiguration config) {
