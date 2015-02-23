@@ -93,8 +93,22 @@ public class RegexFilterTest {
     RegexFilter regexFilter = new RegexFilter(includes, excludes, true);
 
     assertTrue(regexFilter.matches("abcdef12", null));
-    
+
     assertFalse(regexFilter.matches("12", null));
     assertFalse(regexFilter.matches("abcde12", null));
+  }
+
+  @Test
+  public void testMatchesWithoutIncludeOrExclude() {
+    RegexFilter regexFilter = new RegexFilter(null, null);
+
+    assertTrue(regexFilter.matches("abcdef", null));
+    assertTrue(regexFilter.matches("4567", null));
+    assertTrue(regexFilter.matches("", null));
+    assertTrue(regexFilter.matches("abcde", null));
+    assertTrue(regexFilter.matches("simple", null));
+    assertTrue(regexFilter.matches("test09", null));
+    assertTrue(regexFilter.matches("012", null));
+
   }
 }
