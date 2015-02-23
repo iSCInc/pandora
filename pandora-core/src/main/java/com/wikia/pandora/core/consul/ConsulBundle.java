@@ -62,6 +62,12 @@ public abstract class ConsulBundle<T> implements ConfiguredBundle<T> {
   @Override
   public void run(T appConfiguration, Environment environment) throws Exception {
     ConsulConfig configuration = narrowConfig(appConfiguration);
+
+    if (configuration == null) {
+      logger.warn("Missing Consul configuration - skipping Consul initialization");
+      return;
+    }
+
     ConsulWrapper consul = new ConsulWrapper(configuration, environment.getName());
     environment
         .lifecycle()
