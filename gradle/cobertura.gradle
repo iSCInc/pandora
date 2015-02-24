@@ -1,7 +1,7 @@
 logger.info "Configuring Cobertura Plugin"
 
-configurations{
-    coberturaRuntime {extendsFrom testRuntime}
+configurations {
+    coberturaRuntime { extendsFrom testRuntime }
 }
 repositories {
     maven {
@@ -11,18 +11,18 @@ repositories {
 def coberturaVersion = '2.1.0-SNAPSHOT'
 
 dependencies {
-    coberturaRuntime ("net.sourceforge.cobertura:cobertura:${coberturaVersion}"){
+    coberturaRuntime("net.sourceforge.cobertura:cobertura:${coberturaVersion}") {
         exclude group: 'org.mortbay.jetty'
     }
 }
 
-def serFile="${project.buildDir}/cobertura.ser"
-def classes="${project.buildDir}/classes/main"
-def classesCopy="${classes}-copy"
+def serFile = "${project.buildDir}/cobertura.ser"
+def classes = "${project.buildDir}/classes/main"
+def classesCopy = "${classes}-copy"
 
-task cobertura(type: Test){
+task cobertura(type: Test) {
     dependencies {
-        testRuntime("net.sourceforge.cobertura:cobertura:${coberturaVersion}"){
+        testRuntime("net.sourceforge.cobertura:cobertura:${coberturaVersion}") {
             exclude group: 'org.mortbay.jetty'
         }
     }
@@ -31,30 +31,30 @@ task cobertura(type: Test){
     ignoreFailures = true
 }
 
-cobertura.doFirst  {
+cobertura.doFirst {
     logger.quiet "Instrumenting classes for Cobertura"
     ant {
-        delete(file:serFile, failonerror:false)
-        delete(dir: classesCopy, failonerror:false)
+        delete(file: serFile, failonerror: false)
+        delete(dir: classesCopy, failonerror: false)
         copy(todir: classesCopy) { fileset(dir: classes) }
 
-        taskdef(resource:'tasks.properties', classpath: configurations.coberturaRuntime.asPath)
+        taskdef(resource: 'tasks.properties', classpath: configurations.coberturaRuntime.asPath)
         'cobertura-instrument'(datafile: serFile) {
             fileset(dir: classes,
-                    includes:"**/*.class",
-                    excludes:"**/*Test.class")
+                    includes: "**/*.class",
+                    excludes: "**/*Test.class")
         }
     }
 }
 
-cobertura.doLast{
+cobertura.doLast {
     if (new File(classesCopy).exists()) {
         //create html cobertura report
-        ant.'cobertura-report'(destdir:"${project.reportsDir}/cobertura",
-                               format:'html', srcdir:"src/main/java", datafile: serFile)
+        ant.'cobertura-report'(destdir: "${project.reportsDir}/cobertura",
+                               format: 'html', srcdir: "src/main/java", datafile: serFile)
         //create xml cobertura report
-        ant.'cobertura-report'(destdir:"${project.reportsDir}/cobertura",
-                               format:'xml', srcdir:"src/main/java", datafile: serFile)
+        ant.'cobertura-report'(destdir: "${project.reportsDir}/cobertura",
+                               format: 'xml', srcdir: "src/main/java", datafile: serFile)
         ant.delete(file: classes)
         ant.move(file: classesCopy, tofile: classes)
     }
