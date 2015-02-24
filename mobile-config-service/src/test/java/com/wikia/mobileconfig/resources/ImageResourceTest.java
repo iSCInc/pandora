@@ -23,20 +23,20 @@ import static org.mockito.Mockito.when;
  */
 public class ImageResourceTest {
 
-  private static final ImageService imageServiceMock = mock(
+  private static final ImageService IMAGE_SERVICE_MOCK = mock(
       ImageService.class
   );
 
   @ClassRule
-  public static final ResourceTestRule resources = ResourceTestRule.builder()
-      .addResource(new ImageResource(imageServiceMock)).build();
+  public static final ResourceTestRule RESOURCES = ResourceTestRule.builder()
+      .addResource(new ImageResource(IMAGE_SERVICE_MOCK)).build();
 
   @Test
   public void getMobileImage_notFound() throws IOException {
-    when(imageServiceMock.getImage("NonExistentImage.png"))
+    when(IMAGE_SERVICE_MOCK.getImage("NonExistentImage.png"))
         .thenReturn(Optional.empty());
 
-    Response response = resources.client()
+    Response response = RESOURCES.client()
       .target("/images/NonExistentImage.png")
       .request()
       .get();
@@ -45,17 +45,17 @@ public class ImageResourceTest {
     assertThat(response.getStatus()).isEqualTo(Response.Status.NOT_FOUND.getStatusCode());
     assertThat(responseData).contains("NonExistentImage.png could not be found");
 
-    verify(imageServiceMock).getImage("NonExistentImage.png");
-    reset(imageServiceMock);
+    verify(IMAGE_SERVICE_MOCK).getImage("NonExistentImage.png");
+    reset(IMAGE_SERVICE_MOCK);
   }
 
   @Test
   public void getMobileApplicationConfigSuccess() throws IOException {
     Optional<byte[]> imgResponse = Optional.of(new byte[]{1});
-    when(imageServiceMock.getImage("TestImage.png"))
+    when(IMAGE_SERVICE_MOCK.getImage("TestImage.png"))
         .thenReturn(imgResponse);
 
-    Response response = resources.client()
+    Response response = RESOURCES.client()
       .target("/images/TestImage.png")
       .request()
       .get();
@@ -64,7 +64,7 @@ public class ImageResourceTest {
 
     assertThat(responseData).isEqualTo(imgResponse.get());
 
-    verify(imageServiceMock).getImage("TestImage.png");
-    reset(imageServiceMock);
+    verify(IMAGE_SERVICE_MOCK).getImage("TestImage.png");
+    reset(IMAGE_SERVICE_MOCK);
   }
 }

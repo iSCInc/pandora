@@ -50,6 +50,9 @@ public class HttpConfigurationService extends ConfigurationServiceBase {
           MobileConfiguration.class
       );
     } catch (IOException e) {
+      MobileConfigApplication.LOGGER.info(
+          String.format(CONFIGURATION_NOT_FOUND_DEBUG_MESSAGE_FORMAT, platform), e
+      );
       return new EmptyMobileConfiguration();
     }
   }
@@ -65,8 +68,9 @@ public class HttpConfigurationService extends ConfigurationServiceBase {
           MobileConfiguration.class
       );
     } catch (IOException e) {
-      MobileConfigApplication.logger.info(
-          String.format(CONFIGURATION_NOT_FOUND_DEBUG_MESSAGE_FORMAT, appTag, platform)
+      MobileConfigApplication.LOGGER.info(
+          String.format(CONFIGURATION_FOR_APP_TAG_NOT_FOUND_DEBUG_MESSAGE_FORMAT, appTag, platform),
+          e
       );
 
       if (configuration == null) {

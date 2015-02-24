@@ -46,8 +46,8 @@ public class ImageService {
     try {
       image = this.executeHttpRequest(createCephUrl(filename));
     } catch (IOException e) {
-      MobileConfigApplication.logger.error(
-          String.format("Exception caught when requesting Image %s:%s", filename, e.toString())
+      MobileConfigApplication.LOGGER.error(
+          String.format("Exception caught when requesting Image %s:%s", filename, e.toString()), e
       );
     }
 
@@ -63,7 +63,7 @@ public class ImageService {
     HttpResponse response = this.httpClient.execute(httpGet);
     if (response.getStatusLine().getStatusCode() != Response.Status.OK.getStatusCode()) {
       String err = response.getStatusLine().toString();
-      MobileConfigApplication.logger.debug(
+      MobileConfigApplication.LOGGER.debug(
           String
               .format("Invalid status code received when requesting Image %s:%s", requestUrl, err));
       throw new IOException("Invalid response received: " + err);
