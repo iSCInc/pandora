@@ -109,20 +109,20 @@ public class MercuryGateway {
 
 
   public URI mercuryArticleRequestURI(String wikia, String title) throws URISyntaxException {
-    return new URIBuilder(mercuryRequestURI(wikia, this.DEFAULT_MERCURY_ARTICLE_REQUEST_PATH))
+    return new URIBuilder(mercuryRequestURI(wikia, DEFAULT_MERCURY_ARTICLE_REQUEST_PATH))
         .addParameter("title", title)
         .build();
   }
 
   public URI mercuryCommentRequestURI(String wikia, String title) throws URISyntaxException {
-    return new URIBuilder(mercuryRequestURI(wikia, this.DEFAULT_MERCURY_COMMENT_REQUEST_PATH))
+    return new URIBuilder(mercuryRequestURI(wikia, DEFAULT_MERCURY_COMMENT_REQUEST_PATH))
         .addParameter("title", title)
         .build();
   }
 
   public URI mercuryRequestURI(String wikia, String path) throws URISyntaxException {
     return new URI("http",
-                   String.format(this.DEFAULT_WIKIA_HOST_FORMAT, wikia),
+                   String.format(DEFAULT_WIKIA_HOST_FORMAT, wikia),
                    path,
                    null);
   }

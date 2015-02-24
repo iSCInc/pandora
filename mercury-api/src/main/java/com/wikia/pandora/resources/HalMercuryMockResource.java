@@ -19,7 +19,7 @@ public class HalMercuryMockResource {
 
   public static Representation getTopContributors(String wikia, String title) {
     Representation rep = innerRepresentationFactory.newRepresentation("/topContributorsMock");
-    List<TopContributorMock> mockList = new ArrayList<TopContributorMock>();
+    List<TopContributorMock> mockList = new ArrayList<>();
     for (int i = 0; i < 3; i++) {
       mockList.add(new TopContributorMock());
     }

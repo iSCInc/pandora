@@ -26,7 +26,7 @@ public abstract class ConfigurationServiceBase implements ConfigurationService {
 
     String translation = Translator.getInstance().translate(langCode, key);
 
-    Map<String, String> result = new HashMap<String, String>();
+    Map<String, String> result = new HashMap<>();
     result.put(key, translation);
     return result;
   }

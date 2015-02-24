@@ -69,8 +69,6 @@ import com.wikia.mwapi.fluent.query.TranscludedInOption;
 import com.wikia.mwapi.fluent.query.TranscodeStatusOption;
 import com.wikia.mwapi.fluent.query.VideoInfoOption;
 
-import org.apache.commons.lang3.NotImplementedException;
-
 public abstract class MWApiQueryBase extends MWApiDecorator
     implements TitlesOrListChoose, QueryOption {
 

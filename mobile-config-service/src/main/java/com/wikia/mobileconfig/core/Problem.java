@@ -1,8 +1,8 @@
 package com.wikia.mobileconfig.core;
 
 public class Problem {
-  private String title;
-  private String details;
+  private final String title;
+  private final String details;
 
   public Problem(String title, String details) {
     this.title = title;

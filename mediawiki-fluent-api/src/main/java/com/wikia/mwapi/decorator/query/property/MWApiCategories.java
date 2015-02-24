@@ -16,11 +16,11 @@ import java.util.List;
 
 public class MWApiCategories extends MWApiQueryDecorator implements CategoriesOption {
 
-  private List<CLPropEnum> clPropEnumList;
-  private List<CLShowEnum> clShowEnums;
+  private final List<CLPropEnum> clPropEnumList;
+  private final List<CLShowEnum> clShowEnums;
   private int clLimit;
   private String clContinue;
-  private List<String> clCategories;
+  private final List<String> clCategories;
   private SortDirectionEnum direction;
 
 

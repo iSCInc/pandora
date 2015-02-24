@@ -15,13 +15,11 @@ import javax.ws.rs.core.UriBuilder;
 @Produces(RepresentationFactory.HAL_JSON)
 public class HalMercuryResource {
 
-  private final ArticleService articleService;
   private final RepresentationFactory representationFactory;
   private final HalArticleResource articleResource;
 
   public HalMercuryResource(ArticleService articleService,
                             RepresentationFactory representationFactory) {
-    this.articleService = articleService;
     this.representationFactory = representationFactory;
     articleResource = new HalArticleResource(articleService, representationFactory);
   }

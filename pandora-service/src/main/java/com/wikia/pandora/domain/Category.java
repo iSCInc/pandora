@@ -3,9 +3,9 @@ package com.wikia.pandora.domain;
 
 public class Category {
 
-  private int pageId;
-  private int ns;
-  private String title;
+  private final int pageId;
+  private final int ns;
+  private final String title;
 
   public Category(int pageId, int ns, String title) {
     this.pageId = pageId;

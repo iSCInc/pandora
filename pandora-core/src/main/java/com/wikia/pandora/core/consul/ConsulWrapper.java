@@ -11,8 +11,8 @@ import io.dropwizard.util.Duration;
 
 public class ConsulWrapper {
 
-  private ConsulConfig configuration;
-  private String applicationName;
+  private final ConsulConfig configuration;
+  private final String applicationName;
 
   ConsulWrapper(@Nonnull ConsulConfig configuration, @Nonnull String appName) {
     this.configuration = configuration;

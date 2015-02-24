@@ -16,8 +16,8 @@ public class FileConfigurationService extends ConfigurationServiceBase {
   private final static String CONFIGURATION_DEFAULT_PATH_FORMAT = "%s/%s:default.json";
   private final static String CONFIGURATION_PATH_FORMAT = "%s/%s:%s.json";
 
-  private String root;
-  private ObjectMapper mapper;
+  private final String root;
+  private final ObjectMapper mapper;
 
   public FileConfigurationService(String root) {
     this.root = root;

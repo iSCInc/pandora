@@ -20,7 +20,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class ImageIntegrationTest {
   @ClassRule
   public static final DropwizardAppRule<MobileConfigConfiguration>
-      RULE = new DropwizardAppRule<MobileConfigConfiguration>(
+      RULE = new DropwizardAppRule<>(
         MobileConfigApplication.class,
         "mobile-config.yml"
       );

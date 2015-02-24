@@ -5,8 +5,8 @@ import com.orbitz.consul.NotRegisteredException;
 
 public class ConsulHeartbeat {
 
-  private Consul consul;
-  private String heartbeatId;
+  private final Consul consul;
+  private final String heartbeatId;
 
 
   ConsulHeartbeat(Consul consul, String heartbeatId) {

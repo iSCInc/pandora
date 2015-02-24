@@ -22,10 +22,10 @@ import javax.ws.rs.*;
 @Produces(RepresentationFactory.HAL_JSON)
 public class MobileConfigResource {
 
-  private static String APP_TAG_VALIDATION_EXCEPTION_MESSAGE =
+  private final static String APP_TAG_VALIDATION_EXCEPTION_MESSAGE =
       "An exception occurred while validating application tag";
 
-  private static String GET_CONFIGURATION_EXCEPTION_MESSAGE =
+  private final static String GET_CONFIGURATION_EXCEPTION_MESSAGE =
       "An exception occurred while getting configuration";
 
   private final ConfigurationService appConfiguration;

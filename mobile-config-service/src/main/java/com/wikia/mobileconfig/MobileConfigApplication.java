@@ -9,7 +9,6 @@ import com.wikia.mobileconfig.resources.ApplicationsResource;
 import com.wikia.mobileconfig.resources.ImageResource;
 import com.wikia.mobileconfig.resources.MobileConfigResource;
 import com.wikia.mobileconfig.gateway.AppsDeployerList;
-import com.wikia.mobileconfig.service.FileConfigurationService;
 import com.wikia.mobileconfig.service.HttpConfigurationService;
 import com.wikia.mobileconfig.service.ImageService;
 import com.wikia.pandora.core.consul.ConsulConfig;

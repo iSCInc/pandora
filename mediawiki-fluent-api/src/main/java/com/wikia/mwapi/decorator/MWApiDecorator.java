@@ -8,7 +8,7 @@ import java.net.URISyntaxException;
 
 public class MWApiDecorator extends MWApiBase {
 
-  private MWApiBase parent;
+  private final MWApiBase parent;
 
   public MWApiDecorator(MWApiBase parent) {
     this.parent = parent;

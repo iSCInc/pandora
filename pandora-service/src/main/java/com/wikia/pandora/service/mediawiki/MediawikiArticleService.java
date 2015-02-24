@@ -69,7 +69,7 @@ public class MediawikiArticleService extends MediawikiService implements Article
   @Override
   public List<Article> getArticlesFromWikia(String wikia) {
     ApiResponse apiResponse = this.getGateway().getArticlesFromWikia(wikia);
-    List<Article> articleList = new ArrayList<Article>();
+    List<Article> articleList = new ArrayList<>();
     for (Page page : apiResponse.getQuery().getAllPages()) {
       Article article =
           PojoBuilderFactory.getArticleBuilder()
