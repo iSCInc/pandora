@@ -11,7 +11,9 @@ repositories {
 }
 
 dependencies {
-    compile 'com.orbitz.consul:consul-client:0.8'
+    compile('com.orbitz.consul:consul-client:0.8') {
+        exclude group: 'org.apache.cxf'
+    }
 }
 
 publishing {
