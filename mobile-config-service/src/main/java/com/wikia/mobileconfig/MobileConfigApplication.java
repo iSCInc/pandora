@@ -3,19 +3,17 @@ package com.wikia.mobileconfig;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
+import com.wikia.mobileconfig.gateway.AppsDeployerList;
 import com.wikia.mobileconfig.health.AppsDeployerHealthCheck;
 import com.wikia.mobileconfig.health.MobileConfigHealthCheck;
 import com.wikia.mobileconfig.resources.ApplicationsResource;
 import com.wikia.mobileconfig.resources.ImageResource;
 import com.wikia.mobileconfig.resources.MobileConfigResource;
-import com.wikia.mobileconfig.gateway.AppsDeployerList;
-import com.wikia.mobileconfig.service.FileConfigurationService;
 import com.wikia.mobileconfig.service.HttpConfigurationService;
 import com.wikia.mobileconfig.service.ImageService;
-import com.wikia.pandora.core.consul.ConsulConfig;
 import com.wikia.pandora.core.consul.ConsulBundle;
-
-import de.thomaskrille.dropwizard.environment_configuration.EnvironmentConfigurationFactoryFactory;
+import com.wikia.pandora.core.consul.ConsulConfig;
+import com.wikia.pandora.core.consul.config.ConsulConfigurationFactoryFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +41,7 @@ public class MobileConfigApplication extends Application<MobileConfigConfigurati
 
   @Override
   public void initialize(Bootstrap<MobileConfigConfiguration> bootstrap) {
-    bootstrap.setConfigurationFactoryFactory(new EnvironmentConfigurationFactoryFactory<>());
+    bootstrap.setConfigurationFactoryFactory(new ConsulConfigurationFactoryFactory<>());
     bootstrap.addBundle(new ConsulBundle<MobileConfigConfiguration>() {
       @Override
       protected ConsulConfig narrowConfig(MobileConfigConfiguration config) {

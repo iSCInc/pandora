@@ -27,7 +27,7 @@ public class AppsDeployerList implements AppsListService {
   private static final String APPS_DEPLOYER_HEALTH_CHECK_URL_FORMAT = "http://%s/api/";
   private static final String APPS_DEPLOYER_LIST_URL_FORMAT = "http://%s/api/app-configuration/";
 
-  //How long to cache the result. Set to 0 to disable caching.
+  //How long to config the result. Set to 0 to disable caching.
   private static final int CACHE_RESULT_SEC = 3600;
 
   private static String appsDeployerDomain;

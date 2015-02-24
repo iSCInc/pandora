@@ -14,7 +14,7 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
-public class ConsulAppConfigTest {
+public class ConsulKeyValueConfigTest {
   @Test
   public void testGetConfig() {
     List<Value> expectedValues = new ArrayList<>();
@@ -32,8 +32,8 @@ public class ConsulAppConfigTest {
     when(consul.keyValueClient()).thenReturn(keyValueClient);
     when(keyValueClient.getValues(anyString())).thenReturn(expectedValues);
 
-    ConsulAppConfig consulAppConfig = new ConsulAppConfig(consul);
-    assertEquals(configs, consulAppConfig.getConfig("demo-app", "prod"));
+    ConsulKeyValueConfig consulKeyValueConfig = new ConsulKeyValueConfig(consul, "demo-app", "prod");
+    assertEquals(configs, consulKeyValueConfig.getConfig());
   }
 
   private Value generateValue(String key, String value) {
