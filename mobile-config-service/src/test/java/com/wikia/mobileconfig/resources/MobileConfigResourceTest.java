@@ -85,7 +85,7 @@ public class MobileConfigResourceTest {
   public void getMobileApplicationConfigSuccess() throws IOException {
     ObjectMapper mapper = new ObjectMapper();
     MobileConfiguration cfgMock = mapper.readValue(
-        new File("src/test/resources/fixtures/test-platform:test-app.json"),
+        new File("src/test/resources/fixtures/test-platform-test-app.json"),
         MobileConfiguration.class
     );
 
