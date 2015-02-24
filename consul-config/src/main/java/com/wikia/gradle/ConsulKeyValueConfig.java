@@ -4,7 +4,6 @@ import com.orbitz.consul.Consul;
 import com.orbitz.consul.util.ClientUtil;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 
 public class ConsulKeyValueConfig {
@@ -73,7 +72,7 @@ public class ConsulKeyValueConfig {
       return new ConsulKeyValueConfig(uri.getHost(),
                                       uri.getPort(),
                                       uri.getPath().substring(1));
-    } catch (URISyntaxException e) {
+    } catch (Exception e) {
       return null;
     }
   }
