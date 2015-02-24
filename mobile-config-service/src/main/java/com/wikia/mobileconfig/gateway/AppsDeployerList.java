@@ -4,6 +4,7 @@ import com.google.common.base.Optional;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.MobileConfigConfiguration;
 
 import org.apache.http.client.ClientProtocolException;
@@ -104,6 +105,8 @@ public class AppsDeployerList implements AppsListService {
 
   @Override
   public boolean isUp() throws IOException {
+    Boolean result = false;
+
     try {
       String appsDeployerHealthCheckUrl = String.format(
           APPS_DEPLOYER_HEALTH_CHECK_URL_FORMAT,
@@ -111,9 +114,13 @@ public class AppsDeployerList implements AppsListService {
       );
       this.executeHttpRequest(appsDeployerHealthCheckUrl);
 
-      return true;
+      result = true;
     } catch (ClientProtocolException exception) {
-      return false;
+      MobileConfigApplication.LOGGER.error(
+          "Apps deployer host is unreachable", exception
+      );
     }
+
+    return result;
   }
 }

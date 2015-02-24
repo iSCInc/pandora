@@ -25,9 +25,10 @@ import io.dropwizard.setup.Environment;
 public class MobileConfigApplication extends Application<MobileConfigConfiguration> {
 
   public static final RepresentationFactory
-      representationFactory =
+      REPRESENTATION_FACTORY =
       new StandardRepresentationFactory();
-  public static final Logger logger = LoggerFactory.getLogger(FileConfigurationService.class);
+
+  public static final Logger LOGGER = LoggerFactory.getLogger(MobileConfigApplication.class);
 
   public static void main(String[] args) throws Exception {
     new MobileConfigApplication().run(args);
@@ -79,6 +80,7 @@ public class MobileConfigApplication extends Application<MobileConfigConfigurati
     final ApplicationsResource
         appList =
         new ApplicationsResource(listService);
+
     environment.jersey().register(mobileConfig);
     environment.jersey().register(image);
     environment.jersey().register(appList);
