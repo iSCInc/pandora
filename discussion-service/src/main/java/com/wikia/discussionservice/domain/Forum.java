@@ -23,7 +23,6 @@ public @Data class Forum {
   }
 
   @JsonProperty
-  @NonNull
   public int id;
 
   @JsonProperty
