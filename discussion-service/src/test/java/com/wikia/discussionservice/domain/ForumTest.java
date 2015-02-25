@@ -35,7 +35,7 @@ public class ForumTest {
   public Object[][] fixtureAndExpectedParams() {
     List<Forum> children = new ArrayList<> (
         Arrays.asList(
-            new Forum(3, "child 2", new ArrayList<>()),
+            new Forum(3, "child 1", new ArrayList<>()),
             new Forum(4, "child 2", new ArrayList<>())
         )
     );
