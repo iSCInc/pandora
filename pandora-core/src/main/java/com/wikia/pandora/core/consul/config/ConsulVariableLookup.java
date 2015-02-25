@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 public class ConsulVariableLookup extends StrLookup {
   public static final Pattern VARIABLE_PATTERN = Pattern.compile("([\\w_]+)(:(.+))?");
+  public static final String SUBSTITUTOR_PREFIX = "${consul:";
 
   protected ConsulKeyValueConfig keyValueConfig;
 

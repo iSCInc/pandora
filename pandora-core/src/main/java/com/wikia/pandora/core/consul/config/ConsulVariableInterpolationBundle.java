@@ -12,11 +12,11 @@ public class ConsulVariableInterpolationBundle implements Bundle {
   @Override
   public void initialize(Bootstrap<?> bootstrap) {
     ConsulVariableLookup lookup = new ConsulVariableLookup(ConsulKeyValueConfig.fromEnv());
+    StrSubstitutor substitutor = new StrSubstitutor(lookup)
+        .setVariablePrefix(ConsulVariableLookup.SUBSTITUTOR_PREFIX);
 
     bootstrap.setConfigurationSourceProvider(
-        new ConsulSubstitutionProvider(
-            bootstrap.getConfigurationSourceProvider(),
-            new StrSubstitutor(lookup, "${consul:", "}", '$')));
+        new ConsulSubstitutionProvider(bootstrap.getConfigurationSourceProvider(), substitutor));
   }
 
   @Override
