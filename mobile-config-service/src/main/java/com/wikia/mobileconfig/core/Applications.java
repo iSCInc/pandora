@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Applications {
 
-  private List<HashMap<String, Object>> apps;
+  private final List<HashMap<String, Object>> apps;
 
   public Applications(List<HashMap<String, Object>> apps) {
     this.apps = Collections.unmodifiableList(apps);

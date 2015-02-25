@@ -1,7 +1,6 @@
 package com.wikia.mwapi.decorator.query;
 
 import com.wikia.mwapi.MWApi;
-import com.wikia.mwapi.domain.ApiResponse;
 import com.wikia.mwapi.enumtypes.query.properties.CMPropEnum;
 
 import org.apache.http.client.HttpClient;

@@ -11,7 +11,7 @@ public class AdsContextMock {
 
   public AdsContextMock() {
 
-    Map<String, Object> opts = new HashMap<String, Object>();
+    Map<String, Object> opts = new HashMap<>();
     opts.put("adsInContent", true);
     opts.put("adsInHead", true);
     opts.put("enableAdsInMaps", true);
@@ -19,7 +19,7 @@ public class AdsContextMock {
     opts.put("pageType", "no_ads");
     opts.put("trackSlotState", true);
 
-    Map<String, Object> targeting = new HashMap<String, Object>();
+    Map<String, Object> targeting = new HashMap<>();
 
     targeting.put("enableKruxTargeting", true);
     targeting.put("enablePageCategories", true);
@@ -37,14 +37,14 @@ public class AdsContextMock {
     targeting.put("wikiLanguage", "en");
     targeting.put("wikiVertical", "Entertainment");
 
-    Map<String, Object> providers = new HashMap<String, Object>();
+    Map<String, Object> providers = new HashMap<>();
 
     providers.put("remnantGptMobile", true);
 
-    List<Object> slots = new ArrayList<Object>();
-    List<Object> forceProviders = new ArrayList<Object>();
+    List<Object> slots = new ArrayList<>();
+    List<Object> forceProviders = new ArrayList<>();
 
-    context = new HashMap<String, Object>();
+    context = new HashMap<>();
     context.put("opts", opts);
     context.put("targeting", targeting);
     context.put("providers", providers);

@@ -10,8 +10,6 @@ import com.wikia.pandora.domain.builder.ArticleBuilder;
 import com.wikia.pandora.domain.builder.CategoryBuilder;
 import com.wikia.pandora.gateway.mediawiki.MediawikiGateway;
 
-import org.apache.commons.lang3.NotImplementedException;
-
 import java.util.ArrayList;
 import java.util.List;
 

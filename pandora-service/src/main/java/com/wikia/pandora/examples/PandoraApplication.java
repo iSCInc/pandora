@@ -15,7 +15,6 @@ import com.wikia.pandora.resources.HalCommentResource;
 import com.wikia.pandora.resources.HalRevisionResource;
 import com.wikia.pandora.service.ServiceFactory;
 import com.wikia.pandora.service.mediawiki.MediawikiServiceFactory;
-import com.wikia.pandora.service.mercury.MercuryServiceFactory;
 
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;

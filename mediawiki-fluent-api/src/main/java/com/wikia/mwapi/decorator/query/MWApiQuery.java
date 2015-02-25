@@ -13,10 +13,10 @@ import java.util.List;
 
 public class MWApiQuery extends MWApiQueryBase {
 
-  private List<String> titles;
-  private List<ListEnum> lists;
-  private List<PropEnum> props;
-  private List<Long> revIds;
+  private final List<String> titles;
+  private final List<ListEnum> lists;
+  private final List<PropEnum> props;
+  private final List<Long> revIds;
 
   public MWApiQuery(MWApiBase parent) {
     super(parent);

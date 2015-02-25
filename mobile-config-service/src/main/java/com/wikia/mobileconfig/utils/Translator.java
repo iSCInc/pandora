@@ -29,7 +29,7 @@ public class Translator {
   }
 
   private Translator() {
-    translationCache = new HashMap<String, Map<String, String>>();
+    translationCache = new HashMap<>();
   }
 
   public static Translator getInstance() {
@@ -56,7 +56,7 @@ public class Translator {
           Map.class
       );
     } catch (Exception e) {
-      result = new HashMap<String, String>();
+      result = new HashMap<>();
       MobileConfigApplication.LOGGER.error(
           String.format("Error while parsing translation file: ", e.toString()), e
       );
