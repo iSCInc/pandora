@@ -26,8 +26,7 @@ public class ConsulSubstitutionProvider implements ConfigurationSourceProvider {
     return new ByteArrayInputStream(substitutedConfig.getBytes());
   }
 
-  static String convertStreamToString(InputStream is)
-  {
+  static String convertStreamToString(InputStream is) {
     Scanner s = new Scanner(is).useDelimiter("\\A");
     return s.hasNext() ? s.next() : "";
   }
