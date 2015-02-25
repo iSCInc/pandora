@@ -13,7 +13,7 @@ import com.wikia.mobileconfig.service.HttpConfigurationService;
 import com.wikia.mobileconfig.service.ImageService;
 import com.wikia.pandora.core.consul.ConsulBundle;
 import com.wikia.pandora.core.consul.ConsulConfig;
-import com.wikia.pandora.core.consul.config.ConsulConfigurationFactoryFactory;
+import com.wikia.pandora.core.consul.config.ConsulVariableInterpolationBundle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +41,7 @@ public class MobileConfigApplication extends Application<MobileConfigConfigurati
 
   @Override
   public void initialize(Bootstrap<MobileConfigConfiguration> bootstrap) {
-    bootstrap.setConfigurationFactoryFactory(new ConsulConfigurationFactoryFactory<>());
+    bootstrap.addBundle(new ConsulVariableInterpolationBundle());
     bootstrap.addBundle(new ConsulBundle<MobileConfigConfiguration>() {
       @Override
       protected ConsulConfig narrowConfig(MobileConfigConfiguration config) {
