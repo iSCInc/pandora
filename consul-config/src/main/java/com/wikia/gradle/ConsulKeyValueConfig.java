@@ -3,6 +3,9 @@ package com.wikia.gradle;
 import com.orbitz.consul.Consul;
 import com.orbitz.consul.util.ClientUtil;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.net.URI;
 import java.util.HashMap;
 
@@ -46,7 +49,8 @@ public class ConsulKeyValueConfig {
             config.put(key, value);
           });
     } catch (Exception e) {
-      return null;
+      Logger logger = LoggerFactory.getLogger(ConsulKeyValueConfig.class);
+      logger.warn("Count not fetch consul key/value configs", e);
     }
 
     return config;
@@ -78,6 +82,6 @@ public class ConsulKeyValueConfig {
   }
 
   protected static String getConfigFolder(String app, String env) {
-    return "config/"+app+"/"+env;
+    return String.format("config/%s/%s", app, env);
   }
 }
