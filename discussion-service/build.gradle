@@ -1,6 +1,6 @@
 apply from: rootProject.file('gradle/pandora_common_deps.gradle')
 apply plugin: 'application'
-version = "0.1.9"
+version = "0.1"
 
 // deployment boilerplate
 buildscript {
@@ -17,10 +17,11 @@ buildscript {
 apply from: rootProject.file('gradle/marathon_deployment.gradle')
 dependencies {
     compile project(":pandora-core")
-    compile "org.springframework:spring-web:$springVersion"
-    compile "org.springframework:spring-tx:$springVersion"
+    compile "com.hubspot.dropwizard:dropwizard-guice:$dropwizardGuiceVersion"
     compile "org.projectlombok:lombok:1.16.2"
-    testCompile 'org.testng:testng:6.8'
+    testCompile "org.testng:testng:6.8"
+    testCompile "org.hamcrest:hamcrest-core:$hamcrestVersion"
+    testCompile "org.hamcrest:hamcrest-library:$hamcrestVersion"
 }
 // end: deployment boilerplate
 
@@ -38,12 +39,14 @@ tasks.deployToProd {
     instances = 1
 }
 
-test {
-    useTestNG() {
-        useDefaultListeners = true
-        excludeGroups 'broken'
-    }
+task testng(type: Test) {
+    useTestNG()
 }
+
+task testAll(type: Test){
+}
+
+testAll.dependsOn testng
 
 // copy example file as a configuration file to the application dist
 applicationDistribution.from("discussionservice.yaml.sample") {

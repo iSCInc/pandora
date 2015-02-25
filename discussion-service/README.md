@@ -19,8 +19,17 @@ curl -v http://localhost:8080/forums
 To run the tests:
 
 ```bash
-../gradlew test # run all tests
+../gradlew testAll # run all tests
+../gradlew test # run only junit tests
+../gradlew testng # run only testng tests
+
 ```
+
+# Dev Notes
+
+This project uses [lombok](http://projectlombok.org) and (Guice)[https://github.com/google/guice]
+To get this to work with IntelliJ you must enable
+(Annotation Processing)[https://www.jetbrains.com/idea/help/configuring-annotation-processing.html]
 
 # What is currently in?
 

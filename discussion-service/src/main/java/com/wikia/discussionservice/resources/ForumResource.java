@@ -1,6 +1,7 @@
 package com.wikia.discussionservice.resources;
 
 import com.codahale.metrics.annotation.Timed;
+import com.google.common.base.Preconditions;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.wikia.discussionservice.domain.Forum;
@@ -9,30 +10,28 @@ import com.wikia.discussionservice.services.ForumService;
 import io.dropwizard.jersey.params.IntParam;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.IntStream;
+import java.util.Optional;
 
-@Service
 @Path("/")
 @Produces(RepresentationFactory.HAL_JSON)
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ForumResource {
 
-  @Autowired
   @NonNull
+  @Named("representationFactory")
   final private RepresentationFactory representationFactory;
 
-  @Autowired
   @NonNull
+  @Named("forumService")
   final private ForumService forumService;
 
   /**
-   * Only to statisfy the compiler, DI will ensure that
+   * Only to satisfy the compiler, DI will ensure that
    * ForumService and RepresentationFactory are not null
    */
   private ForumResource() {
@@ -43,30 +42,52 @@ public class ForumResource {
   @GET
   @Path("/forums")
   @Timed
-  public Representation getForums(@QueryParam("count") @DefaultValue("10") IntParam count,
-                                  @QueryParam("start") @DefaultValue("1") IntParam start) {
+  public Representation getForums(@QueryParam("limit") @DefaultValue("10") IntParam limit,
+                                  @QueryParam("offset") @DefaultValue("1") IntParam offset) {
 
-    Forums forums = forumService.getForums(start.get(), count.get());
+    Preconditions.checkArgument(offset.get() >= 1,
+        "Offset was %s but expected 1 or greater", offset.get());
 
+    Preconditions.checkArgument(limit.get() >= 1,
+        "Limit was %s but expected 1 or greater", limit.get());
+
+
+    Optional<Forums> forums = forumService.getForums(offset.get(), limit.get());
+
+    Representation representation = forums.map(this::getForumsRepresentation)
+        .orElseThrow(IllegalArgumentException::new);
+
+    return representation;
+  }
+
+  public Representation getForumsRepresentation(@NotNull Forums forums) {
     int total = forums.getTotal();
-    Representation representation = representationFactory.newRepresentation("/forums")
-        .withLink("self", String.format("/forums?start=%s", forums.getStart()))
-        .withLink("first", String.format("/forums?start=%s", 1))
-        .withLink("last", String.format("/forums?start=%s", total / count.get()))
-        .withProperty("total", total)
-        .withProperty("start", start.get())
-        .withProperty("count", count.get());
+    int offset = forums.getOffset();
+    int limit = forums.getLimit();
 
-    if (start.get() > 0) {
-      representation.withLink("previous", String.format("/forums?start=%s", start.get()));
+    Representation representation =
+        representationFactory.newRepresentation(
+            String.format("/forums?offset=%s&count=%s", offset, limit))
+            .withLink("first", String.format("/forums?offset=%s&count=%s", 1, limit), "first",
+                "link to first set of forums", "en-us", null)
+            .withLink("last", String.format("/forums?offset=%s&count=%s", total / limit,
+                limit), "last", "link to last set of forums", "en-us", null)
+            .withProperty("total", total)
+            .withProperty("offset", offset)
+            .withProperty("limit", limit);
+
+    if (offset > 1) {
+      representation.withLink("prev", String.format("/forums?offset=%s&count=%s", offset - 1,
+          limit), "previous", "previous page of forums", "en-us", null);
     }
 
-    if (start.get() < total/count.get() - 1) {
-      representation.withLink("next", String.format("/forums?start=%s", start.get()));
+    if (offset < total / limit - 1) {
+      representation.withLink("next", String.format("/forums?offset=%s&count=%s", offset + 1,
+          limit), "next", "next page of forums", "en-us", null);
     }
 
     if (!forums.getForums().isEmpty()) {
-      for(Forum forum: forums.getForums()) {
+      for (Forum forum : forums.getForums()) {
         representation.withRepresentation("forum", getForumRepresentation(forum));
       }
     }
@@ -75,12 +96,10 @@ public class ForumResource {
   }
 
   public Representation getForumRepresentation(Forum forum) {
-    Representation representation = representationFactory.newRepresentation(
-        String.format("/forum/%s", forum.getId()));
-
-    representation.withProperty("name", forum.getName());
-    representation.withProperty("hasChildren",
-        forum.getChildren() != null && !forum.getChildren().isEmpty());
+    Representation representation =
+        representationFactory.newRepresentation(String.format("/forum/%s", forum.getId()))
+            .withProperty("name", forum.getName())
+            .withProperty("hasChildren", forum.getChildren() != null && !forum.getChildren().isEmpty());
 
     return representation;
   }
