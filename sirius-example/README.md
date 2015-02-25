@@ -11,6 +11,9 @@ cp example.yaml.sample example.yaml
 ../gradlew run # launch application
 ```
 
+And put proper storage host name into the config:
+example.yaml -> storageHost property
+
 To make a request from the server:
 
 ```bash
@@ -31,8 +34,8 @@ At least one resource and healthCheck is needed.
 
 ExampleConfiguration - Contains whatever you want.
 Data here are created from example.yaml by magic(reflection)
- 
-ExampleResource - Controller handling your requests. 
+
+ExampleResource - Controller handling your requests.
 Contains entry points, and logic what, and how service should return
 
 ExampleHealthCheck - Self explanation class

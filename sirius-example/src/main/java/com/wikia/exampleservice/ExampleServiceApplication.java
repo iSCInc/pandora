@@ -39,7 +39,7 @@ public class ExampleServiceApplication extends Application<ExampleConfiguration>
     environment.healthChecks().register("SimpleHealthCheck", healthCheck);
 
     StandardRepresentationFactory representationFactory = new StandardRepresentationFactory();
-    ExampleResource exampleResource = new ExampleResource(representationFactory);
+    ExampleResource exampleResource = new ExampleResource(representationFactory, configuration);
     environment.jersey().register(exampleResource);
 
     //Optional

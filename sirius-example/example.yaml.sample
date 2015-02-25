@@ -1,4 +1,5 @@
 greetingsWord: Take me to your leader
+storageHost: dev-rafal
 logging:
   level: INFO
   appenders:

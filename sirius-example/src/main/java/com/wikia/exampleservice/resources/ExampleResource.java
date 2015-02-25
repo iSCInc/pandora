@@ -1,11 +1,14 @@
 package com.wikia.exampleservice.resources;
 
+import com.wikia.exampleservice.configuration.ExampleConfiguration;
+
 import com.codahale.metrics.annotation.Timed;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -18,15 +21,19 @@ import javax.ws.rs.core.UriBuilder;
 public class ExampleResource {
 
   private final RepresentationFactory representationFactory;
+  private final ExampleConfiguration configuration;
+  private final String storageHost;
 
-  public ExampleResource(RepresentationFactory representationFactory) {
+  public ExampleResource(RepresentationFactory representationFactory, ExampleConfiguration configuration) {
     this.representationFactory = representationFactory;
+    this.configuration = configuration;
+    this.storageHost = configuration.getStorageHost();
   }
 
     @GET
     @Timed
     public Notification show(@PathParam("name") String name) {
-        JedisPool jedisPool = new JedisPool(new JedisPoolConfig(), "dev-damian");
+        JedisPool jedisPool = new JedisPool(new JedisPoolConfig(), storageHost);
         String jedisValue;
         try (Jedis jedis = jedisPool.getResource()) {
             jedisValue = jedis.get(name);
@@ -39,7 +46,8 @@ public class ExampleResource {
     @POST
     @Timed
     public Representation update(@PathParam("name") String name, @Valid Notification notification) {
-        JedisPool jedisPool = new JedisPool(new JedisPoolConfig(), "dev-damian");
+
+        JedisPool jedisPool = new JedisPool(new JedisPoolConfig(), storageHost);
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.set(name, notification.getText());
         }
@@ -59,7 +67,7 @@ public class ExampleResource {
         Representation representation = representationFactory.newRepresentation();
 
 
-        JedisPool jedisPool = new JedisPool(new JedisPoolConfig(), "dev-damian");
+        JedisPool jedisPool = new JedisPool(new JedisPoolConfig(), storageHost);
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.del(name);
         }

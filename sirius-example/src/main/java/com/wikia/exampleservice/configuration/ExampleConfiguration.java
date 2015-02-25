@@ -14,6 +14,7 @@ public class ExampleConfiguration extends Configuration {
   @NotNull
   private String greetingsWord; // value is set up by dropwizard reflection magic.
   private ConsulConfig consulConfig;
+  private String storageHost;
 
   public String getGreetingsWord() {
     return greetingsWord;
@@ -22,4 +23,10 @@ public class ExampleConfiguration extends Configuration {
   public ConsulConfig getConsulConfig() {
     return consulConfig;
   }
+
+  public String getStorageHost() {
+    return storageHost;
+  }
+
 }
+
