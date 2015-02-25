@@ -44,7 +44,7 @@ public class AppsDeployerList implements AppsListService {
   public AppsDeployerList(HttpClient httpClient, String appsDeployerDomain) {
     this.httpClient = httpClient;
 
-    this.appsDeployerDomain = appsDeployerDomain;
+    AppsDeployerList.appsDeployerDomain = appsDeployerDomain;
   }
 
   public AppsDeployerList(Environment environment, MobileConfigConfiguration configuration) {
@@ -52,7 +52,7 @@ public class AppsDeployerList implements AppsListService {
         .using(configuration.getHttpClientConfiguration())
         .build("apps-deployer-list-service");
 
-    this.appsDeployerDomain = configuration.getAppsDeployerDomain();
+    appsDeployerDomain = configuration.getAppsDeployerDomain();
   }
 
   private List<HashMap<String, Object>> requestAppsList() throws IOException {

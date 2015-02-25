@@ -6,7 +6,7 @@ import com.wikia.mwapi.enumtypes.PropEnum;
 public class MWApiQueryDecorator extends MWApiQueryBase {
 
 
-  private MWApiQueryBase parent;
+  private final MWApiQueryBase parent;
 
   public MWApiQueryDecorator(MWApiQueryBase parent) {
     super(parent);

@@ -9,9 +9,9 @@ import java.util.regex.Pattern;
 
 public class RegexFilter implements MetricFilter {
 
-  private Pattern includes;
-  private Pattern excludes;
-  private boolean excludeTakesPrecedence;
+  private final Pattern includes;
+  private final Pattern excludes;
+  private final boolean excludeTakesPrecedence;
 
   public RegexFilter(ImmutableSet<String> includes, ImmutableSet<String> excludes) {
     this(includes, excludes, false);

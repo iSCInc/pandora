@@ -4,7 +4,7 @@ import com.wikia.pandora.gateway.mediawiki.MediawikiGateway;
 
 public class MediawikiService {
 
-  private MediawikiGateway gateway;
+  private final MediawikiGateway gateway;
 
   public MediawikiService(MediawikiGateway gateway) {
     this.gateway = gateway;

@@ -36,7 +36,7 @@ public class MercuryGatewayTest {
     MercuryGateway mercuryGateway = new MercuryGateway(httpClient);
 
     when(httpClient.execute(any(HttpGet.class), any(ResponseHandler.class))).thenReturn(
-        FixtureHelpers.fixture("fixtures/mercury-gateway/kermit-the-frog.json").toString()
+        FixtureHelpers.fixture("fixtures/mercury-gateway/kermit-the-frog.json")
     );
 
     Map<String,Object> article = mercuryGateway.getArticle(wikia, title);

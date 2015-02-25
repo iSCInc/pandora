@@ -18,7 +18,7 @@ import java.util.List;
 
 public class MWApiRevisions extends MWApiQueryDecorator implements RevisionsOption {
 
-  private List<RVPropEnum> rvPropsEnums;
+  private final List<RVPropEnum> rvPropsEnums;
   private int rvLimit;
   private boolean expandTemplates;
   private boolean generateXml;

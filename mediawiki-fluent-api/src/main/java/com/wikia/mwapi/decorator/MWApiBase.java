@@ -24,7 +24,7 @@ import java.util.Objects;
 
 public abstract class MWApiBase implements WikiaChoose, MainModuleOption, MethodOption {
 
-  Logger logger = LoggerFactory.getLogger(MWApiBase.class);
+  final Logger logger = LoggerFactory.getLogger(MWApiBase.class);
   private String wikia;
   private ActionEnum action;
   private FormatEnum format;
