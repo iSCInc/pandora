@@ -17,7 +17,7 @@ public class ConsulKeyValueConfig {
   protected String configFolder;
 
   public ConsulKeyValueConfig(String host, int port, String app, String env) {
-    this(Consul.newClient(host, port), getConfigFolder(app, env));
+    this(Consul.newClient(host, port), getDefaultConfigFolder(app, env));
   }
 
   public ConsulKeyValueConfig(String host, int port, String configFolder) {
@@ -25,7 +25,7 @@ public class ConsulKeyValueConfig {
   }
 
   public ConsulKeyValueConfig(Consul consul, String app, String env) {
-    this(consul, getConfigFolder(app, env));
+    this(consul, getDefaultConfigFolder(app, env));
   }
 
   public ConsulKeyValueConfig(Consul consul, String configFolder) {
@@ -50,7 +50,7 @@ public class ConsulKeyValueConfig {
           });
     } catch (Exception e) {
       Logger logger = LoggerFactory.getLogger(ConsulKeyValueConfig.class);
-      logger.warn("Count not fetch consul key/value configs", e);
+      logger.warn("Could not fetch consul key/value configs", e);
     }
 
     return config;
@@ -82,7 +82,7 @@ public class ConsulKeyValueConfig {
     }
   }
 
-  protected static String getConfigFolder(String app, String env) {
+  protected static String getDefaultConfigFolder(String app, String env) {
     return String.format("config/%s/%s", app, env);
   }
 }
