@@ -8,12 +8,7 @@ import com.wikia.mwapi.enumtypes.query.properties.CMTypeEnum;
 import com.wikia.mwapi.fluent.query.CategoryMembersOption;
 import com.wikia.mwapi.util.URIBuilderHelper;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.apache.http.client.utils.URIBuilder;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class MWApiCategoryMembers extends MWApiQueryDecorator implements CategoryMembersOption {
 

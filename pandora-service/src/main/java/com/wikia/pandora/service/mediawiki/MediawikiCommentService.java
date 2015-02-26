@@ -5,7 +5,6 @@ import com.wikia.pandora.domain.Comment;
 import com.wikia.pandora.domain.builder.CommentBuilder;
 import com.wikia.pandora.gateway.mediawiki.MediawikiGateway;
 
-
 import java.util.ArrayList;
 import java.util.List;
 

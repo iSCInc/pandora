@@ -1,9 +1,9 @@
 package com.wikia.mobileconfig.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wikia.mobileconfig.core.MobileConfiguration;
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.core.EmptyMobileConfiguration;
+import com.wikia.mobileconfig.core.MobileConfiguration;
 
 import java.io.File;
 import java.io.IOException;

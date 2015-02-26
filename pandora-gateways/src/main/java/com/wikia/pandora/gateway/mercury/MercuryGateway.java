@@ -1,11 +1,11 @@
 package com.wikia.pandora.gateway.mercury;
 
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.commons.lang3.Validate;
 import org.apache.http.client.HttpClient;
