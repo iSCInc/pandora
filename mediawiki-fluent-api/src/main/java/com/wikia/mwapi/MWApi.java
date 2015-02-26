@@ -2,8 +2,8 @@ package com.wikia.mwapi;
 
 import com.wikia.mwapi.decorator.MWApiBase;
 import com.wikia.mwapi.enumtypes.FormatEnum;
-import com.wikia.mwapi.fluent.query.MainModuleOption;
 import com.wikia.mwapi.fluent.WikiaChoose;
+import com.wikia.mwapi.fluent.query.MainModuleOption;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;

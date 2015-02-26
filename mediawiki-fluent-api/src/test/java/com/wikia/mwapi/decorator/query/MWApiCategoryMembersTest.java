@@ -7,7 +7,7 @@ import org.apache.http.client.HttpClient;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class MWApiCategoryMembersTest {
 

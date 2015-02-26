@@ -1,8 +1,8 @@
 package com.wikia.pandora.core.domain.builder;
 
+import com.wikia.pandora.core.domain.MercuryArticle;
 import com.wikia.pandora.domain.Category;
 import com.wikia.pandora.domain.Media;
-import com.wikia.pandora.core.domain.MercuryArticle;
 import com.wikia.pandora.domain.User;
 
 import java.util.List;

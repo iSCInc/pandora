@@ -1,7 +1,6 @@
 package com.wikia.mobileconfig.health;
 
 import com.codahale.metrics.health.HealthCheck;
-
 import com.wikia.mobileconfig.gateway.AppsListService;
 
 public class AppsDeployerHealthCheck extends HealthCheck {

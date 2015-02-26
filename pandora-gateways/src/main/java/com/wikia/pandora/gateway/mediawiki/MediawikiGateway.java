@@ -1,18 +1,14 @@
 package com.wikia.pandora.gateway.mediawiki;
 
-import com.google.common.collect.Lists;
-
-import com.wikia.mwapi.domain.ApiResponse;
 import com.wikia.mwapi.MWApi;
+import com.wikia.mwapi.domain.ApiResponse;
 import com.wikia.mwapi.enumtypes.query.properties.RVPropEnum;
 import com.wikia.mwapi.fluent.WikiaChoose;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.apache.http.client.HttpClient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class MediawikiGateway {

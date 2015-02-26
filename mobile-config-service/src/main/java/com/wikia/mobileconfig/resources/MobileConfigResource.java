@@ -1,22 +1,24 @@
 package com.wikia.mobileconfig.resources;
 
 import com.codahale.metrics.annotation.Timed;
-
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
-
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.core.EmptyMobileConfiguration;
 import com.wikia.mobileconfig.core.MobileConfiguration;
 import com.wikia.mobileconfig.exceptions.ConfigurationNotFoundException;
 import com.wikia.mobileconfig.exceptions.InvalidApplicationTagException;
 import com.wikia.mobileconfig.exceptions.MobileConfigException;
-import com.wikia.mobileconfig.service.ConfigurationService;
 import com.wikia.mobileconfig.gateway.AppsListService;
+import com.wikia.mobileconfig.service.ConfigurationService;
 
 import java.io.IOException;
 
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
 @Path("/configurations/platform/{platform}/app/{app-tag}")
 @Produces(RepresentationFactory.HAL_JSON)
