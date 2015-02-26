@@ -1,14 +1,15 @@
 package com.wikia.mobileconfig;
 
-import io.dropwizard.Configuration;
-import io.dropwizard.client.HttpClientConfiguration;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.wikia.pandora.core.consul.ConsulConfig;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.NotEmpty;
+
+import io.dropwizard.Configuration;
+import io.dropwizard.client.HttpClientConfiguration;
 
 public class MobileConfigConfiguration extends Configuration {
 

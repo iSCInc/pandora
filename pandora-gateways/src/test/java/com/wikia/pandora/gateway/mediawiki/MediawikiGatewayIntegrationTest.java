@@ -5,7 +5,6 @@ import com.wikia.mwapi.domain.ApiResponse;
 import com.wikia.mwapi.domain.CategoryStat;
 import com.wikia.mwapi.domain.Image;
 import com.wikia.mwapi.domain.Page;
-import com.wikia.mwapi.domain.QueryContinue;
 import com.wikia.mwapi.domain.Revision;
 import com.wikia.mwapi.fluent.WikiaChoose;
 import com.wikia.pandora.core.test.IntegrationTest;
@@ -17,13 +16,11 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 @Category(IntegrationTest.class)
 public class MediawikiGatewayIntegrationTest {

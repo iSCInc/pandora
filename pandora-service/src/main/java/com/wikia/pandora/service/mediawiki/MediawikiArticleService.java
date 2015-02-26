@@ -1,9 +1,9 @@
 package com.wikia.pandora.service.mediawiki;
 
 import com.wikia.mwapi.domain.ApiResponse;
-import com.wikia.mwapi.domain.User;
 import com.wikia.mwapi.domain.Image;
 import com.wikia.mwapi.domain.Page;
+import com.wikia.mwapi.domain.User;
 import com.wikia.pandora.api.service.ArticleService;
 import com.wikia.pandora.domain.Article;
 import com.wikia.pandora.domain.ArticleWithContent;
@@ -14,7 +14,6 @@ import com.wikia.pandora.domain.Media;
 import com.wikia.pandora.domain.Revision;
 import com.wikia.pandora.domain.builder.PojoBuilderFactory;
 import com.wikia.pandora.gateway.mediawiki.MediawikiGateway;
-
 
 import org.apache.commons.lang3.NotImplementedException;
 
