@@ -42,7 +42,7 @@ public class ConsulKeyValueConfig {
 
     try {
       consul.keyValueClient().getValues(configFolder).stream()
-          .filter(v -> getConfigKey(v.getKey()) != null)
+          .filter(v -> getConfigKey(v.getKey()) != null) // returns null for folders
           .forEach(v -> {
             String key = getConfigKey(v.getKey());
             String value = ClientUtil.decodeBase64(v.getValue());
