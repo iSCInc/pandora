@@ -9,13 +9,14 @@ import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
 
+import javax.ws.rs.core.Link;
 import java.util.ArrayList;
 import java.util.List;
 
 @EqualsAndHashCode
 @ToString
 @JsonIgnoreProperties(ignoreUnknown=true)
-public @Data class Forums {
+public @Data class ForumRoot {
 
   @JsonProperty
   @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS,
@@ -32,4 +33,7 @@ public @Data class Forums {
   
   @JsonProperty
   private int total;
+  
+  @JsonProperty
+  private int siteId;
 }

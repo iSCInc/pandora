@@ -28,12 +28,27 @@ public @Data class Forum {
   @JsonProperty
   @NonNull
   public String name;
-
+  
   @JsonProperty
   @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS,
       include = JsonTypeInfo.As.PROPERTY,
       property = "@class")
   @NonNull
   public List<Forum> children;
+  
+  @JsonProperty
+  @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "@class")
+  @NonNull
+  public List<ForumThread> threads;
+ 
+  public boolean hasChildren() {
+    return getChildren() != null && !getChildren().isEmpty();
+  }
+
+  public boolean hasThreads() {
+    return getThreads() != null && !getThreads().isEmpty();
+  }
 
 }
