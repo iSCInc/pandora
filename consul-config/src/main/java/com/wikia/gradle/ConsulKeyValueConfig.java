@@ -61,13 +61,14 @@ public class ConsulKeyValueConfig {
   }
 
   protected String getConfigKey(String key) {
-    String remove = configFolder + "/";
+    String configFolderPrefix = configFolder + "/";
 
-    if (key.length() <= remove.length()) {
+    // if the key ends with "/" (meaning it's a folder), don't include it in the result set
+    if (key.endsWith("/")) {
       return null;
     }
 
-    return key.substring(remove.length());
+    return key.replace(configFolderPrefix, "");
   }
 
   public static ConsulKeyValueConfig fromEnv() {
