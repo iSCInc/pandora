@@ -16,10 +16,6 @@ import org.slf4j.LoggerFactory;
 
 
 public class UrlGenerator {
-
-  public static final String IMAGE_TYPE_AVATAR            = "avatars";
-  public static final String IMAGE_TYPE_IMAGES            = "images";
-
   public static final String FORMAT_WEBP                  = "webp";
   public static final String FORMAT_JPG                   = "jpg";
 
@@ -34,7 +30,7 @@ public class UrlGenerator {
 
   private List<NameValuePair> queryParams = new ArrayList<>();
 
-  public final String imageType;
+  public final ImageType imageType;
 
   public final Optional<Integer> xOffset;
   public final Optional<Integer> yOffset;
@@ -167,7 +163,7 @@ public class UrlGenerator {
   public static final class Builder {
     private UrlConfig config;
     private ThumbnailMode mode = ThumbnailMode.ORIGINAL;
-    private String imageType = UrlGenerator.IMAGE_TYPE_IMAGES;
+    private ImageType imageType = ImageType.IMAGES;
     private Optional<Integer> width;
     private Optional<Integer> height;
     private Optional<Integer> xOffset;
@@ -230,7 +226,7 @@ public class UrlGenerator {
       return this;
     }
 
-    public Builder imageType(String imageType) {
+    public Builder imageType(ImageType imageType) {
       this.imageType = imageType;
       return this;
     }
@@ -330,7 +326,7 @@ public class UrlGenerator {
     }
 
     public Builder avatar() {
-      return imageType(UrlGenerator.IMAGE_TYPE_AVATAR);
+      return imageType(ImageType.AVATARS);
     }
 
 

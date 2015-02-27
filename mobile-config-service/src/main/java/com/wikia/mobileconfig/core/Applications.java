@@ -31,6 +31,10 @@ public class Applications {
     this.apps = modifyImages(apps);
   }
 
+  public List<HashMap<String, Object>> getApps() {
+    return apps;
+  }
+
   protected List<HashMap<String, Object>> modifyImages(List<HashMap<String, Object>> apps) {
     apps.forEach(app -> {
       if (app.containsKey(VIGNETTE_IMAGE_SET_KEY)) {
