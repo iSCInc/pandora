@@ -45,7 +45,7 @@ public class MobileConfigResourceTest {
 
     try {
       RESOURCES.client()
-          .target("/configurations/platform/test-platform/app/test-app")
+          .target("/configurations/test-platform/apps/test-app")
           .request()
           .get(String.class);
       fail("404 - missing invalid appTag exception");
@@ -64,12 +64,12 @@ public class MobileConfigResourceTest {
         .thenReturn(new EmptyMobileConfiguration());
     when(HTTP_SERVICE_MOCK.createSelfUrl("test-platform", "test-app"))
         .thenReturn(
-            "/configurations/platform/test-platform/app/test-app?ui-lang=en-us&content-lang=en-us");
+            "/configurations/test-platform/apps/test-app?ui-lang=en-us&content-lang=en-us");
 
     try {
       RESOURCES.client()
           .target(
-              "/configurations/platform/test-platform/app/test-app?ui-lang=en-us&content-lang=en-us")
+              "/configurations/test-platform/apps/test-app?ui-lang=en-us&content-lang=en-us")
           .request()
           .get(String.class);
       fail("404 - missing invalid modules exception");
@@ -93,13 +93,13 @@ public class MobileConfigResourceTest {
     when(APPS_LIST_MOCK.isValidAppTag("test-platform", "test-app")).thenReturn(true);
     when(HTTP_SERVICE_MOCK.createSelfUrl("test-platform", "test-app"))
       .thenReturn(
-          "/configurations/platform/test-platform/app/test-app?ui-lang=en-us&content-lang=en-us");
+          "/configurations/test-platform/apps/test-app?ui-lang=en-us&content-lang=en-us");
     when(HTTP_SERVICE_MOCK.getConfiguration("test-platform", "test-app", "en-us", "en-us"))
         .thenReturn(cfgMock);
 
     String response = RESOURCES.client()
         .target(
-            "/configurations/platform/test-platform/app/test-app?ui-lang=en-us&content-lang=en-us")
+            "/configurations/test-platform/apps/test-app?ui-lang=en-us&content-lang=en-us")
         .request()
         .get(String.class);
 

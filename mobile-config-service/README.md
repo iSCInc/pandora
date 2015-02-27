@@ -24,7 +24,7 @@ and can be found on the list returned in a response above.
 
 To make a request from the server:
 ```bash
-curl -v http://127.0.0.1:8080/configurations/platform/android/app/witcher
+curl -v http://127.0.0.1:8080/configurations/android/apps/witcher
 ```
 
 To run tests suit you choose one of below:

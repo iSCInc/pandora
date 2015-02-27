@@ -20,7 +20,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
-@Path("/configurations/platform/{platform}/app/{app-tag}")
+@Path("/configurations/{platform}/apps/{app-tag}")
 @Produces(RepresentationFactory.HAL_JSON)
 public class MobileConfigResource {
 
@@ -39,7 +39,7 @@ public class MobileConfigResource {
   }
 
   /**
-   * GET /configurations/platform/{platform}/app/{app-tag}
+   * GET /configurations/{platform}/apps/{app-tag}
    *
    * @return Representation
    */
