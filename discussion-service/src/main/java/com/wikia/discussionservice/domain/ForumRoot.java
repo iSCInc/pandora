@@ -26,14 +26,5 @@ public @Data class ForumRoot {
   private List<Forum> forums = new ArrayList<>();
 
   @JsonProperty
-  private int offset;
-  
-  @JsonProperty
-  private int limit;
-  
-  @JsonProperty
-  private int total;
-  
-  @JsonProperty
   private int siteId;
 }

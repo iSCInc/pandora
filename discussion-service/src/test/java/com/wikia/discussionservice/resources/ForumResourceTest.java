@@ -52,22 +52,9 @@ public class ForumResourceTest {
     reset(forumService);
     
     firstOffsetForumRoot = new ForumRoot();
-    firstOffsetForumRoot.setOffset(1);
-    firstOffsetForumRoot.setTotal(100);
-    firstOffsetForumRoot.setLimit(10);
     firstOffsetForumRoot.setForums(createForumList(1, 10));
     
-    when(forumService.getForums(anyInt(), eq(1), eq(10)))
-        .thenReturn(Optional.of(firstOffsetForumRoot));
-
-    secondOffsetForumRoot = new ForumRoot();
-    secondOffsetForumRoot.setOffset(2);
-    secondOffsetForumRoot.setTotal(100);
-    secondOffsetForumRoot.setLimit(10);
-    secondOffsetForumRoot.setForums(createForumList(2, 10));
-    
-    when(forumService.getForums(anyInt(), eq(2), eq(10)))
-      .thenReturn(Optional.of(secondOffsetForumRoot));
+    when(forumService.getForums(anyInt())).thenReturn(Optional.of(firstOffsetForumRoot));
   }
 
   private List<Forum> createForumList(int offset, int limit) {
@@ -90,47 +77,8 @@ public class ForumResourceTest {
 
   @Test
   public void testDefaultGetForums() {
-    Response response = resources.client().target("/forums/1").request().get();
+    Response response = resources.client().target("/1/forums").request().get();
     assertThat(response.getStatus()).isEqualTo(200);
-    verify(forumService).getForums(1, 1, 10);
+    verify(forumService).getForums(1);
   }
-
-  @Test
-  public void testFirstOffsetGetForums() {
-    Response response = resources.client().target("/forums/1?offset=1&limit=10").request().get();
-    assertThat(response.getStatus()).isEqualTo(200);
-    verify(forumService).getForums(1, 1, 10);
-  }
-
-  @Test
-  public void testSecondOffsetGetForums() {
-    Response response = resources.client().target("/forums/1?offset=2&limit=10").request().get();
-    assertThat(response.getStatus()).isEqualTo(200);
-    verify(forumService).getForums(1, 2, 10);
-  }
-
-  @Test
-  public void testNegativeOffsetGetForums() {
-    try {
-      resources.client().target("/forums/1?offset=0&limit=10").request().get();
-      fail("Excepted to fail because offset less than 1 is not allowed");
-    } catch(ProcessingException pe) {
-      // expected exception
-      assertThat(pe.getCause()).isInstanceOf(IllegalArgumentException.class);
-    }
-    verifyZeroInteractions(forumService);
-  }
-
-  @Test
-  public void testLessThanOneLimitGetForums() {
-    try {
-      resources.client().target("/forums/1?offset=1&limit=0").request().get();
-      fail("Excepted to fail because limit less than 1 is not allowed");
-    } catch(ProcessingException pe) {
-      // expected exception
-      assertThat(pe.getCause()).isInstanceOf(IllegalArgumentException.class);
-    }
-    verifyZeroInteractions(forumService);
-  }
-
 }

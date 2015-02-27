@@ -5,6 +5,8 @@ import com.wikia.discussionservice.domain.Forum;
 import com.wikia.discussionservice.domain.ForumRoot;
 import com.wikia.discussionservice.enums.ResponseGroup;
 
+import javax.ws.rs.core.UriInfo;
+
 /**
  * RepresentationMapper is an interface for abstracting
  * mapping of objects to their representation.
@@ -12,12 +14,13 @@ import com.wikia.discussionservice.enums.ResponseGroup;
  */
 public interface ForumRepresentationMapper {
   
-  public Representation buildRepresentation(int siteId, ForumRoot forumRoot);
+  public Representation buildRepresentation(int siteId, ForumRoot forumRoot, UriInfo uriInfo);
   
   public Representation buildRepresentation(int siteId, ForumRoot forumRoot, 
+                                            UriInfo uriInfo, ResponseGroup responseGroup);
+
+  public Representation buildRepresentation(int siteId, Forum forum, UriInfo uriInfo);
+  
+  public Representation buildRepresentation(int siteId, Forum forum, UriInfo uriInfo, 
                                             ResponseGroup responseGroup);
-
-  public Representation buildRepresentation(int siteId, Forum forum);
-
-  public Representation buildRepresentation(int siteId, Forum forum, ResponseGroup responseGroup);
 }

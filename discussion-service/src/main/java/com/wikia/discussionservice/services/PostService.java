@@ -9,12 +9,10 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-/**
- * Created by jogura on 2/26/15.
- */
 public class PostService {
   
   public List<Post> createPosts() {
@@ -49,5 +47,8 @@ public class PostService {
 
     return posts;
   }
-  
+
+  public Optional<Post> getPost(int siteId, int postId) {
+    return Optional.empty();
+  }
 }

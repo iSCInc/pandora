@@ -1,5 +1,6 @@
 package com.wikia.discussionservice.services;
 
+import com.wikia.discussionservice.dao.ForumDAO;
 import com.wikia.discussionservice.domain.Forum;
 import com.wikia.discussionservice.domain.ForumRoot;
 import com.wikia.discussionservice.domain.ForumThread;
@@ -21,52 +22,36 @@ public class ForumService {
   @NonNull
   private final ThreadService threadService;
 
+  @NonNull
+  private final ForumDAO forumDAO;
+  
   @Inject
-  public ForumService(ThreadService threadService) {
+  public ForumService(ThreadService threadService, ForumDAO forumDAO) {
     this.threadService = threadService;
+    this.forumDAO = forumDAO;
   }
 
-  public Optional<ForumRoot> getForums(int siteId, int offset, int limit) {
-
-    int total = 20;
-    List<Forum> forumList = createForumList(offset, limit);
-
+  public Optional<ForumRoot> getForums(int siteId) {
+    List<Forum> forumList = forumDAO.retrieveForums(siteId);
     ForumRoot forumRoot = new ForumRoot();
     forumRoot.setForums(forumList);
-    forumRoot.setTotal(total);
-    forumRoot.setLimit(limit);
-    forumRoot.setOffset(offset);
     forumRoot.setSiteId(siteId);
-
     return Optional.of(forumRoot);
   }
 
-  private List<Forum> createForumList(int offset, int limit) {
-    List<Forum> forumList = new ArrayList<>();
+  public Optional<Forum> getForum(int siteId, int forumId, int offset, int limit) {
+    Optional<Forum> forum = forumDAO.retrieveForum(siteId, forumId);
+    
+    if (forum.isPresent()) {
+      List<ForumThread> threads = threadService.retrieveForumThreads(
+          siteId, forumId, offset, limit);
+      forum.get().setThreads(threads);
+    }
 
-    int start = offset == 1
-        ? 1
-        : (limit * offset) - (limit - 1);
-
-    IntStream.range(start, limit + 1).forEach(
-        i -> {
-          Forum forum =
-              new Forum(i, String.format("Forum: %s", i), new ArrayList<>(), new ArrayList<>());
-          forumList.add(forum);
-        }
-    );
-
-    return forumList;
+    return forum;
   }
 
-
-  public Forum getForum(int siteId, int id, int offset, int limit) {
-    if (id % 2 == 0) {
-      List<Forum> forumList = createForumList(1, 10);
-      return new Forum(id, "test forum", forumList, new ArrayList<>());
-    } else {
-      List<ForumThread> threads = threadService.createThreadList(offset, limit);
-      return new Forum(id, "test forum", new ArrayList<>(), threads);
-    }
+  public Optional<Forum> createForum(int siteId, int parentId, String forumName) {
+    return forumDAO.createForum(siteId, parentId, forumName);
   }
 }

@@ -1,69 +1,53 @@
 package com.wikia.discussionservice.mappers;
 
-import com.google.inject.BindingAnnotation;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
-import com.wikia.discussionservice.domain.*;
+import com.wikia.discussionservice.domain.Forum;
+import com.wikia.discussionservice.domain.ForumRoot;
+import com.wikia.discussionservice.domain.ForumThread;
 import com.wikia.discussionservice.enums.ResponseGroup;
+import com.wikia.discussionservice.resources.ForumResource;
 import lombok.NonNull;
 
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.core.Link;
+import javax.ws.rs.core.UriInfo;
 
 public class HALForumRepresentationMapper implements ForumRepresentationMapper {
-  
+
   @NonNull
   final private RepresentationFactory representationFactory;
-  
+
   @NonNull
   final private ThreadRepresentationMapper threadRepresentationMapper;
 
   @Inject
-  public HALForumRepresentationMapper(RepresentationFactory representationFactory, 
+  public HALForumRepresentationMapper(RepresentationFactory representationFactory,
                                       ThreadRepresentationMapper threadRepresentationMapper) {
     this.representationFactory = representationFactory;
     this.threadRepresentationMapper = threadRepresentationMapper;
   }
-  
+
   @Override
-  public Representation buildRepresentation(int siteId, ForumRoot forumRoot) {
-    return buildRepresentation(siteId, forumRoot, ResponseGroup.SMALL);
+  public Representation buildRepresentation(int siteId, ForumRoot forumRoot, UriInfo uriInfo) {
+    return buildRepresentation(siteId, forumRoot, uriInfo, ResponseGroup.SMALL);
   }
 
   @Override
   public Representation buildRepresentation(int siteId, @NotNull ForumRoot forumRoot,
-                                            ResponseGroup responseGroup) {
-    int total = forumRoot.getTotal();
-    int offset = forumRoot.getOffset();
-    int limit = forumRoot.getLimit();
+                                            UriInfo uriInfo, ResponseGroup responseGroup) {
 
-    Representation representation =
-        representationFactory.newRepresentation(
-            String.format("/%s/forums/?offset=%s&count=%s", siteId, offset, limit))
-            .withLink("first", String.format("/%s/forums?offset=%s&count=%s", siteId,
-                1, limit), "first", "link to first set of forums", "en-us", null)
-            .withLink("last", String.format("/%s/forums?offset=%s&count=%s", siteId,
-                total / limit, limit), "last", "link to last set of forums", "en-us", null)
-            .withProperty("total", total)
-            .withProperty("offset", offset)
-            .withProperty("limit", limit);
+    Link linkToSelf = new LinkBuilder().buildLink(uriInfo, "self", ForumResource.class, "getForums", siteId);
 
-    if (offset > 1) {
-      representation.withLink("prev", String.format("/%s/forums/?offset=%s&count=%s",
-              siteId, offset - 1, limit), "previous",
-          "previous page of forums", "en-us", null);
-    }
-
-    if (offset < total / limit - 1) {
-      representation.withLink("next", String.format("/%s/forums?offset=%s&count=%s",
-              siteId, offset + 1, limit), "next",
-          "next page of forums", "en-us", null);
-    }
+    Representation representation = representationFactory.newRepresentation()
+        .withLink("self", linkToSelf.getUri())
+        .withProperty("total", forumRoot.getForums().size());
 
     if (!forumRoot.getForums().isEmpty()) {
       for (Forum forum : forumRoot.getForums()) {
         representation.withRepresentation("forum", buildRepresentation(
-            siteId, forum, responseGroup));
+            siteId, forum, uriInfo, responseGroup));
       }
     }
 
@@ -71,29 +55,32 @@ public class HALForumRepresentationMapper implements ForumRepresentationMapper {
   }
 
   @Override
-  public Representation buildRepresentation(int siteId, Forum forum) {
-    return buildRepresentation(siteId, forum, ResponseGroup.SMALL);
+  public Representation buildRepresentation(int siteId, Forum forum, UriInfo uriInfo) {
+    return buildRepresentation(siteId, forum, uriInfo, ResponseGroup.SMALL);
   }
 
   @Override
-  public Representation buildRepresentation(int siteId, Forum forum,
+  public Representation buildRepresentation(int siteId, Forum forum, UriInfo uriInfo,
                                             ResponseGroup responseGroup) {
 
+    Link linkToSelf = new LinkBuilder().buildLink(uriInfo, "self", ForumResource.class, "getForum",
+        siteId, forum.getId());
+
     Representation representation =
-        representationFactory.newRepresentation(
-            String.format("/%s/forum/%s", siteId, forum.getId()))
+        representationFactory.newRepresentation()
+            .withLink("self", linkToSelf.getUri())
             .withProperty("name", forum.getName())
             .withProperty("hasChildren", forum.hasChildren())
             .withProperty("hasThreads", forum.hasThreads());
 
     for (Forum childForum : forum.getChildren()) {
       representation.withRepresentation("forum", buildRepresentation(
-          siteId, childForum));
+          siteId, childForum, uriInfo));
     }
 
     for (ForumThread thread : forum.getThreads()) {
       representation.withRepresentation("thread", threadRepresentationMapper.buildRepresentation(
-          siteId, thread));
+          siteId, thread, uriInfo));
     }
 
     return representation;

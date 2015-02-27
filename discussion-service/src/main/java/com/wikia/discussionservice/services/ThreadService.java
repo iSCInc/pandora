@@ -1,5 +1,6 @@
 package com.wikia.discussionservice.services;
 
+import com.wikia.discussionservice.domain.Forum;
 import com.wikia.discussionservice.domain.ForumThread;
 import com.wikia.discussionservice.domain.Post;
 import com.wikia.discussionservice.domain.User;
@@ -7,14 +8,13 @@ import lombok.NonNull;
 
 import javax.inject.Inject;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public class ThreadService {
 
+  private static Map<Integer, List<ForumThread>> FORUM_THREADS = new HashMap<>();
+  
   @NonNull
   private final PostService postService;
 
@@ -73,4 +73,21 @@ public class ThreadService {
     return Optional.of(thread);
   }
 
+  public List<ForumThread> retrieveForumThreads(int siteId, int forumId, int offset, int limit) {
+    if (!FORUM_THREADS.containsKey(forumId)) {
+      FORUM_THREADS.put(forumId, new ArrayList<>());
+    }
+    
+    List<ForumThread> forumThreads = FORUM_THREADS.get(forumId);
+    
+    if (forumThreads.size() == 0 || forumThreads.size() <= limit) {
+      return forumThreads;
+    }
+    
+    try {
+      return forumThreads.subList(offset*limit, offset*limit+limit);
+    } catch(IndexOutOfBoundsException ioobe) {
+      return forumThreads.subList(offset*limit, forumThreads.size()-1);
+    }
+  }
 }

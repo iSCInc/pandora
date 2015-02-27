@@ -5,9 +5,12 @@ import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.wikia.discussionservice.domain.ForumThread;
 import com.wikia.discussionservice.domain.Post;
 import com.wikia.discussionservice.enums.ResponseGroup;
+import com.wikia.discussionservice.resources.ThreadResource;
 import lombok.NonNull;
 
 import javax.inject.Inject;
+import javax.ws.rs.core.Link;
+import javax.ws.rs.core.UriInfo;
 
 public class HALThreadRepresentationMapper implements ThreadRepresentationMapper {
   
@@ -24,23 +27,28 @@ public class HALThreadRepresentationMapper implements ThreadRepresentationMapper
     this.postRepresentationMapper = postRepresentationMapper;
   }
   
-  public Representation buildRepresentation(int siteId, ForumThread thread) {
-    return buildRepresentation(siteId, thread, ResponseGroup.SMALL);
+  public Representation buildRepresentation(int siteId, ForumThread thread, UriInfo uriInfo) {
+    return buildRepresentation(siteId, thread, uriInfo, ResponseGroup.SMALL);
   }
 
-  public Representation buildRepresentation(int siteId, ForumThread thread,
-                                                ResponseGroup responseGroup) {
+  public Representation buildRepresentation(int siteId, ForumThread thread, 
+                                            UriInfo uriInfo, ResponseGroup responseGroup) {
+    
+    Link linkToSelf = new LinkBuilder().buildLink(uriInfo, "self", ThreadResource.class,
+        "getThread", siteId, thread.getId());
+    
     Representation representation =
-        representationFactory.newRepresentation(
-            String.format("/%s/thread/%s", siteId, thread.getId()))
+        representationFactory.newRepresentation()
+            .withLink("self", linkToSelf.getUri())
             .withProperty("title", thread.getTitle())
-            .withRepresentation("lastPost", 
-                postRepresentationMapper.buildRepresentation(siteId, thread.getLastPost()));
+            .withRepresentation("lastPost",
+                postRepresentationMapper.buildRepresentation(siteId, thread.getLastPost(), 
+                    uriInfo));
 
     if (responseGroup == ResponseGroup.FULL) {
       for(Post post: thread.getPosts()) {
         representation.withRepresentation("post", 
-            postRepresentationMapper.buildRepresentation(siteId, post));
+            postRepresentationMapper.buildRepresentation(siteId, post, uriInfo));
       }
     }
 

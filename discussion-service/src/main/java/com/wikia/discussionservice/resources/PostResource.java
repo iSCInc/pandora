@@ -5,8 +5,11 @@ import com.google.common.base.Preconditions;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.wikia.discussionservice.domain.ForumThread;
+import com.wikia.discussionservice.domain.Post;
 import com.wikia.discussionservice.enums.ResponseGroup;
+import com.wikia.discussionservice.mappers.PostRepresentationMapper;
 import com.wikia.discussionservice.mappers.ThreadRepresentationMapper;
+import com.wikia.discussionservice.services.PostService;
 import com.wikia.discussionservice.services.ThreadService;
 import io.dropwizard.jersey.params.IntParam;
 import lombok.NonNull;
@@ -20,46 +23,37 @@ import java.util.Optional;
 
 @Path("/")
 @Produces(RepresentationFactory.HAL_JSON)
-public class ThreadResource {
+public class PostResource {
 
   @NonNull
-  final private ThreadService threadService;
+  final private PostService postService;
 
   @NonNull
-  final private ThreadRepresentationMapper threadMapper;
+  final private PostRepresentationMapper postMapper;
 
   @Inject
-  public ThreadResource(ThreadService threadService, ThreadRepresentationMapper threadMapper) {
-    this.threadService = threadService;
-    this.threadMapper = threadMapper;
+  public PostResource(PostService postService, PostRepresentationMapper postMapper) {
+    this.postService = postService;
+    this.postMapper = postMapper;
   }
 
   @GET
-  @Path("/{siteId}/thread/{threadId}")
+  @Path("/{siteId}/post/{postId}")
   @Timed
-  public Representation getForums(@NotNull @PathParam("siteId") IntParam siteId,
-                                  @NotNull @PathParam("threadId") IntParam threadId,
-                                  @QueryParam("limit") @DefaultValue("10") IntParam limit,
-                                  @QueryParam("offset") @DefaultValue("1") IntParam offset,
+  public Representation getPost(@NotNull @PathParam("siteId") IntParam siteId,
+                                  @NotNull @PathParam("threadId") IntParam postId,
                                   @QueryParam("responseGroup") @DefaultValue("small")
                                   String requestedResponseGroup,
                                   @Context UriInfo uriInfo) {
 
-    Preconditions.checkArgument(offset.get() >= 1,
-        "Offset was %s but expected 1 or greater", offset.get());
-
-    Preconditions.checkArgument(limit.get() >= 1,
-        "Limit was %s but expected 1 or greater", limit.get());
-
     ResponseGroup responseGroup = ResponseGroup.getResponseGroup(requestedResponseGroup);
     Preconditions.checkNotNull(responseGroup, "Invalid response group");
 
-    Optional<ForumThread> forumThread = threadService.getThread(siteId.get(), threadId.get(),
-        offset.get(), limit.get());
+    Optional<Post> post = postService.getPost(siteId.get(), postId.get());
 
-    Representation representation = forumThread.map(
-        root -> threadMapper.buildRepresentation(
-            siteId.get(), forumThread.get(), uriInfo, responseGroup))
+    Representation representation = post.map(
+        root -> postMapper.buildRepresentation(
+            siteId.get(), post.get(), uriInfo, responseGroup))
         .orElseThrow(IllegalArgumentException::new);
 
     return representation;
