@@ -80,8 +80,10 @@ public class AppsDeployerList implements AppsListService {
           int timestamp = (int) data.get("timestamp");
 
           appImages.put(type, generateVignetteImageUrls(bucket, path, timestamp));
+          app.remove(type);
         });
 
+        app.remove("vignetteimage_set");
         app.put("images", appImages);
       });
 
