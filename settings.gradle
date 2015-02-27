@@ -10,4 +10,4 @@ include 'mercury-api'
 include 'nirvana-api'
 include 'pandora-example'
 include 'consul-config'
-
+include 'vignette'

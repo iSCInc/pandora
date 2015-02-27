@@ -6,14 +6,18 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.MobileConfigConfiguration;
+import com.wikia.vignette.UrlConfig;
+import com.wikia.vignette.UrlGenerator;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +32,7 @@ public class AppsDeployerList implements AppsListService {
   private static final String APPS_DEPLOYER_LIST_URL_FORMAT = "http://%s/api/app-configuration/";
 
   //How long to cache the result. Set to 0 to disable caching.
-  private static final int CACHE_RESULT_SEC = 3600;
+  private static final int CACHE_RESULT_SEC = 0;
 
   private static String appsDeployerDomain;
 
@@ -61,8 +65,27 @@ public class AppsDeployerList implements AppsListService {
     ObjectMapper mapper = new ObjectMapper();
 
     if (response.isPresent()) {
-      return mapper.readValue(response.get(), new TypeReference<List<HashMap<String, Object>>>() {
+      List<HashMap<String, Object>> appsList = mapper.readValue(
+          response.get(),
+          new TypeReference<List<HashMap<String, Object>>>() {});
+
+      appsList.forEach(app -> {
+        List<HashMap<String, Object>> images = (List<HashMap<String, Object>>) app.get("vignetteimage_set");
+        HashMap<String, HashMap<String, String>> appImages = new HashMap<>();
+
+        images.forEach(data -> {
+          String bucket = (String) data.get("bucket");
+          String type = (String) data.get("type");
+          String path = (String) data.get("path");
+          int timestamp = (int) data.get("timestamp");
+
+          appImages.put(type, generateVignetteImageUrls(bucket, path, timestamp));
+        });
+
+        app.put("images", appImages);
       });
+
+      return appsList;
     } else {
       throw new IllegalStateException(
           String.format(APPS_LIST_RESPONSE_ERROR_FORMAT, appsDeployerUrl)
@@ -122,5 +145,27 @@ public class AppsDeployerList implements AppsListService {
     }
 
     return result;
+  }
+
+  protected HashMap<String, String> generateVignetteImageUrls(String bucket, String path, int timestamp) {
+    HashMap<String, String> urls = new HashMap<>();
+    UrlConfig config = new UrlConfig.Builder()
+        .bucket(bucket)
+        .timestamp(timestamp) // todo: this isn't being added. fixed?
+        .relativePath(path)
+        .build();
+
+    try {
+      String original = new UrlGenerator.Builder()
+          .config(config)
+          .build()
+          .url();
+
+      urls.put("original", original);
+    } catch (URISyntaxException e) {
+      LoggerFactory.getLogger(AppsDeployerList.class).error("error generating urls", e);
+    }
+
+    return urls;
   }
 }
