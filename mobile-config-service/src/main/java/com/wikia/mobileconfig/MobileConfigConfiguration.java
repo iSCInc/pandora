@@ -22,6 +22,10 @@ public class MobileConfigConfiguration extends Configuration {
   @NotNull
   private String appsDeployerDomain;
 
+  @JsonProperty
+  @NotNull
+  private Integer cacheTime;
+
   @NotEmpty
   @NotNull
   private String cephDomain;
@@ -44,6 +48,10 @@ public class MobileConfigConfiguration extends Configuration {
 
   public String getAppsDeployerDomain() {
     return appsDeployerDomain;
+  }
+
+  public Integer getCacheTime() {
+    return cacheTime;
   }
 
   public String getCephDomain() {
