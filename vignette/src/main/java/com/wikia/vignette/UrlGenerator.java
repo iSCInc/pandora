@@ -160,7 +160,7 @@ public class UrlGenerator {
         .setHost(baseUrlURI.getHost())
         .setPath(fullPath);
 
-    if (!getRevision().equals(REVISION_LATEST)) {
+    if (getRevision().equals(REVISION_LATEST)) {
       queryParams.add(new BasicNameValuePair("timestamp", config.timestamp.toString()));
     }
 

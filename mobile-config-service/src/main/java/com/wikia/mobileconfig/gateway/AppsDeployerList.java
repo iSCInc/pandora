@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +31,9 @@ public class AppsDeployerList implements AppsListService {
 
   private static final String APPS_DEPLOYER_HEALTH_CHECK_URL_FORMAT = "http://%s/api/";
   private static final String APPS_DEPLOYER_LIST_URL_FORMAT = "http://%s/api/app-configuration/";
+
+  private static final String[] IMAGE_TYPES = {"ios_image", "android_image"};
+  private static final String VIGNETTE_IMAGE_SET_KEY = "vignetteimage_set";
 
   //How long to cache the result. Set to 0 to disable caching.
   private static final int CACHE_RESULT_SEC = 0;
@@ -69,30 +73,36 @@ public class AppsDeployerList implements AppsListService {
           response.get(),
           new TypeReference<List<HashMap<String, Object>>>() {});
 
-      appsList.forEach(app -> {
-        List<HashMap<String, Object>> images = (List<HashMap<String, Object>>) app.get("vignetteimage_set");
-        HashMap<String, HashMap<String, String>> appImages = new HashMap<>();
-
-        images.forEach(data -> {
-          String bucket = (String) data.get("bucket");
-          String type = (String) data.get("type");
-          String path = (String) data.get("path");
-          int timestamp = (int) data.get("timestamp");
-
-          appImages.put(type, generateVignetteImageUrls(bucket, path, timestamp));
-          app.remove(type);
-        });
-
-        app.remove("vignetteimage_set");
-        app.put("images", appImages);
-      });
-
+      appsList.forEach(this::replaceAppImages);
       return appsList;
     } else {
       throw new IllegalStateException(
           String.format(APPS_LIST_RESPONSE_ERROR_FORMAT, appsDeployerUrl)
       );
     }
+  }
+
+  private void replaceAppImages(HashMap<String, Object> app) {
+    if (app.containsKey(VIGNETTE_IMAGE_SET_KEY)) {
+      @SuppressWarnings("unchecked")
+      List<HashMap<String, Object>> images =
+          (List<HashMap<String, Object>>) app.get(VIGNETTE_IMAGE_SET_KEY);
+
+      images.forEach(data -> {
+        String bucket = (String) data.get("bucket");
+        String type = (String) data.get("type");
+        String path = (String) data.get("path");
+        int timestamp = (int) data.get("timestamp");
+
+        app.put(type, generateVignetteImageUrls(bucket, path, timestamp));
+      });
+
+      app.remove(VIGNETTE_IMAGE_SET_KEY);
+    }
+
+    Arrays.stream(IMAGE_TYPES)
+        .filter(type -> app.containsKey(type) && app.get(type) instanceof String)
+        .forEach(type -> app.put(type, new HashMap<String, String>()));
   }
 
   private synchronized List<HashMap<String, Object>> getAppListSync() throws IOException {
