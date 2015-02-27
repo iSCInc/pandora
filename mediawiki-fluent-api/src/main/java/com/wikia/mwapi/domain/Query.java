@@ -5,10 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Query {
 
-  private ArrayList<Normalized> normalized;
+  private List<Normalized> normalized;
 
   private LinkedHashMap<String, Page> pages;
 
@@ -18,13 +19,13 @@ public class Query {
 
   private List<Page> categorymembers;
 
-  private LinkedHashMap<String,BadRevId> badRevIds;
+  private Map<String, BadRevId> badRevIds;
 
-  public ArrayList<Normalized> getNormalized() {
+  public List<Normalized> getNormalized() {
     return normalized;
   }
 
-  public LinkedHashMap<String, Page> getPages() {
+  public Map<String, Page> getPages() {
     return pages;
   }
 
@@ -52,9 +53,7 @@ public class Query {
   }
 
   @JsonProperty("badrevids")
-  public LinkedHashMap<String, BadRevId> getBadRevIds() {
+  public Map<String, BadRevId> getBadRevIds() {
     return badRevIds;
   }
-
-
 }

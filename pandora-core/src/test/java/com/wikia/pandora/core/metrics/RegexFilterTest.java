@@ -10,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 public class RegexFilterTest {
 
   @Test
-  public void testIncludeMatches() throws Exception {
+  public void testIncludeMatches() {
     ImmutableSet<String> includes = new ImmutableSet.Builder<String>()
         .add("([a-z]){5}")
         .add("([0-4]){3}")
@@ -32,7 +32,7 @@ public class RegexFilterTest {
 
 
   @Test
-  public void testExcludeMatches() throws Exception {
+  public void testExcludeMatches() {
     ImmutableSet<String> excludes = new ImmutableSet.Builder<String>()
         .add("([a-z]){5}")
         .add("([0-4]){3}")
@@ -53,7 +53,7 @@ public class RegexFilterTest {
   }
 
   @Test
-  public void testExcludeTakesPrecedenceMatches() throws Exception {
+  public void testExcludeTakesPrecedenceMatches() {
     ImmutableSet<String> includes = new ImmutableSet.Builder<String>()
         .add("([a-z]){5}[0-9]{2}")
         .add("([0-4]){2}")
@@ -72,7 +72,7 @@ public class RegexFilterTest {
   }
 
   @Test
-  public void testIncludeTakesPrecedenceMatches() throws Exception {
+  public void testIncludeTakesPrecedenceMatches() {
     ImmutableSet<String> includes = new ImmutableSet.Builder<String>()
         .add("([a-z]+)[0-9]{2}")
         .add("([0-9]+)")
