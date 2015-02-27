@@ -9,7 +9,7 @@ import java.util.Map;
 
 public abstract class ConfigurationServiceBase implements ConfigurationService {
 
-  private final static String CONFIGURATIONS_URL_FORMAT = "/configurations/platform/%s/app/%s";
+  private final static String CONFIGURATIONS_URL_FORMAT = "/configurations/%s/apps/%s";
 
   protected final static String CONFIGURATION_NOT_FOUND_DEBUG_MESSAGE_FORMAT =
       "Configuration for %s not found: falling back to empty modules configuration";

@@ -30,7 +30,7 @@ public class ConfigIntegrationTest {
     Client client = ClientBuilder.newClient();
 
     Response response = client.target(
-        String.format("http://localhost:%d/configurations/platform/test-platform/app/test-app?ui-lang=en-us&content-lang=en-us", RULE.getLocalPort()))
+        String.format("http://localhost:%d/configurations/test-platform/apps/test-app?ui-lang=en-us&content-lang=en-us", RULE.getLocalPort()))
         .request()
         .get();
 
@@ -43,7 +43,7 @@ public class ConfigIntegrationTest {
 
     Response response = client.target(
         String.format(
-            "http://localhost:%d/configurations/platform/android/app/witcher?ui-lang=en-us&content-lang=en-us",
+            "http://localhost:%d/configurations/android/apps/witcher?ui-lang=en-us&content-lang=en-us",
             RULE.getLocalPort()))
         .request()
         .get();
@@ -57,7 +57,7 @@ public class ConfigIntegrationTest {
 
     Response response = client.target(
         String.format(
-            "http://localhost:%d/configurations/platform/android/app/witcher?ui-lang=xx-xx&content-lang=xx-xx",
+            "http://localhost:%d/configurations/android/apps/witcher?ui-lang=xx-xx&content-lang=xx-xx",
             RULE.getLocalPort()))
         .request()
         .get();
