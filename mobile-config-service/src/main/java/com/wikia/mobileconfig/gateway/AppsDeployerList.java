@@ -24,19 +24,15 @@ import io.dropwizard.setup.Environment;
 
 public class AppsDeployerList implements AppsListService {
 
+  public static final int DEFAULT_CACHE_TIME_IN_SEC = 3600;
   private static final String APPS_DEPLOYER_HEALTH_CHECK_URL_FORMAT = "http://%s/api/";
   private static final String APPS_DEPLOYER_LIST_URL_FORMAT = "http://%s/api/app-configuration/";
-
-  //How long to cache the result. Set to 0 to disable caching.
-  private static final int CACHE_RESULT_SEC = 3600;
-
-  private static String appsDeployerDomain;
-
   private static final String
       APPS_LIST_RESPONSE_ERROR_FORMAT = "Error, the response for %s is not valid!";
-
+  //How long to cache the result. Set to 0 to disable caching.
+  private final int cacheTimeInSec;
   private final HttpClient httpClient;
-
+  private final String appsDeployerDomain;
   private List<HashMap<String, Object>> appsList;
 
   private Date appsListUpdateTime = new Date();
@@ -44,7 +40,8 @@ public class AppsDeployerList implements AppsListService {
   public AppsDeployerList(HttpClient httpClient, String appsDeployerDomain) {
     this.httpClient = httpClient;
 
-    AppsDeployerList.appsDeployerDomain = appsDeployerDomain;
+    this.appsDeployerDomain = appsDeployerDomain;
+    this.cacheTimeInSec = DEFAULT_CACHE_TIME_IN_SEC;
   }
 
   public AppsDeployerList(Environment environment, MobileConfigConfiguration configuration) {
@@ -52,7 +49,8 @@ public class AppsDeployerList implements AppsListService {
         .using(configuration.getHttpClientConfiguration())
         .build("apps-deployer-list-service");
 
-    appsDeployerDomain = configuration.getAppsDeployerDomain();
+    this.appsDeployerDomain = configuration.getAppsDeployerDomain();
+    this.cacheTimeInSec = configuration.getCacheTime();
   }
 
   private List<HashMap<String, Object>> requestAppsList() throws IOException {
@@ -72,8 +70,10 @@ public class AppsDeployerList implements AppsListService {
 
   private synchronized List<HashMap<String, Object>> getAppListSync() throws IOException {
 
-    long diffInSeconds = TimeUnit.MILLISECONDS.toSeconds(new Date().getTime() - appsListUpdateTime.getTime());
-    if (appsList == null || diffInSeconds > CACHE_RESULT_SEC) {
+    long
+        diffInSeconds =
+        TimeUnit.MILLISECONDS.toSeconds(new Date().getTime() - appsListUpdateTime.getTime());
+    if (appsList == null || diffInSeconds > cacheTimeInSec) {
       appsList = requestAppsList();
       appsListUpdateTime = new Date();
     }
@@ -96,11 +96,15 @@ public class AppsDeployerList implements AppsListService {
 
   @Override
   public List<HashMap<String, Object>> getAppList(String platform) throws IOException {
-    if (CACHE_RESULT_SEC <= 0) {
+    if (isUsingCache()) {
       return requestAppsList();
     } else {
       return getAppListSync();
     }
+  }
+
+  private boolean isUsingCache() {
+    return cacheTimeInSec <= 0;
   }
 
   @Override

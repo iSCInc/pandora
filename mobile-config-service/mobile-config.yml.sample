@@ -1,6 +1,7 @@
 appsDeployerDomain: ${consul:APP_DEPLOYER_DOMAIN}
 cephDomain: ${consul:CEPH_DOMAIN}
 cephPort: ${consul:CEPH_PORT:80}
+cacheTime: 3600
 httpClient:
   timeout: 7s
   connectionTimeout: 7s
