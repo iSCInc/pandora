@@ -1,5 +1,7 @@
 package com.wikia.vignette;
 
+import com.google.common.base.Optional;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.MessageDigest;
@@ -10,22 +12,10 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.message.BasicNameValuePair;
+import org.slf4j.LoggerFactory;
 
 
 public class UrlGenerator {
-
-  public static final String MODE_ORIGINAL                = "original";
-  public static final String MODE_THUMBNAIL               = "thumbnail";
-  public static final String MODE_THUMBNAIL_DOWN          = "thumbnail-down";
-  public static final String MODE_FIXED_ASPECT_RATIO      = "fixed-aspect-ratio";
-  public static final String MODE_FIXED_ASPECT_RATIO_DOWN = "fixed-aspect-ratio-down";
-  public static final String MODE_SCALE_TO_WIDTH          = "scale-to-width";
-  public static final String MODE_TOP_CROP                = "top-crop";
-  public static final String MODE_TOP_CROP_DOWN           = "top-crop-down";
-  public static final String MODE_WINDOW_CROP             = "window-crop";
-  public static final String MODE_WINDOW_CROP_FIXED       = "window-crop-fixed";
-  public static final String MODE_ZOOM_CROP               = "zoom-crop";
-  public static final String MODE_ZOOM_CROP_DOWN          = "zoom-crop-down";
 
   public static final String IMAGE_TYPE_AVATAR            = "avatars";
   public static final String IMAGE_TYPE_IMAGES            = "images";
@@ -37,21 +27,20 @@ public class UrlGenerator {
 
   public final UrlConfig config;
 
-  public final Integer width;
-  public final Integer height;
+  public final Optional<Integer> width;
+  public final Optional<Integer> height;
 
-  public final String mode;
-  public final String format;
+  public final ThumbnailMode mode;
 
   private List<NameValuePair> queryParams = new ArrayList<>();
 
   public final String imageType;
 
-  public final Integer xOffset;
-  public final Integer yOffset;
+  public final Optional<Integer> xOffset;
+  public final Optional<Integer> yOffset;
 
-  public final Integer windowWidth;
-  public final Integer windowHeight;
+  public final Optional<Integer> windowWidth;
+  public final Optional<Integer> windowHeight;
 
 
   private UrlGenerator(Builder builder) {
@@ -59,7 +48,6 @@ public class UrlGenerator {
     width = builder.width;
     height = builder.height;
     mode = builder.mode;
-    format = builder.format;
     queryParams = builder.queryParams;
     imageType = builder.imageType;
     xOffset = builder.xOffset;
@@ -92,62 +80,44 @@ public class UrlGenerator {
   public String modePath() {
     StringBuilder path = new StringBuilder();
 
-    if (!mode.equals(MODE_ORIGINAL)) {
+    if (!mode.equals(ThumbnailMode.ORIGINAL)) {
       path.append(String.format("/%s", mode));
 
-      validateWidth();
-      if (mode.equals(MODE_SCALE_TO_WIDTH)) {
-        path.append(String.format("/%d", width));
-      } else if (mode.equals(MODE_WINDOW_CROP) || mode.equals(MODE_WINDOW_CROP_FIXED)) {
-        path.append(String.format("/width/%d", width));
+      validate(width, "width");
+      if (mode.equals(ThumbnailMode.SCALE_TO_WIDTH)) {
+        path.append(String.format("/%d", width.get()));
+      } else if (mode.equals(ThumbnailMode.WINDOW_CROP) ||
+                 mode.equals(ThumbnailMode.WINDOW_CROP_FIXED)) {
+        path.append(String.format("/width/%d", width.get()));
 
-        if (mode.equals(MODE_WINDOW_CROP_FIXED)) {
-          validateHeight();
-          path.append(String.format("/height/%d", height));
+        if (mode.equals(ThumbnailMode.WINDOW_CROP_FIXED)) {
+          validate(height, "height");
+          path.append(String.format("/height/%d", height.get()));
         }
 
-        validateXOffset();
-        validateYOffset();
-        validateWindowWidth();
-        validateWindowHeight();
-        path.append(String.format("/x-offset/%d/y-offset/%d", xOffset, yOffset));
-        path.append(String.format("/window-width/%d/window-height/%d", windowWidth, windowHeight));
+        validate(xOffset, "xOffset");
+        validate(yOffset, "yOffset");
+        validate(windowWidth, "windowWidth");
+        validate(windowHeight, "windowHeight");
+        path.append(String.format("/x-offset/%d/y-offset/%d", xOffset.get(), yOffset.get()));
+        path.append(String.format("/window-width/%d/window-height/%d",
+                                  windowWidth.get(),
+                                  windowHeight.get()));
       } else {
-        validateHeight();
-        path.append(String.format("/width/%d/height/%d", width, height));
+        validate(height, "height");
+        path.append(String.format("/width/%d/height/%d", width.get(), height.get()));
       }
     }
 
     return path.toString();
   }
 
-  protected void validateWidth() {
-    validateProperty(width, "error, width must be set");
-  }
-
-  protected void validateHeight() {
-    validateProperty(height, "error, height must be set");
-  }
-
-  protected void validateXOffset() {
-    validateProperty(xOffset, "error, xOffset must be set");
-  }
-
-  protected void validateYOffset() {
-    validateProperty(yOffset, "error, yOffset must be set");
-  }
-
-  protected void validateWindowHeight() {
-    validateProperty(windowHeight, "error, windowHeight must be set");
-  }
-
-  protected void validateWindowWidth() {
-    validateProperty(windowWidth, "error, windowWidth must be set");
-  }
-
-  protected void validateProperty(Object property, String message) {
-    if (property == null) {
-      throw new IllegalStateException(message);
+  protected void validate(Optional optional, String property) {
+    if (!optional.isPresent()) {
+      String message = String.format("error: %s is required for mode %s", property, mode);
+      IllegalStateException e = new IllegalStateException(message);
+      LoggerFactory.getLogger(UrlGenerator.class).error(message, e);
+      throw e;
     }
   }
 
@@ -161,7 +131,7 @@ public class UrlGenerator {
         .setPath(fullPath);
 
     if (getRevision().equals(REVISION_LATEST)) {
-      queryParams.add(new BasicNameValuePair("timestamp", config.timestamp.toString()));
+      queryParams.add(new BasicNameValuePair("cb", config.timestamp.toString()));
     }
 
     if (!queryParams.isEmpty()) {
@@ -196,29 +166,27 @@ public class UrlGenerator {
 
   public static final class Builder {
     private UrlConfig config;
-    private Integer width;
-    private Integer height;
-    private String mode = UrlGenerator.MODE_ORIGINAL;
-    private String format;
+    private ThumbnailMode mode = ThumbnailMode.ORIGINAL;
     private String imageType = UrlGenerator.IMAGE_TYPE_IMAGES;
-    private Integer xOffset;
-    private Integer yOffset;
-    private Integer windowWidth;
-    private Integer windowHeight;
+    private Optional<Integer> width;
+    private Optional<Integer> height;
+    private Optional<Integer> xOffset;
+    private Optional<Integer> yOffset;
+    private Optional<Integer> windowWidth;
+    private Optional<Integer> windowHeight;
 
     private List<NameValuePair> queryParams = new ArrayList<>();
-
 
     public Builder() {
     }
 
-    private Builder mode(String mode) {
+    public Builder mode(ThumbnailMode mode) {
       this.mode = mode;
       return this;
     }
 
     public Builder format(String format) {
-      this.format = format;
+      this.queryParams.add(new BasicNameValuePair("format", format));
       return this;
     }
 
@@ -245,11 +213,19 @@ public class UrlGenerator {
     }
 
     public Builder width(Integer width) {
+      return width(Optional.of(width));
+    }
+
+    public Builder width(Optional<Integer> width) {
       this.width = width;
       return this;
     }
 
     public Builder height(Integer height) {
+      return height(Optional.of(height));
+    }
+
+    public Builder height(Optional<Integer> height) {
       this.height = height;
       return this;
     }
@@ -260,71 +236,87 @@ public class UrlGenerator {
     }
 
     public Builder xOffset(Integer xOffset) {
+      return xOffset(Optional.of(xOffset));
+    }
+
+    public Builder xOffset(Optional<Integer> xOffset) {
       this.xOffset = xOffset;
       return this;
     }
 
     public Builder yOffset(Integer yOffset) {
+      return yOffset(Optional.of(yOffset));
+    }
+
+    public Builder yOffset(Optional<Integer> yOffset) {
       this.yOffset = yOffset;
       return this;
     }
 
-    public Builder windowWidth(Integer windowWidth) {
+    public Builder windowWidth(Integer windowWith) {
+      return windowWidth(Optional.of(windowWith));
+    }
+
+    public Builder windowWidth(Optional<Integer> windowWidth) {
       this.windowWidth = windowWidth;
       return this;
     }
 
     public Builder windowHeight(Integer windowHeight) {
+      return windowHeight(Optional.of(windowHeight));
+    }
+
+    public Builder windowHeight(Optional<Integer> windowHeight) {
       this.windowHeight = windowHeight;
       return this;
     }
 
     public Builder original() {
-      return mode(UrlGenerator.MODE_ORIGINAL);
+      return mode(ThumbnailMode.ORIGINAL);
     }
 
     public Builder thumbnail() {
-      return mode(UrlGenerator.MODE_THUMBNAIL);
+      return mode(ThumbnailMode.THUMBNAIL);
     }
 
     public Builder thumbnailDown() {
-      return mode(UrlGenerator.MODE_THUMBNAIL_DOWN);
+      return mode(ThumbnailMode.THUMBNAIL_DOWN);
     }
 
     public Builder zoomCrop() {
-      return mode(UrlGenerator.MODE_ZOOM_CROP);
+      return mode(ThumbnailMode.ZOOM_CROP);
     }
 
     public Builder zoomCropDown() {
-      return mode(UrlGenerator.MODE_ZOOM_CROP_DOWN);
+      return mode(ThumbnailMode.ZOOM_CROP_DOWN);
     }
 
     public Builder fixedAspectRatio() {
-      return mode(UrlGenerator.MODE_FIXED_ASPECT_RATIO);
+      return mode(ThumbnailMode.FIXED_ASPECT_RATIO);
     }
 
     public Builder fixedAspectRatioDown() {
-      return mode(UrlGenerator.MODE_FIXED_ASPECT_RATIO_DOWN);
+      return mode(ThumbnailMode.FIXED_ASPECT_RATIO_DOWN);
     }
 
     public Builder topCrop() {
-      return mode(UrlGenerator.MODE_TOP_CROP);
+      return mode(ThumbnailMode.TOP_CROP);
     }
 
     public Builder topCropDown() {
-      return mode(UrlGenerator.MODE_TOP_CROP_DOWN);
+      return mode(ThumbnailMode.TOP_CROP_DOWN);
     }
 
     public Builder windowCrop() {
-      return mode(UrlGenerator.MODE_WINDOW_CROP);
+      return mode(ThumbnailMode.WINDOW_CROP);
     }
 
     public Builder windowCropFixed() {
-      return mode(UrlGenerator.MODE_WINDOW_CROP_FIXED);
+      return mode(ThumbnailMode.WINDOW_CROP_FIXED);
     }
 
     public Builder scaleToWidth(Integer width) {
-      mode(UrlGenerator.MODE_SCALE_TO_WIDTH);
+      mode(ThumbnailMode.SCALE_TO_WIDTH);
       width(width);
       return this;
     }

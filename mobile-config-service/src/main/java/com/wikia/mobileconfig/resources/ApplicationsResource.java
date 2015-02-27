@@ -1,5 +1,7 @@
 package com.wikia.mobileconfig.resources;
 
+import com.google.common.base.Optional;
+
 import com.codahale.metrics.annotation.Timed;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
@@ -12,6 +14,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
 @Path("/applications/platform/{platform}/")
 @Produces(RepresentationFactory.HAL_JSON)
@@ -37,15 +40,19 @@ public class ApplicationsResource {
   @GET
   @Timed
   public Representation getMobileApplicationList(
-      @PathParam("platform") String platform
+      @PathParam("platform") String platform,
+      @QueryParam("thumbMode") Optional<String> thumbMode,
+      @QueryParam("thumbWidth") Optional<Integer> thumbWidth,
+      @QueryParam("thumbHeight") Optional<Integer> thumbHeight
   ) throws java.io.IOException, MobileConfigException {
 
-    Applications bean = new Applications(this.appsList.getAppList(platform));
+    Applications apps = new Applications(appsList.getAppList(platform),
+                                         thumbMode,
+                                         thumbWidth,
+                                         thumbHeight);
 
-    Representation rep = MobileConfigApplication.REPRESENTATION_FACTORY.newRepresentation(
+    return MobileConfigApplication.REPRESENTATION_FACTORY.newRepresentation(
         this.createSelfUrl(platform)
-    ).withBean(bean);
-
-    return rep;
+    ).withBean(apps);
   }
 }
