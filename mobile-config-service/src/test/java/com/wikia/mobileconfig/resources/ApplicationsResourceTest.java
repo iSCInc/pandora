@@ -1,6 +1,6 @@
 package com.wikia.mobileconfig.resources;
 
-import com.wikia.mobileconfig.gateway.AppsDeployerList;
+import com.wikia.mobileconfig.gateway.AppsDeployerListContainer;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -28,8 +28,8 @@ import static org.mockito.Mockito.when;
 public class ApplicationsResourceTest {
   private static final HttpClient HTTP_CLIENT_MOCK = mock(HttpClient.class);
 
-  private static final AppsDeployerList
-      LIST_SERVICE = new AppsDeployerList(HTTP_CLIENT_MOCK, "test-domain");
+  private static final AppsDeployerListContainer
+      LIST_SERVICE = new AppsDeployerListContainer(HTTP_CLIENT_MOCK, "test-domain");
 
   @ClassRule
   public static final ResourceTestRule RESOURCES = ResourceTestRule.builder()

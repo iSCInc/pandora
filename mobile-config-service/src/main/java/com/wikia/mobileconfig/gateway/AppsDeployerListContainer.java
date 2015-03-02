@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 import io.dropwizard.client.HttpClientBuilder;
 import io.dropwizard.setup.Environment;
 
-public class AppsDeployerList implements AppsListService {
+public class AppsDeployerListContainer implements AppsListService {
 
   public static final int DEFAULT_CACHE_TIME_IN_SEC = 3600;
   private static final String APPS_DEPLOYER_HEALTH_CHECK_URL_FORMAT = "http://%s/api/";
@@ -37,14 +37,14 @@ public class AppsDeployerList implements AppsListService {
 
   private Date appsListUpdateTime = new Date();
 
-  public AppsDeployerList(HttpClient httpClient, String appsDeployerDomain) {
+  public AppsDeployerListContainer(HttpClient httpClient, String appsDeployerDomain) {
     this.httpClient = httpClient;
 
     this.appsDeployerDomain = appsDeployerDomain;
     this.cacheTimeInSec = DEFAULT_CACHE_TIME_IN_SEC;
   }
 
-  public AppsDeployerList(Environment environment, MobileConfigConfiguration configuration) {
+  public AppsDeployerListContainer(Environment environment, MobileConfigConfiguration configuration) {
     this.httpClient = new HttpClientBuilder(environment)
         .using(configuration.getHttpClientConfiguration())
         .build("apps-deployer-list-service");
