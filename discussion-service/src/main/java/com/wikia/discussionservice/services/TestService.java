@@ -4,27 +4,13 @@ import javax.inject.Inject;
 
 import lombok.NonNull;
 
-/**
- * Forum Service
- * Responsible for handling all actions around
- * the forum domain.
- */
-public class TestService {
+public class TestService extends ContentService {
 
-  @NonNull
-  private final JedisService jedisService;
-
-  @Inject
-  public TestService(JedisService jedisService) {
-    this.jedisService = jedisService;
+  public TestService() {
+    super();
   }
 
-  public String getValue(int siteId, int key) {
-    return jedisService.get(siteId, key);
+  public static String getType() {
+    return "test";
   }
-
-  public void createValue(int siteId, int key, String value) {
-    jedisService.set(siteId, key, value);
-  }
-
 }

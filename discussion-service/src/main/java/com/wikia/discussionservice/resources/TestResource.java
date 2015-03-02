@@ -41,14 +41,14 @@ public class TestResource {
   public String getValue(@NotNull @PathParam("siteId") IntParam siteId,
                                   @NotNull @PathParam("key") IntParam key) {
 
-    String value = testService.getValue(siteId.get(), key.get());
+    String value = testService.getRedisValue(siteId.get(), testService.getType(), key.get());
     return value;
   }
 
   @POST
   @Path("/{siteId}/test/{key}")
   @Timed
-  public String createForum(@NotNull @PathParam("siteId") IntParam siteId,
+  public String createTest(@NotNull @PathParam("siteId") IntParam siteId,
                             @NotNull @PathParam("key") IntParam key,
                                     @Context HttpServletRequest request) {
     String status;
@@ -60,7 +60,7 @@ public class TestResource {
                   request.getInputStream())), HashMap.class);
 
       String value = (String) result.getOrDefault("value", "default name");
-      testService.createValue(siteId.get(), key.get(), value);
+      testService.setRedisValue(siteId.get(), TestService.getType(), key.get(), value);
       status = "Success!";
 
     } catch (IOException e) {

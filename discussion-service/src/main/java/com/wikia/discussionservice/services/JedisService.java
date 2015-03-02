@@ -13,17 +13,17 @@ public class JedisService implements DataStore {
   private int port = 6379;
 
   @Override
-  public String get(int siteId, int forumId) {
-    return getInstance().get(getKey(siteId, forumId));
+  public String get(int siteId, String contentType, int contentId) {
+    return getInstance().get(getKey(siteId, contentType, contentId));
   }
 
   @Override
-  public void set(int siteId, int forumId, String value) {
-    getInstance().set(getKey(siteId, forumId), value);
+  public void set(int siteId, String contentType, int contentId, String value) {
+    getInstance().set(getKey(siteId, contentType, contentId), value);
   }
 
-  public String getKey(int siteId, int forumId) {
-    return siteId + ":forum:" + forumId;
+  public String getKey(int siteId, String contentType, int contentId) {
+    return siteId + ":" + contentType + ":" + contentId;
   }
 
   private Jedis getInstance() {

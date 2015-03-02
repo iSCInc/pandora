@@ -5,6 +5,6 @@ package com.wikia.discussionservice.mappers;
  */
 // TODO: Fix this!
 public interface DataStore {
-  public Object get(int siteId, int objectId);
-  public void set(int siteId, int objectId, String value);
+  public Object get(int siteId, String objectType, int objectId);
+  public void set(int siteId, String objectType, int objectId, String value);
 }

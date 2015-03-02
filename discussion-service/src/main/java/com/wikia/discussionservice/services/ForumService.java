@@ -7,26 +7,29 @@ import com.wikia.discussionservice.domain.ForumThread;
 import lombok.NonNull;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.IntStream;
 
 /**
  * Forum Service
  * Responsible for handling all actions around
  * the forum domain.
  */
-public class ForumService {
+public class ForumService extends ContentService {
 
   @NonNull
   private final ThreadService threadService;
 
   @NonNull
   private final ForumDAO forumDAO;
-  
+
+  public static String getType() {
+    return "forum";
+  }
+
   @Inject
   public ForumService(ThreadService threadService, ForumDAO forumDAO) {
+    super();
     this.threadService = threadService;
     this.forumDAO = forumDAO;
   }
@@ -52,6 +55,7 @@ public class ForumService {
   }
 
   public Optional<Forum> createForum(int siteId, int parentId, String forumName) {
+    // TODO: Use redis
     return forumDAO.createForum(siteId, parentId, forumName);
   }
 }

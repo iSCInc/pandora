@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.IntStream;
 
-public class ThreadService {
+public class ThreadService extends ContentService {
 
   private static Map<Integer, List<ForumThread>> FORUM_THREADS = new HashMap<>();
   
@@ -20,7 +20,12 @@ public class ThreadService {
 
   @Inject
   public ThreadService(PostService postService) {
+    super();
     this.postService = postService;
+  }
+
+  public static String getType() {
+    return "thread";
   }
 
   public List<ForumThread> createThreadList(int offset, int limit) {
