@@ -19,9 +19,10 @@ public class ForumTest {
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
   @Test(dataProvider = "fixtureAndExpectedParams")
-  public void serializesAnddeserializesFromJSON(String fixtureFile, int id, String forumName, List<Forum> children,
+  public void serializesAnddeserializesFromJSON(String fixtureFile, int id, int parentId, 
+                                                String forumName, List<Forum> children,
                                                 List<ForumThread> threads) throws Exception {
-    final Forum actualForum = new Forum(id, forumName, children, threads);
+    final Forum actualForum = new Forum(id, parentId, forumName, children, threads);
     final Forum fixtureForum = MAPPER.readValue(fixture(fixtureFile), Forum.class);
     
     // TestNG doesn't compare the JSON in a normalized format
@@ -35,8 +36,8 @@ public class ForumTest {
   public Object[][] fixtureAndExpectedParams() {
     List<Forum> children = new ArrayList<> (
         Arrays.asList(
-            new Forum(3, "child 1", new ArrayList<>(), new ArrayList<>()),
-            new Forum(4, "child 2", new ArrayList<>(), new ArrayList<>())
+            new Forum(3, 1, "child 1", new ArrayList<>(), new ArrayList<>()),
+            new Forum(4, 1, "child 2", new ArrayList<>(), new ArrayList<>())
         )
     );
 

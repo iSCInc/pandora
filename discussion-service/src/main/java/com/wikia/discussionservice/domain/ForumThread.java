@@ -18,10 +18,16 @@ public @Data class ForumThread {
   private int id;
   
   @JsonProperty
-  @NonNull
-  private String title;
+  private int forumId;
   
   @JsonProperty
+  @NonNull
+  private String title;
+
+  @JsonProperty
+  @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS,
+      include = JsonTypeInfo.As.PROPERTY,
+      property = "@class")
   @NonNull
   private List<Post> posts;
   
@@ -30,12 +36,6 @@ public @Data class ForumThread {
   private User threadStarter;
 
   @JsonProperty
-  @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS,
-      include = JsonTypeInfo.As.PROPERTY,
-      property = "@class")
-  @NonNull
   private Post lastPost;
-  
-
 
 }

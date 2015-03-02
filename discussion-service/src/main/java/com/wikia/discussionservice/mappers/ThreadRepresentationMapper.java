@@ -10,6 +10,13 @@ public interface ThreadRepresentationMapper {
 
   public Representation buildRepresentation(int siteId, ForumThread thread, UriInfo uriInfo);
 
+  public Representation buildRepresentation(int siteId, ForumThread thread, UriInfo uriInfo, 
+                                            int offset, int start);
+  
   public Representation buildRepresentation(int siteId, ForumThread thread, UriInfo uriInfo,
                                             ResponseGroup group);
+
+  public Representation buildRepresentation(int siteId, ForumThread thread, UriInfo uriInfo,
+                                            int offset, int start, ResponseGroup group);
+
 }

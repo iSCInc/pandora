@@ -38,8 +38,7 @@ public class HALPostRepresentationMapper implements PostRepresentationMapper {
     Representation representation =
         representationFactory.newRepresentation()
             .withLink("self", linkToSelf.getUri())
-            .withProperty("body", post.getBody())
-            .withBean(post.getPoster());
+            .withBean(post);
 
     return representation;
   }

@@ -20,13 +20,13 @@ public class HALForumRepresentationMapper implements ForumRepresentationMapper {
   final private RepresentationFactory representationFactory;
 
   @NonNull
-  final private ThreadRepresentationMapper threadRepresentationMapper;
+  final private ThreadRepresentationMapper threadMapper;
 
   @Inject
   public HALForumRepresentationMapper(RepresentationFactory representationFactory,
-                                      ThreadRepresentationMapper threadRepresentationMapper) {
+                                      ThreadRepresentationMapper threadMapper) {
     this.representationFactory = representationFactory;
-    this.threadRepresentationMapper = threadRepresentationMapper;
+    this.threadMapper = threadMapper;
   }
 
   @Override
@@ -79,7 +79,7 @@ public class HALForumRepresentationMapper implements ForumRepresentationMapper {
     }
 
     for (ForumThread thread : forum.getThreads()) {
-      representation.withRepresentation("thread", threadRepresentationMapper.buildRepresentation(
+      representation.withRepresentation("thread", threadMapper.buildRepresentation(
           siteId, thread, uriInfo));
     }
 

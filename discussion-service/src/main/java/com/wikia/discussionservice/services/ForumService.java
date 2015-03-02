@@ -42,6 +42,10 @@ public class ForumService extends ContentService {
     return Optional.of(forumRoot);
   }
 
+  public Optional<Forum> getForum(int siteId, int forumId) {
+    return getForum(siteId, forumId, 0, 10);
+  }
+  
   public Optional<Forum> getForum(int siteId, int forumId, int offset, int limit) {
     Optional<Forum> forum = forumDAO.retrieveForum(siteId, forumId);
     
@@ -54,8 +58,22 @@ public class ForumService extends ContentService {
     return forum;
   }
 
-  public Optional<Forum> createForum(int siteId, int parentId, String forumName) {
-    // TODO: Use redis
-    return forumDAO.createForum(siteId, parentId, forumName);
+  public Optional<Forum> createForum(int siteId, Forum forum) {
+    return forumDAO.createForum(siteId, forum);
+  }
+
+  public Optional<Forum> deleteForum(int siteId, int forumId) {
+    return forumDAO.deleteForum(siteId, forumId);
+  }
+
+  public Optional<Forum> updateForum(int siteId, Forum forum) {
+    Optional<Forum> updatedForum = forumDAO.updateForum(siteId, forum);
+    
+    if (updatedForum.isPresent()) {
+      return updatedForum;
+    }
+    
+    updatedForum = createForum(siteId, forum);
+    return updatedForum;
   }
 }

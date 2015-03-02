@@ -24,6 +24,9 @@ public @Data class Forum {
 
   @JsonProperty
   public int id;
+  
+  @JsonProperty
+  public int parentId;
 
   @JsonProperty
   @NonNull

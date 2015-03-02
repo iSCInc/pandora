@@ -1,5 +1,6 @@
 package com.wikia.discussionservice.services;
 
+import com.wikia.discussionservice.dao.ThreadDAO;
 import com.wikia.discussionservice.domain.Forum;
 import com.wikia.discussionservice.domain.ForumThread;
 import com.wikia.discussionservice.domain.Post;
@@ -18,9 +19,13 @@ public class ThreadService extends ContentService {
   @NonNull
   private final PostService postService;
 
+  @NonNull
+  private final ThreadDAO threadDAO;
+
   @Inject
   public ThreadService(PostService postService) {
     super();
+    this.threadDAO = threadDAO;
     this.postService = postService;
   }
 
@@ -28,54 +33,9 @@ public class ThreadService extends ContentService {
     return "thread";
   }
 
-  public List<ForumThread> createThreadList(int offset, int limit) {
-      List<ForumThread> threads = new ArrayList<>();
-
-      int start = offset == 1
-          ? 1
-          : (limit * offset) - (limit - 1);
-
-      IntStream.range(start, limit + 1).forEach(
-          i -> {
-            ForumThread thread = new ForumThread();
-
-            User user = new User();
-            user.setName(String.format("User%s", i));
-            user.setJoinDate(LocalDateTime.now());
-            user.setId(i);
-            
-            List<Post> posts = postService.createPosts();
-            
-            thread.setLastPost(posts.get(posts.size() - 1));
-            thread.setPosts(posts);
-            
-            thread.setId(i);
-            thread.setThreadStarter(user);
-            threads.add(thread);
-          }
-      );
-
-      return threads;
-    }
-
-  public Optional<ForumThread> getThread(int siteId, int threadId, int offset, int limit) {
-    ForumThread thread = new ForumThread();
-    thread.setId(threadId);
-
-    User user = new User();
-    user.setId(new Random().nextInt(100000));
-    user.setName(String.format("User%s", user.getId()));
-    user.setJoinDate(LocalDateTime.now());
-
-    List<Post> posts = postService.createPosts(offset, limit);
-
-    thread.setLastPost(posts.get(posts.size() - 1));
-    thread.setPosts(posts);
-
-    thread.setId(new Random().nextInt(100000));
-    thread.setThreadStarter(user);
-    
-    return Optional.of(thread);
+  public Optional<ForumThread> getForumThread(int siteId, int threadId, int offset, int limit) {
+    Optional<ForumThread> forumThread = threadDAO.getForumThread(siteId, threadId, offset, limit);
+    return forumThread;
   }
 
   public List<ForumThread> retrieveForumThreads(int siteId, int forumId, int offset, int limit) {
@@ -94,5 +54,10 @@ public class ThreadService extends ContentService {
     } catch(IndexOutOfBoundsException ioobe) {
       return forumThreads.subList(offset*limit, forumThreads.size()-1);
     }
+  }
+  
+  public Optional<ForumThread> createThread(int siteId, int forumId, Post post) {
+    Optional<ForumThread> createdForumThread = threadDAO.createThread(siteId, forumId, post);
+    return createdForumThread;
   }
 }
