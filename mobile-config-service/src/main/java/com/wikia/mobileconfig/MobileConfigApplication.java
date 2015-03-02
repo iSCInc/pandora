@@ -3,7 +3,7 @@ package com.wikia.mobileconfig;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
-import com.wikia.mobileconfig.gateway.AppsDeployerList;
+import com.wikia.mobileconfig.gateway.AppsDeployerListContainer;
 import com.wikia.mobileconfig.health.AppsDeployerHealthCheck;
 import com.wikia.mobileconfig.health.MobileConfigHealthCheck;
 import com.wikia.mobileconfig.resources.ApplicationsResource;
@@ -60,7 +60,7 @@ public class MobileConfigApplication extends Application<MobileConfigConfigurati
         environment,
         configuration
     );
-    AppsDeployerList listService = new AppsDeployerList(environment, configuration);
+    AppsDeployerListContainer listService = new AppsDeployerListContainer(environment, configuration);
 
     final MobileConfigHealthCheck healthCheck = new MobileConfigHealthCheck();
     environment.healthChecks().register("mobile-config", healthCheck);

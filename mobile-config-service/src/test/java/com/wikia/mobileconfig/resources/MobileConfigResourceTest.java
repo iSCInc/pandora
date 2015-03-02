@@ -3,7 +3,7 @@ package com.wikia.mobileconfig.resources;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wikia.mobileconfig.core.EmptyMobileConfiguration;
 import com.wikia.mobileconfig.core.MobileConfiguration;
-import com.wikia.mobileconfig.gateway.AppsDeployerList;
+import com.wikia.mobileconfig.gateway.AppsDeployerListContainer;
 import com.wikia.mobileconfig.service.HttpConfigurationService;
 
 import org.junit.ClassRule;
@@ -30,7 +30,7 @@ import static org.mockito.Mockito.when;
  */
 public class MobileConfigResourceTest {
 
-  private static final AppsDeployerList APPS_LIST_MOCK = mock(AppsDeployerList.class);
+  private static final AppsDeployerListContainer APPS_LIST_MOCK = mock(AppsDeployerListContainer.class);
   private static final HttpConfigurationService HTTP_SERVICE_MOCK = mock(
       HttpConfigurationService.class
   );
