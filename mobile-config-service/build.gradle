@@ -10,8 +10,8 @@ applicationDefaultJvmArgs = [
         "-Xms100m", "-Xmn128m", "-Xmx300m", "-XX:+UseNUMA", "-XX:+UseCondCardMark", "-XX:+UseBiasedLocking", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC"
 ]
 
-applicationDistribution.from("mobile-config.yml") {
-    rename 'mobile-config.yml', "${project.name}.yaml"
+applicationDistribution.from("${project.name}.yaml.sample") {
+    rename "${project.name}.yaml.sample", "${project.name}.yaml"
     into 'conf'
 }
 
@@ -29,6 +29,9 @@ deployments {
             cpus = 1
             mem = 400
             instances = 2
+        }
+        environment {
+            CONSUL_KEY_VALUE_CONFIG_SOURCE = "http://localhost:8500/config/mobile-config/prod"
         }
     }
 }
