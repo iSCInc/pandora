@@ -101,18 +101,9 @@ public class ThreadResource {
     Optional<Forum> forum = forumService.getForum(siteId.get(), forumId.get());
 
     if (!forum.isPresent()) {
-      // TODO: wrap this in an ErrorResponse builder
-      ErrorResponse error = new ErrorResponse();
-      // internal error code
-      error.setCode(1010101);
-      error.setStatus(Response.Status.NOT_FOUND.getStatusCode());
-      error.setMessage(
+      return ErrorResponseBuilder.buildErrorResponse(1234,  
           String.format("No forum found for site id: %s with forum id: %s", siteId.get(),
-              forumId.get()));
-
-      return Response.status(Response.Status.NOT_FOUND)
-          .entity(error)
-          .build();
+          forumId.get()), null, Response.Status.NOT_FOUND);
     }
 
     Optional<ForumThread> createdThread = threadService.createThread(siteId.get(),

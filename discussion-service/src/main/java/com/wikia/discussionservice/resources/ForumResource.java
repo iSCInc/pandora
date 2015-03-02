@@ -4,7 +4,6 @@ import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Preconditions;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
-import com.wikia.discussionservice.domain.ErrorResponse;
 import com.wikia.discussionservice.domain.Forum;
 import com.wikia.discussionservice.domain.ForumRoot;
 import com.wikia.discussionservice.enums.ResponseGroup;
@@ -46,9 +45,9 @@ public class ForumResource {
   @Path("/{siteId}/forums")
   @Timed
   public Response getForums(@NotNull @PathParam("siteId") IntParam siteId,
-                                  @QueryParam("responseGroup") @DefaultValue("small")
-                                  String requestedResponseGroup,
-                                  @Context UriInfo uriInfo) {
+                            @QueryParam("responseGroup") @DefaultValue("small")
+                            String requestedResponseGroup,
+                            @Context UriInfo uriInfo) {
 
     ResponseGroup responseGroup = ResponseGroup.getResponseGroup(requestedResponseGroup);
     Preconditions.checkNotNull(responseGroup, "Invalid response group");
@@ -56,14 +55,14 @@ public class ForumResource {
     Optional<ForumRoot> forumRoot = forumService.getForums(siteId.get());
 
     if (forumRoot.isPresent()) {
-      Representation representation = forumMapper.buildRepresentation(siteId.get(), 
+      Representation representation = forumMapper.buildRepresentation(siteId.get(),
           forumRoot.get(), uriInfo, responseGroup);
       return Response.ok(representation)
           .build();
     }
 
     return ErrorResponseBuilder.buildErrorResponse(10101, String.format(
-        "No forums site id: %s with forum id: %s", siteId.get()),
+            "No forums site id: %s with forum id: %s", siteId.get()),
         null, Response.Status.NOT_FOUND);
   }
 
@@ -71,23 +70,23 @@ public class ForumResource {
   @Path("/{siteId}/forums/{forumId}")
   @Timed
   public Response getForum(@NotNull @PathParam("siteId") IntParam siteId,
-                                 @NotNull @PathParam("forumId") IntParam forumId,
-                                 @QueryParam("limit") @DefaultValue("10") IntParam limit,
-                                 @QueryParam("offset") @DefaultValue("1") IntParam offset,
-                                 @QueryParam("responseGroup") @DefaultValue("small")
-                                 String requestedResponseGroup,
-                                 @Context UriInfo uriInfo) {
+                           @NotNull @PathParam("forumId") IntParam forumId,
+                           @QueryParam("limit") @DefaultValue("10") IntParam limit,
+                           @QueryParam("offset") @DefaultValue("1") IntParam offset,
+                           @QueryParam("responseGroup") @DefaultValue("small")
+                           String requestedResponseGroup,
+                           @Context UriInfo uriInfo) {
     Preconditions.checkArgument(forumId.get() >= 1,
         "Offset was %s but expected 1 or greater", forumId.get());
 
-    Optional<Forum> forum = forumService.getForum(siteId.get(), forumId.get(), 
+    Optional<Forum> forum = forumService.getForum(siteId.get(), forumId.get(),
         offset.get(), limit.get());
 
     if (forum.isPresent()) {
       ResponseGroup responseGroup = ResponseGroup.getResponseGroup(requestedResponseGroup);
       Preconditions.checkNotNull(responseGroup, "Invalid response group");
 
-      Representation representation = forumMapper.buildRepresentation(siteId.get(), 
+      Representation representation = forumMapper.buildRepresentation(siteId.get(),
           forum.get(), uriInfo, responseGroup);
       return Response.ok(representation)
           .build();
@@ -95,23 +94,23 @@ public class ForumResource {
 
     return ErrorResponseBuilder.buildErrorResponse(10101, String.format(
         "No forum found for site id: %s with forum id: %s", siteId.get(),
-          forumId.get()), null, Response.Status.NOT_FOUND);
+        forumId.get()), null, Response.Status.NOT_FOUND);
   }
 
   @POST
   @Path("/{siteId}/forums")
   @Timed
   public Response createForum(@NotNull @PathParam("siteId") IntParam siteId,
-                                    @Valid Forum forum,
-                                    @Context HttpServletRequest request,
-                                    @Context UriInfo uriInfo) {
+                              @Valid Forum forum,
+                              @Context HttpServletRequest request,
+                              @Context UriInfo uriInfo) {
     // TODO: perform validation
     Optional<Forum> createdForum = forumService.createForum(siteId.get(), forum);
 
     if (createdForum.isPresent()) {
-      Representation representation = 
+      Representation representation =
           forumMapper.buildRepresentation(siteId.get(), createdForum.get(), uriInfo);
-      
+
       return Response.created(
           URI.create(representation.getLinkByRel("self").getHref()))
           .build();
@@ -160,7 +159,7 @@ public class ForumResource {
       if (updatedForum.get().getId() == forum.getId()) {
         return Response.noContent().build();
       } else {
-        Representation representation = 
+        Representation representation =
             forumMapper.buildRepresentation(siteId.get(), updatedForum.get(), uriInfo);
         return Response.created(URI.create(representation.getLinkByRel("self").getHref()))
             .build();
@@ -168,7 +167,7 @@ public class ForumResource {
     }
 
     return ErrorResponseBuilder.buildErrorResponse(10101, String.format(
-        "Forum not found for site id: %s and forum id: %s", siteId.get(), 
+        "Forum not found for site id: %s and forum id: %s", siteId.get(),
         forum.getId()), null, Response.Status.NOT_FOUND);
   }
 }

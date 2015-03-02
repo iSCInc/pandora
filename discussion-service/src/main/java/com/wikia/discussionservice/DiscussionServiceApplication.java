@@ -17,7 +17,6 @@ public class DiscussionServiceApplication extends Application<DiscussionServiceC
     return "discussion-service"; // no uppercase letters
   }
 
-
   @Override
   public void initialize(Bootstrap<DiscussionServiceConfiguration> bootstrap) {
     GuiceBundle<DiscussionServiceConfiguration> guiceBundle =

@@ -16,3 +16,4 @@ pandora-example/example.yaml
 **/.gradle
 **/build
 rebel.xml
+discussion-service/discussionservice.yaml
