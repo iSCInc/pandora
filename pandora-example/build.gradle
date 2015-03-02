@@ -1,42 +1,23 @@
-apply from: rootProject.file('gradle/pandora_common_deps.gradle')
 apply plugin: 'application'
-version = "0.1.9"
-
-// deployment boilerplate
-buildscript {
-    repositories {
-        jcenter()
-        maven { url "${archivaUrl}/repository/internal" }
-    }
-    dependencies {
-        classpath 'se.transmode.gradle:gradle-docker:1.2'
-        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.0'
-        classpath 'com.wikia.gradle:marathon:0.4.16'
-    }
-}
+apply from: rootProject.file('gradle/pandora_common_deps.gradle')
 apply from: rootProject.file('gradle/marathon_deployment.gradle')
+
+version = "0.1.9-SNAPSHOT"
+
 dependencies {
     compile project(":pandora-core")
 }
-// end: deployment boilerplate
 
 mainClassName = "com.wikia.exampleservice.ExampleServiceApplication"
 
 // configure jvm parameters
-// PORT0 and PORT1 Are set through Marathon, see: https://mesosphere.github.io/marathon/docs/service-discovery-load-balancing.html
 applicationDefaultJvmArgs = [
-        '-Ddw.server.applicationConnectors[0].port=\$PORT0', '-Ddw.server.adminConnectors[0].port=\$PORT1',
         "-Xms100m", "-Xmn128m", "-Xmx300m", "-XX:+UseNUMA", "-XX:+UseCondCardMark", "-XX:+UseBiasedLocking", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC"
 ]
-tasks.deployToProd {
-    stage = 'test'
-    mem = 400
-    instances = 1
-}
 
 // copy example file as a configuration file to the application dist
 applicationDistribution.from("example.yaml.sample") {
-    rename 'example.yaml.sample', "${project.name}.yml"
+    rename 'example.yaml.sample', "${project.name}.yaml"
     into 'conf'
 }
 

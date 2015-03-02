@@ -1,3 +1,14 @@
+buildscript {
+    repositories {
+        jcenter()
+        mavenLocal()
+        maven { url "${archivaUrl}/repository/internal" }
+    }
+    dependencies {
+        classpath "com.wikia.gradle:marathon:0.5.2"
+    }
+}
+
 subprojects {
     repositories {
         jcenter()
@@ -6,7 +17,8 @@ subprojects {
     apply plugin: 'java'
     apply from: rootProject.file("gradle/cobertura.gradle")
     sourceCompatibility = 1.8
-    version = "0.1.0"
+    version = "0.1.1-SNAPSHOT"
+    group = "com.wikia"
 
     task unitTest(type: Test) {
         useJUnit {

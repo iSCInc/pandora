@@ -1,36 +1,18 @@
 apply plugin: 'application'
 
-buildscript {
-    repositories {
-        jcenter()
-        maven { url "${archivaUrl}/repository/internal" }
-    }
-    dependencies {
-        classpath 'se.transmode.gradle:gradle-docker:1.2'
-        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.0'
-        classpath 'com.wikia.gradle:marathon:0.4.16'
-    }
-}
-
-version = "0.1.17"
+version = "0.1.18-SNAPSHOT"
 mainClassName = "com.wikia.mobileconfig.MobileConfigApplication"
 
-apply from: rootProject.file('gradle/marathon_deployment.gradle')
 apply from: rootProject.file('gradle/pandora_common_deps.gradle')
+apply from: rootProject.file('gradle/marathon_deployment.gradle')
 
 applicationDefaultJvmArgs = [
-        '-Ddw.server.applicationConnectors[0].port=\$PORT0', '-Ddw.server.adminConnectors[0].port=\$PORT1',
         "-Xms100m", "-Xmn128m", "-Xmx300m", "-XX:+UseNUMA", "-XX:+UseCondCardMark", "-XX:+UseBiasedLocking", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC"
 ]
 
-applicationDistribution.from("mobile-config.yml.sample") {
-    rename 'mobile-config.yml.sample', "${project.name}.yml"
+applicationDistribution.from("mobile-config.yml") {
+    rename 'mobile-config.yml', "${project.name}.yaml"
     into 'conf'
-}
-
-tasks.deployToProd {
-    mem = 600
-    instances = 2
 }
 
 dependencies {
@@ -39,4 +21,14 @@ dependencies {
 
 run {
     args 'server', 'mobile-config.yml'
+}
+
+deployments {
+    production {
+        resources {
+            cpus = 1
+            mem = 400
+            instances = 2
+        }
+    }
 }
