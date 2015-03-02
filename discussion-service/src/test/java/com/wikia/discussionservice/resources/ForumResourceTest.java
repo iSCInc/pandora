@@ -67,7 +67,7 @@ public class ForumResourceTest {
     IntStream.range(start, limit+1).forEach(
         i -> {
           Forum forum = 
-              new Forum(i, String.format("Forum: %s", i), new ArrayList<>(), new ArrayList<>());
+              new Forum(i, 1, String.format("Forum: %s", i), new ArrayList<>(), new ArrayList<>());
           forumList.add(forum);
         }
     );

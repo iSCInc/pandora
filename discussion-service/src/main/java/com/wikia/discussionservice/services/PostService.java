@@ -34,13 +34,8 @@ public class PostService {
               "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui " +
               "officia deserunt mollit anim id est laborum");
           post.setDate(LocalDateTime.now().minus(Period.ofMonths(new Random().nextInt(24))));
-
-          User user = new User();
-          user.setId(new Random().nextInt(1000000));
-          user.setName(Instant.now().toString());
-
-          post.setPoster(user);
-
+          post.setPosterId(new Random().nextInt(1000000));
+          post.setThreadId(1);
           posts.add(post);
         }
     );
@@ -49,6 +44,9 @@ public class PostService {
   }
 
   public Optional<Post> getPost(int siteId, int postId) {
-    return Optional.empty();
+    List<Post> posts = createPosts();
+    Post post = posts.get(postId);
+    
+    return Optional.ofNullable(post);
   }
 }

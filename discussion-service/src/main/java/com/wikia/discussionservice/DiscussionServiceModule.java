@@ -8,6 +8,8 @@ import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 import com.wikia.discussionservice.mappers.*;
 import com.wikia.discussionservice.services.ForumService;
+import com.wikia.discussionservice.services.PostService;
+import com.wikia.discussionservice.services.ThreadService;
 
 import javax.inject.Named;
 
@@ -26,6 +28,20 @@ public class DiscussionServiceModule extends AbstractModule {
   public ForumService provideForumService() {
     Injector injector = Guice.createInjector(new DiscussionServiceModule());
     return injector.getInstance(ForumService.class);
+  }
+
+  @Provides
+  @Named("postService")
+  public PostService providePostService() {
+    Injector injector = Guice.createInjector(new DiscussionServiceModule());
+    return injector.getInstance(PostService.class);
+  }
+
+  @Provides
+  @Named("threadService")
+  public ThreadService provideThreadService() {
+    Injector injector = Guice.createInjector(new DiscussionServiceModule());
+    return injector.getInstance(ThreadService.class);
   }
 
 }

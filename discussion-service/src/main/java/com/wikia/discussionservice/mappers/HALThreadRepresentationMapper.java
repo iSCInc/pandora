@@ -28,14 +28,25 @@ public class HALThreadRepresentationMapper implements ThreadRepresentationMapper
   }
   
   public Representation buildRepresentation(int siteId, ForumThread thread, UriInfo uriInfo) {
-    return buildRepresentation(siteId, thread, uriInfo, ResponseGroup.SMALL);
+    return buildRepresentation(siteId, thread, uriInfo, 0, 10, ResponseGroup.SMALL);
   }
+
+  public Representation buildRepresentation(int siteId, ForumThread thread, UriInfo uriInfo, 
+                                            int offset, int limit) {
+    return buildRepresentation(siteId, thread, uriInfo, offset, limit, ResponseGroup.SMALL);
+  }
+
 
   public Representation buildRepresentation(int siteId, ForumThread thread, 
                                             UriInfo uriInfo, ResponseGroup responseGroup) {
-    
+    return buildRepresentation(siteId, thread, uriInfo, 1, 10, responseGroup);
+  }
+
+  public Representation buildRepresentation(int siteId, ForumThread thread,
+                                            UriInfo uriInfo, int offset, int limit, 
+                                            ResponseGroup responseGroup) {
     Link linkToSelf = new LinkBuilder().buildLink(uriInfo, "self", ThreadResource.class,
-        "getThread", siteId, thread.getId());
+        "getForumThread", siteId, thread.getId());
     
     Representation representation =
         representationFactory.newRepresentation()
