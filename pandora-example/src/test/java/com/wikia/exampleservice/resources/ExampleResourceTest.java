@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 public class ExampleResourceTest {
 
   @Test
-  public void testGetHelloWorld() throws Exception {
+  public void testGetHelloWorld() {
     RepresentationFactory representationFactory = new StandardRepresentationFactory();
     ExampleResource resource = new ExampleResource(representationFactory);
     resource.setGreetingsWord("Hi in Tests");
@@ -20,7 +20,7 @@ public class ExampleResourceTest {
   }
 
   @Test
-  public void testGetSimplePojo() throws Exception {
+  public void testGetSimplePojo() {
     RepresentationFactory representationFactory = new StandardRepresentationFactory();
     ExampleResource resource = new ExampleResource(representationFactory);
     Representation representation = resource.getSimplePojo(7, "John", true);

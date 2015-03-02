@@ -36,7 +36,7 @@ public class MediawikiGatewayIntegrationTest {
 
 
   @Test
-  public void testQueryBuilder() throws Exception {
+  public void testQueryBuilder() {
     WikiaChoose wikiaChoose = gateway.queryBuilder();
     MWApi mwApi = (MWApi) wikiaChoose;
 
@@ -45,28 +45,28 @@ public class MediawikiGatewayIntegrationTest {
   }
 
   @Test
-  public void testGetArticleByTitle() throws Exception {
+  public void testGetArticleByTitle() {
     ApiResponse apiResponse = gateway.getArticleByTitle(STARGATE, "Levannan musket");
     int pageId = apiResponse.getQuery().getFirstPage().getPageId();
     assertEquals(44966, pageId);
   }
 
   @Test
-  public void testGetArticleWithContentByTitle() throws Exception {
+  public void testGetArticleWithContentByTitle() {
     ApiResponse apiResponse = gateway.getArticleWithContentByTitle(STARGATE, "Neeva Casol");
     String content = apiResponse.getQuery().getFirstPage().getFirstRevision().getContent();
     assertNotNull(content);
   }
 
   @Test
-  public void testGetCategoryByName() throws Exception {
+  public void testGetCategoryByName() {
     ApiResponse apiResponse = gateway.getCategoryByName(STARGATE, "One-shot_Atlantis_characters");
     int ns = apiResponse.getQuery().getFirstPage().getNs();
     assertEquals(14, ns);
   }
 
   @Test
-  public void testGetArticlesFromWikia() throws Exception {
+  public void testGetArticlesFromWikia() {
     ApiResponse apiResponse = gateway.getArticlesFromWikia(STARGATE);
     int allPagesCount = apiResponse.getQuery().getAllPages().size();
     String apFrom = apiResponse.getQueryContinue().getAllpages().getApfrom();
@@ -75,7 +75,7 @@ public class MediawikiGatewayIntegrationTest {
   }
 
   @Test
-  public void testGetArticleCategories() throws Exception {
+  public void testGetArticleCategories() {
     ApiResponse apiResponse = gateway.getArticleCategories(STARGATE, "merlin");
     List<com.wikia.mwapi.domain.Category>
         categories =
@@ -99,7 +99,7 @@ public class MediawikiGatewayIntegrationTest {
   }
 
   @Test
-  public void testGetArticleImages() throws Exception {
+  public void testGetArticleImages() {
     ApiResponse apiResponse = gateway.getArticleImages(STARGATE, "merlin");
     List<Image> images = apiResponse.getQuery().getFirstPage().getImages();
 
@@ -118,14 +118,14 @@ public class MediawikiGatewayIntegrationTest {
   }
 
   @Test
-  public void testGetArticleRevisions() throws Exception {
+  public void testGetArticleRevisions() {
     ApiResponse apiResponse = gateway.getArticleRevisions(STARGATE, "Culling");
     int revisionCount = apiResponse.getQuery().getFirstPage().getRevisions().size();
     assertEquals(10, revisionCount);
   }
 
   @Test
-  public void testGetArticleContributors() throws Exception {
+  public void testGetArticleContributors() {
     ApiResponse apiResponse = gateway.getArticleContributors(STARGATE, "Culling");
     String warningMessage = apiResponse.getWarnings().getQuery().getMessage();
     //not supported at the moment. Needs Mediawiki 1.23. Currently 1.19
@@ -133,7 +133,7 @@ public class MediawikiGatewayIntegrationTest {
   }
 
   @Test
-  public void testGetCategoryArticles() throws Exception {
+  public void testGetCategoryArticles() {
     ApiResponse apiResponse = gateway.getCategoryArticles(STARGATE, "Scientists", 5, "");
     List<Page> categoryMembers = apiResponse.getQuery().getCategorymembers();
     String[] categoryMembersTitles = categoryMembers.stream()
@@ -151,7 +151,7 @@ public class MediawikiGatewayIntegrationTest {
   }
 
   @Test
-  public void testGetCategoriesFromWikia() throws Exception {
+  public void testGetCategoriesFromWikia() {
     ApiResponse apiResponse = gateway.getCategoriesFromWikia(STARGATE, 5, "");
     List<CategoryStat> categoryList = apiResponse.getQuery().getAllCategories();
     String[] categoryArray = categoryList.stream()
@@ -170,7 +170,7 @@ public class MediawikiGatewayIntegrationTest {
   }
 
   @Test
-  public void testGetRevisionById() throws Exception {
+  public void testGetRevisionById() {
     ApiResponse apiResponse = gateway.getRevisionById(STARGATE, 242260L);
     Revision revision = apiResponse.getQuery().getFirstPage().getFirstRevision();
     assertEquals("Colonelsam", revision.getUser());
@@ -180,7 +180,7 @@ public class MediawikiGatewayIntegrationTest {
   }
 
   @Test
-  public void testGetRevisionByIdWithContent() throws Exception {
+  public void testGetRevisionByIdWithContent() {
     ApiResponse apiResponse = gateway.getRevisionByIdWithContent(STARGATE, 273440L);
     String content = apiResponse.getQuery().getFirstPage().getFirstRevision().getContent();
     String expectedContent =

@@ -86,8 +86,7 @@ public class MobileConfigResource {
   private MobileConfiguration getConfiguration(String platform,
                                                String appTag,
                                                String uiLang,
-                                               String contentLang)
-  {
+                                               String contentLang) {
     MobileConfiguration configuration;
 
     try {

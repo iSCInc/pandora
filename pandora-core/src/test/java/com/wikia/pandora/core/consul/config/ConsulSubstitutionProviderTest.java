@@ -10,15 +10,18 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.Scanner;
+import java.util.Map;
 
 import io.dropwizard.configuration.ConfigurationSourceProvider;
 
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
 import static com.wikia.pandora.core.consul.config.ConsulSubstitutionProvider.convertStreamToString;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ConsulSubstitutionProviderTest {
+
   ConsulSubstitutionProvider provider;
   ConfigurationSourceProvider baseProvider;
 
@@ -31,7 +34,7 @@ public class ConsulSubstitutionProviderTest {
     baseProvider = mock(ConfigurationSourceProvider.class);
     provider = new ConsulSubstitutionProvider(baseProvider, substitutor);
 
-    HashMap<String, String> config = new HashMap<>();
+    Map<String, String> config = new HashMap<>();
     config.put("SOME_INT", "5");
     config.put("SOME_STR", "hello there");
     config.forEach((k, v) -> when(keyValueConfig.get(k)).thenReturn(v));
@@ -51,11 +54,12 @@ public class ConsulSubstitutionProviderTest {
 
   @Test
   public void testDefaultValue() throws IOException {
-    when(baseProvider.open(any())).thenReturn(getStreamForString("foo: ${consul:UNDEFINED_VALUE:42}"));
+    when(baseProvider.open(any()))
+        .thenReturn(getStreamForString("foo: ${consul:UNDEFINED_VALUE:42}"));
     assertEquals(convertStreamToString(provider.open("path")), "foo: 42");
   }
 
-  @Test(expected=RuntimeException.class)
+  @Test(expected = RuntimeException.class)
   public void testUndefinedNoDefaultValue() throws IOException {
     when(baseProvider.open(any())).thenReturn(getStreamForString("foo: ${consul:UNDEFINED_VALUE}"));
     convertStreamToString(provider.open("path"));
