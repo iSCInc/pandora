@@ -12,8 +12,11 @@ import redis.clients.jedis.JedisPoolConfig;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
+
+import java.lang.reflect.Method;
 
 @Path("/notification/{name}")
 @Produces(RepresentationFactory.HAL_JSON)
@@ -22,37 +25,26 @@ public class ExampleResource {
 
   private final RepresentationFactory representationFactory;
   private final ExampleConfiguration configuration;
-  private final String storageHost;
 
   public ExampleResource(RepresentationFactory representationFactory, ExampleConfiguration configuration) {
     this.representationFactory = representationFactory;
     this.configuration = configuration;
-    this.storageHost = configuration.getStorageHost();
   }
 
     @GET
     @Timed
-    public Notification show(@PathParam("name") String name) {
-        JedisPool jedisPool = new JedisPool(new JedisPoolConfig(), storageHost);
+    public Notification show(@QueryParam("name") String name, @Context Jedis jedis) {
         String jedisValue;
-        try (Jedis jedis = jedisPool.getResource()) {
-            jedisValue = jedis.get(name);
-        }
-        jedisPool.destroy();
 
-        return new Notification(jedisValue);
+        jedisValue = jedis.get(name);
+
+        return new Notification("jedisValue");
     }
 
     @POST
     @Timed
-    public Representation update(@PathParam("name") String name, @Valid Notification notification) {
-
-        JedisPool jedisPool = new JedisPool(new JedisPoolConfig(), storageHost);
-        try (Jedis jedis = jedisPool.getResource()) {
-            jedis.set(name, notification.getText());
-        }
-        jedisPool.destroy();
-
+    public Representation update(@QueryParam("name") String name, @Valid Notification notification, @Context Jedis jedis) {
+        jedis.set(name, notification.getText());
 
         Representation representation = representationFactory.newRepresentation();
         representation.withProperty("uri", UriBuilder.fromResource(ExampleResource.class)
@@ -60,18 +52,12 @@ public class ExampleResource {
         return representation;
     }
 
-
     @DELETE
     @Timed
-    public Representation delete(@PathParam("name") String name) {
+    public Representation delete(@QueryParam("name") String name, @Context Jedis jedis) {
         Representation representation = representationFactory.newRepresentation();
 
-
-        JedisPool jedisPool = new JedisPool(new JedisPoolConfig(), storageHost);
-        try (Jedis jedis = jedisPool.getResource()) {
-            jedis.del(name);
-        }
-        jedisPool.destroy();
+        jedis.del(name);
 
         representation.withProperty("status", "ok");
         return representation;

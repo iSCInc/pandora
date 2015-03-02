@@ -9,6 +9,9 @@ import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
+import com.bendb.dropwizard.redis.JedisBundle;
+import com.bendb.dropwizard.redis.JedisFactory;
+
 public class ExampleServiceApplication extends Application<ExampleConfiguration> {
 
   public static void main(String[] args) throws Exception {
@@ -17,18 +20,18 @@ public class ExampleServiceApplication extends Application<ExampleConfiguration>
 
   @Override
   public String getName() {
-    return "pandora-example"; // no uppercase letters
+    return "sirius-example"; // no uppercase letters
   }
 
 
   @Override
   public void initialize(Bootstrap<ExampleConfiguration> bootstrap) {
-//    bootstrap.addBundle(new ConsulBundle<ExampleConfiguration>() {
-//      @Override
-//      protected ConsulConfig narrowConfig(ExampleConfiguration config) {
-//        return config.getConsulConfig();
-//      }
-//    });
+    bootstrap.addBundle(new JedisBundle<ExampleConfiguration>() {
+        @Override
+        public JedisFactory getJedisFactory(ExampleConfiguration configuration) {
+            return configuration.getJedisFactory();
+        }
+    });
   }
 
   @Override
@@ -40,6 +43,7 @@ public class ExampleServiceApplication extends Application<ExampleConfiguration>
 
     StandardRepresentationFactory representationFactory = new StandardRepresentationFactory();
     ExampleResource exampleResource = new ExampleResource(representationFactory, configuration);
+    // environment.jersey().register(new JedisFactory(configuration));
     environment.jersey().register(exampleResource);
 
     //Optional
