@@ -46,9 +46,7 @@ server:
   - type: http
     port: 8081
 consulConfig:
-  tags:
-    - production
-    - auto_production
-  consulUri: http://localhost:8500
+  tags: ${consul:CONSUL_TAGS:[testing]}
+  consulUri: ${consul:CONSUL_URI:http://localhost:8500}
   heartbeatInterval: 2s
   heartbeatTTL: 5s
