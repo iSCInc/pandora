@@ -1,0 +1,20 @@
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) { from components.java }
+    }
+    repositories {
+        maven {
+            credentials {
+                username archivaUsername
+                password archivaPassword
+            }
+            if (version.endsWith('-SNAPSHOT')) {
+                url "${archivaUrl}/repository/snapshots/"
+            } else {
+                url "${archivaUrl}/repository/internal/"
+            }
+        }
+    }
+}
