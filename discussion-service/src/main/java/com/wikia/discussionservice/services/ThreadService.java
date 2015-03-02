@@ -23,7 +23,7 @@ public class ThreadService extends ContentService {
   private final ThreadDAO threadDAO;
 
   @Inject
-  public ThreadService(PostService postService) {
+  public ThreadService(PostService postService, ThreadDAO threadDAO) {
     super();
     this.threadDAO = threadDAO;
     this.postService = postService;
