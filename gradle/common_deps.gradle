@@ -9,5 +9,4 @@ dependencies {
 
     testCompile "junit:junit:$junitVersion"
     testCompile "org.mockito:mockito-core:$mockitoVersion"
-    testCompile project(':pandora-core')
 }
