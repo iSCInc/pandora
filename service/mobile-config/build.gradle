@@ -16,7 +16,7 @@ applicationDistribution.from("${project.name}.yaml.sample") {
 }
 
 dependencies {
-    compile project(":pandora-core")
+    compile project(":lib:service-core")
 }
 
 run {

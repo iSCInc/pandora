@@ -1,14 +1,12 @@
 rootProject.name = 'pandora'
 
-include 'pandora-core'
-include 'pandora-gateways'
-include 'mediawiki-fluent-api'
-
-include 'mobile-config-service'
-include 'pandora-service'
-include 'mercury-api'
-include 'nirvana-api'
-include 'pandora-example'
-include 'discussion-service'
-include 'consul-config'
+include 'lib:service-core'
+include 'lib:facade-gateway'
+include 'lib:mediawiki-fluent-api'
+include 'lib:nirvana-api'
+include 'lib:consul-config'
+include 'service:mobile-config'
+include 'service:facade'
+include 'service:example'
+//include 'discussion-service'
 

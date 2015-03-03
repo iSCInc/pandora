@@ -4,9 +4,9 @@ apply plugin: 'application'
 mainClassName = "com.wikia.pandora.examples.PandoraApplication"
 
 dependencies {
-    compile project(':pandora-core')
-    compile project(':mediawiki-fluent-api')
-    compile project(':pandora-gateways')
+    compile project(':lib:service-core')
+    compile project(':lib:mediawiki-fluent-api')
+    compile project(':lib:facade-gateway')
 
 }
 

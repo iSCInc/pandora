@@ -5,7 +5,7 @@ apply from: rootProject.file('gradle/marathon_deployment.gradle')
 version = "0.1.9-SNAPSHOT"
 
 dependencies {
-    compile project(":pandora-core")
+    compile project(":lib:service-core")
 }
 
 mainClassName = "com.wikia.exampleservice.ExampleServiceApplication"
