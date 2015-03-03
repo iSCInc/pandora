@@ -1,0 +1,37 @@
+apply plugin: 'application'
+
+version = "0.1.18-SNAPSHOT"
+mainClassName = "com.wikia.mobileconfig.MobileConfigApplication"
+
+apply from: rootProject.file('gradle/pandora_common_deps.gradle')
+apply from: rootProject.file('gradle/marathon_deployment.gradle')
+
+applicationDefaultJvmArgs = [
+        "-Xms100m", "-Xmn128m", "-Xmx300m", "-XX:+UseNUMA", "-XX:+UseCondCardMark", "-XX:+UseBiasedLocking", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC"
+]
+
+applicationDistribution.from("${project.name}.yaml.sample") {
+    rename "${project.name}.yaml.sample", "${project.name}.yaml"
+    into 'conf'
+}
+
+dependencies {
+    compile project(":lib:service-core")
+}
+
+run {
+    args 'server', 'mobile-config.yml'
+}
+
+deployments {
+    production {
+        resources {
+            cpus = 1
+            mem = 400
+            instances = 2
+        }
+        environment {
+            CONSUL_KEY_VALUE_CONFIG_SOURCE = "http://localhost:8500/config/mobile-config/prod"
+        }
+    }
+}

@@ -1,0 +1,10 @@
+apply from: rootProject.file('gradle/pandora_common_deps.gradle')
+apply from: rootProject.file('gradle/publish_artifacts.gradle')
+
+dependencies {
+    compile('com.orbitz.consul:consul-client:0.8') {
+        exclude group: 'org.apache.cxf'
+    }
+    compile 'net.alchim31:metrics-influxdb:0.6.0'
+    compile project(':lib:consul-config')
+}
