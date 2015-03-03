@@ -54,7 +54,7 @@ public class MobileConfigApplication extends Application<MobileConfigConfigurati
         environment,
         configuration
     );
-    AppsDeployerList listService = new AppsDeployerList(environment, configuration);
+    AppsDeployerListContainer listService = new AppsDeployerListContainer(environment, configuration);
 
     final MobileConfigHealthCheck healthCheck = new MobileConfigHealthCheck();
     environment.healthChecks().register("mobile-config", healthCheck);
