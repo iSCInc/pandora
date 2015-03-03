@@ -1,14 +1,15 @@
 package com.wikia.mobileconfig;
 
-import io.dropwizard.Configuration;
-import io.dropwizard.client.HttpClientConfiguration;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.wikia.pandora.core.consul.ConsulConfig;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.NotEmpty;
+
+import io.dropwizard.Configuration;
+import io.dropwizard.client.HttpClientConfiguration;
 
 public class MobileConfigConfiguration extends Configuration {
 
@@ -21,6 +22,10 @@ public class MobileConfigConfiguration extends Configuration {
   @NotNull
   private String appsDeployerDomain;
 
+  @JsonProperty
+  @NotNull
+  private Integer cacheTime;
+
   @NotEmpty
   @NotNull
   private String cephDomain;
@@ -30,13 +35,11 @@ public class MobileConfigConfiguration extends Configuration {
   private String cephPort;
 
   @Valid
-  @NotNull
   @JsonProperty
   private ConsulConfig consulConfig;
 
   public MobileConfigConfiguration() {
     httpClient = new HttpClientConfiguration();
-    consulConfig = new ConsulConfig();
   }
 
   public HttpClientConfiguration getHttpClientConfiguration() {
@@ -45,6 +48,10 @@ public class MobileConfigConfiguration extends Configuration {
 
   public String getAppsDeployerDomain() {
     return appsDeployerDomain;
+  }
+
+  public Integer getCacheTime() {
+    return cacheTime;
   }
 
   public String getCephDomain() {
@@ -57,5 +64,9 @@ public class MobileConfigConfiguration extends Configuration {
 
   public ConsulConfig getConsulConfig() {
     return consulConfig;
+  }
+
+  public void setConsulConfig(ConsulConfig consulConfig) {
+    this.consulConfig = consulConfig;
   }
 }

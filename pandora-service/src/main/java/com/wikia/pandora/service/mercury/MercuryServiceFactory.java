@@ -6,8 +6,8 @@ import com.wikia.pandora.api.service.CategoryService;
 import com.wikia.pandora.api.service.CommentService;
 import com.wikia.pandora.api.service.RevisionService;
 import com.wikia.pandora.core.impl.configuration.PandoraConfiguration;
-import com.wikia.pandora.service.ServiceFactory;
 import com.wikia.pandora.gateway.mercury.MercuryGateway;
+import com.wikia.pandora.service.ServiceFactory;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.http.HttpHost;

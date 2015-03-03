@@ -3,9 +3,9 @@ package com.wikia.mwapi.decorator.query;
 import com.wikia.mwapi.decorator.MWApiBase;
 import com.wikia.mwapi.decorator.MWApiDecorator;
 import com.wikia.mwapi.decorator.query.list.MWApiAllCategories;
+import com.wikia.mwapi.decorator.query.list.MWApiCategoryMembers;
 import com.wikia.mwapi.decorator.query.property.MWApiCategories;
 import com.wikia.mwapi.decorator.query.property.MWApiCategoryInfo;
-import com.wikia.mwapi.decorator.query.list.MWApiCategoryMembers;
 import com.wikia.mwapi.decorator.query.property.MWApiContributors;
 import com.wikia.mwapi.decorator.query.property.MWApiCoordinates;
 import com.wikia.mwapi.decorator.query.property.MWApiDeletedRevisions;
@@ -68,8 +68,6 @@ import com.wikia.mwapi.fluent.query.TemplatesOption;
 import com.wikia.mwapi.fluent.query.TranscludedInOption;
 import com.wikia.mwapi.fluent.query.TranscodeStatusOption;
 import com.wikia.mwapi.fluent.query.VideoInfoOption;
-
-import org.apache.commons.lang3.NotImplementedException;
 
 public abstract class MWApiQueryBase extends MWApiDecorator
     implements TitlesOrListChoose, QueryOption {

@@ -1,37 +1,64 @@
-apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'application'
-apply plugin: 'docker'
 apply plugin: 'com.wikia.gradle.marathon'
-
-docker {
-    baseImage = "${dockerRegistryHost}/wikia/java8"
-    maintainer = "Services & API"
-}
-
-def dockerTargetImage = "${dockerRegistryHost}/services/${project.name}"
-//TODO: this should go through helper because otherwise it can be easily overriden
-applicationDefaultJvmArgs = ['-Ddw.server.applicationConnectors[0].port=\$PORT0', '-Ddw.server.adminConnectors[0].port=\$PORT1']
+apply plugin: 'maven-publish'
 
 startScripts {
+    doFirst {
+        applicationDefaultJvmArgs.add('-Ddw.server.applicationConnectors[0].port=\$PORT0')
+        applicationDefaultJvmArgs.add('-Ddw.server.adminConnectors[0].port=\$PORT1')
+    }
     doLast {
         unixScript.text = unixScript.text.replace('port=\\\$', 'port=\$')
     }
 }
 
-task deployToProd(type: Marathon, dependsOn: 'distDocker') {
-    dockerImage = "${dockerTargetImage}:${version}"
-    mem = 400
-    cpus = 1
-    args = ["server", "/${project.name}-${version}/conf/${project.name}.yml"]
-    instances = 3
-    ports = [0, 0]
-    stage = 'prod'
-    volumes = [
-            [path: "/dev/log", mode: 'RW']
-    ]
+artifacts {
+    distZip
+}
+def archivaArtifactRepositoryUrl = "${archivaUrl}/repository/internal"
+
+publishing {
+    publications {
+        applicationZip(MavenPublication) {
+            artifact distZip
+        }
+    }
+    repositories {
+        maven {
+            credentials {
+                username archivaUsername
+                password archivaPassword
+            }
+            url archivaArtifactRepositoryUrl
+        }
+    }
 }
 
-tasks.distDocker {
-    push = true
-    tag = dockerTargetImage
+deployments {
+    globalDefaults {
+        app {
+            dropwizardApplication()
+            mavenSource(
+                    archivaArtifactRepositoryUrl,
+                    "publishApplicationZipPublicationToMavenRepository"
+            )
+        }
+        healthchecks {
+            healthcheck {
+                portIndex = 1
+                path = "/healthcheck"
+            }
+        }
+        marathon {
+            url = "http://mesos-s1.wikia-prod:8080"
+        }
+        resources {
+            cpus = 0.1
+            mem = 200
+            instances = 1
+            useRandomPorts(2)
+        }
+    }
+    testing {
+    }
 }

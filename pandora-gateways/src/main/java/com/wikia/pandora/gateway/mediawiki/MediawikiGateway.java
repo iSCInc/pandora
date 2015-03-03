@@ -1,18 +1,14 @@
 package com.wikia.pandora.gateway.mediawiki;
 
-import com.google.common.collect.Lists;
-
-import com.wikia.mwapi.domain.ApiResponse;
 import com.wikia.mwapi.MWApi;
+import com.wikia.mwapi.domain.ApiResponse;
 import com.wikia.mwapi.enumtypes.query.properties.RVPropEnum;
 import com.wikia.mwapi.fluent.WikiaChoose;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.apache.http.client.HttpClient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class MediawikiGateway {
@@ -144,10 +140,10 @@ public class MediawikiGateway {
   }
 
   private ApiResponse getRevision(String wikia, Long revId, boolean withContent) {
-    List<RVPropEnum> rvPropEnumList = Arrays.asList(RVPropEnum.USER,
-                                                    RVPropEnum.IDS,
-                                                    RVPropEnum.COMMENT,
-                                                    RVPropEnum.TIMESTAMP);
+    List<RVPropEnum> rvPropEnumList = new ArrayList<>(Arrays.asList(RVPropEnum.USER,
+                                                                    RVPropEnum.IDS,
+                                                                    RVPropEnum.COMMENT,
+                                                                    RVPropEnum.TIMESTAMP));
     if (withContent) {
       rvPropEnumList.add(RVPropEnum.CONTENT);
     }
@@ -158,7 +154,7 @@ public class MediawikiGateway {
         .revIds(revId)
         .info()
         .revisions()
-        .rvprop((RVPropEnum[]) rvPropEnumList.toArray())
+        .rvprop(rvPropEnumList.toArray(new RVPropEnum[rvPropEnumList.size()]))
         .get();
 
     return apiResponse;

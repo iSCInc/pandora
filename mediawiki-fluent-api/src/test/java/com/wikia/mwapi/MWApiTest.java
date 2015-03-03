@@ -8,19 +8,18 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
-
-import io.dropwizard.testing.FixtureHelpers;
-
-import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-import static org.junit.Assert.*;
+import io.dropwizard.testing.FixtureHelpers;
+
+import static org.junit.Assert.assertEquals;
 
 public class MWApiTest {
 

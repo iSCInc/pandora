@@ -9,9 +9,12 @@ import java.util.Map;
 
 public abstract class ConfigurationServiceBase implements ConfigurationService {
 
-  private final static String CONFIGURATIONS_URL_FORMAT = "/configurations/platform/%s/app/%s";
+  private final static String CONFIGURATIONS_URL_FORMAT = "/configurations/%s/apps/%s";
 
   protected final static String CONFIGURATION_NOT_FOUND_DEBUG_MESSAGE_FORMAT =
+      "Configuration for %s not found: falling back to empty modules configuration";
+
+  protected final static String CONFIGURATION_FOR_APP_TAG_NOT_FOUND_DEBUG_MESSAGE_FORMAT =
       "Configuration for %s not found: falling back to default configuration for %s";
 
   @Override
@@ -23,7 +26,7 @@ public abstract class ConfigurationServiceBase implements ConfigurationService {
 
     String translation = Translator.getInstance().translate(langCode, key);
 
-    Map<String, String> result = new HashMap<String, String>();
+    Map<String, String> result = new HashMap<>();
     result.put(key, translation);
     return result;
   }

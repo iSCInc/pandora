@@ -2,9 +2,9 @@ package com.wikia.exampleservice.configuration;
 
 import com.wikia.pandora.core.consul.ConsulConfig;
 
-import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotNull;
 
 import io.dropwizard.Configuration;
 

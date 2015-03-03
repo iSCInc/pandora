@@ -1,7 +1,5 @@
 package com.wikia.mwapi.util;
 
-import com.wikia.mwapi.enumtypes.query.properties.CMPropEnum;
-
 import org.apache.http.client.utils.URIBuilder;
 import org.joda.time.DateTime;
 

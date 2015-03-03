@@ -9,13 +9,12 @@ import com.wikia.pandora.api.service.CommentService;
 import com.wikia.pandora.api.service.RevisionService;
 import com.wikia.pandora.core.impl.configuration.PandoraConfiguration;
 import com.wikia.pandora.examples.health.PandoraHealthCheck;
-import com.wikia.pandora.resources.HalArticleResource;
 import com.wikia.pandora.resources.HALCategoryResource;
+import com.wikia.pandora.resources.HalArticleResource;
 import com.wikia.pandora.resources.HalCommentResource;
 import com.wikia.pandora.resources.HalRevisionResource;
 import com.wikia.pandora.service.ServiceFactory;
 import com.wikia.pandora.service.mediawiki.MediawikiServiceFactory;
-import com.wikia.pandora.service.mercury.MercuryServiceFactory;
 
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;

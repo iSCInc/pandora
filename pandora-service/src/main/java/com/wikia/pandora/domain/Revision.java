@@ -15,7 +15,7 @@ public class Revision {
   private final int lastRevId;
 
 
-  private String content;
+  private final String content;
 
   public Revision(int revId, int parentId, String user, Date timestamp, String comment,
                   String title, long pageId, int lastRevId, String content) {

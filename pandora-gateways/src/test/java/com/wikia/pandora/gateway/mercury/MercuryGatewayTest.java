@@ -1,14 +1,10 @@
 package com.wikia.pandora.gateway.mercury;
 
 
-
-
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.junit.Test;
-
-import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -17,6 +13,9 @@ import java.util.Map;
 import io.dropwizard.testing.FixtureHelpers;
 
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class MercuryGatewayTest {
 
@@ -38,7 +37,7 @@ public class MercuryGatewayTest {
     MercuryGateway mercuryGateway = new MercuryGateway(httpClient);
 
     when(httpClient.execute(any(HttpGet.class), any(ResponseHandler.class))).thenReturn(
-        FixtureHelpers.fixture("fixtures/mercury-gateway/kermit-the-frog.json").toString()
+        FixtureHelpers.fixture("fixtures/mercury-gateway/kermit-the-frog.json")
     );
 
     Map<String,Object> article = mercuryGateway.getArticle(wikia, title);

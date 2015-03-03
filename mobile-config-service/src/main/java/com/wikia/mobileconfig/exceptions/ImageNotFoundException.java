@@ -5,7 +5,7 @@ import com.wikia.mobileconfig.core.Problem;
 import javax.ws.rs.core.Response;
 
 public class ImageNotFoundException extends MobileConfigException {
-  static String EXCEPTION_MESSAGE_FORMAT = "Image with the given name %s could not be found";
+  static final String EXCEPTION_MESSAGE_FORMAT = "Image with the given name %s could not be found";
 
   public ImageNotFoundException(String filename) {
     super(

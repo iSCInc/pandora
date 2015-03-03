@@ -4,13 +4,13 @@ import com.codahale.metrics.annotation.Timed;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.wikia.pandora.api.service.ArticleService;
+import com.wikia.pandora.core.util.RepresentationHelper;
 import com.wikia.pandora.domain.Article;
 import com.wikia.pandora.domain.Category;
 import com.wikia.pandora.domain.Comment;
 import com.wikia.pandora.domain.Media;
 import com.wikia.pandora.domain.Revision;
 import com.wikia.pandora.domain.User;
-import com.wikia.pandora.core.util.RepresentationHelper;
 
 import java.net.URI;
 import java.util.List;

@@ -1,9 +1,9 @@
 package com.wikia.mobileconfig.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wikia.mobileconfig.core.MobileConfiguration;
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.core.EmptyMobileConfiguration;
+import com.wikia.mobileconfig.core.MobileConfiguration;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,8 +16,8 @@ public class FileConfigurationService extends ConfigurationServiceBase {
   private final static String CONFIGURATION_DEFAULT_PATH_FORMAT = "%s/%s:default.json";
   private final static String CONFIGURATION_PATH_FORMAT = "%s/%s:%s.json";
 
-  private String root;
-  private ObjectMapper mapper;
+  private final String root;
+  private final ObjectMapper mapper;
 
   public FileConfigurationService(String root) {
     this.root = root;
@@ -32,26 +32,32 @@ public class FileConfigurationService extends ConfigurationServiceBase {
           MobileConfiguration.class
       );
     } catch (IOException e) {
+      MobileConfigApplication.LOGGER.info(
+          String.format(CONFIGURATION_NOT_FOUND_DEBUG_MESSAGE_FORMAT, platform), e
+      );
       return new EmptyMobileConfiguration();
     }
   }
 
   @Override
   public MobileConfiguration getConfiguration(String platform, String appTag, String uiLang, String contentLang) throws IOException {
+    MobileConfiguration configuration;
+
     try {
-      MobileConfiguration configuration = this.mapper.readValue(
+      configuration = this.mapper.readValue(
           new File(this.createFilePath(platform, appTag)),
           MobileConfiguration.class
       );
-
-      return configuration;
     } catch (IOException e) {
-      MobileConfigApplication.logger.info(
-          String.format(CONFIGURATION_NOT_FOUND_DEBUG_MESSAGE_FORMAT, appTag, platform)
+      MobileConfigApplication.LOGGER.info(
+          String.format(CONFIGURATION_FOR_APP_TAG_NOT_FOUND_DEBUG_MESSAGE_FORMAT, appTag, platform),
+          e
       );
 
-      return getDefault(platform);
+      configuration = getDefault(platform);
     }
+
+    return configuration;
   }
 
   private String createDefaultFilePath(String platform) {

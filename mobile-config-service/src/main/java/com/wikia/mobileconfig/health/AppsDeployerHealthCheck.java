@@ -1,13 +1,12 @@
 package com.wikia.mobileconfig.health;
 
 import com.codahale.metrics.health.HealthCheck;
-
 import com.wikia.mobileconfig.gateway.AppsListService;
 
 public class AppsDeployerHealthCheck extends HealthCheck {
 
   private final AppsListService service;
-  private static String CONNECTION_ERROR_MSG = "Cannot connect to apps-deployer-panel";
+  private final static String CONNECTION_ERROR_MSG = "Cannot connect to apps-deployer-panel";
 
   public AppsDeployerHealthCheck(AppsListService service) {
     this.service = service;

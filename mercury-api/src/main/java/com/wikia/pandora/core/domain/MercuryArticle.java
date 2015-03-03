@@ -1,8 +1,8 @@
 package com.wikia.pandora.core.domain;
 
 import com.wikia.pandora.domain.Category;
-import com.wikia.pandora.domain.User;
 import com.wikia.pandora.domain.Media;
+import com.wikia.pandora.domain.User;
 
 import java.util.List;
 import java.util.Map;

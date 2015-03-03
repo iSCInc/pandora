@@ -2,9 +2,11 @@ package com.wikia.mobileconfig.integration;
 
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.MobileConfigConfiguration;
+import com.wikia.pandora.core.test.IntegrationTest;
 
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -14,10 +16,11 @@ import io.dropwizard.testing.junit.DropwizardAppRule;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
+@Category(IntegrationTest.class)
 public class ConfigIntegrationTest {
   @ClassRule
   public static final DropwizardAppRule<MobileConfigConfiguration>
-      RULE = new DropwizardAppRule<MobileConfigConfiguration>(
+      RULE = new DropwizardAppRule<>(
         MobileConfigApplication.class,
         "mobile-config.yml"
       );
@@ -27,7 +30,7 @@ public class ConfigIntegrationTest {
     Client client = ClientBuilder.newClient();
 
     Response response = client.target(
-        String.format("http://localhost:%d/configurations/platform/test-platform/app/test-app?ui-lang=en-us&content-lang=en-us", RULE.getLocalPort()))
+        String.format("http://localhost:%d/configurations/test-platform/apps/test-app?ui-lang=en-us&content-lang=en-us", RULE.getLocalPort()))
         .request()
         .get();
 
@@ -40,7 +43,7 @@ public class ConfigIntegrationTest {
 
     Response response = client.target(
         String.format(
-            "http://localhost:%d/configurations/platform/android/app/witcher?ui-lang=en-us&content-lang=en-us",
+            "http://localhost:%d/configurations/android/apps/witcher?ui-lang=en-us&content-lang=en-us",
             RULE.getLocalPort()))
         .request()
         .get();
@@ -54,7 +57,7 @@ public class ConfigIntegrationTest {
 
     Response response = client.target(
         String.format(
-            "http://localhost:%d/configurations/platform/android/app/witcher?ui-lang=xx-xx&content-lang=xx-xx",
+            "http://localhost:%d/configurations/android/apps/witcher?ui-lang=xx-xx&content-lang=xx-xx",
             RULE.getLocalPort()))
         .request()
         .get();

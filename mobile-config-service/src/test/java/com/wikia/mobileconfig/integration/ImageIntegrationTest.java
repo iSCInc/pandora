@@ -2,22 +2,25 @@ package com.wikia.mobileconfig.integration;
 
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.MobileConfigConfiguration;
+import com.wikia.pandora.core.test.IntegrationTest;
 
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Response;
 
 import io.dropwizard.testing.junit.DropwizardAppRule;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
+@Category(IntegrationTest.class)
 public class ImageIntegrationTest {
   @ClassRule
   public static final DropwizardAppRule<MobileConfigConfiguration>
-      RULE = new DropwizardAppRule<MobileConfigConfiguration>(
+      RULE = new DropwizardAppRule<>(
         MobileConfigApplication.class,
         "mobile-config.yml"
       );
