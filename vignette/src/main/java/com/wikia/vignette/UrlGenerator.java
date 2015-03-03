@@ -2,17 +2,18 @@ package com.wikia.vignette;
 
 import com.google.common.base.Optional;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.message.BasicNameValuePair;
+import org.slf4j.LoggerFactory;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.message.BasicNameValuePair;
-import org.slf4j.LoggerFactory;
 
 
 public class UrlGenerator {
@@ -131,6 +132,9 @@ public class UrlGenerator {
     }
 
     if (!queryParams.isEmpty()) {
+      Collections.sort(
+          queryParams,
+          (NameValuePair nvp1, NameValuePair nvp2) -> nvp1.getName().compareTo(nvp2.getName()));
       uriBuilder.addParameters(queryParams);
     }
 
@@ -182,24 +186,24 @@ public class UrlGenerator {
     }
 
     public Builder format(String format) {
-      this.queryParams.add(new BasicNameValuePair("format", format));
+      queryParams.add(new BasicNameValuePair("format", format));
       return this;
     }
 
     public Builder pathPrefix(String pathPrefix) {
-      this.queryParams.add(new BasicNameValuePair("path-prefix", pathPrefix));
+      queryParams.add(new BasicNameValuePair("path-prefix", pathPrefix));
       return this;
     }
 
     public Builder replace(Boolean replace) {
       if (replace) {
-        this.queryParams.add(new BasicNameValuePair("replace", "true"));
+        queryParams.add(new BasicNameValuePair("replace", "true"));
       }
       return this;
     }
 
     public Builder fill(String fill) {
-      this.queryParams.add(new BasicNameValuePair("fill", fill));
+      queryParams.add(new BasicNameValuePair("fill", fill));
       return this;
     }
 
