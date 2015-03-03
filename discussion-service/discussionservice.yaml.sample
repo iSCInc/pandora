@@ -1,4 +1,3 @@
-greetingsWord: Take me to your leader
 logging:
   level: INFO
   appenders:
