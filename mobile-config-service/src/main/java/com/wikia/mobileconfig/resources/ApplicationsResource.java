@@ -46,13 +46,12 @@ public class ApplicationsResource {
       @QueryParam("thumbHeight") Optional<Integer> thumbHeight
   ) throws java.io.IOException, MobileConfigException {
 
-    Applications apps = new Applications(appsList.getAppList(platform),
-                                         thumbMode,
-                                         thumbWidth,
-                                         thumbHeight);
+    Applications bean = new Applications(this.appsList.getAppList(platform));
 
-    return MobileConfigApplication.REPRESENTATION_FACTORY.newRepresentation(
+    Representation rep = MobileConfigApplication.REPRESENTATION_FACTORY.newRepresentation(
         this.createSelfUrl(platform)
-    ).withBean(apps);
+    ).withBean(bean);
+
+    return rep;
   }
 }

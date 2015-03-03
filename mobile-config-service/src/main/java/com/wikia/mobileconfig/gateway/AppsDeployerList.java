@@ -28,7 +28,7 @@ public class AppsDeployerList implements AppsListService {
   private static final String APPS_DEPLOYER_LIST_URL_FORMAT = "http://%s/api/app-configuration/";
 
   //How long to cache the result. Set to 0 to disable caching.
-  private static final int CACHE_RESULT_SEC = 0;
+  private static final int CACHE_RESULT_SEC = 3600;
 
   private static String appsDeployerDomain;
 
@@ -61,9 +61,8 @@ public class AppsDeployerList implements AppsListService {
     ObjectMapper mapper = new ObjectMapper();
 
     if (response.isPresent()) {
-      return mapper.readValue(
-          response.get(),
-          new TypeReference<List<HashMap<String, Object>>>() {});
+      return mapper.readValue(response.get(), new TypeReference<List<HashMap<String, Object>>>() {
+      });
     } else {
       throw new IllegalStateException(
           String.format(APPS_LIST_RESPONSE_ERROR_FORMAT, appsDeployerUrl)
