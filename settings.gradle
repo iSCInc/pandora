@@ -3,7 +3,6 @@ rootProject.name = 'pandora'
 include 'lib:service-core'
 include 'lib:facade-gateway'
 include 'lib:mediawiki-fluent-api'
-include 'lib:mercury-api'
 include 'lib:nirvana-api'
 include 'lib:consul-config'
 

@@ -9,7 +9,7 @@ The API provides modules configuration for mobile applications created in Wikia.
 To run the server:
 
 ```bash
-cp mobile-config.yml.sample mobile-config.yml
+cp mobile-config-service.yaml.sample mobile-config.yml
 # launch the server
 ../gradlew run
 ```
