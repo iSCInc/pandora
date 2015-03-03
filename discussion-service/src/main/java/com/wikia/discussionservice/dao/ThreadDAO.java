@@ -3,6 +3,7 @@ package com.wikia.discussionservice.dao;
 import com.wikia.discussionservice.domain.ForumThread;
 import com.wikia.discussionservice.domain.Post;
 import com.wikia.discussionservice.domain.User;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.util.*;
 
@@ -17,6 +18,7 @@ public class ThreadDAO {
   private static int THREAD_SEQUENCE = 0;
 
 
+  @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
   public Optional<ForumThread> createThread(int siteId, int forumId, Post post) {
     int threadId = THREAD_SEQUENCE++;
     

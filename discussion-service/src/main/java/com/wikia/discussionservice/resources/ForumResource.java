@@ -62,7 +62,7 @@ public class ForumResource {
     }
 
     return ErrorResponseBuilder.buildErrorResponse(10101, String.format(
-            "No forums site id: %s with forum id: %s", siteId.get()),
+            "No forums site id: %s", siteId.get()),
         null, Response.Status.NOT_FOUND);
   }
 

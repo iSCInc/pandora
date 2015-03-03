@@ -33,11 +33,6 @@ applicationDefaultJvmArgs = [
         '-Ddw.server.applicationConnectors[0].port=\$PORT0', '-Ddw.server.adminConnectors[0].port=\$PORT1',
         "-Xms100m", "-Xmn128m", "-Xmx300m", "-XX:+UseNUMA", "-XX:+UseCondCardMark", "-XX:+UseBiasedLocking", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC"
 ]
-tasks.deployToProd {
-    stage = 'test'
-    mem = 400
-    instances = 1
-}
 
 task testng(type: Test) {
     useTestNG()

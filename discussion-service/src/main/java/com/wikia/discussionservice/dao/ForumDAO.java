@@ -2,6 +2,7 @@ package com.wikia.discussionservice.dao;
 
 import com.google.common.base.Preconditions;
 import com.wikia.discussionservice.domain.Forum;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.util.*;
 import java.util.stream.IntStream;
@@ -49,6 +50,7 @@ public class ForumDAO {
     return forumList;
   }
 
+  @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
   public Optional<Forum> createForum(int siteId, Forum forum) {
     Optional<Forum> parentForum = retrieveForum(siteId, forum.getParentId());
     

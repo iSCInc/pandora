@@ -44,7 +44,6 @@ public class ForumResourceTest {
       .build();
 
   private ForumRoot firstOffsetForumRoot;
-  private ForumRoot secondOffsetForumRoot;
 
   @Before
   public void setup() {
