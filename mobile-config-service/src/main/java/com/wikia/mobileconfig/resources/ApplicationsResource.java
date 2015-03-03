@@ -1,7 +1,5 @@
 package com.wikia.mobileconfig.resources;
 
-import com.google.common.base.Optional;
-
 import com.codahale.metrics.annotation.Timed;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
@@ -14,7 +12,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 
 @Path("/applications/platform/{platform}/")
 @Produces(RepresentationFactory.HAL_JSON)
