@@ -7,6 +7,6 @@ include 'lib:nirvana-api'
 include 'lib:consul-config'
 include 'service:mobile-config'
 include 'service:facade'
-include 'service:example'
-//include 'discussion-service'
+include 'service:example' 
+include 'service:discussion'
 
