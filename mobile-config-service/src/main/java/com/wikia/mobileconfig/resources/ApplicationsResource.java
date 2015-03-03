@@ -40,10 +40,7 @@ public class ApplicationsResource {
   @GET
   @Timed
   public Representation getMobileApplicationList(
-      @PathParam("platform") String platform,
-      @QueryParam("thumbMode") Optional<String> thumbMode,
-      @QueryParam("thumbWidth") Optional<Integer> thumbWidth,
-      @QueryParam("thumbHeight") Optional<Integer> thumbHeight
+      @PathParam("platform") String platform
   ) throws java.io.IOException, MobileConfigException {
 
     Applications bean = new Applications(this.appsList.getAppList(platform));
