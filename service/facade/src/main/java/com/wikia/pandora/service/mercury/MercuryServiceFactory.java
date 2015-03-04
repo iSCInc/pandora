@@ -9,13 +9,12 @@ import com.wikia.pandora.core.impl.configuration.PandoraConfiguration;
 import com.wikia.pandora.gateway.mercury.MercuryGateway;
 import com.wikia.pandora.service.ServiceFactory;
 
+import io.dropwizard.client.HttpClientBuilder;
+import io.dropwizard.setup.Environment;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.http.HttpHost;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
-
-import io.dropwizard.client.HttpClientBuilder;
-import io.dropwizard.setup.Environment;
 
 public class MercuryServiceFactory extends ServiceFactory {
 

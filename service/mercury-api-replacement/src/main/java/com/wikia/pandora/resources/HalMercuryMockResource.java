@@ -1,10 +1,11 @@
 package com.wikia.pandora.resources;
 
+import com.wikia.pandora.core.domain.mock.AdsContextMock;
+import com.wikia.pandora.core.domain.mock.TopContributorMock;
+
 import com.theoryinpractise.halbuilder.DefaultRepresentationFactory;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
-import com.wikia.pandora.core.domain.mock.AdsContextMock;
-import com.wikia.pandora.core.domain.mock.TopContributorMock;
 
 import java.util.ArrayList;
 import java.util.List;

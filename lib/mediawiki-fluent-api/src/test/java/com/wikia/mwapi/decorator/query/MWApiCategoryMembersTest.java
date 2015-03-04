@@ -1,13 +1,13 @@
 package com.wikia.mwapi.decorator.query;
 
+import static org.junit.Assert.assertEquals;
+
 import com.wikia.mwapi.MWApi;
 import com.wikia.mwapi.enumtypes.query.properties.CMPropEnum;
 
 import org.apache.http.client.HttpClient;
 import org.junit.Test;
 import org.mockito.Mockito;
-
-import static org.junit.Assert.assertEquals;
 
 public class MWApiCategoryMembersTest {
 

@@ -1,13 +1,12 @@
 package com.wikia.pandora.core.consul.config;
 
+import io.dropwizard.configuration.ConfigurationSourceProvider;
 import org.apache.commons.lang3.text.StrSubstitutor;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
-
-import io.dropwizard.configuration.ConfigurationSourceProvider;
 
 public class ConsulSubstitutionProvider implements ConfigurationSourceProvider {
   protected final ConfigurationSourceProvider baseProvider;

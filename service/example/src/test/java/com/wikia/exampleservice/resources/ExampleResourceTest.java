@@ -1,12 +1,11 @@
 package com.wikia.exampleservice.resources;
 
+import static org.junit.Assert.assertEquals;
+
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
-
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 public class ExampleResourceTest {
 

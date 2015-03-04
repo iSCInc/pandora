@@ -1,5 +1,10 @@
 package com.wikia.pandora.gateway.mediawiki;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import com.wikia.mwapi.MWApi;
 import com.wikia.mwapi.domain.ApiResponse;
 import com.wikia.mwapi.domain.CategoryStat;
@@ -16,11 +21,6 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import java.util.List;
-
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 @Category(IntegrationTest.class)
 public class MediawikiGatewayIntegrationTest {

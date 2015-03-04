@@ -1,7 +1,8 @@
 package com.wikia.mobileconfig.utils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wikia.mobileconfig.MobileConfigApplication;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.nio.charset.Charset;
 import java.nio.file.Files;

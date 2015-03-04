@@ -1,13 +1,12 @@
 package com.wikia.pandora.core.impl.configuration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.dropwizard.Configuration;
+import io.dropwizard.client.HttpClientConfiguration;
 
 import javax.annotation.Nonnull;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-
-import io.dropwizard.Configuration;
-import io.dropwizard.client.HttpClientConfiguration;
 
 public class PandoraConfiguration extends Configuration {
 

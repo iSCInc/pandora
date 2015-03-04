@@ -1,8 +1,5 @@
 package com.wikia.pandora.examples;
 
-import com.theoryinpractise.halbuilder.api.RepresentationFactory;
-import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
-import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 import com.wikia.pandora.api.service.ArticleService;
 import com.wikia.pandora.api.service.CategoryService;
 import com.wikia.pandora.api.service.CommentService;
@@ -16,6 +13,9 @@ import com.wikia.pandora.resources.HalRevisionResource;
 import com.wikia.pandora.service.ServiceFactory;
 import com.wikia.pandora.service.mediawiki.MediawikiServiceFactory;
 
+import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
+import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;

@@ -1,18 +1,5 @@
 package com.wikia.mobileconfig.resources;
 
-import com.wikia.mobileconfig.gateway.AppsDeployerListContainer;
-
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.mockito.ArgumentMatcher;
-
-import java.io.IOException;
-
-import io.dropwizard.testing.junit.ResourceTestRule;
-
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
@@ -21,6 +8,18 @@ import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import com.wikia.mobileconfig.gateway.AppsDeployerListContainer;
+
+import io.dropwizard.testing.junit.ResourceTestRule;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.junit.ClassRule;
+import org.junit.Test;
+import org.mockito.ArgumentMatcher;
+
+import java.io.IOException;
 
 /**
  * Unit tests for {@link ApplicationsResource}.

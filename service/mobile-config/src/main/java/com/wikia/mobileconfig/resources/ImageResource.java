@@ -1,10 +1,10 @@
 package com.wikia.mobileconfig.resources;
 
-import com.google.common.io.Files;
-
-import com.codahale.metrics.annotation.Timed;
 import com.wikia.mobileconfig.exceptions.ImageNotFoundException;
 import com.wikia.mobileconfig.service.ImageService;
+
+import com.codahale.metrics.annotation.Timed;
+import com.google.common.io.Files;
 
 import java.net.URISyntaxException;
 import java.util.Optional;

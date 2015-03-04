@@ -1,9 +1,8 @@
 package com.wikia.pandora.core.metrics;
 
-import com.google.common.collect.ImmutableSet;
-
 import com.codahale.metrics.Metric;
 import com.codahale.metrics.MetricFilter;
+import com.google.common.collect.ImmutableSet;
 
 import java.util.regex.Pattern;
 

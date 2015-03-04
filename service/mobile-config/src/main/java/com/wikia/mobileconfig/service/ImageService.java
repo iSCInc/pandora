@@ -3,6 +3,8 @@ package com.wikia.mobileconfig.service;
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.MobileConfigConfiguration;
 
+import io.dropwizard.client.HttpClientBuilder;
+import io.dropwizard.setup.Environment;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -12,9 +14,6 @@ import java.io.IOException;
 import java.util.Optional;
 
 import javax.ws.rs.core.Response;
-
-import io.dropwizard.client.HttpClientBuilder;
-import io.dropwizard.setup.Environment;
 
 /**
  * A class responsible for getting mobile applications images from our Ceph buckets via HTTP

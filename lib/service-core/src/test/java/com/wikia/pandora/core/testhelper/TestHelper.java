@@ -1,5 +1,8 @@
 package com.wikia.pandora.core.testhelper;
 
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Mockito.when;
+
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -10,9 +13,6 @@ import org.mockito.Mockito;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
-
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Mockito.when;
 
 public class TestHelper {
 

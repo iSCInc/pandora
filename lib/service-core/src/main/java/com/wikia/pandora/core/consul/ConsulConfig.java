@@ -1,12 +1,12 @@
 package com.wikia.pandora.core.consul;
 
+import io.dropwizard.util.Duration;
+
 import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-
-import io.dropwizard.util.Duration;
 
 public class ConsulConfig {
 

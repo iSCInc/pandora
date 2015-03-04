@@ -1,5 +1,7 @@
 package com.wikia.pandora.service.mediawiki;
 
+import static com.wikia.pandora.core.util.HttpClientBuilderHelper.createHttpClient;
+
 import com.wikia.pandora.api.service.ArticleService;
 import com.wikia.pandora.api.service.CategoryService;
 import com.wikia.pandora.api.service.CommentService;
@@ -8,11 +10,8 @@ import com.wikia.pandora.core.impl.configuration.PandoraConfiguration;
 import com.wikia.pandora.gateway.mediawiki.MediawikiGateway;
 import com.wikia.pandora.service.ServiceFactory;
 
-import org.apache.http.client.HttpClient;
-
 import io.dropwizard.setup.Environment;
-
-import static com.wikia.pandora.core.util.HttpClientBuilderHelper.createHttpClient;
+import org.apache.http.client.HttpClient;
 
 public class MediawikiServiceFactory extends ServiceFactory {
 

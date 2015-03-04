@@ -1,9 +1,10 @@
 package com.wikia.pandora.resources;
 
+import com.wikia.pandora.api.service.ArticleService;
+
 import com.codahale.metrics.annotation.Timed;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
-import com.wikia.pandora.api.service.ArticleService;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

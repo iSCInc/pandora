@@ -1,20 +1,19 @@
 package com.wikia.mobileconfig.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.MobileConfigConfiguration;
 import com.wikia.mobileconfig.core.EmptyMobileConfiguration;
 import com.wikia.mobileconfig.core.MobileConfiguration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.dropwizard.client.HttpClientBuilder;
+import io.dropwizard.setup.Environment;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 
 import java.io.IOException;
-
-import io.dropwizard.client.HttpClientBuilder;
-import io.dropwizard.setup.Environment;
 
 /**
  * A class responsible for getting mobile applications' configuration from our Ceph buckets via HTTP

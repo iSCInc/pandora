@@ -1,12 +1,13 @@
 package com.wikia.mobileconfig.gateway;
 
-import com.google.common.base.Optional;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.MobileConfigConfiguration;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Optional;
+import io.dropwizard.client.HttpClientBuilder;
+import io.dropwizard.setup.Environment;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -18,9 +19,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import io.dropwizard.client.HttpClientBuilder;
-import io.dropwizard.setup.Environment;
 
 public class AppsDeployerListContainer implements AppsListService {
 

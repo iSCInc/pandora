@@ -1,8 +1,5 @@
 package com.wikia.mobileconfig;
 
-import com.theoryinpractise.halbuilder.api.RepresentationFactory;
-import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
-import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 import com.wikia.mobileconfig.gateway.AppsDeployerListContainer;
 import com.wikia.mobileconfig.health.AppsDeployerHealthCheck;
 import com.wikia.mobileconfig.health.MobileConfigHealthCheck;
@@ -15,12 +12,14 @@ import com.wikia.pandora.core.consul.ConsulBundle;
 import com.wikia.pandora.core.consul.ConsulConfig;
 import com.wikia.pandora.core.consul.config.ConsulVariableInterpolationBundle;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
+import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MobileConfigApplication extends Application<MobileConfigConfiguration> {
 

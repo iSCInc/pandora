@@ -1,18 +1,19 @@
 package com.wikia.gradle;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import com.orbitz.consul.Consul;
 import com.orbitz.consul.KeyValueClient;
 import com.orbitz.consul.model.kv.Value;
-
 import org.apache.commons.codec.binary.Base64;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
 
 public class ConsulKeyValueConfigTest {
   @Test

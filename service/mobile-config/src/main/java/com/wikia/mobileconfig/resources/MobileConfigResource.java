@@ -1,8 +1,5 @@
 package com.wikia.mobileconfig.resources;
 
-import com.codahale.metrics.annotation.Timed;
-import com.theoryinpractise.halbuilder.api.Representation;
-import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.core.EmptyMobileConfiguration;
 import com.wikia.mobileconfig.core.MobileConfiguration;
@@ -11,6 +8,10 @@ import com.wikia.mobileconfig.exceptions.InvalidApplicationTagException;
 import com.wikia.mobileconfig.exceptions.MobileConfigException;
 import com.wikia.mobileconfig.gateway.AppsListService;
 import com.wikia.mobileconfig.service.ConfigurationService;
+
+import com.codahale.metrics.annotation.Timed;
+import com.theoryinpractise.halbuilder.api.Representation;
+import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 
 import java.io.IOException;
 

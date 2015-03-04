@@ -1,13 +1,13 @@
 package com.wikia.exampleservice;
 
-import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
-import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 import com.wikia.exampleservice.configuration.ExampleConfiguration;
 import com.wikia.exampleservice.health.ExampleHealthCheck;
 import com.wikia.exampleservice.resources.ExampleResource;
 import com.wikia.pandora.core.consul.ConsulBundle;
 import com.wikia.pandora.core.consul.ConsulConfig;
 
+import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
+import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;

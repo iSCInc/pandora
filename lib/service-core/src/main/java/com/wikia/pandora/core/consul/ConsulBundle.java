@@ -1,7 +1,9 @@
 package com.wikia.pandora.core.consul;
 
 import com.codahale.metrics.health.HealthCheck;
-
+import io.dropwizard.ConfiguredBundle;
+import io.dropwizard.setup.Bootstrap;
+import io.dropwizard.setup.Environment;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.slf4j.Logger;
@@ -9,10 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Map;
-
-import io.dropwizard.ConfiguredBundle;
-import io.dropwizard.setup.Bootstrap;
-import io.dropwizard.setup.Environment;
 
 public abstract class ConsulBundle<T> implements ConfiguredBundle<T> {
 

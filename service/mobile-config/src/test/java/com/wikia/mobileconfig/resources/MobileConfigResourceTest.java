@@ -1,11 +1,20 @@
 package com.wikia.mobileconfig.resources;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.fest.assertions.api.Assertions.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.wikia.mobileconfig.core.EmptyMobileConfiguration;
 import com.wikia.mobileconfig.core.MobileConfiguration;
 import com.wikia.mobileconfig.gateway.AppsDeployerListContainer;
 import com.wikia.mobileconfig.service.HttpConfigurationService;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.ClassRule;
 import org.junit.Test;
 
@@ -14,16 +23,6 @@ import java.io.IOException;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.NotFoundException;
-
-import io.dropwizard.testing.junit.ResourceTestRule;
-
-import static org.fest.assertions.api.Assertions.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * Unit tests for {@link MobileConfigResource}.

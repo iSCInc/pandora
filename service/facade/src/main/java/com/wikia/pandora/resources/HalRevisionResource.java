@@ -1,10 +1,11 @@
 package com.wikia.pandora.resources;
 
+import com.wikia.pandora.api.service.RevisionService;
+import com.wikia.pandora.domain.Revision;
+
 import com.codahale.metrics.annotation.Timed;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
-import com.wikia.pandora.api.service.RevisionService;
-import com.wikia.pandora.domain.Revision;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;

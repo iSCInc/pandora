@@ -2,12 +2,10 @@ package com.wikia.pandora.core.consul;
 
 import com.orbitz.consul.Consul;
 import com.orbitz.consul.model.agent.Registration;
-
+import io.dropwizard.util.Duration;
 import org.eclipse.jetty.server.ServerConnector;
 
 import javax.annotation.Nonnull;
-
-import io.dropwizard.util.Duration;
 
 public class ConsulWrapper {
 

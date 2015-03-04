@@ -5,12 +5,11 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.ScheduledReporter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-
-import javax.validation.constraints.NotNull;
-
 import io.dropwizard.metrics.BaseFormattedReporterFactory;
 import metrics_influxdb.InfluxdbReporter;
 import metrics_influxdb.InfluxdbUdp;
+
+import javax.validation.constraints.NotNull;
 
 @JsonTypeName("influxdb")
 public class InfluxDbReporterFactory extends BaseFormattedReporterFactory {

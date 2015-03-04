@@ -1,7 +1,14 @@
 package com.wikia.mobileconfig.resources;
 
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.wikia.mobileconfig.service.ImageService;
 
+import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.ClassRule;
 import org.junit.Test;
 
@@ -9,14 +16,6 @@ import java.io.IOException;
 import java.util.Optional;
 
 import javax.ws.rs.core.Response;
-
-import io.dropwizard.testing.junit.ResourceTestRule;
-
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * Unit tests for {@link com.wikia.mobileconfig.resources.MobileConfigResource}.

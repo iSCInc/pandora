@@ -1,16 +1,15 @@
 package com.wikia.pandora.core.consul;
 
-import com.orbitz.consul.AgentClient;
-import com.orbitz.consul.Consul;
-import com.orbitz.consul.NotRegisteredException;
-
-import org.junit.Test;
-
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import com.orbitz.consul.AgentClient;
+import com.orbitz.consul.Consul;
+import com.orbitz.consul.NotRegisteredException;
+import org.junit.Test;
 
 public class ConsulHeartbeatTest {
 

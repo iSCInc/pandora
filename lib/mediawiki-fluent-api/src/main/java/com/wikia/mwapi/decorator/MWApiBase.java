@@ -1,6 +1,5 @@
 package com.wikia.mwapi.decorator;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wikia.mwapi.decorator.query.MWApiQuery;
 import com.wikia.mwapi.domain.ApiResponse;
 import com.wikia.mwapi.enumtypes.ActionEnum;
@@ -10,6 +9,7 @@ import com.wikia.mwapi.fluent.WikiaChoose;
 import com.wikia.mwapi.fluent.query.MainModuleOption;
 import com.wikia.mwapi.fluent.query.MethodOption;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;

@@ -1,9 +1,12 @@
 package com.wikia.mwapi;
 
+import static org.junit.Assert.assertEquals;
+
 import com.wikia.mwapi.domain.ApiResponse;
 import com.wikia.mwapi.enumtypes.query.properties.CLPropEnum;
 import com.wikia.mwapi.enumtypes.query.properties.RVPropEnum;
 
+import io.dropwizard.testing.FixtureHelpers;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -16,10 +19,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-
-import io.dropwizard.testing.FixtureHelpers;
-
-import static org.junit.Assert.assertEquals;
 
 public class MWApiTest {
 

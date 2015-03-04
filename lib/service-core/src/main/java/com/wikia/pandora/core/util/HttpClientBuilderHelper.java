@@ -3,10 +3,9 @@ package com.wikia.pandora.core.util;
 
 import com.wikia.pandora.core.impl.configuration.PandoraConfiguration;
 
-import org.apache.http.client.HttpClient;
-
 import io.dropwizard.client.HttpClientBuilder;
 import io.dropwizard.setup.Environment;
+import org.apache.http.client.HttpClient;
 
 public class HttpClientBuilderHelper {
   public static HttpClient createHttpClient(Environment environment,

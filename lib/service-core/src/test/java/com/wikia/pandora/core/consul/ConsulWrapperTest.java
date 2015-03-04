@@ -1,10 +1,9 @@
 package com.wikia.pandora.core.consul;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import io.dropwizard.util.Duration;
-
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 public class ConsulWrapperTest {
 

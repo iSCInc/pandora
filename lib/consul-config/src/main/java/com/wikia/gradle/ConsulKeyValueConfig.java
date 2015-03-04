@@ -2,7 +2,6 @@ package com.wikia.gradle;
 
 import com.orbitz.consul.Consul;
 import com.orbitz.consul.util.ClientUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
