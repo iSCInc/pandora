@@ -5,6 +5,7 @@ import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.wikia.discussionservice.domain.Post;
 import com.wikia.discussionservice.enums.ResponseGroup;
 import com.wikia.discussionservice.resources.PostResource;
+import com.wikia.discussionservice.resources.ThreadResource;
 import lombok.NonNull;
 
 import javax.inject.Inject;
@@ -27,16 +28,18 @@ public class HALPostRepresentationMapper implements PostRepresentationMapper {
   }
 
   @Override
-  public Representation buildRepresentation(int siteId, Post post, UriInfo uriInfo, 
+  public Representation buildRepresentation(int siteId, Post post, UriInfo uriInfo,
                                             ResponseGroup group) {
-    
+
     Link linkToSelf = new LinkBuilder().buildLink(uriInfo, "self", PostResource.class, "getPost",
         siteId, post.getId());
-    
-    
+    Link linkToThread = new LinkBuilder().buildLink(uriInfo, "up", ThreadResource.class,
+        "getThread", siteId, post.getId());
+
     Representation representation =
         representationFactory.newRepresentation()
             .withLink("self", linkToSelf.getUri())
+            .withLink("up", linkToThread.getUri())
             .withBean(post);
 
     return representation;

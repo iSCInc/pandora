@@ -24,27 +24,14 @@ public class ThreadService {
     this.postService = postService;
   }
 
-  public Optional<ForumThread> getForumThread(int siteId, int threadId, int offset, int limit) {
-    Optional<ForumThread> forumThread = threadDAO.getForumThread(siteId, threadId, offset, limit);
+  public Optional<ForumThread> getForumThread(int siteId, int threadId) {
+    Optional<ForumThread> forumThread = threadDAO.getForumThread(siteId, threadId, 0, 10);
     return forumThread;
   }
 
-  public List<ForumThread> retrieveForumThreads(int siteId, int forumId, int offset, int limit) {
-    if (!FORUM_THREADS.containsKey(forumId)) {
-      FORUM_THREADS.put(forumId, new ArrayList<>());
-    }
-    
-    List<ForumThread> forumThreads = FORUM_THREADS.get(forumId);
-    
-    if (forumThreads.size() == 0 || forumThreads.size() <= limit) {
-      return forumThreads;
-    }
-    
-    try {
-      return forumThreads.subList(offset*limit, offset*limit+limit);
-    } catch(IndexOutOfBoundsException ioobe) {
-      return forumThreads.subList(offset*limit, forumThreads.size()-1);
-    }
+  public Optional<ForumThread> getForumThread(int siteId, int threadId, int offset, int limit) {
+    Optional<ForumThread> forumThread = threadDAO.getForumThread(siteId, threadId, offset, limit);
+    return forumThread;
   }
   
   public Optional<ForumThread> createThread(int siteId, int forumId, Post post) {

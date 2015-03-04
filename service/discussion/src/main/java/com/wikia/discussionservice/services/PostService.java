@@ -5,46 +5,25 @@ import com.wikia.discussionservice.domain.Post;
 import java.time.LocalDateTime;
 
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public class PostService {
-  
-  public List<Post> createPosts() {
-    return createPosts(0, new Random().nextInt(100));
-  }
 
-  public List<Post> createPosts(int offset, int limit) {
-    List<Post> posts = new ArrayList<>();
-
-    IntStream.range(offset, limit).forEach(
-        i -> {
-          Post post = new Post();
-          post.setId(i);
-          post.setBody("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed " +
-              "do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim" +
-              " ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut " +
-              "aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit " +
-              "in voluptate velit esse cillum dolore eu fugiat nulla pariatur. " +
-              "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui " +
-              "officia deserunt mollit anim id est laborum");
-          post.setDate(LocalDateTime.now().minus(Period.ofMonths(new Random().nextInt(24))));
-          post.setPosterId(new Random().nextInt(1000000));
-          post.setThreadId(1);
-          posts.add(post);
-        }
-    );
-
-    return posts;
-  }
+  private static Map<Integer, Post> POSTS = new HashMap<>();
+  private static int SEQUENCE = 1;
 
   public Optional<Post> getPost(int siteId, int postId) {
-    List<Post> posts = createPosts();
-    Post post = posts.get(postId);
-    
+    Post post = POSTS.get(postId);
     return Optional.ofNullable(post);
+  }
+
+  public Optional<Post> createPost(int siteId, int threadId, Post post) {
+    int postId = SEQUENCE++;
+    
+    post.setThreadId(threadId);
+    post.setId(postId);
+    POSTS.put(postId, post);
+    return Optional.of(post);
   }
 }

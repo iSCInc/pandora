@@ -56,13 +56,13 @@ public class ThreadResource {
   @GET
   @Path("/{siteId}/threads/{threadId}")
   @Timed
-  public Response getForumThread(@NotNull @PathParam("siteId") IntParam siteId,
-                                 @NotNull @PathParam("threadId") IntParam threadId,
-                                 @QueryParam("limit") @DefaultValue("10") IntParam limit,
-                                 @QueryParam("offset") @DefaultValue("1") IntParam offset,
-                                 @QueryParam("responseGroup") @DefaultValue("small")
-                                 String requestedResponseGroup,
-                                 @Context UriInfo uriInfo) {
+  public Response getThread(@NotNull @PathParam("siteId") IntParam siteId,
+                            @NotNull @PathParam("threadId") IntParam threadId,
+                            @QueryParam("limit") @DefaultValue("10") IntParam limit,
+                            @QueryParam("offset") @DefaultValue("1") IntParam offset,
+                            @QueryParam("responseGroup") @DefaultValue("small")
+                            String requestedResponseGroup,
+                            @Context UriInfo uriInfo) {
 
     Preconditions.checkArgument(offset.get() >= 1,
         "Offset was %s but expected 1 or greater", offset.get());
@@ -108,7 +108,6 @@ public class ThreadResource {
         forumId.get(), post);
 
     if (createdThread.isPresent()) {
-
       forum.get().getThreads().add(createdThread.get());
 
       Representation representation = threadMapper.buildRepresentation(siteId.get(),
