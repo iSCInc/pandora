@@ -17,8 +17,7 @@ buildscript {
 apply from: rootProject.file('gradle/marathon_deployment.gradle')
 dependencies {
     compile project(":pandora-core")
-    compile 'com.bendb.dropwizard:dropwizard-redis:0.8.0-0-SNAPSHOT'
-    compile 'redis.clients:jedis:2.6.0'
+    compile 'redis.clients:jedis:2.4.2'
 }
 // end: deployment boilerplate
 
@@ -35,10 +34,6 @@ tasks.deployToProd {
     stage = 'test'
     mem = 400
     instances = 1
-}
-
-repositories {
-    maven { url "${archivaUrl}/repository/snapshots" }
 }
 
 // copy example file as a configuration file to the application dist
