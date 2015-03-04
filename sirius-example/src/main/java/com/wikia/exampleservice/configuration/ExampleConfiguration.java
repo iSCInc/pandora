@@ -14,7 +14,7 @@ public class ExampleConfiguration extends Configuration {
   private String greetingsWord; // value is set up by dropwizard reflection magic.
 
   @NotNull
-  private RedisFactory redis = new RedisFactory();
+  private RedisFactory redisFactory = new RedisFactory();
 
   public String getGreetingsWord() {
     return greetingsWord;
@@ -22,12 +22,12 @@ public class ExampleConfiguration extends Configuration {
 
   @JsonProperty("redis")
   public RedisFactory getJedisFactory() {
-    return redis;
+    return redisFactory;
   }
 
   @JsonProperty("redis")
   public void setJedisFactory(RedisFactory jedisFactory) {
-    this.redis = jedisFactory;
+    this.redisFactory = jedisFactory;
   }
 
 }
