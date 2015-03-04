@@ -5,7 +5,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 /**
  * Factory to create Jedis connections from the JedisPool Singleton
- * setup in {@link com.bendb.dropwizard.redis.jersey.JedisPoolBinder}.
+ * setup in {@link com.wikia.pandora.core.redis.jersey.JedisPoolBinder}.
  */
 public class JedisFactory implements Factory<Jedis> {
     private final JedisPool pool;

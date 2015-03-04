@@ -1,6 +1,6 @@
 package com.wikia.pandora.core.redis;
 
-import com.wikia.pandora.core.redis.jersey.JedisFactory;
+import com.wikia.pandora.core.redis.jersey.JedisPoolBinder;
 import io.dropwizard.Configuration;
 import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Bootstrap;
@@ -24,6 +24,7 @@ public abstract class RedisBundle<T extends Configuration> implements Configured
         pool = getJedisFactory(appConfiguration).build(environment);
 
         environment.healthChecks().register("redis", new RedisHealthCheck(pool));
-        environment.jersey().register(new JedisFactory(pool));
+        environment.jersey().register(new JedisPoolBinder(pool));
+
     }
 }
