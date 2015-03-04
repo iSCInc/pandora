@@ -24,7 +24,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.net.URI;
 import java.util.Optional;
 
 @Path("/")
@@ -100,20 +99,23 @@ public class ThreadResource {
     Optional<Forum> forum = forumService.getForum(siteId.get(), forumId.get());
 
     if (!forum.isPresent()) {
-      return ErrorResponseBuilder.buildErrorResponse(1234,  
+      return ErrorResponseBuilder.buildErrorResponse(1234,
           String.format("No forum found for site id: %s with forum id: %s", siteId.get(),
-          forumId.get()), null, Response.Status.NOT_FOUND);
+              forumId.get()), null, Response.Status.NOT_FOUND);
     }
 
     Optional<ForumThread> createdThread = threadService.createThread(siteId.get(),
         forumId.get(), post);
 
     if (createdThread.isPresent()) {
+
+      forum.get().getThreads().add(createdThread.get());
+
       Representation representation = threadMapper.buildRepresentation(siteId.get(),
           createdThread.get(), uriInfo);
 
-      return Response.created(
-          URI.create(representation.getLinkByRel("self").getHref()))
+      return Response.status(Response.Status.CREATED)
+          .entity(representation)
           .build();
     }
 

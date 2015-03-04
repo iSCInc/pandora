@@ -43,13 +43,6 @@ public class ForumService {
   
   public Optional<Forum> getForum(int siteId, int forumId, int offset, int limit) {
     Optional<Forum> forum = forumDAO.retrieveForum(siteId, forumId);
-    
-    if (forum.isPresent()) {
-      List<ForumThread> threads = threadService.retrieveForumThreads(
-          siteId, forumId, offset, limit);
-      forum.get().setThreads(threads);
-    }
-
     return forum;
   }
 

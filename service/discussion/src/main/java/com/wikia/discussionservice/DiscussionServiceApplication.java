@@ -1,6 +1,7 @@
 package com.wikia.discussionservice;
 
 import com.hubspot.dropwizard.guice.GuiceBundle;
+import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
 import com.wikia.discussionservice.configuration.DiscussionServiceConfiguration;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
@@ -34,5 +35,8 @@ public class DiscussionServiceApplication extends Application<DiscussionServiceC
   @Override
   public void run(DiscussionServiceConfiguration configuration, Environment environment)
       throws Exception {
+    // Register the JaxRsHalBuilderSupport to generate HAL Representation to
+    // be compatible with HAL Browser and other industry standards
+    environment.jersey().register(JaxRsHalBuilderSupport.class);
   }
 }

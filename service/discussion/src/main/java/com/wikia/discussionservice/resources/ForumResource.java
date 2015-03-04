@@ -111,8 +111,8 @@ public class ForumResource {
       Representation representation =
           forumMapper.buildRepresentation(siteId.get(), createdForum.get(), uriInfo);
 
-      return Response.created(
-          URI.create(representation.getLinkByRel("self").getHref()))
+      return Response.status(Response.Status.CREATED)
+          .entity(representation)
           .build();
     }
 
@@ -161,7 +161,8 @@ public class ForumResource {
       } else {
         Representation representation =
             forumMapper.buildRepresentation(siteId.get(), updatedForum.get(), uriInfo);
-        return Response.created(URI.create(representation.getLinkByRel("self").getHref()))
+        return Response.status(Response.Status.CREATED)
+            .entity(representation)
             .build();
       }
     }
