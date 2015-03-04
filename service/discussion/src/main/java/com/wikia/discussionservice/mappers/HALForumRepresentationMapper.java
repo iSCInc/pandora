@@ -47,7 +47,8 @@ public class HALForumRepresentationMapper implements ForumRepresentationMapper {
 
     Representation representation = representationFactory.newRepresentation()
         .withLink("self", linkToSelf.getUri())
-        .withLink("create-form", createFormLink.getUri().getPath(), "dis:createForum", "dis:createForum", "us-en", null)
+        .withLink("create-form", createFormLink.getUri().getPath(), "createForum", "createForum",
+            "us-en", null)
         .withProperty("total", forumRoot.getForums().size());
 
     if (!forumRoot.getForums().isEmpty()) {
@@ -78,8 +79,8 @@ public class HALForumRepresentationMapper implements ForumRepresentationMapper {
     Representation representation =
         representationFactory.newRepresentation()
             .withLink("self", linkToSelf.getUri())
-            .withLink("create-form", linkToStartThread.getUri().getPath(), "dis:startThread",
-                "dis:startThread", "us-en", null)
+            .withLink("create-form", linkToStartThread.getUri().getPath(), "startThread",
+                "startThread", "us-en", null)
             .withProperty("name", forum.getName());
 
     if (forum.hasChildren()) {
