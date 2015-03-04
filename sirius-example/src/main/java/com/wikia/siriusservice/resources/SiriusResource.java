@@ -41,8 +41,6 @@ public class SiriusResource {
                     .entity("Notification doesn't exist").build();
         }
 
-        //return new Notification(jedisValue);
-
         return Response
                 .status(Response.Status.OK)
                 .entity(new Notification(jedisValue)).build();
