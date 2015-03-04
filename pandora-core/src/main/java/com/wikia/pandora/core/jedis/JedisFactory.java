@@ -1,4 +1,4 @@
-package com.wikia.pandora.core.redis;
+package com.wikia.pandora.core.jedis;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.net.HostAndPort;
@@ -38,12 +38,12 @@ import javax.validation.constraints.NotNull;
  * </tr>
  * <tr>
  * <td>maxTotal</td>
- * <td><code>{@value RedisFactory#DEFAULT_MAX_TOTAL}</code></td>
+ * <td><code>{@value JedisFactory#DEFAULT_MAX_TOTAL}</code></td>
  * <td>The maximum number of connections allowed in the connection pool.</td>
  * </tr>
  * </table>
  */
-public class RedisFactory {
+public class JedisFactory {
     public static final int DEFAULT_PORT = 6379;
     public static final int DEFAULT_MAX_TOTAL = 1024;
     @JsonProperty
@@ -91,7 +91,7 @@ public class RedisFactory {
         poolConfig.setMaxIdle(getMaxIdle());
         poolConfig.setMaxTotal(getMaxTotal());
         final JedisPool pool = new JedisPool(poolConfig, getHost(), getPort());
-        environment.lifecycle().manage(new RedisPoolManager(pool));
+        environment.lifecycle().manage(new JedisPoolManager(pool));
         return pool;
     }
 }

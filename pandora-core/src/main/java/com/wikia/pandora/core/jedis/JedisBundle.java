@@ -1,13 +1,13 @@
-package com.wikia.pandora.core.redis;
+package com.wikia.pandora.core.jedis;
 
-import com.wikia.pandora.core.redis.jersey.JedisPoolBinder;
+import com.wikia.pandora.core.jedis.jersey.JedisPoolBinder;
 import io.dropwizard.Configuration;
 import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import redis.clients.jedis.JedisPool;
 
-public abstract class RedisBundle<T extends Configuration> implements ConfiguredBundle<T>, RedisConfiguration<T> {
+public abstract class JedisBundle<T extends Configuration> implements ConfiguredBundle<T>, JedisConfiguration<T> {
 
     private JedisPool pool;
 
@@ -23,7 +23,7 @@ public abstract class RedisBundle<T extends Configuration> implements Configured
     public void run(T appConfiguration, Environment environment) throws Exception {
         pool = getJedisFactory(appConfiguration).build(environment);
 
-        environment.healthChecks().register("redis", new RedisHealthCheck(pool));
+        environment.healthChecks().register("redis", new JedisHealthCheck(pool));
         environment.jersey().register(new JedisPoolBinder(pool));
 
     }

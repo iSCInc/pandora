@@ -1,7 +1,7 @@
 package com.wikia.exampleservice.configuration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.wikia.pandora.core.redis.RedisFactory;
+import com.wikia.pandora.core.jedis.JedisFactory;
 import io.dropwizard.Configuration;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -14,19 +14,19 @@ public class ExampleConfiguration extends Configuration {
   private String greetingsWord; // value is set up by dropwizard reflection magic.
 
   @NotNull
-  private RedisFactory redisFactory = new RedisFactory();
+  private JedisFactory redisFactory = new JedisFactory();
 
   public String getGreetingsWord() {
     return greetingsWord;
   }
 
   @JsonProperty("redis")
-  public RedisFactory getJedisFactory() {
+  public JedisFactory getJedisFactory() {
     return redisFactory;
   }
 
   @JsonProperty("redis")
-  public void setJedisFactory(RedisFactory jedisFactory) {
+  public void setJedisFactory(JedisFactory jedisFactory) {
     this.redisFactory = jedisFactory;
   }
 

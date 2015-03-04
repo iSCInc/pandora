@@ -1,11 +1,11 @@
-package com.wikia.pandora.core.redis;
+package com.wikia.pandora.core.jedis;
 
 import io.dropwizard.lifecycle.Managed;
 import redis.clients.jedis.JedisPool;
 
-public class RedisPoolManager implements Managed {
+public class JedisPoolManager implements Managed {
     private final JedisPool pool;
-    public RedisPoolManager(JedisPool pool) {
+    public JedisPoolManager(JedisPool pool) {
         this.pool = pool;
     }
     @Override

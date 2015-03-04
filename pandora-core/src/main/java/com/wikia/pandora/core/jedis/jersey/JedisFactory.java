@@ -1,11 +1,11 @@
-package com.wikia.pandora.core.redis.jersey;
+package com.wikia.pandora.core.jedis.jersey;
 
 import org.glassfish.hk2.api.Factory;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 /**
  * Factory to create Jedis connections from the JedisPool Singleton
- * setup in {@link com.wikia.pandora.core.redis.jersey.JedisPoolBinder}.
+ * setup in {@link com.wikia.pandora.core.jedis.jersey.JedisPoolBinder}.
  */
 public class JedisFactory implements Factory<Jedis> {
     private final JedisPool pool;

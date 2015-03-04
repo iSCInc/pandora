@@ -1,14 +1,14 @@
-package com.wikia.pandora.core.redis;
+package com.wikia.pandora.core.jedis;
 
 import com.codahale.metrics.health.HealthCheck;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-public class RedisHealthCheck extends HealthCheck {
+public class JedisHealthCheck extends HealthCheck {
 
     private final JedisPool pool;
 
-    public RedisHealthCheck(JedisPool pool) {
+    public JedisHealthCheck(JedisPool pool) {
         this.pool = pool;
     }
 
