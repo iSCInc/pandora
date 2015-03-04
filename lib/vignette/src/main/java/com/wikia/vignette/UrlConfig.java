@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public class UrlConfig {
 
-  public final Boolean isArchive;
+  public final boolean isArchive;
   public final Integer timestamp;
   public final String relativePath;
   public final String bucket;
@@ -32,13 +32,13 @@ public class UrlConfig {
 
   public static class Builder {
     private ArrayList<NameValuePair> queryParams = new ArrayList<>();
-    private Boolean isArchive = false;
     private ImageType imageType = ImageType.IMAGES;
     private Integer timestamp;
     private String relativePath;
     private String bucket;
     private String baseURL = "http://vignette<SHARD>.wikia.nocookie.net";
     private Integer domainShardCount = 5;
+    private boolean isArchive = false;
 
     public Builder() {
     }
@@ -48,7 +48,7 @@ public class UrlConfig {
      * @param isArchive
      * @return UrlConfig.Builder
      */
-    public Builder isArchive(Boolean isArchive) {
+    public Builder isArchive(boolean isArchive) {
       this.isArchive = isArchive;
       return this;
     }
