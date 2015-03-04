@@ -1,4 +1,4 @@
-package com.wikia.exampleservice.resources;
+package com.wikia.exampleservice.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
