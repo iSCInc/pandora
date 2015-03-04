@@ -1,4 +1,4 @@
-package com.wikia.exampleservice.configuration;
+package com.wikia.siriusservice.configuration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.wikia.pandora.core.jedis.JedisFactory;
@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 
-public class ExampleConfiguration extends Configuration {
+public class SiriusConfiguration extends Configuration {
 
   @NotEmpty
   @NotNull

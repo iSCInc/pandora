@@ -1,20 +1,20 @@
-package com.wikia.exampleservice;
+package com.wikia.siriusservice;
 
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
-import com.wikia.exampleservice.configuration.ExampleConfiguration;
-import com.wikia.exampleservice.health.ExampleHealthCheck;
-import com.wikia.exampleservice.resources.ExampleResource;
+import com.wikia.siriusservice.configuration.SiriusConfiguration;
+import com.wikia.siriusservice.health.SiriusHealthCheck;
+import com.wikia.siriusservice.resources.SiriusResource;
 import com.wikia.pandora.core.jedis.JedisBundle;
 import com.wikia.pandora.core.jedis.JedisFactory;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
-public class ExampleServiceApplication extends Application<ExampleConfiguration> {
+public class SiriusServiceApplication extends Application<SiriusConfiguration> {
 
   public static void main(String[] args) throws Exception {
-    new ExampleServiceApplication().run(args);
+    new SiriusServiceApplication().run(args);
   }
 
   @Override
@@ -24,24 +24,24 @@ public class ExampleServiceApplication extends Application<ExampleConfiguration>
 
 
   @Override
-  public void initialize(Bootstrap<ExampleConfiguration> bootstrap) {
-    bootstrap.addBundle(new JedisBundle<ExampleConfiguration>() {
+  public void initialize(Bootstrap<SiriusConfiguration> bootstrap) {
+    bootstrap.addBundle(new JedisBundle<SiriusConfiguration>() {
         @Override
-        public JedisFactory getJedisFactory(ExampleConfiguration configuration) {
+        public JedisFactory getJedisFactory(SiriusConfiguration configuration) {
             return configuration.getJedisFactory();
         }
     });
   }
 
   @Override
-  public void run(ExampleConfiguration configuration, Environment environment) throws Exception {
+  public void run(SiriusConfiguration configuration, Environment environment) throws Exception {
 
     //register healthCheck (mandatory)
-    final ExampleHealthCheck healthCheck = new ExampleHealthCheck();
+    final SiriusHealthCheck healthCheck = new SiriusHealthCheck();
     environment.healthChecks().register("SimpleHealthCheck", healthCheck);
 
     StandardRepresentationFactory representationFactory = new StandardRepresentationFactory();
-    ExampleResource exampleResource = new ExampleResource(representationFactory, configuration);
+    SiriusResource exampleResource = new SiriusResource(representationFactory, configuration);
     // environment.jersey().register(new JedisFactory(configuration));
     environment.jersey().register(exampleResource);
 

@@ -1,10 +1,10 @@
-package com.wikia.exampleservice.resources;
+package com.wikia.siriusservice.resources;
 
 import com.codahale.metrics.annotation.Timed;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
-import com.wikia.exampleservice.configuration.ExampleConfiguration;
-import com.wikia.exampleservice.domain.Notification;
+import com.wikia.siriusservice.configuration.SiriusConfiguration;
+import com.wikia.siriusservice.domain.Notification;
 import redis.clients.jedis.Jedis;
 
 import javax.validation.Valid;
@@ -17,12 +17,12 @@ import javax.ws.rs.core.UriBuilder;
 @Path("/notification/{name}")
 @Produces(RepresentationFactory.HAL_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class ExampleResource {
+public class SiriusResource {
 
   private final RepresentationFactory representationFactory;
-  private final ExampleConfiguration configuration;
+  private final SiriusConfiguration configuration;
 
-  public ExampleResource(RepresentationFactory representationFactory, ExampleConfiguration configuration) {
+  public SiriusResource(RepresentationFactory representationFactory, SiriusConfiguration configuration) {
     this.representationFactory = representationFactory;
     this.configuration = configuration;
   }
@@ -54,7 +54,7 @@ public class ExampleResource {
         jedis.set(name, notification.getText());
 
         Representation representation = representationFactory.newRepresentation();
-        representation.withProperty("uri", UriBuilder.fromResource(ExampleResource.class)
+        representation.withProperty("uri", UriBuilder.fromResource(SiriusResource.class)
                 .build(name));
         return representation;
     }

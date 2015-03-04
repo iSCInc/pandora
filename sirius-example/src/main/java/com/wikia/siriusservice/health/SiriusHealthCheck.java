@@ -1,8 +1,8 @@
-package com.wikia.exampleservice.health;
+package com.wikia.siriusservice.health;
 
 import com.codahale.metrics.health.HealthCheck;
 
-public class ExampleHealthCheck extends HealthCheck {
+public class SiriusHealthCheck extends HealthCheck {
 
   @Override
   protected Result check() throws Exception {

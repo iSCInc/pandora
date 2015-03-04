@@ -28,16 +28,16 @@ To run the tests:
 
 # What is currently in?
 
-ExampleServiceApplication - Main class that start all things.
+SiriusServiceApplication - Main class that start all things.
 Here you can setup your resources, healthChecks, writers.
 At least one resource and healthCheck is needed.
 
-ExampleConfiguration - Contains whatever you want.
+SiriusConfiguration - Contains whatever you want.
 Data here are created from example.yaml by magic(reflection)
 
-ExampleResource - Controller handling your requests.
+SiriusResource - Controller handling your requests.
 Contains entry points, and logic what, and how service should return
 
-ExampleHealthCheck - Self explanation class
+SiriusHealthCheck - Self explanation class
 
 banner.txt - [Why this is important](https://dropwizard.github.io/dropwizard/manual/core.html#banners)

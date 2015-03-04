@@ -1,6 +1,6 @@
-package com.wikia.exampleservice.domain.builder;
+package com.wikia.siriusservice.domain.builder;
 
-import com.wikia.exampleservice.domain.SimplePojo;
+import com.wikia.siriusservice.domain.SimplePojo;
 
 ///Builder was built by Builder Generator (Plugin in InteliJ)
 public class SimplePojoBuilder {
