@@ -5,12 +5,11 @@ import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 import com.wikia.exampleservice.configuration.ExampleConfiguration;
 import com.wikia.exampleservice.health.ExampleHealthCheck;
 import com.wikia.exampleservice.resources.ExampleResource;
+import com.wikia.pandora.core.redis.RedisBundle;
+import com.wikia.pandora.core.redis.RedisFactory;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-
-import com.bendb.dropwizard.redis.JedisBundle;
-import com.bendb.dropwizard.redis.JedisFactory;
 
 public class ExampleServiceApplication extends Application<ExampleConfiguration> {
 
@@ -26,9 +25,9 @@ public class ExampleServiceApplication extends Application<ExampleConfiguration>
 
   @Override
   public void initialize(Bootstrap<ExampleConfiguration> bootstrap) {
-    bootstrap.addBundle(new JedisBundle<ExampleConfiguration>() {
+    bootstrap.addBundle(new RedisBundle<ExampleConfiguration>() {
         @Override
-        public JedisFactory getJedisFactory(ExampleConfiguration configuration) {
+        public RedisFactory getJedisFactory(ExampleConfiguration configuration) {
             return configuration.getJedisFactory();
         }
     });
