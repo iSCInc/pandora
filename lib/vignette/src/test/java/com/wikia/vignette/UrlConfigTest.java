@@ -9,7 +9,6 @@ public class UrlConfigTest {
   public void testBuilder() {
     final UrlConfig uc = new UrlConfig.Builder()
         .isArchive(true)
-        .replaceThumbnail(true)
         .timestamp(1234)
         .relativePath("a/ab/foo.png")
         .bucket("muppet")
@@ -17,7 +16,6 @@ public class UrlConfigTest {
         .domainShardCount(3)
         .build();
     assertTrue(uc.isArchive);
-    assertTrue(uc.replaceThumbnail);
     assertEquals((Integer)3, uc.domainShardCount);
     assertEquals(uc.relativePath, "a/ab/foo.png");
   }
@@ -26,7 +24,6 @@ public class UrlConfigTest {
   public void testBuilderStateException() {
     final UrlConfig uc = new UrlConfig.Builder()
         .isArchive(true)
-        .replaceThumbnail(true)
         .timestamp(12343)
         .relativePath("a/ab/foo.png")
         .build();

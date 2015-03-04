@@ -15,7 +15,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
+/**
+ * UrlGenerator represents a thumbnail/original image url built using the data from a UrlConfig
+ */
 public class UrlGenerator {
   public static final String FORMAT_WEBP                  = "webp";
   public static final String FORMAT_JPG                   = "jpg";
@@ -31,8 +33,6 @@ public class UrlGenerator {
 
   private List<NameValuePair> queryParams = new ArrayList<>();
 
-  public final ImageType imageType;
-
   public final Optional<Integer> xOffset;
   public final Optional<Integer> yOffset;
 
@@ -45,12 +45,11 @@ public class UrlGenerator {
     width = builder.width;
     height = builder.height;
     mode = builder.mode;
-    queryParams = builder.queryParams;
-    imageType = builder.imageType;
     xOffset = builder.xOffset;
     yOffset = builder.yOffset;
     windowWidth = builder.windowWidth;
     windowHeight = builder.windowHeight;
+    queryParams = builder.queryParams;
   }
 
   public String path() {
@@ -60,7 +59,7 @@ public class UrlGenerator {
   public String imagePath() {
     return String.format("%s/%s/%s/revision/%s",
                          config.bucket,
-                         imageType,
+                         config.imageType,
                          config.relativePath,
                          getRevision()
     );
@@ -167,48 +166,61 @@ public class UrlGenerator {
   public static final class Builder {
     private UrlConfig config;
     private ThumbnailMode mode = ThumbnailMode.ORIGINAL;
-    private ImageType imageType = ImageType.IMAGES;
     private Optional<Integer> width;
     private Optional<Integer> height;
     private Optional<Integer> xOffset;
     private Optional<Integer> yOffset;
     private Optional<Integer> windowWidth;
     private Optional<Integer> windowHeight;
+    private List<NameValuePair> queryParams;
 
-    private List<NameValuePair> queryParams = new ArrayList<>();
+    public Builder(UrlConfig config) {
+      if (config == null) {
+        throw new IllegalStateException("config cannot be null");
+      }
 
-    public Builder() {
+      this.config = config;
+      queryParams = new ArrayList<>(config.queryParams);
     }
 
+    /**
+     * sets the generated image thumbnail to a specific mode
+     * @param mode
+     * @return UrlGenerator.Builder
+     */
     public Builder mode(ThumbnailMode mode) {
       this.mode = mode;
       return this;
     }
 
+    /**
+     * convert the image to the specified format
+     * @param format
+     * @return UrlGenerator.Builder
+     */
     public Builder format(String format) {
       queryParams.add(new BasicNameValuePair("format", format));
       return this;
     }
 
-    public Builder pathPrefix(String pathPrefix) {
-      queryParams.add(new BasicNameValuePair("path-prefix", pathPrefix));
-      return this;
-    }
-
+    /**
+     * whether the generated thumbnail should be regenerated (does not affect originals)
+     * @param replace
+     * @return UrlGenerator.Builder
+     */
     public Builder replace(Boolean replace) {
-      if (replace) {
-        queryParams.add(new BasicNameValuePair("replace", "true"));
-      }
+      queryParams.add(new BasicNameValuePair("replace", replace.toString()));
       return this;
     }
 
+    /**
+     * set the background color (if any) to the specified color.
+     * See http://www.imagemagick.org/script/color.php
+     * @param fill
+     * @return UrlGenerator.Builder
+     */
     public Builder fill(String fill) {
       queryParams.add(new BasicNameValuePair("fill", fill));
-      return this;
-    }
-
-    public Builder config(UrlConfig config) {
-      this.config = config;
       return this;
     }
 
@@ -230,11 +242,11 @@ public class UrlGenerator {
       return this;
     }
 
-    public Builder imageType(ImageType imageType) {
-      this.imageType = imageType;
-      return this;
-    }
-
+    /**
+     * when using window-crop or window-crop-fixed modes, set the starting x value of the window
+     * @param xOffset
+     * @return UrlGenerator.Builder
+     */
     public Builder xOffset(Integer xOffset) {
       return xOffset(Optional.of(xOffset));
     }
@@ -244,6 +256,11 @@ public class UrlGenerator {
       return this;
     }
 
+    /**
+     * when using window-crop or window-crop-fixed modes, set the starting y value of the window
+     * @param yOffset
+     * @return UrlGenerator.Builder
+     */
     public Builder yOffset(Integer yOffset) {
       return yOffset(Optional.of(yOffset));
     }
@@ -253,8 +270,13 @@ public class UrlGenerator {
       return this;
     }
 
-    public Builder windowWidth(Integer windowWith) {
-      return windowWidth(Optional.of(windowWith));
+    /**
+     * when using window-crop or window-crop-fixed modes, set the width of the window
+     * @param windowWidth
+     * @return UrlGenerator.Builder
+     */
+    public Builder windowWidth(Integer windowWidth) {
+      return windowWidth(Optional.of(windowWidth));
     }
 
     public Builder windowWidth(Optional<Integer> windowWidth) {
@@ -262,6 +284,11 @@ public class UrlGenerator {
       return this;
     }
 
+    /**
+     * when using window-crop or window-crop-fixed modes, set the height of the window
+     * @param windowHeight
+     * @return UrlGenerator.Builder
+     */
     public Builder windowHeight(Integer windowHeight) {
       return windowHeight(Optional.of(windowHeight));
     }
@@ -270,6 +297,8 @@ public class UrlGenerator {
       this.windowHeight = windowHeight;
       return this;
     }
+
+    /** Use any of the thumbnailing modes https://github.com/Wikia/vignette#thumbnailing-modes */
 
     public Builder original() {
       return mode(ThumbnailMode.ORIGINAL);
@@ -321,6 +350,8 @@ public class UrlGenerator {
       return this;
     }
 
+    /** convenience shortcuts for some common output formats */
+
     public Builder webp() {
       return format(UrlGenerator.FORMAT_WEBP);
     }
@@ -329,16 +360,8 @@ public class UrlGenerator {
       return format(UrlGenerator.FORMAT_JPG);
     }
 
-    public Builder avatar() {
-      return imageType(ImageType.AVATARS);
-    }
-
 
     public UrlGenerator build() {
-      if (config == null) {
-        throw new IllegalStateException("config cannot be null");
-      }
-
       return new UrlGenerator(this);
     }
   }

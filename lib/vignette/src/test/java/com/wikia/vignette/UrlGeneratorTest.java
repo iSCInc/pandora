@@ -10,7 +10,6 @@ public class UrlGeneratorTest {
   protected UrlConfig.Builder sampleConfig() {
     return new UrlConfig.Builder()
         .isArchive(false)
-        .replaceThumbnail(true)
         .timestamp(12343)
         .relativePath("a/ab/foo.png")
         .baseURL("http://images.vignette.com")
@@ -19,14 +18,14 @@ public class UrlGeneratorTest {
 
   @Test(expected=IllegalStateException.class)
   public void testModePathThumbnailErrorWidth() {
-    String path = new UrlGenerator.Builder()
+    String path = new UrlGenerator.Builder(null)
         .thumbnail()
         .build().modePath();
   }
 
   @Test(expected=IllegalStateException.class)
   public void testModePathThumbnailErrorHeight() {
-    String path = new UrlGenerator.Builder()
+    String path = new UrlGenerator.Builder(null)
         .thumbnail()
         .width(200)
         .build().modePath();
@@ -34,8 +33,7 @@ public class UrlGeneratorTest {
 
   @Test
   public void testModePathOriginal() {
-    UrlGenerator generator = new UrlGenerator.Builder()
-        .config(sampleConfig().build())
+    UrlGenerator generator = new UrlGenerator.Builder(sampleConfig().build())
         .original()
         .build();
     String modePath = generator.modePath();
@@ -44,8 +42,7 @@ public class UrlGeneratorTest {
 
   @Test
   public void testModePathThumbnail() {
-    UrlGenerator generator = new UrlGenerator.Builder()
-        .config(sampleConfig().build())
+    UrlGenerator generator = new UrlGenerator.Builder(sampleConfig().build())
         .width(200)
         .height(200)
         .thumbnail()
@@ -55,8 +52,7 @@ public class UrlGeneratorTest {
 
   @Test
   public void testPathThumbnail() {
-    UrlGenerator generator = new UrlGenerator.Builder()
-        .config(sampleConfig().build())
+    UrlGenerator generator = new UrlGenerator.Builder(sampleConfig().build())
         .width(200)
         .height(200)
         .thumbnail()
@@ -66,8 +62,7 @@ public class UrlGeneratorTest {
 
   @Test
   public void testImagePathOriginal() {
-    UrlGenerator generator = new UrlGenerator.Builder()
-        .config(sampleConfig().build())
+    UrlGenerator generator = new UrlGenerator.Builder(sampleConfig().build())
         .original()
         .build();
 
@@ -76,14 +71,14 @@ public class UrlGeneratorTest {
 
   @Test
   public void testUrlThumbnail() {
-    UrlGenerator generator = new UrlGenerator.Builder()
-        .config(sampleConfig().build())
+    UrlGenerator generator = new UrlGenerator.Builder(sampleConfig().build())
         .width(200)
         .height(200)
         .thumbnail()
+        .replace(true)
         .build();
     try {
-      assertEquals("http://images.vignette.com/tests/images/a/ab/foo.png/revision/latest/thumbnail/width/200/height/200?cb=12343", generator.url());
+      assertEquals("http://images.vignette.com/tests/images/a/ab/foo.png/revision/latest/thumbnail/width/200/height/200?cb=12343&replace=true", generator.url());
     } catch (URISyntaxException e) {
       fail("URISyntaxException should not be thrown: " + e.getMessage());
     }
@@ -91,11 +86,13 @@ public class UrlGeneratorTest {
 
   @Test
   public void testUrlThumbnailQueryParams() {
-    UrlGenerator generator = new UrlGenerator.Builder()
-        .config(sampleConfig().build())
+    UrlConfig config = sampleConfig()
+        .pathPrefix("es")
+        .build();
+
+    UrlGenerator generator = new UrlGenerator.Builder(config)
         .width(200)
         .height(200)
-        .pathPrefix("es")
         .replace(true)
         .fill("black")
         .thumbnail()
@@ -109,16 +106,14 @@ public class UrlGeneratorTest {
 
   @Test
   public void testComputeShardStringZero() {
-    UrlGenerator generator = new UrlGenerator.Builder()
-        .config(sampleConfig().domainShardCount(0).build())
+    UrlGenerator generator = new UrlGenerator.Builder(sampleConfig().domainShardCount(0).build())
         .build();
     assertEquals("", generator.computeShardString("/a/ab/foo.png"));
   }
 
   @Test
   public void testComputeShardStringNonZero() {
-    UrlGenerator generator = new UrlGenerator.Builder()
-        .config(sampleConfig().domainShardCount(1).build())
+    UrlGenerator generator = new UrlGenerator.Builder(sampleConfig().domainShardCount(1).build())
         .build();
     assertNotEquals("", generator.computeShardString("/a/ab/foo.png"));
   }
@@ -126,8 +121,7 @@ public class UrlGeneratorTest {
   @Test
   public void testDomainShardZero() {
     UrlConfig config = sampleConfig().build();
-    UrlGenerator generator = new UrlGenerator.Builder()
-        .config(config)
+    UrlGenerator generator = new UrlGenerator.Builder(config)
         .build();
     String url = generator.domainShard(config.baseURL, "/a/ab/foo.png");
     assertEquals(config.baseURL, url);
@@ -139,8 +133,7 @@ public class UrlGeneratorTest {
         .domainShardCount(1)
         .baseURL("http://vignette<SHARD>.wikia.com")
         .build();
-    UrlGenerator generator = new UrlGenerator.Builder()
-        .config(config)
+    UrlGenerator generator = new UrlGenerator.Builder(config)
         .build();
     String url = generator.domainShard(config.baseURL, "/a/ab/foo.png");
     assertEquals("http://vignette1.wikia.com", url);
