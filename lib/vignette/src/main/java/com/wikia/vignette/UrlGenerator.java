@@ -109,7 +109,7 @@ public class UrlGenerator {
   }
 
   protected void validate(Optional optional, String property) {
-    if (!optional.isPresent()) {
+    if (optional == null || !optional.isPresent()) {
       String message = String.format("error: %s is required for mode %s", property, mode);
       IllegalStateException e = new IllegalStateException(message);
       LoggerFactory.getLogger(UrlGenerator.class).error(message, e);
