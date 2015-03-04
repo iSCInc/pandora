@@ -27,9 +27,9 @@ To run the tests:
 
 # Dev Notes
 
-This project uses [lombok](http://projectlombok.org) and (Guice)[https://github.com/google/guice]
+This project uses [lombok](http://projectlombok.org) and [Guice](https://github.com/google/guice)
 To get this to work with IntelliJ you must enable
-(Annotation Processing)[https://www.jetbrains.com/idea/help/configuring-annotation-processing.html]
+[Annotation Processing](https://www.jetbrains.com/idea/help/configuring-annotation-processing.html)
 
 # What is currently in?
 
