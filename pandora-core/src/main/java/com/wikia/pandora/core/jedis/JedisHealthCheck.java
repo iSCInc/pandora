@@ -15,8 +15,8 @@ public class JedisHealthCheck extends HealthCheck {
     @Override
     protected HealthCheck.Result check() throws Exception {
         try (Jedis jedis = pool.getResource()) {
-            final String pong = jedis.ping();
-            if ("PONG".equals(pong)) {
+            final String answer = jedis.ping();
+            if (answer.equals("PONG")) {
                 return HealthCheck.Result.healthy();
             }
         }
