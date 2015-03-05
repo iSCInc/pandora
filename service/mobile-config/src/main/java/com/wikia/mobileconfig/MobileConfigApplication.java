@@ -7,10 +7,8 @@ import com.wikia.mobileconfig.gateway.AppsDeployerListContainer;
 import com.wikia.mobileconfig.health.AppsDeployerHealthCheck;
 import com.wikia.mobileconfig.health.MobileConfigHealthCheck;
 import com.wikia.mobileconfig.resources.ApplicationsResource;
-import com.wikia.mobileconfig.resources.ImageResource;
 import com.wikia.mobileconfig.resources.MobileConfigResource;
 import com.wikia.mobileconfig.service.HttpConfigurationService;
-import com.wikia.mobileconfig.service.ImageService;
 import com.wikia.pandora.core.consul.ConsulBundle;
 import com.wikia.pandora.core.consul.ConsulConfig;
 import com.wikia.pandora.core.consul.config.ConsulVariableInterpolationBundle;
@@ -56,10 +54,6 @@ public class MobileConfigApplication extends Application<MobileConfigConfigurati
         environment,
         configuration
     );
-    ImageService imageService = new ImageService(
-        environment,
-        configuration
-    );
     AppsDeployerListContainer listService = new AppsDeployerListContainer(environment, configuration);
 
     final MobileConfigHealthCheck healthCheck = new MobileConfigHealthCheck();
@@ -74,16 +68,11 @@ public class MobileConfigApplication extends Application<MobileConfigConfigurati
         mobileConfig =
         new MobileConfigResource(configService, listService);
 
-    final ImageResource
-        image =
-        new ImageResource(imageService);
-
     final ApplicationsResource
         appList =
         new ApplicationsResource(listService);
 
     environment.jersey().register(mobileConfig);
-    environment.jersey().register(image);
     environment.jersey().register(appList);
     environment.jersey().register(JaxRsHalBuilderSupport.class);
   }

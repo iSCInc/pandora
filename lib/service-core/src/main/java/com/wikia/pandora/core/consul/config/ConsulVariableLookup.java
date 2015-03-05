@@ -27,7 +27,11 @@ public class ConsulVariableLookup extends StrLookup {
 
     String variable = matcher.group(1);
     String defaultValue = matcher.group(3);
-    String value = keyValueConfig.get(variable);
+    String value = null;
+
+    if (keyValueConfig != null) {
+      value = keyValueConfig.get(variable);
+    }
 
     if (value == null) {
       if (defaultValue != null) {
