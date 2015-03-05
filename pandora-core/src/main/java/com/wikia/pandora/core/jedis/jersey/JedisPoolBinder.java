@@ -12,7 +12,11 @@ import redis.clients.jedis.JedisPool;
 
 public class JedisPoolBinder extends AbstractBinder {
     private final JedisPool pool;
-    public JedisPoolBinder(JedisPool pool) { this.pool = pool; }
+
+    public JedisPoolBinder(JedisPool pool) {
+        this.pool = pool;
+    }
+
     @Override
     protected void configure() {
 // Always return the same pool when/where ever it's asked for
