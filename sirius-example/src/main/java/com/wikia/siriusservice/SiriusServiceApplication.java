@@ -13,13 +13,15 @@ import io.dropwizard.setup.Environment;
 
 public class SiriusServiceApplication extends Application<SiriusConfiguration> {
 
+  private final String serviceName = "sirius-example";
+
   public static void main(String[] args) throws Exception {
     new SiriusServiceApplication().run(args);
   }
 
   @Override
   public String getName() {
-    return "sirius-example"; // no uppercase letters
+    return this.serviceName;
   }
 
 
