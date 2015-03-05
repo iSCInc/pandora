@@ -1,5 +1,8 @@
 package com.wikia.pandora.core.consul;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import com.codahale.metrics.health.HealthCheck;
 
 import org.eclipse.jetty.server.Server;
@@ -10,15 +13,20 @@ import org.slf4j.LoggerFactory;
 import java.util.Arrays;
 import java.util.Map;
 
-import io.dropwizard.ConfiguredBundle;
+import io.dropwizard.Bundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
-public abstract class ConsulBundle<T> implements ConfiguredBundle<T> {
+public class ConsulBundle implements Bundle {
 
   final static Logger logger = LoggerFactory.getLogger(ConsulBundle.class);
 
-  abstract protected ConsulConfig narrowConfig(T config);
+  private Provider<ConsulConfig> configurationProvider;
+
+  @Inject
+  public ConsulBundle(Provider<ConsulConfig> configurationProvider) {
+    this.configurationProvider = configurationProvider;
+  }
 
   protected boolean allHealtchecksPassed(Environment environment) {
     return environment
@@ -60,15 +68,13 @@ public abstract class ConsulBundle<T> implements ConfiguredBundle<T> {
   }
 
   @Override
-  public void run(T appConfiguration, Environment environment) throws Exception {
-    ConsulConfig configuration = narrowConfig(appConfiguration);
-
-    if (configuration == null) {
+  public void run(Environment environment) {
+    if (this.configurationProvider.get() == null) {
       logger.warn("Missing Consul configuration - skipping Consul initialization");
       return;
     }
 
-    ConsulWrapper consul = new ConsulWrapper(configuration, environment.getName());
+    ConsulWrapper consul = new ConsulWrapper(this.configurationProvider.get(), environment.getName());
     environment
         .lifecycle()
         .addServerLifecycleListener(
@@ -87,7 +93,7 @@ public abstract class ConsulBundle<T> implements ConfiguredBundle<T> {
                       heartbeat =
                       new ConsulHeartbeat(consul.getConnector(), serviceId);
                   logger.info("Scheduling Consul heartbeats");
-                  scheduleHeartbeat(environment, configuration, heartbeat::send, true);
+                  scheduleHeartbeat(environment, this.configurationProvider.get(), heartbeat::send, true);
                 })
         );
   }
@@ -95,4 +101,6 @@ public abstract class ConsulBundle<T> implements ConfiguredBundle<T> {
   @Override
   public void initialize(Bootstrap<?> bootstrap) {
   }
+
+
 }

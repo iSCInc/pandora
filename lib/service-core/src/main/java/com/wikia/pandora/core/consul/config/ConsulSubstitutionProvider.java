@@ -21,6 +21,8 @@ public class ConsulSubstitutionProvider implements ConfigurationSourceProvider {
 
   @Override
   public InputStream open(String path) throws IOException {
+    System.err.println("asffasfasfasfas");
+    System.err.println(path);
     String config = convertStreamToString(baseProvider.open(path));
     String substitutedConfig = substitutor.replace(config);
     return new ByteArrayInputStream(substitutedConfig.getBytes());

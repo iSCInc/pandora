@@ -1,5 +1,8 @@
 package com.wikia.mobileconfig;
 
+import com.google.inject.Module;
+
+import com.hubspot.dropwizard.guice.GuiceBundle;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
@@ -12,7 +15,6 @@ import com.wikia.mobileconfig.resources.MobileConfigResource;
 import com.wikia.mobileconfig.service.HttpConfigurationService;
 import com.wikia.mobileconfig.service.ImageService;
 import com.wikia.pandora.core.consul.ConsulBundle;
-import com.wikia.pandora.core.consul.ConsulConfig;
 import com.wikia.pandora.core.consul.config.ConsulVariableInterpolationBundle;
 
 import org.slf4j.Logger;
@@ -25,8 +27,7 @@ import io.dropwizard.setup.Environment;
 public class MobileConfigApplication extends Application<MobileConfigConfiguration> {
 
   public static final RepresentationFactory
-      REPRESENTATION_FACTORY =
-      new StandardRepresentationFactory();
+      REPRESENTATION_FACTORY = new StandardRepresentationFactory();
 
   public static final Logger LOGGER = LoggerFactory.getLogger(MobileConfigApplication.class);
 
@@ -34,20 +35,27 @@ public class MobileConfigApplication extends Application<MobileConfigConfigurati
     new MobileConfigApplication().run(args);
   }
 
+  public Module getModule() {
+    return new MobileConfigModule();
+  }
+
   @Override
   public String getName() {
-    return "mobile-config";
+    return MobileConfigModule.APP_NAME;
   }
 
   @Override
   public void initialize(Bootstrap<MobileConfigConfiguration> bootstrap) {
-    bootstrap.addBundle(new ConsulVariableInterpolationBundle());
-    bootstrap.addBundle(new ConsulBundle<MobileConfigConfiguration>() {
-      @Override
-      protected ConsulConfig narrowConfig(MobileConfigConfiguration config) {
-        return config.getConsulConfig();
-      }
-    });
+    GuiceBundle<MobileConfigConfiguration> guiceBundle =
+        GuiceBundle.<MobileConfigConfiguration>newBuilder()
+            .addModule(getModule())
+            .setConfigClass(MobileConfigConfiguration.class)
+            .enableAutoConfig(
+                ConsulVariableInterpolationBundle.class.getPackage().getName(),
+                ConsulBundle.class.getPackage().getName()
+            ).build();
+
+    bootstrap.addBundle(guiceBundle);
   }
 
   @Override
@@ -60,7 +68,9 @@ public class MobileConfigApplication extends Application<MobileConfigConfigurati
         environment,
         configuration
     );
-    AppsDeployerListContainer listService = new AppsDeployerListContainer(environment, configuration);
+    AppsDeployerListContainer
+        listService =
+        new AppsDeployerListContainer(environment, configuration);
 
     final MobileConfigHealthCheck healthCheck = new MobileConfigHealthCheck();
     environment.healthChecks().register("mobile-config", healthCheck);
