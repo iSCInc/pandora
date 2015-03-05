@@ -44,7 +44,6 @@ public class SiriusServiceApplication extends Application<SiriusConfiguration> {
 
     StandardRepresentationFactory representationFactory = new StandardRepresentationFactory();
     SiriusResource exampleResource = new SiriusResource(representationFactory, configuration);
-    // environment.jersey().register(new JedisFactory(configuration));
     environment.jersey().register(exampleResource);
 
     //Optional
