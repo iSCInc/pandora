@@ -10,38 +10,15 @@ import javax.validation.constraints.NotNull;
 /**
  * A factory for creating configured {@link JedisPool} instances.
  *
- * <p/>
- * <strong>Configuration Parameters</strong>
- * <table>
- * <tr>
- * <th>Name</th>
- * <th>Default Value</th>
- * <th>Description</th>
- * </tr>
- * <tr>
- * <td>endpoint</td>
- * <td><code>[required]</code></td>
- * <td>
- * The redis server's host and port, i.e. <code>localhost:6379</code>.
- * If no port is given, the default redis port {@value #DEFAULT_PORT} is assumed.
- * </td>
- * </tr>
- * <tr>
- * <td>minIdle</td>
- * <td><code>0</code></td>
- * <td>The minimum number of idle connections to maintain in the connection pool.</td>
- * </tr>
- * <tr>
- * <td>maxIdle</td>
- * <td><code>0</code></td>
- * <td>The maximum number of idle connections to maintain in the connection pool.</td>
- * </tr>
- * <tr>
- * <td>maxTotal</td>
- * <td><code>{@value JedisFactory#DEFAULT_MAX_TOTAL}</code></td>
- * <td>The maximum number of connections allowed in the connection pool.</td>
- * </tr>
- * </table>
+ * Configuration Parameters
+ * [Name: Default Value - Description]
+ *
+ * * endpoint [required]: localhost:6379 - The redis server's host and port, i.e. localhost:6379.
+ *     If no port is given, the default redis port {@value #DEFAULT_PORT} is assumed.
+ * * minIdle: 0 - The minimum number of idle connections to maintain in the connection pool.
+ * * maxIdle: 0 - The maximum number of idle connections to maintain in the connection pool.
+ * * maxTotal: {@value JedisFactory#DEFAULT_MAX_TOTAL} - The maximum number of connections allowed in the connection pool.
+ *
  */
 public class JedisFactory {
     public static final int DEFAULT_PORT = 6379;
