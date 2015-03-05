@@ -9,25 +9,28 @@ import java.util.stream.IntStream;
 /**
  * THIS IS TEMPORARY THROWAWAY CODE
  */
-public class ForumDAO {
-  
+public class ForumDAO extends ContentDAO {
+
+  public ForumDAO() {
+    super();
+    createContent(1, new Forum(ROOT_ID, -1, "Root", new ArrayList<>(), new ArrayList<>()));
+  }
   private static final Map<Integer, Forum> FORUMS = new HashMap<>();
 
   static {
     FORUMS.put(1, new Forum(1, -1, "Root", new ArrayList<>(), new ArrayList<>()));
   }
 
+  private static final int ROOT_ID = 1;
   private static int SEQUENCE = 2;
 
-  public List<Forum> retrieveForums(int siteId) {
-    return ForumDAO.FORUMS.get(1).getChildren();
+  public ArrayList<Forum> retrieveForums(int siteId) {
+    return getItems(siteId, Forum.class);
+//    return ForumDAO.FORUMS.get(1).getChildren();
   }
-  
-  public Optional<Forum> retrieveForum(int siteId, int forumId) {
-    Forum retrievedForum = null;
-    retrievedForum = ForumDAO.FORUMS.get(forumId);
 
-    return Optional.ofNullable(retrievedForum);
+  public Forum retrieveForum(int siteId, int forumId) {
+    return getContent(siteId, forumId, Forum.class);
   }
 
 
@@ -50,38 +53,38 @@ public class ForumDAO {
   }
 
   public Optional<Forum> createForum(int siteId, Forum forum) {
-    Optional<Forum> parentForum = retrieveForum(siteId, forum.getParentId());
-    
-    if (parentForum.isPresent()) {
-      
-      boolean foundExisting = false;
-      for(Forum childForum: parentForum.get().getChildren()) {
-        if (childForum.getName().equalsIgnoreCase(forum.getName())) {
-          foundExisting = true;
-          break;
-        }
-      }
-      if (!foundExisting) {
-        int forumId = ForumDAO.SEQUENCE++;
-        forum.setId(forumId);
-        parentForum.get().getChildren().add(forum);
-        ForumDAO.FORUMS.put(forumId, forum);
-      } else {
-        forum = null;
+    Forum parentForum = retrieveForum(siteId, forum.getParentId());
+    boolean foundExisting = false;
+
+    if (parentForum == null) {
+      return null;
+    }
+    for (Forum childForum : parentForum.getChildren()) {
+      if (childForum.getName().equalsIgnoreCase(forum.getName())) {
+        foundExisting = true;
+        break;
       }
     }
-    
+
+    if (!foundExisting) {
+      int forumId = ForumDAO.SEQUENCE++;
+      forum.setId(forumId);
+      parentForum.getChildren().add(forum);
+      forum = createContent(siteId, forum);
+      createContent(siteId, parentForum);
+    }
+
     return Optional.ofNullable(forum);
   }
 
   public Optional<Forum> deleteForum(int siteId, int forumId) {
-    Preconditions.checkArgument(forumId != 1, "Cannot delete the root forum.");
+    Preconditions.checkArgument(forumId != ROOT_ID, "Cannot delete the root forum.");
     Forum deletedForum = null;
     if (ForumDAO.FORUMS.containsKey(forumId)) {
       deletedForum = ForumDAO.FORUMS.remove(forumId);
       // delete the forum from the Root's children then 
       // delete forum from children's children (not recursive)
-      Forum rootForum = retrieveForum(siteId, 1).get();
+      Forum rootForum = retrieveForum(siteId, 1);
       rootForum.getChildren().remove(deletedForum);
       for(Forum forum: rootForum.getChildren()) {
         forum.getChildren().remove(deletedForum);
@@ -92,10 +95,11 @@ public class ForumDAO {
   }
 
   public Optional<Forum> updateForum(int siteId, Forum forum) {
-    Optional<Forum> retrievedForum = retrieveForum(siteId, forum.getId());
+    Forum retrievedForum = retrieveForum(siteId, forum.getId());
     
-    if (retrievedForum.isPresent()) {
-      retrievedForum.get().setName(forum.getName());
+    if (retrievedForum != null) {
+      retrievedForum.setName(forum.getName());
+      createContent(siteId, forum);
     }
 
     return Optional.empty();

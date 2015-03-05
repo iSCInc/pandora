@@ -15,14 +15,6 @@ import java.util.stream.IntStream;
 
 public class PostService extends ContentService {
 
-  public static String getType() {
-    return "post";
-  }
-
-  public PostService() {
-    super();
-  }
-
   public List<Post> createPosts() {
     return createPosts(0, new Random().nextInt(100));
   }

@@ -23,10 +23,6 @@ public class ForumService extends ContentService {
   @NonNull
   private final ForumDAO forumDAO;
 
-  public static String getType() {
-    return "forum";
-  }
-
   @Inject
   public ForumService(ThreadService threadService, ForumDAO forumDAO) {
     super();
@@ -42,17 +38,17 @@ public class ForumService extends ContentService {
     return Optional.of(forumRoot);
   }
 
-  public Optional<Forum> getForum(int siteId, int forumId) {
+  public Forum getForum(int siteId, int forumId) {
     return getForum(siteId, forumId, 0, 10);
   }
   
-  public Optional<Forum> getForum(int siteId, int forumId, int offset, int limit) {
-    Optional<Forum> forum = forumDAO.retrieveForum(siteId, forumId);
+  public Forum getForum(int siteId, int forumId, int offset, int limit) {
+    Forum forum = forumDAO.retrieveForum(siteId, forumId);
     
-    if (forum.isPresent()) {
+    if (forum != null) {
       List<ForumThread> threads = threadService.retrieveForumThreads(
           siteId, forumId, offset, limit);
-      forum.get().setThreads(threads);
+      forum.setThreads(threads);
     }
 
     return forum;
@@ -69,7 +65,7 @@ public class ForumService extends ContentService {
   public Optional<Forum> updateForum(int siteId, Forum forum) {
     Optional<Forum> updatedForum = forumDAO.updateForum(siteId, forum);
     
-    if (updatedForum.isPresent()) {
+    if (updatedForum != null) {
       return updatedForum;
     }
     

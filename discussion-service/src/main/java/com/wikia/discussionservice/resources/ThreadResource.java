@@ -78,7 +78,7 @@ public class ThreadResource {
     Optional<ForumThread> forumThread = threadService.getForumThread(siteId.get(), threadId.get(),
         offset.get(), limit.get());
 
-    if (forumThread.isPresent()) {
+    if (forumThread != null) {
       Representation representation = threadMapper.buildRepresentation(
           siteId.get(), forumThread.get(), uriInfo, responseGroup);
 
@@ -98,9 +98,9 @@ public class ThreadResource {
                               @Valid Post post,
                               @Context HttpServletRequest request,
                               @Context UriInfo uriInfo) {
-    Optional<Forum> forum = forumService.getForum(siteId.get(), forumId.get());
+    Forum forum = forumService.getForum(siteId.get(), forumId.get());
 
-    if (!forum.isPresent()) {
+    if (forum == null) {
       // TODO: wrap this in an ErrorResponse builder
       ErrorResponse error = new ErrorResponse();
       // internal error code
@@ -118,7 +118,7 @@ public class ThreadResource {
     Optional<ForumThread> createdThread = threadService.createThread(siteId.get(),
         forumId.get(), post);
 
-    if (createdThread.isPresent()) {
+    if (createdThread != null) {
       Representation representation = threadMapper.buildRepresentation(siteId.get(),
           createdThread.get(), uriInfo);
 

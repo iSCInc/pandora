@@ -41,7 +41,7 @@ public class TestResource {
   public String getValue(@NotNull @PathParam("siteId") IntParam siteId,
                                   @NotNull @PathParam("key") IntParam key) {
 
-    String value = testService.getRedisValue(siteId.get(), testService.getType(), key.get());
+    String value = testService.getRedisValue(siteId.get(), "test"/*TODO*/, key.get());
     return value;
   }
 
@@ -59,8 +59,8 @@ public class TestResource {
               new BufferedReader(new InputStreamReader(
                   request.getInputStream())), HashMap.class);
 
-      String value = (String) result.getOrDefault("value", "default name");
-      testService.setRedisValue(siteId.get(), TestService.getType(), key.get(), value);
+//      String value = (String) result.getOrDefault("value", "default name");
+      testService.setRedisValue(siteId.get(), "test"/*TODO*/, key.get(), result.toString());
       status = "Success!";
 
     } catch (IOException e) {

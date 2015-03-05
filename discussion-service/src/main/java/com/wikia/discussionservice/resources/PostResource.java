@@ -54,7 +54,7 @@ public class PostResource {
 
     Optional<Post> post = postService.getPost(siteId.get(), postId.get());
 
-    if (post.isPresent()) {
+    if (post != null) {
       Representation representation = postMapper.buildRepresentation(
           siteId.get(), post.get(), uriInfo, responseGroup);
 

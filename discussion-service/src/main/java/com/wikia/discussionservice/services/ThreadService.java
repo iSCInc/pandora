@@ -29,10 +29,6 @@ public class ThreadService extends ContentService {
     this.postService = postService;
   }
 
-  public static String getType() {
-    return "thread";
-  }
-
   public Optional<ForumThread> getForumThread(int siteId, int threadId, int offset, int limit) {
     Optional<ForumThread> forumThread = threadDAO.getForumThread(siteId, threadId, offset, limit);
     return forumThread;

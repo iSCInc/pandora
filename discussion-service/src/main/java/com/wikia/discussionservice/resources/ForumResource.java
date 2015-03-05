@@ -2,6 +2,8 @@ package com.wikia.discussionservice.resources;
 
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Preconditions;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.wikia.discussionservice.domain.ErrorResponse;
@@ -22,7 +24,12 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.Optional;
 
 @Path("/")
@@ -55,7 +62,7 @@ public class ForumResource {
 
     Optional<ForumRoot> forumRoot = forumService.getForums(siteId.get());
 
-    if (forumRoot.isPresent()) {
+    if (forumRoot != null) {
       Representation representation = forumMapper.buildRepresentation(siteId.get(), 
           forumRoot.get(), uriInfo, responseGroup);
       return Response.ok(representation)
@@ -80,15 +87,15 @@ public class ForumResource {
     Preconditions.checkArgument(forumId.get() >= 1,
         "Offset was %s but expected 1 or greater", forumId.get());
 
-    Optional<Forum> forum = forumService.getForum(siteId.get(), forumId.get(), 
+    Forum forum = forumService.getForum(siteId.get(), forumId.get(),
         offset.get(), limit.get());
 
-    if (forum.isPresent()) {
+    if (forum != null) {
       ResponseGroup responseGroup = ResponseGroup.getResponseGroup(requestedResponseGroup);
       Preconditions.checkNotNull(responseGroup, "Invalid response group");
 
       Representation representation = forumMapper.buildRepresentation(siteId.get(), 
-          forum.get(), uriInfo, responseGroup);
+          forum, uriInfo, responseGroup);
       return Response.ok(representation)
           .build();
     }
@@ -108,7 +115,7 @@ public class ForumResource {
     // TODO: perform validation
     Optional<Forum> createdForum = forumService.createForum(siteId.get(), forum);
 
-    if (createdForum.isPresent()) {
+    if (createdForum != null) {
       Representation representation = 
           forumMapper.buildRepresentation(siteId.get(), createdForum.get(), uriInfo);
       
@@ -132,7 +139,7 @@ public class ForumResource {
       // TODO: perform validation
       Optional<Forum> deletedForum = forumService.deleteForum(siteId.get(), forumId.get());
 
-      if (deletedForum.isPresent()) {
+      if (deletedForum != null) {
         return Response.noContent().build();
       }
     } catch (IllegalArgumentException iae) {
@@ -156,7 +163,7 @@ public class ForumResource {
 
     Optional<Forum> updatedForum = forumService.updateForum(siteId.get(), forum);
 
-    if (updatedForum.isPresent()) {
+    if (updatedForum != null) {
       if (updatedForum.get().getId() == forum.getId()) {
         return Response.noContent().build();
       } else {
