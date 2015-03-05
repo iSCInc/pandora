@@ -43,8 +43,8 @@ public class SiriusServiceApplication extends Application<SiriusConfiguration> {
     environment.healthChecks().register("SimpleHealthCheck", healthCheck);
 
     StandardRepresentationFactory representationFactory = new StandardRepresentationFactory();
-    SiriusResource exampleResource = new SiriusResource(representationFactory, configuration);
-    environment.jersey().register(exampleResource);
+    SiriusResource siriusResource = new SiriusResource(representationFactory, configuration);
+    environment.jersey().register(siriusResource);
 
     //Optional
     environment.jersey().register(JaxRsHalBuilderSupport.class);
