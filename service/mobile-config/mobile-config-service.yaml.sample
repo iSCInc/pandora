@@ -1,0 +1,52 @@
+appsDeployerDomain: ${consul:APP_DEPLOYER_DOMAIN}
+cephDomain: ${consul:CEPH_DOMAIN}
+cephPort: ${consul:CEPH_PORT:80}
+cacheTime: 3600
+httpClient:
+  timeout: 7s
+  connectionTimeout: 7s
+  timeToLive: 1h
+  cookiesEnabled: false
+  maxConnections: 1024
+  maxConnectionsPerRoute: 1024
+  keepAlive: 0ms
+  retries: 0
+  userAgent: mobile-config (dropwizard)
+logging:
+  level: INFO
+  appenders:
+    - type: console
+      threshold: ALL
+      timeZone: UTC
+      target: stdout
+    - type: logstash-socket
+      host: ${consul:LOG_HOST:127.0.0.1}
+      port: ${consul:LOG_PORT:1410}
+      fieldNames:
+        message: rawMessage
+        level: rawLevel
+        tags: rawTags
+        context: rawContext
+      customFields:
+        appname: mobile-config
+metrics:
+  reporters:
+    - type: influxdb
+      host: ${consul:INFLUXDB_HOST:127.0.0.1}
+      port: ${consul:INFLUXDB_HOST:5551}
+      prefix: mobile-config
+      frequency: 5 seconds
+      includes:
+        - com\.wikia\.mobileconfig\.resources\..*
+server:
+  applicationConnectors:
+  - type: http
+    port: 8080
+  adminConnectors:
+  - type: http
+    port: 8081
+consulConfig:
+  tags: ${consul:CONSUL_TAGS:[testing]}
+  consulUri: ${consul:CONSUL_URI:http://localhost:8500}
+  heartbeatInterval: 2s
+  heartbeatTTL: 5s

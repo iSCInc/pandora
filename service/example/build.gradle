@@ -1,0 +1,26 @@
+apply plugin: 'application'
+apply from: rootProject.file('gradle/pandora_common_deps.gradle')
+apply from: rootProject.file('gradle/marathon_deployment.gradle')
+
+version = "0.1.9-SNAPSHOT"
+
+dependencies {
+    compile project(":lib:service-core")
+}
+
+mainClassName = "com.wikia.exampleservice.ExampleServiceApplication"
+
+// configure jvm parameters
+applicationDefaultJvmArgs = [
+        "-Xms100m", "-Xmn128m", "-Xmx300m", "-XX:+UseNUMA", "-XX:+UseCondCardMark", "-XX:+UseBiasedLocking", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC"
+]
+
+// copy example file as a configuration file to the application dist
+applicationDistribution.from("example.yaml.sample") {
+    rename 'example.yaml.sample', "${project.name}.yaml"
+    into 'conf'
+}
+
+run {
+    args 'server', 'example.yaml'
+}

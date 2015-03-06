@@ -14,6 +14,11 @@ Launching unit tests:
 ./gradlew unitTest
 ```
 
+Launching integration tests:
+```bash
+./gradlew integrationTest
+```
+
 Launching all tests:
 ```bash
 ./gradlew test
