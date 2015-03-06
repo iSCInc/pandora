@@ -5,7 +5,7 @@ import com.google.inject.Injector;
 import com.hubspot.dropwizard.guice.GuiceBundle;
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
-import com.wikia.exampleservice.configuration.ExampleConfiguration;
+import com.wikia.exampleservice.configuration.ExampleServiceConfiguration;
 import com.wikia.exampleservice.health.ExampleHealthCheck;
 import com.wikia.exampleservice.resources.ExampleResource;
 import com.wikia.pandora.core.consul.ConsulBundle;
@@ -16,7 +16,7 @@ import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
-public class ExampleServiceApplication extends Application<ExampleConfiguration> {
+public class ExampleServiceApplication extends Application<ExampleServiceConfiguration> {
 
   public static void main(String[] args) throws Exception {
     new ExampleServiceApplication().run(args);
@@ -29,12 +29,12 @@ public class ExampleServiceApplication extends Application<ExampleConfiguration>
 
 
   @Override
-  public void initialize(Bootstrap<ExampleConfiguration> bootstrap) {
-    GuiceBundle<ExampleConfiguration> guiceBundle =
-        GuiceBundle.<ExampleConfiguration>newBuilder()
-            .addModule(new ExampleModule())
+  public void initialize(Bootstrap<ExampleServiceConfiguration> bootstrap) {
+    GuiceBundle<ExampleServiceConfiguration> guiceBundle =
+        GuiceBundle.<ExampleServiceConfiguration>newBuilder()
+            .addModule(new ExampleServiceModule())
             .setInjectorFactory(new GovernatorInjectorFactory())
-            .setConfigClass(ExampleConfiguration.class)
+            .setConfigClass(ExampleServiceConfiguration.class)
             .build();
 
     bootstrap.addBundle(guiceBundle);
@@ -49,7 +49,7 @@ public class ExampleServiceApplication extends Application<ExampleConfiguration>
   }
 
   @Override
-  public void run(ExampleConfiguration configuration, Environment environment) throws Exception {
+  public void run(ExampleServiceConfiguration configuration, Environment environment) throws Exception {
 
     //register healthCheck (mandatory)
     final ExampleHealthCheck healthCheck = new ExampleHealthCheck();

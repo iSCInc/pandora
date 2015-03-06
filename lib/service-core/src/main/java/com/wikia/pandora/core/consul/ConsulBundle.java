@@ -22,10 +22,10 @@ public class ConsulBundle implements ConfiguredBundle<Configuration> {
 
   final static Logger logger = LoggerFactory.getLogger(ConsulBundle.class);
 
-  private Provider<ConsulConfig> configurationProvider;
+  private Provider<ConsulConfiguration> configurationProvider;
 
   @Inject
-  public ConsulBundle(Provider<ConsulConfig> configurationProvider) {
+  public ConsulBundle(Provider<ConsulConfiguration> configurationProvider) {
     this.configurationProvider = configurationProvider;
   }
 
@@ -45,7 +45,7 @@ public class ConsulBundle implements ConfiguredBundle<Configuration> {
   }
 
 
-  protected void scheduleHeartbeat(Environment environment, ConsulConfig config,
+  protected void scheduleHeartbeat(Environment environment, ConsulConfiguration config,
                                    Runnable heartbeat, Boolean runHealthChecks) {
     environment
         .lifecycle()

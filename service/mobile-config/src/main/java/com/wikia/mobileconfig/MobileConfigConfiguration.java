@@ -1,7 +1,8 @@
 package com.wikia.mobileconfig;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.wikia.pandora.core.consul.ConsulConfig;
+import com.wikia.pandora.core.consul.ConsulConfiguration;
+import com.wikia.pandora.core.consul.ProvidesConsulConfiguration;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -11,7 +12,8 @@ import javax.validation.constraints.NotNull;
 import io.dropwizard.Configuration;
 import io.dropwizard.client.HttpClientConfiguration;
 
-public class MobileConfigConfiguration extends Configuration {
+public class MobileConfigConfiguration extends Configuration
+    implements ProvidesConsulConfiguration {
 
   @Valid
   @NotNull
@@ -36,7 +38,7 @@ public class MobileConfigConfiguration extends Configuration {
 
   @Valid
   @JsonProperty
-  private ConsulConfig consulConfig;
+  private ConsulConfiguration consulConfiguration;
 
   public MobileConfigConfiguration() {
     httpClient = new HttpClientConfiguration();
@@ -62,11 +64,11 @@ public class MobileConfigConfiguration extends Configuration {
     return cephPort;
   }
 
-  public ConsulConfig getConsulConfig() {
-    return consulConfig;
+  public ConsulConfiguration getConsulConfiguration() {
+    return consulConfiguration;
   }
 
-  public void setConsulConfig(ConsulConfig consulConfig) {
-    this.consulConfig = consulConfig;
+  public void setConsulConfiguration(ConsulConfiguration consulConfiguration) {
+    this.consulConfiguration = consulConfiguration;
   }
 }

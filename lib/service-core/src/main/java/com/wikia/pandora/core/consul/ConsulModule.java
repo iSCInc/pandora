@@ -1,6 +1,7 @@
 package com.wikia.pandora.core.consul;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Provider;
 import com.google.inject.Provides;
 
 import com.wikia.gradle.ConsulKeyValueConfig;
@@ -10,7 +11,7 @@ import java.net.URISyntaxException;
 
 import javax.inject.Named;
 
-public class ConsulGuiceModule extends AbstractModule {
+public class ConsulModule extends AbstractModule {
 
   public static final String CONSUL_URI_ENV_KEY = "CONSUL_KEY_VALUE_CONFIG_SOURCE";
 
@@ -38,5 +39,11 @@ public class ConsulGuiceModule extends AbstractModule {
     } else {
       return null;
     }
+  }
+
+  @Provides
+  public ConsulConfiguration providesConsulConfiguration(
+      Provider<ProvidesConsulConfiguration> configuration) {
+    return configuration.get().getConsulConfiguration();
   }
 }
