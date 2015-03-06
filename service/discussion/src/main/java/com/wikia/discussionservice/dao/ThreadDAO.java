@@ -43,4 +43,14 @@ public class ThreadDAO extends ContentDAO {
   public Optional<ForumThread> getForumThread(int siteId, int threadId, int offset, int limit) {
     return Optional.ofNullable(getContent(siteId, threadId, ForumThread.class));
   }
+
+  public Optional<ForumThread> deleteThread(int siteId, int threadId) {
+    Optional<ForumThread> deletedThread = getForumThread(siteId, threadId, 0, 1);
+    if (deletedThread.isPresent()) {
+      deleteContent(siteId, threadId, ForumThread.class);
+    }
+
+    return deletedThread;
+  }
+
 }

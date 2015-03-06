@@ -16,11 +16,17 @@ public class ForumDAO extends ContentDAO {
 
   public ForumDAO() {
     super();
-    createContent(1, new Forum(ROOT_ID, -1, "Root", new ArrayList<>(), new ArrayList<>()));
+    createRoot();
   }
 
   private static final int ROOT_ID = 1;
   private static int SEQUENCE = 2;
+
+  private void createRoot() {
+    if (retrieveForum(1, ROOT_ID) == null) {
+      createContent(1, new Forum(ROOT_ID, -1, "Root", new ArrayList<>(), new ArrayList<>()));
+    }
+  }
 
   public ArrayList<Forum> retrieveForums(int siteId) {
     return getItems(siteId, Forum.class);

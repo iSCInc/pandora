@@ -37,4 +37,9 @@ public class ThreadService extends ContentService {
   public Optional<ForumThread> createThread(int siteId, int forumId, Post post) {
     return threadDAO.createThread(siteId, forumId, post);
   }
+
+  public Optional<ForumThread> deleteThread(int siteId, int threadId) {
+    return threadDAO.deleteThread(siteId, threadId);
+  }
+
 }
