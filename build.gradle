@@ -5,7 +5,7 @@ buildscript {
         maven { url "${archivaUrl}/repository/internal" }
     }
     dependencies {
-        classpath "com.wikia.gradle:marathon:0.5.2"
+        classpath "com.wikia.gradle:marathon:0.5.3"
     }
 }
 

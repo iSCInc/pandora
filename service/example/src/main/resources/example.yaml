@@ -29,3 +29,4 @@ consulConfig:
     - auto_testing
   heartbeatInterval: 2s
   heartbeatTTL: 5s
+

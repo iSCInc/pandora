@@ -1,12 +1,16 @@
 package com.wikia.exampleservice;
 
+import com.google.inject.Injector;
+
+import com.hubspot.dropwizard.guice.GuiceBundle;
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 import com.wikia.exampleservice.configuration.ExampleConfiguration;
 import com.wikia.exampleservice.health.ExampleHealthCheck;
 import com.wikia.exampleservice.resources.ExampleResource;
 import com.wikia.pandora.core.consul.ConsulBundle;
-import com.wikia.pandora.core.consul.ConsulConfig;
+import com.wikia.pandora.core.consul.config.ConsulVariableInterpolationBundle;
+import com.wikia.pandora.core.dropwizard.GovernatorInjectorFactory;
 
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
@@ -20,18 +24,28 @@ public class ExampleServiceApplication extends Application<ExampleConfiguration>
 
   @Override
   public String getName() {
-    return "pandora-example"; // no uppercase letters
+    return "example"; // no uppercase letters
   }
 
 
   @Override
   public void initialize(Bootstrap<ExampleConfiguration> bootstrap) {
-    bootstrap.addBundle(new ConsulBundle<ExampleConfiguration>() {
-      @Override
-      protected ConsulConfig narrowConfig(ExampleConfiguration config) {
-        return config.getConsulConfig();
-      }
-    });
+    GuiceBundle<ExampleConfiguration> guiceBundle =
+        GuiceBundle.<ExampleConfiguration>newBuilder()
+            .addModule(new ExampleModule())
+            .setInjectorFactory(new GovernatorInjectorFactory())
+            .setConfigClass(ExampleConfiguration.class)
+            .build();
+
+    bootstrap.addBundle(guiceBundle);
+
+    Injector injector = guiceBundle.getInjector();
+    bootstrap.addBundle(
+        injector.getInstance(ConsulVariableInterpolationBundle.class)
+    );
+    bootstrap.addBundle(
+        injector.getInstance(ConsulBundle.class)
+    );
   }
 
   @Override

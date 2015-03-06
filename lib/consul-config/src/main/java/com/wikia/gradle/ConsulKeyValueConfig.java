@@ -10,8 +10,6 @@ import java.net.URI;
 import java.util.HashMap;
 
 public class ConsulKeyValueConfig {
-  public static final String ENV_KEY = "CONSUL_KEY_VALUE_CONFIG_SOURCE";
-
   protected Consul consul;
   protected HashMap<String, String> config;
   protected String configFolder;
@@ -69,17 +67,6 @@ public class ConsulKeyValueConfig {
     }
 
     return key.replace(configFolderPrefix, "");
-  }
-
-  public static ConsulKeyValueConfig fromEnv() {
-    try {
-      URI uri = new URI(System.getenv(ENV_KEY));
-      return new ConsulKeyValueConfig(uri.getHost(),
-                                      uri.getPort(),
-                                      uri.getPath().substring(1));
-    } catch (Exception e) {
-      return null;
-    }
   }
 
   protected static String getDefaultConfigFolder(String app, String env) {
