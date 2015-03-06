@@ -114,7 +114,7 @@ public class ForumResource {
     // TODO: perform validation
     Optional<Forum> createdForum = forumService.createForum(siteId.get(), forum);
 
-    if (createdForum != null) {
+    if (createdForum.isPresent()) {
       Representation representation = 
           forumMapper.buildRepresentation(siteId.get(), createdForum.get(), uriInfo);
 

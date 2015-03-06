@@ -76,7 +76,7 @@ public class ThreadResource {
     Optional<ForumThread> forumThread = threadService.getForumThread(siteId.get(), threadId.get(),
         offset.get(), limit.get());
 
-    if (forumThread != null) {
+    if (forumThread.isPresent()) {
       Representation representation = threadMapper.buildRepresentation(
           siteId.get(), forumThread.get(), uriInfo, responseGroup);
 

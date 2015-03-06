@@ -6,6 +6,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.util.*;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 /**
@@ -17,18 +18,12 @@ public class ForumDAO extends ContentDAO {
     super();
     createContent(1, new Forum(ROOT_ID, -1, "Root", new ArrayList<>(), new ArrayList<>()));
   }
-//  private static final Map<Integer, Forum> FORUMS = new HashMap<>();
-//
-//  static {
-//    FORUMS.put(1, new Forum(1, -1, "Root", new ArrayList<>(), new ArrayList<>()));
-//  }
 
   private static final int ROOT_ID = 1;
   private static int SEQUENCE = 2;
 
   public ArrayList<Forum> retrieveForums(int siteId) {
     return getItems(siteId, Forum.class);
-//    return ForumDAO.FORUMS.get(1).getChildren();
   }
 
   public Forum retrieveForum(int siteId, int forumId) {
@@ -103,7 +98,7 @@ public class ForumDAO extends ContentDAO {
     
     if (retrievedForum != null) {
       retrievedForum.setName(forum.getName());
-      createContent(siteId, forum);
+      return Optional.ofNullable(createContent(siteId, forum));
     }
 
     return Optional.empty();

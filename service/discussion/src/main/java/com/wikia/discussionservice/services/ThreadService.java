@@ -7,6 +7,7 @@ import lombok.NonNull;
 
 import javax.inject.Inject;
 import java.util.*;
+import java.util.Optional;
 
 public class ThreadService extends ContentService {
 
@@ -26,17 +27,14 @@ public class ThreadService extends ContentService {
   }
 
   public Optional<ForumThread> getForumThread(int siteId, int threadId) {
-    Optional<ForumThread> forumThread = threadDAO.getForumThread(siteId, threadId, 0, 10);
-    return forumThread;
+    return threadDAO.getForumThread(siteId, threadId, 0, 10);
   }
 
   public Optional<ForumThread> getForumThread(int siteId, int threadId, int offset, int limit) {
-    Optional<ForumThread> forumThread = threadDAO.getForumThread(siteId, threadId, offset, limit);
-    return forumThread;
+    return threadDAO.getForumThread(siteId, threadId, offset, limit);
   }
   
   public Optional<ForumThread> createThread(int siteId, int forumId, Post post) {
-    Optional<ForumThread> createdForumThread = threadDAO.createThread(siteId, forumId, post);
-    return createdForumThread;
+    return threadDAO.createThread(siteId, forumId, post);
   }
 }

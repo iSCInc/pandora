@@ -6,14 +6,13 @@ import com.wikia.discussionservice.domain.User;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.util.*;
+import java.util.Optional;
 
 /**
  * THIS IS TEMPORARY THROWAWAY CODE
  */
 
-public class ThreadDAO {
-
-  private static final Map<Integer, ForumThread> FORUM_THREADS = new HashMap<>();
+public class ThreadDAO extends ContentDAO {
 
   private static int THREAD_SEQUENCE = 0;
 
@@ -34,14 +33,14 @@ public class ThreadDAO {
     user.setId(post.getPosterId());
     user.setName("Made up user");
     forumThread.setThreadStarter(user);
-    FORUM_THREADS.put(threadId, forumThread);
-    
-    return Optional.of(forumThread);
+
+    createContent(siteId, forumThread);
+
+    return Optional.ofNullable(forumThread);
   }
 
 
   public Optional<ForumThread> getForumThread(int siteId, int threadId, int offset, int limit) {
-    ForumThread forumThread = FORUM_THREADS.get(threadId);
-    return Optional.ofNullable(forumThread);
+    return Optional.ofNullable(getContent(siteId, threadId, ForumThread.class));
   }
 }
