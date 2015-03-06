@@ -1,9 +1,11 @@
 package com.wikia.mobileconfig.integration;
 
+import com.squarespace.jersey2.guice.BootstrapUtils;
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.MobileConfigConfiguration;
 import com.wikia.pandora.core.test.IntegrationTest;
 
+import org.junit.AfterClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -19,19 +21,27 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 @Category(IntegrationTest.class)
 public class ConfigIntegrationTest {
+
   @ClassRule
   public static final DropwizardAppRule<MobileConfigConfiguration>
       RULE = new DropwizardAppRule<>(
-        MobileConfigApplication.class,
-        resourceFilePath("mobile-config.yaml")
-      );
+      MobileConfigApplication.class,
+      resourceFilePath("mobile-config.yaml")
+  );
+
+  @AfterClass
+  public static void tearDown() {
+    BootstrapUtils.reset();
+  }
 
   @Test
   public void unexistingConfigResourceRespondsWithError() {
     Client client = ClientBuilder.newClient();
 
     Response response = client.target(
-        String.format("http://localhost:%d/configurations/test-platform/apps/test-app?ui-lang=en-us&content-lang=en-us", RULE.getLocalPort()))
+        String.format(
+            "http://localhost:%d/configurations/test-platform/apps/test-app?ui-lang=en-us&content-lang=en-us",
+            RULE.getLocalPort()))
         .request()
         .get();
 
