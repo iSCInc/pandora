@@ -24,8 +24,9 @@ server:
   adminConnectors:
   - type: http
     port: 8081
-consulConfig:
+consulConfiguration:
   tags:
     - auto_testing
   heartbeatInterval: 2s
   heartbeatTTL: 5s
+

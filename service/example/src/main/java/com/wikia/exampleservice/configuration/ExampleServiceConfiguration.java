@@ -1,6 +1,7 @@
 package com.wikia.exampleservice.configuration;
 
-import com.wikia.pandora.core.consul.ConsulConfig;
+import com.wikia.pandora.core.consul.ConsulConfiguration;
+import com.wikia.pandora.core.consul.ProvidesConsulConfiguration;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -8,18 +9,18 @@ import javax.validation.constraints.NotNull;
 
 import io.dropwizard.Configuration;
 
-public class ExampleConfiguration extends Configuration {
+public class ExampleServiceConfiguration extends Configuration implements ProvidesConsulConfiguration {
 
   @NotEmpty
   @NotNull
   private String greetingsWord; // value is set up by dropwizard reflection magic.
-  private ConsulConfig consulConfig;
+  private ConsulConfiguration consulConfiguration;
 
   public String getGreetingsWord() {
     return greetingsWord;
   }
 
-  public ConsulConfig getConsulConfig() {
-    return consulConfig;
+  public ConsulConfiguration getConsulConfiguration() {
+    return consulConfiguration;
   }
 }

@@ -26,27 +26,14 @@ import static org.mockito.Mockito.when;
  * Unit tests for {@link ApplicationsResource}.
  */
 public class ApplicationsResourceTest {
+
   private static final HttpClient HTTP_CLIENT_MOCK = mock(HttpClient.class);
 
   private static final AppsDeployerListContainer
       LIST_SERVICE = new AppsDeployerListContainer(HTTP_CLIENT_MOCK, "test-domain");
-
   @ClassRule
   public static final ResourceTestRule RESOURCES = ResourceTestRule.builder()
       .addResource(new ApplicationsResource(LIST_SERVICE)).build();
-
-  class HttpGetWithURL extends ArgumentMatcher<HttpGet> {
-
-    private String url;
-
-    public HttpGetWithURL(String url) {
-      this.url = url;
-    }
-
-    public boolean matches(Object httpGet) {
-      return url.equals(((HttpGet) httpGet).getURI().toString());
-    }
-  }
 
   @Test
   public void getAppList() throws IOException {
@@ -63,7 +50,21 @@ public class ApplicationsResourceTest {
     }
 
     verify(HTTP_CLIENT_MOCK, times(1))
-        .execute(argThat(new HttpGetWithURL("http://test-domain/api/app-configuration/")), any(ResponseHandler.class));
+        .execute(argThat(new HttpGetWithURL("http://test-domain/api/app-configuration/")),
+                 any(ResponseHandler.class));
     reset(HTTP_CLIENT_MOCK);
+  }
+
+  class HttpGetWithURL extends ArgumentMatcher<HttpGet> {
+
+    private String url;
+
+    public HttpGetWithURL(String url) {
+      this.url = url;
+    }
+
+    public boolean matches(Object httpGet) {
+      return url.equals(((HttpGet) httpGet).getURI().toString());
+    }
   }
 }
