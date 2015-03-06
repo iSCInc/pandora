@@ -16,7 +16,6 @@ buildscript {
 }
 apply from: rootProject.file('gradle/marathon_deployment.gradle')
 dependencies {
-    compile project(":pandora-core")
     compile "redis.clients:jedis:2.6.2"
     compile "com.hubspot.dropwizard:dropwizard-guice:$dropwizardGuiceVersion"
     compile "io.dropwizard:dropwizard-assets:0.8.0-rc2"

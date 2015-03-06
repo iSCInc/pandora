@@ -43,15 +43,7 @@ public class ForumService extends ContentService {
   }
   
   public Forum getForum(int siteId, int forumId, int offset, int limit) {
-    Forum forum = forumDAO.retrieveForum(siteId, forumId);
-    
-    if (forum != null) {
-      List<ForumThread> threads = threadService.retrieveForumThreads(
-          siteId, forumId, offset, limit);
-      forum.setThreads(threads);
-    }
-
-    return forum;
+    return forumDAO.retrieveForum(siteId, forumId);
   }
 
   public Optional<Forum> createForum(int siteId, Forum forum) {

@@ -108,7 +108,7 @@ public class ThreadResource {
         forumId.get(), post);
 
     if (createdThread != null) {
-      forum.get().getThreads().add(createdThread.get());
+      forum.getThreads().add(createdThread.get());
 
       Representation representation = threadMapper.buildRepresentation(siteId.get(),
           createdThread.get(), uriInfo);
