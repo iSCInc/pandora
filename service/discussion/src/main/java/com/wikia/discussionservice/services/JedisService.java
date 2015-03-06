@@ -2,6 +2,7 @@ package com.wikia.discussionservice.services;
 
 import com.wikia.discussionservice.mappers.DataStore;
 
+import java.lang.String;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -37,6 +38,11 @@ public class JedisService implements DataStore {
     }
 
     return (ArrayList<String>) jedis.mget((String[]) keyResults.toArray());
+  }
+
+  public void delete(int siteId, String contentType, int contentId) {
+    Jedis jedis = getInstance();
+    jedis.del(getKey(siteId, contentType, contentId));
   }
 
   public String getKeyPattern(int siteId, String contentType) {

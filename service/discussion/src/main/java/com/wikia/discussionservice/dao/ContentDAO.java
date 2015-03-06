@@ -8,6 +8,7 @@ import com.wikia.discussionservice.domain.Content;
 import com.wikia.discussionservice.services.JedisService;
 
 import java.io.IOException;
+import java.lang.Exception;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -81,4 +82,14 @@ public class ContentDAO {
     return content;
   }
 
+  public <T extends Content> void deleteContent(int siteId, int contentId, Class<T> U) {
+    String type;
+    try {
+      Method method = U.getMethod("getType");
+      type = method.invoke(null).toString();
+    } catch (Exception ex) {
+      return;
+    }
+    jedisService.delete(siteId, type, contentId);
+  }
 }

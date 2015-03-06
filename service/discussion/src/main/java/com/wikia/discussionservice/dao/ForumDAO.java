@@ -5,6 +5,7 @@ import com.wikia.discussionservice.domain.Forum;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.util.*;
+import java.util.List;
 import java.util.stream.IntStream;
 
 /**
@@ -16,11 +17,11 @@ public class ForumDAO extends ContentDAO {
     super();
     createContent(1, new Forum(ROOT_ID, -1, "Root", new ArrayList<>(), new ArrayList<>()));
   }
-  private static final Map<Integer, Forum> FORUMS = new HashMap<>();
-
-  static {
-    FORUMS.put(1, new Forum(1, -1, "Root", new ArrayList<>(), new ArrayList<>()));
-  }
+//  private static final Map<Integer, Forum> FORUMS = new HashMap<>();
+//
+//  static {
+//    FORUMS.put(1, new Forum(1, -1, "Root", new ArrayList<>(), new ArrayList<>()));
+//  }
 
   private static final int ROOT_ID = 1;
   private static int SEQUENCE = 2;
@@ -81,18 +82,19 @@ public class ForumDAO extends ContentDAO {
 
   public Optional<Forum> deleteForum(int siteId, int forumId) {
     Preconditions.checkArgument(forumId != ROOT_ID, "Cannot delete the root forum.");
-    Forum deletedForum = null;
-    if (ForumDAO.FORUMS.containsKey(forumId)) {
-      deletedForum = ForumDAO.FORUMS.remove(forumId);
-      // delete the forum from the Root's children then 
+    Forum deletedForum = retrieveForum(siteId, forumId);
+    if (deletedForum != null) {
+      deleteContent(siteId, forumId, Forum.class);
+      // delete the forum from the Root's children then
       // delete forum from children's children (not recursive)
-      Forum rootForum = retrieveForum(siteId, 1);
+      Forum rootForum = retrieveForum(siteId, ROOT_ID);
       rootForum.getChildren().remove(deletedForum);
       for(Forum forum: rootForum.getChildren()) {
         forum.getChildren().remove(deletedForum);
       }
+      createForum(siteId, rootForum);
     }
-    
+
     return Optional.ofNullable(deletedForum);
   }
 
