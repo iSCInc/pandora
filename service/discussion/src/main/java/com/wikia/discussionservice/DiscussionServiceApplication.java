@@ -1,12 +1,14 @@
 package com.wikia.discussionservice;
 
+import com.wikia.discussionservice.configuration.DiscussionServiceConfiguration;
+
 import com.hubspot.dropwizard.guice.GuiceBundle;
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
-import com.wikia.discussionservice.configuration.DiscussionServiceConfiguration;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.dropwizard.views.ViewBundle;
 
 public class DiscussionServiceApplication extends Application<DiscussionServiceConfiguration> {
 
@@ -28,6 +30,10 @@ public class DiscussionServiceApplication extends Application<DiscussionServiceC
             .enableAutoConfig(getClass().getPackage().getName())
             .build();
     bootstrap.addBundle(guiceBundle);
+
+    // View bundle for the document views
+    bootstrap.addBundle(new ViewBundle());
+
     // AssetBundle for the Hal Browser
     bootstrap.addBundle(new AssetsBundle());
   }

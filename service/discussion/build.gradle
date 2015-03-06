@@ -18,6 +18,7 @@ apply from: rootProject.file('gradle/marathon_deployment.gradle')
 dependencies {
     compile "com.hubspot.dropwizard:dropwizard-guice:$dropwizardGuiceVersion"
     compile "io.dropwizard:dropwizard-assets:0.8.0-rc2"
+    compile "io.dropwizard:dropwizard-views-freemarker:0.8.0-rc2"
     compile "org.projectlombok:lombok:1.16.2"
     testCompile "org.testng:testng:6.8"
     testCompile "org.hamcrest:hamcrest-core:$hamcrestVersion"

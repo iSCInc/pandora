@@ -48,22 +48,19 @@ public class HALThreadRepresentationMapper implements ThreadRepresentationMapper
     Link linkToSelf = new LinkBuilder().buildLink(uriInfo, "self", ThreadResource.class,
         "getThread", siteId, thread.getId());
 
-    Link linkToCreatePost = new LinkBuilder().buildLink(uriInfo, "self", PostResource.class,
-        "createPost", siteId);
-
     Representation representation =
         representationFactory.newRepresentation()
             .withLink("self", linkToSelf.getUri())
-            .withLink("create-form", linkToCreatePost.getUri().getPath(), "createPost",
-                "createPost", "us-en", null)
+            .withLink("doc:threads", linkToSelf.getUri().getPath(), "threads", null, null, null)
             .withProperty("title", thread.getTitle())
             .withRepresentation("lastPost",
                 postRepresentationMapper.buildRepresentation(siteId, thread.getLastPost(),
-                    uriInfo));
+                    uriInfo))
+            .withNamespace("doc", String.format("/%s/rels/{rel}", siteId));
 
     if (responseGroup == ResponseGroup.FULL) {
       for (Post post : thread.getPosts()) {
-        representation.withRepresentation("post",
+        representation.withRepresentation("doc:post",
             postRepresentationMapper.buildRepresentation(siteId, post, uriInfo));
       }
     }

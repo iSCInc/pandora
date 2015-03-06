@@ -1,20 +1,21 @@
 package com.wikia.discussionservice.mappers;
 
-import com.theoryinpractise.halbuilder.api.Representation;
-import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.wikia.discussionservice.domain.Forum;
 import com.wikia.discussionservice.domain.ForumRoot;
 import com.wikia.discussionservice.domain.ForumThread;
 import com.wikia.discussionservice.enums.ResponseGroup;
 import com.wikia.discussionservice.resources.ForumResource;
-import com.wikia.discussionservice.resources.ThreadResource;
+
+import com.theoryinpractise.halbuilder.api.Representation;
+import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import lombok.NonNull;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.Link;
 import javax.ws.rs.core.UriInfo;
-import java.util.ArrayList;
 
 public class HALForumRepresentationMapper implements ForumRepresentationMapper {
 
@@ -41,15 +42,13 @@ public class HALForumRepresentationMapper implements ForumRepresentationMapper {
                                             UriInfo uriInfo, ResponseGroup responseGroup) {
 
     Link linkToSelf = new LinkBuilder().buildLink(uriInfo, "self", ForumResource.class,
-        "getForums", siteId);
-    Link createFormLink = new LinkBuilder().buildLink(uriInfo, "create-form", ForumResource.class,
-        "createForum", siteId);
+                                                  "getForums", siteId);
 
     Representation representation = representationFactory.newRepresentation()
         .withLink("self", linkToSelf.getUri())
-        .withLink("create-form", createFormLink.getUri().getPath(), "createForum", "createForum",
-            "us-en", null)
-        .withProperty("total", forumRoot.getForums().size());
+        .withLink("doc:forums", linkToSelf.getUri().getPath(), "forums", null, null, null)
+        .withProperty("total", forumRoot.getForums().size())
+        .withNamespace("doc", String.format("/%s/rels/{rel}", siteId));
 
     if (!forumRoot.getForums().isEmpty()) {
       for (Forum forum : forumRoot.getForums()) {
@@ -71,21 +70,17 @@ public class HALForumRepresentationMapper implements ForumRepresentationMapper {
                                             ResponseGroup responseGroup) {
 
     Link linkToSelf = new LinkBuilder().buildLink(uriInfo, "self", ForumResource.class, "getForum",
-        siteId, forum.getId());
-
-    Link linkToStartThread = new LinkBuilder().buildLink(uriInfo, "self", ThreadResource.class,
-        "startThread", siteId, forum.getId());
+                                                  siteId, forum.getId());
 
     Representation representation =
         representationFactory.newRepresentation()
-            .withLink("self", linkToSelf.getUri())
-            .withLink("create-form", linkToStartThread.getUri().getPath(), "startThread",
-                "startThread", "us-en", null)
+            .withLink("self", linkToSelf.getUri().getPath(), "doc:thread", null, null, null)
+            .withNamespace("doc", String.format("/%s/rels/{rel}", siteId))
             .withProperty("name", forum.getName());
 
     if (forum.hasChildren()) {
       for (Forum childForum : forum.getChildren()) {
-        representation.withRepresentation("forum", buildRepresentation(
+        representation.withRepresentation("doc:forum", buildRepresentation(
             siteId, childForum, uriInfo));
       }
     } else {
@@ -94,7 +89,7 @@ public class HALForumRepresentationMapper implements ForumRepresentationMapper {
 
     if (forum.hasThreads()) {
       for (ForumThread thread : forum.getThreads()) {
-        representation.withRepresentation("thread", threadMapper.buildRepresentation(
+        representation.withRepresentation("doc:thread", threadMapper.buildRepresentation(
             siteId, thread, uriInfo));
       }
     } else {
