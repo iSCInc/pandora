@@ -17,6 +17,7 @@ applicationDistribution.from("${project.name}.yaml.sample") {
 
 dependencies {
     compile project(":lib:service-core")
+    testCompile project(path: ':lib:service-core', configuration: 'tests')
 }
 
 run {
