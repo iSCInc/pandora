@@ -1,4 +1,4 @@
-package com.wikia.exampleservice.resources;
+package com.wikia.siriusservice.resources;
 
 public class ExampleResourceTest {
 // TODO

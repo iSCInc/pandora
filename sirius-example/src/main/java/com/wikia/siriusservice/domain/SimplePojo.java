@@ -1,4 +1,4 @@
-package com.wikia.exampleservice.domain;
+package com.wikia.siriusservice.domain;
 
 public class SimplePojo {
 

@@ -17,11 +17,11 @@ buildscript {
 apply from: rootProject.file('gradle/marathon_deployment.gradle')
 dependencies {
     compile project(":pandora-core")
-    compile 'redis.clients:jedis:2.4.2'
+    compile 'redis.clients:jedis:2.6.2'
 }
 // end: deployment boilerplate
 
-mainClassName = "com.wikia.exampleservice.ExampleServiceApplication"
+mainClassName = "com.wikia.siriusservice.SiriusServiceApplication"
 
 // configure jvm parameters
 // PORT0 and PORT1 Are set through Marathon, see: https://mesosphere.github.io/marathon/docs/service-discovery-load-balancing.html
