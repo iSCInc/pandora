@@ -24,10 +24,6 @@ public class Translator {
 
   private ObjectMapper mapper = new ObjectMapper();
 
-  private class TranslationFile {
-
-  }
-
   private Translator() {
     translationCache = new HashMap<>();
   }
