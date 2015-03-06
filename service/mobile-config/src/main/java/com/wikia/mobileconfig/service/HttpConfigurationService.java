@@ -33,12 +33,20 @@ public class HttpConfigurationService extends ConfigurationServiceBase {
       Environment environment,
       MobileConfigConfiguration configuration
   ) {
-    this.httpClient = new HttpClientBuilder(environment)
-        .using(configuration.getHttpClientConfiguration())
-        .build("http-configuration-service");
-    this.mapper = new ObjectMapper();
-    this.cephDomain = configuration.getCephDomain();
-    this.cephPort = configuration.getCephPort();
+    this(new HttpClientBuilder(environment)
+             .using(configuration.getHttpClientConfiguration())
+             .build("http-configuration-service"),
+         new ObjectMapper(),
+         configuration.getCephDomain(),
+         configuration.getCephPort());
+  }
+
+  public HttpConfigurationService(HttpClient httpClient, ObjectMapper mapper,
+                                  String cephDomain, String cephPort) {
+    this.httpClient = httpClient;
+    this.mapper = mapper;
+    this.cephDomain = cephDomain;
+    this.cephPort = cephPort;
   }
 
   @Override
@@ -72,9 +80,7 @@ public class HttpConfigurationService extends ConfigurationServiceBase {
           e
       );
 
-      if (configuration == null) {
-        configuration = getDefault(platform);
-      }
+      configuration = getDefault(platform);
     }
 
     translateConfiguration(configuration, uiLang);
