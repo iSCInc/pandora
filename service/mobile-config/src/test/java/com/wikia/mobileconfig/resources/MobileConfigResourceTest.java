@@ -18,6 +18,7 @@ import javax.ws.rs.NotFoundException;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
 import static org.fest.assertions.api.Assertions.fail;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
@@ -38,6 +39,46 @@ public class MobileConfigResourceTest {
   @ClassRule
   public static final ResourceTestRule RESOURCES = ResourceTestRule.builder()
       .addResource(new MobileConfigResource(HTTP_SERVICE_MOCK, APPS_LIST_MOCK)).build();
+
+  @Test
+  public void isValidAppTagException() throws IOException {
+    when(APPS_LIST_MOCK.isValidAppTag(anyString(), anyString())).thenThrow(IOException.class);
+    try {
+      RESOURCES.client()
+          .target("/configurations/test-platform/apps/test-app")
+          .request()
+          .get(String.class);
+      fail("404 - missing invalid appTag exception");
+    } catch (BadRequestException ex) {
+      // safely ignore
+    }
+    verify(APPS_LIST_MOCK, times(1)).isValidAppTag("test-platform", "test-app");
+    verify(HTTP_SERVICE_MOCK, never()).getConfiguration("test-platform", "test-app", "en-us", "en-us");
+    reset(APPS_LIST_MOCK, HTTP_SERVICE_MOCK);
+  }
+
+  @Test
+  public void getConfigurationException() throws IOException {
+    when(APPS_LIST_MOCK.isValidAppTag("test-platform", "test-app")).thenReturn(true);
+    when(HTTP_SERVICE_MOCK.getConfiguration("test-platform", "test-app", "en-us", "en-us"))
+        .thenThrow(IOException.class);
+
+    try {
+      RESOURCES.client()
+          .target(
+              "/configurations/test-platform/apps/test-app?ui-lang=en-us&content-lang=en-us")
+          .request()
+          .get(String.class);
+      fail("404 - missing invalid modules exception");
+    } catch (NotFoundException ex) {
+      // safely ignore
+    }
+
+    verify(APPS_LIST_MOCK).isValidAppTag("test-platform", "test-app");
+    verify(HTTP_SERVICE_MOCK).getConfiguration("test-platform", "test-app", "en-us", "en-us");
+    verify(HTTP_SERVICE_MOCK, never()).getDefault("test-platform");
+    reset(APPS_LIST_MOCK, HTTP_SERVICE_MOCK);
+  }
 
   @Test
   public void getMobileApplicationConfigFails_invalidAppTag() throws IOException {
