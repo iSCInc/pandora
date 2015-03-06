@@ -48,7 +48,7 @@ public class MobileConfigResource {
    */
   @GET
   @Timed
-  @CacheControl(maxAge = 5, maxAgeUnit = TimeUnit.MINUTES)
+  @CacheControl(maxAge = 5, maxAgeUnit = TimeUnit.SECONDS)
   public Representation getMobileApplicationConfig(
       @PathParam("platform") String platform,
       @PathParam("app-tag") String appTag,
