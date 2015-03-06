@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.ScanParams;
+import redis.clients.jedis.ScanResult;
 
 /**
  * Created by armon on 2/27/15.
@@ -27,12 +29,14 @@ public class JedisService implements DataStore {
 
   public ArrayList<String> getList(int siteId, String contentType) {
     Jedis jedis = getInstance();
-    Set<String> keys = jedis.keys(getKeyPattern(siteId, contentType));
-    if (keys.isEmpty()) {
+    ArrayList<String> keyResults = (ArrayList<String>) jedis.scan("0",
+        new ScanParams().match(getKeyPattern(siteId, contentType))
+    ).getResult();
+    if (keyResults.isEmpty()) {
       return new ArrayList<>();
     }
 
-    return (ArrayList<String>) jedis.mget((String[]) keys.toArray());
+    return (ArrayList<String>) jedis.mget((String[]) keyResults.toArray());
   }
 
   public String getKeyPattern(int siteId, String contentType) {
