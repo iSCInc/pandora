@@ -1,4 +1,4 @@
-version = "0.1.18-SNAPSHOT"
+version = "0.1.19-SNAPSHOT"
 apply from: rootProject.file('gradle/dropwizard_service.gradle')
 mainClassName = "com.wikia.mobileconfig.MobileConfigApplication"
 
