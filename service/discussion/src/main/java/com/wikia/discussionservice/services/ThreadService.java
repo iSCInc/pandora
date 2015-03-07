@@ -11,8 +11,6 @@ import java.util.Optional;
 
 public class ThreadService extends ContentService {
 
-  private static Map<Integer, List<ForumThread>> FORUM_THREADS = new HashMap<>();
-  
   @NonNull
   private final PostService postService;
 
