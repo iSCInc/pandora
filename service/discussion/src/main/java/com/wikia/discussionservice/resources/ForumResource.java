@@ -61,7 +61,7 @@ public class ForumResource {
 
     Optional<ForumRoot> forumRoot = forumService.getForums(siteId.get());
 
-    if (forumRoot != null) {
+    if (forumRoot.isPresent()) {
       Representation representation = forumMapper.buildRepresentation(siteId.get(), 
           forumRoot.get(), uriInfo, responseGroup);
       return Response.ok(representation)
@@ -86,15 +86,15 @@ public class ForumResource {
     Preconditions.checkArgument(forumId.get() >= 1,
         "Offset was %s but expected 1 or greater", forumId.get());
 
-    Forum forum = forumService.getForum(siteId.get(), forumId.get(),
+    Optional<Forum> forum = forumService.getForum(siteId.get(), forumId.get(),
         offset.get(), limit.get());
 
-    if (forum != null) {
+    if (forum.isPresent()) {
       ResponseGroup responseGroup = ResponseGroup.getResponseGroup(requestedResponseGroup);
       Preconditions.checkNotNull(responseGroup, "Invalid response group");
 
       Representation representation = forumMapper.buildRepresentation(siteId.get(),
-          forum, uriInfo, responseGroup);
+          forum.get(), uriInfo, responseGroup);
       return Response.ok(representation)
           .build();
     }
@@ -138,7 +138,7 @@ public class ForumResource {
       // TODO: perform validation
       Optional<Forum> deletedForum = forumService.deleteForum(siteId.get(), forumId.get());
 
-      if (deletedForum != null) {
+      if (deletedForum.isPresent()) {
         return Response.noContent().build();
       }
     } catch (IllegalArgumentException iae) {
@@ -162,7 +162,7 @@ public class ForumResource {
 
     Optional<Forum> updatedForum = forumService.updateForum(siteId.get(), forum);
 
-    if (updatedForum != null) {
+    if (updatedForum.isPresent()) {
       if (updatedForum.get().getId() == forum.getId()) {
         return Response.noContent().build();
       } else {

@@ -20,11 +20,12 @@ public class ForumDAO extends ContentDAO {
   }
 
   private static final int ROOT_ID = 1;
+  private static final int DEFAULT_SITE_ID = 1;
   private static int SEQUENCE = 2;
 
   private void createRoot() {
-    if (retrieveForum(1, ROOT_ID) == null) {
-      createContent(1, new Forum(ROOT_ID, -1, "Root", new ArrayList<>(), new ArrayList<>()));
+    if (!retrieveForum(DEFAULT_SITE_ID, ROOT_ID).isPresent()) {
+      createContent(DEFAULT_SITE_ID, new Forum(ROOT_ID, -1, "Root", new ArrayList<>(), new ArrayList<>()));
     }
   }
 
@@ -32,8 +33,8 @@ public class ForumDAO extends ContentDAO {
     return getItems(siteId, Forum.class);
   }
 
-  public Forum retrieveForum(int siteId, int forumId) {
-    return getContent(siteId, forumId, Forum.class);
+  public Optional<Forum> retrieveForum(int siteId, int forumId) {
+    return Optional.ofNullable(getContent(siteId, forumId, Forum.class));
   }
 
 
@@ -47,7 +48,7 @@ public class ForumDAO extends ContentDAO {
     IntStream.range(start, limit + 1).forEach(
         i -> {
           Forum forum =
-              new Forum(i, 1, String.format("Forum: %s", i), new ArrayList<>(), new ArrayList<>());
+              new Forum(i, ROOT_ID, String.format("Forum: %s", i), new ArrayList<>(), new ArrayList<>());
           forumList.add(forum);
         }
     );
@@ -57,13 +58,14 @@ public class ForumDAO extends ContentDAO {
 
   @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
   public Optional<Forum> createForum(int siteId, Forum forum) {
-    Forum parentForum = retrieveForum(siteId, forum.getParentId());
+    Optional<Forum> parentForum = retrieveForum(siteId, forum.getParentId());
     boolean foundExisting = false;
 
-    if (parentForum == null) {
-      return null;
+    if (!parentForum.isPresent()) {
+      return Optional.empty();
     }
-    for (Forum childForum : parentForum.getChildren()) {
+
+    for (Forum childForum : parentForum.get().getChildren()) {
       if (childForum.getName().equalsIgnoreCase(forum.getName())) {
         foundExisting = true;
         break;
@@ -73,9 +75,9 @@ public class ForumDAO extends ContentDAO {
     if (!foundExisting) {
       int forumId = ForumDAO.SEQUENCE++;
       forum.setId(forumId);
-      parentForum.getChildren().add(forum);
+      parentForum.get().getChildren().add(forum);
       forum = createContent(siteId, forum);
-      createContent(siteId, parentForum);
+      updateForum(siteId, parentForum.get());
     }
 
     return Optional.ofNullable(forum);
@@ -83,27 +85,29 @@ public class ForumDAO extends ContentDAO {
 
   public Optional<Forum> deleteForum(int siteId, int forumId) {
     Preconditions.checkArgument(forumId != ROOT_ID, "Cannot delete the root forum.");
-    Forum deletedForum = retrieveForum(siteId, forumId);
-    if (deletedForum != null) {
+    Optional<Forum> deletedForum = retrieveForum(siteId, forumId);
+    if (deletedForum.isPresent()) {
       deleteContent(siteId, forumId, Forum.class);
       // delete the forum from the Root's children then
       // delete forum from children's children (not recursive)
-      Forum rootForum = retrieveForum(siteId, ROOT_ID);
-      rootForum.getChildren().remove(deletedForum);
+      Forum rootForum = retrieveForum(siteId, ROOT_ID).get();
+      rootForum.getChildren().remove(deletedForum.get());
       for(Forum forum: rootForum.getChildren()) {
-        forum.getChildren().remove(deletedForum);
+        forum.getChildren().remove(deletedForum.get());
       }
       createForum(siteId, rootForum);
     }
 
-    return Optional.ofNullable(deletedForum);
+    return deletedForum;
   }
 
   public Optional<Forum> updateForum(int siteId, Forum forum) {
-    Forum retrievedForum = retrieveForum(siteId, forum.getId());
-    
-    if (retrievedForum != null) {
-      retrievedForum.setName(forum.getName());
+    Optional<Forum> retrievedForum = retrieveForum(siteId, forum.getId());
+
+    if (retrievedForum.isPresent()) {
+      // Changes may be anything, including list of sub forums
+      // Hence removing the old forum and re-writing it
+      deleteContent(siteId, forum.getId(), Forum.class);
       return Optional.ofNullable(createContent(siteId, forum));
     }
 

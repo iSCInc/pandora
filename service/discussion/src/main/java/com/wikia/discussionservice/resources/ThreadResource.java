@@ -96,9 +96,9 @@ public class ThreadResource {
                               @Valid Post post,
                               @Context HttpServletRequest request,
                               @Context UriInfo uriInfo) {
-    Forum forum = forumService.getForum(siteId.get(), forumId.get());
+    Optional<Forum> forum = forumService.getForum(siteId.get(), forumId.get());
 
-    if (forum == null) {
+    if (!forum.isPresent()) {
       return ErrorResponseBuilder.buildErrorResponse(1234,
           String.format("No forum found for site id: %s with forum id: %s", siteId.get(),
               forumId.get()), null, Response.Status.NOT_FOUND);
@@ -107,8 +107,8 @@ public class ThreadResource {
     Optional<ForumThread> createdThread = threadService.createThread(siteId.get(),
         forumId.get(), post);
 
-    if (createdThread != null) {
-      forum.getThreads().add(createdThread.get());
+    if (createdThread.isPresent()) {
+      forum.get().getThreads().add(createdThread.get());
 
       Representation representation = threadMapper.buildRepresentation(siteId.get(),
           createdThread.get(), uriInfo);
@@ -134,7 +134,7 @@ public class ThreadResource {
       // TODO: perform validation
       Optional<ForumThread> deletedThread = threadService.deleteThread(siteId.get(), threadId.get());
 
-      if (deletedThread != null) {
+      if (deletedThread.isPresent()) {
         return Response.noContent().build();
       }
     } catch (IllegalArgumentException iae) {

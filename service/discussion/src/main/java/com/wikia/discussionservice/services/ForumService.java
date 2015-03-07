@@ -38,11 +38,11 @@ public class ForumService extends ContentService {
     return Optional.of(forumRoot);
   }
 
-  public Forum getForum(int siteId, int forumId) {
+  public Optional<Forum> getForum(int siteId, int forumId) {
     return getForum(siteId, forumId, 0, 10);
   }
   
-  public Forum getForum(int siteId, int forumId, int offset, int limit) {
+  public Optional<Forum> getForum(int siteId, int forumId, int offset, int limit) {
     return forumDAO.retrieveForum(siteId, forumId);
   }
 
