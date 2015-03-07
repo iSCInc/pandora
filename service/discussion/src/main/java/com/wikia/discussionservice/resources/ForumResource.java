@@ -2,8 +2,6 @@ package com.wikia.discussionservice.resources;
 
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Preconditions;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.wikia.discussionservice.domain.Forum;
@@ -24,11 +22,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.util.HashMap;
 import java.util.Optional;
 
 @Path("/")
@@ -62,7 +55,7 @@ public class ForumResource {
     Optional<ForumRoot> forumRoot = forumService.getForums(siteId.get());
 
     if (forumRoot.isPresent()) {
-      Representation representation = forumMapper.buildRepresentation(siteId.get(), 
+      Representation representation = forumMapper.buildRepresentation(siteId.get(),
           forumRoot.get(), uriInfo, responseGroup);
       return Response.ok(representation)
           .build();
@@ -115,7 +108,7 @@ public class ForumResource {
     Optional<Forum> createdForum = forumService.createForum(siteId.get(), forum);
 
     if (createdForum.isPresent()) {
-      Representation representation = 
+      Representation representation =
           forumMapper.buildRepresentation(siteId.get(), createdForum.get(), uriInfo);
 
       return Response.status(Response.Status.CREATED)
