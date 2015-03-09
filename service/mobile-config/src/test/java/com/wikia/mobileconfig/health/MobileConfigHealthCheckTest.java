@@ -1,6 +1,6 @@
 package com.wikia.mobileconfig.health;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import com.codahale.metrics.health.HealthCheck.Result;
 import org.junit.Before;
@@ -17,6 +17,6 @@ public class MobileConfigHealthCheckTest {
   @Test
   public void testHealthy() throws Exception {
     Result result = healthCheck.check();
-    assertThat(result.isHealthy());
+    assertTrue(result.isHealthy());
   }
 }
