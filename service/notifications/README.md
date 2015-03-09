@@ -9,10 +9,13 @@ To run the server:
 ```bash
 cp example.yaml.sample example.yaml
 ../gradlew run # launch application
+# or from the main folder:
+gradle service:notifications:run
+
 ```
 
 And put proper storage host name into the config:
-example.yaml -> storageHost property
+example.yaml:redis.endpoint property
 
 To make a request from the server:
 
