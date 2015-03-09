@@ -1,6 +1,7 @@
 version = "0.1.19-SNAPSHOT"
 apply from: rootProject.file('gradle/dropwizard_service.gradle')
 mainClassName = "com.wikia.mobileconfig.MobileConfigApplication"
+def consulMobileConfigSourceUrl = "http://localhost:8500/config/mobile-config/"
 
 applicationDefaultJvmArgs = [
         "-Xms100m", "-Xmn128m", "-Xmx300m", "-XX:+UseNUMA", "-XX:+UseCondCardMark", "-XX:+UseBiasedLocking", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC"
@@ -19,12 +20,23 @@ deployments {
             instances = 2
         }
         environment {
-            CONSUL_KEY_VALUE_CONFIG_SOURCE = "http://localhost:8500/config/mobile-config/prod"
+            CONSUL_KEY_VALUE_CONFIG_SOURCE = consulMobileConfigSourceUrl + "prod"
         }
     }
     testing {
         environment {
-            CONSUL_KEY_VALUE_CONFIG_SOURCE = "http://localhost:8500/config/mobile-config/testing"
+            CONSUL_KEY_VALUE_CONFIG_SOURCE = consulMobileConfigSourceUrl + "testing"
+        }
+    }
+
+    qa {
+        resources {
+            cpus = 1
+            mem = 400
+            instances = 1
+        }
+        environment {
+            CONSUL_KEY_VALUE_CONFIG_SOURCE = consulMobileConfigSourceUrl + "qa"
         }
     }
 }

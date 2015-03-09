@@ -1,11 +1,14 @@
 package com.wikia.mobileconfig.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.MobileConfigConfiguration;
 import com.wikia.mobileconfig.core.EmptyMobileConfiguration;
 import com.wikia.mobileconfig.core.MobileConfiguration;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -17,18 +20,22 @@ import io.dropwizard.client.HttpClientBuilder;
 import io.dropwizard.setup.Environment;
 
 /**
- * A class responsible for getting mobile applications' configuration from our Ceph buckets via HTTP
+ * A class responsible for getting mobile applications' configuration from our Ceph buckets via
+ * HTTP
  */
 public class HttpConfigurationService extends ConfigurationServiceBase {
 
   private static final String
       CEPH_URL_FORMAT = "http://%s:%s/mobile-configuration-service/%s/%s/config.json";
 
-  private final HttpClient httpClient;
   private final ObjectMapper mapper;
   private final String cephDomain;
   private final String cephPort;
+  @Inject
+  @Named("http-configuration-service")
+  private HttpClient httpClient;
 
+  @Inject
   public HttpConfigurationService(
       Environment environment,
       MobileConfigConfiguration configuration
@@ -57,7 +64,8 @@ public class HttpConfigurationService extends ConfigurationServiceBase {
   }
 
   @Override
-  public MobileConfiguration getConfiguration(String platform, String appTag, String uiLang, String contentLang) throws IOException {
+  public MobileConfiguration getConfiguration(String platform, String appTag, String uiLang,
+                                              String contentLang) throws IOException {
 
     MobileConfiguration configuration = null;
 

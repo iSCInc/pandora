@@ -1,8 +1,10 @@
 package com.wikia.mobileconfig.resources;
 
 import com.codahale.metrics.annotation.Timed;
+import com.google.inject.Inject;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.core.Applications;
 import com.wikia.mobileconfig.exceptions.MobileConfigException;
@@ -17,10 +19,10 @@ import javax.ws.rs.Produces;
 @Produces(RepresentationFactory.HAL_JSON)
 public class ApplicationsResource {
 
+  private final static String APP_LIST_URL_FORMAT = "/appList/platform/%s";
   private final AppsListService appsList;
 
-  private final static String APP_LIST_URL_FORMAT = "/appList/platform/%s";
-
+  @Inject
   public ApplicationsResource(AppsListService list) {
     this.appsList = list;
   }

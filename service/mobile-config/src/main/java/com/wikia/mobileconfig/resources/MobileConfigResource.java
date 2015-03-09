@@ -1,8 +1,10 @@
 package com.wikia.mobileconfig.resources;
 
 import com.codahale.metrics.annotation.Timed;
+import com.google.inject.Inject;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.core.EmptyMobileConfiguration;
 import com.wikia.mobileconfig.core.MobileConfiguration;
@@ -36,6 +38,7 @@ public class MobileConfigResource {
   private final ConfigurationService appConfiguration;
   private final AppsListService appsList;
 
+  @Inject
   public MobileConfigResource(ConfigurationService configuration, AppsListService list) {
     this.appConfiguration = configuration;
     this.appsList = list;

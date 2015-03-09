@@ -4,9 +4,12 @@ import com.google.common.base.Optional;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.MobileConfigConfiguration;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -31,8 +34,10 @@ public class AppsDeployerListContainer implements AppsListService {
       APPS_LIST_RESPONSE_ERROR_FORMAT = "Error, the response for %s is not valid!";
   //How long to cache the result. Set to 0 to disable caching.
   private final int cacheTimeInSec;
-  private final HttpClient httpClient;
   private final String appsDeployerDomain;
+  @Inject
+  @Named("apps-deployer-list-service")
+  private HttpClient httpClient;
   private List<HashMap<String, Object>> appsList;
 
   private Date appsListUpdateTime = new Date();
@@ -44,7 +49,8 @@ public class AppsDeployerListContainer implements AppsListService {
     this.cacheTimeInSec = DEFAULT_CACHE_TIME_IN_SEC;
   }
 
-  public AppsDeployerListContainer(Environment environment, MobileConfigConfiguration configuration) {
+  public AppsDeployerListContainer(Environment environment,
+                                   MobileConfigConfiguration configuration) {
     this.httpClient = new HttpClientBuilder(environment)
         .using(configuration.getHttpClientConfiguration())
         .build("apps-deployer-list-service");
