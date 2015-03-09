@@ -16,4 +16,4 @@ pandora.yaml
 pandora-example/example.yaml
 **/.gradle
 **/build
-sirius-example/example.yaml
+service/notifications/src/main/resources/notifications.yaml
