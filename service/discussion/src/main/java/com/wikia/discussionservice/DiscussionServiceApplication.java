@@ -9,6 +9,7 @@ import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
+import io.federecio.dropwizard.swagger.SwaggerBundle;
 
 public class DiscussionServiceApplication extends Application<DiscussionServiceConfiguration> {
 
@@ -36,6 +37,9 @@ public class DiscussionServiceApplication extends Application<DiscussionServiceC
 
     // AssetBundle for the Hal Browser
     bootstrap.addBundle(new AssetsBundle());
+
+    // Swagger bundle for the SwaggerUI
+    bootstrap.addBundle(new SwaggerBundle<DiscussionServiceConfiguration>());
   }
 
   @Override
@@ -45,4 +49,5 @@ public class DiscussionServiceApplication extends Application<DiscussionServiceC
     // be compatible with HAL Browser and other industry standards
     environment.jersey().register(JaxRsHalBuilderSupport.class);
   }
+
 }
