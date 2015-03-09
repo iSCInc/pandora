@@ -1,8 +1,4 @@
 apply from: rootProject.file('gradle/dropwizard_service.gradle')
 version = "0.1.9"
 
-dependencies {
-    compile 'redis.clients:jedis:2.6.2'
-}
-
 mainClassName = "com.wikia.notificationsservice.NotificationsServiceApplication"

@@ -1,6 +1,6 @@
-package com.wikia.notificationsservice.jedis;
+package com.wikia.pandora.core.jedis;
 
-import com.wikia.notificationsservice.jedis.jersey.JedisPoolBinder;
+import com.wikia.pandora.core.jedis.jersey.JedisPoolBinder;
 import io.dropwizard.Configuration;
 import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Bootstrap;

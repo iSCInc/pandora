@@ -1,4 +1,4 @@
-package com.wikia.notificationsservice.jedis;
+package com.wikia.pandora.core.jedis;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.net.HostAndPort;

@@ -1,4 +1,4 @@
-package com.wikia.notificationsservice.jedis;
+package com.wikia.pandora.core.jedis;
 
 import io.dropwizard.Configuration;
 

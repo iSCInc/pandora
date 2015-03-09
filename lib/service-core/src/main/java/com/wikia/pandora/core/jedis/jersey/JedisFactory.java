@@ -1,4 +1,4 @@
-package com.wikia.notificationsservice.jedis.jersey;
+package com.wikia.pandora.core.jedis.jersey;
 
 import org.glassfish.hk2.api.Factory;
 import redis.clients.jedis.Jedis;

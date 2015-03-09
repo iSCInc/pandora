@@ -7,4 +7,5 @@ dependencies {
     }
     compile 'net.alchim31:metrics-influxdb:0.6.0'
     compile project(':lib:consul-config')
+    compile 'redis.clients:jedis:2.6.2'
 }

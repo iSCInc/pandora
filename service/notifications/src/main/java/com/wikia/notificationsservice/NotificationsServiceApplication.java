@@ -2,8 +2,8 @@ package com.wikia.notificationsservice;
 
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
-import com.wikia.notificationsservice.jedis.JedisBundle;
-import com.wikia.notificationsservice.jedis.JedisFactory;
+import com.wikia.pandora.core.jedis.JedisBundle;
+import com.wikia.pandora.core.jedis.JedisFactory;
 import com.wikia.notificationsservice.configuration.NotificationsConfiguration;
 import com.wikia.notificationsservice.health.NotificationsHealthCheck;
 import com.wikia.notificationsservice.resources.NotificationsResource;

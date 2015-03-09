@@ -1,4 +1,4 @@
-package com.wikia.notificationsservice.jedis;
+package com.wikia.pandora.core.jedis;
 
 import com.codahale.metrics.health.HealthCheck;
 import redis.clients.jedis.Jedis;
