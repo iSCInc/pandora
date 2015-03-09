@@ -234,6 +234,14 @@ public class UrlGenerator {
       return this;
     }
 
+    /**
+     * convenience for frame(0)
+     * @return UrlGenerator.Builder
+     */
+    public Builder frame() {
+      return frame(0);
+    }
+
     public Builder width(Integer width) {
       return width(Optional.of(width));
     }
