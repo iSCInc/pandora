@@ -1,4 +1,4 @@
-apply from: rootProject.file('gradle/pandora_common_deps.gradle')
+apply from: rootProject.file('gradle/dropwizard_service.gradle')
 apply plugin: 'application'
 version = "0.1"
 
@@ -16,6 +16,8 @@ buildscript {
 }
 apply from: rootProject.file('gradle/marathon_deployment.gradle')
 dependencies {
+    compile project(":lib:service-core")
+    testCompile project(path: ':lib:service-core', configuration: 'tests')
     compile "com.hubspot.dropwizard:dropwizard-guice:$dropwizardGuiceVersion"
     // following are required for the dropwizard swagger
     compile "commons-lang:commons-lang:2.6"
