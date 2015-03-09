@@ -57,7 +57,7 @@ public class ForumService extends ContentService {
   public Optional<Forum> updateForum(int siteId, Forum forum) {
     Optional<Forum> updatedForum = forumDAO.updateForum(siteId, forum);
     
-    if (updatedForum != null) {
+    if (updatedForum.isPresent()) {
       return updatedForum;
     }
     

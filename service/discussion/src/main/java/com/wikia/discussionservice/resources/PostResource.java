@@ -110,7 +110,7 @@ public class PostResource {
   @DELETE
   @Path("/{siteId}/posts/{postId}")
   @Timed
-  public Response deleteThread(@NotNull @PathParam("siteId") IntParam siteId,
+  public Response deletePost(@NotNull @PathParam("siteId") IntParam siteId,
                                @NotNull @PathParam("postId") IntParam postId,
                                @Context HttpServletRequest request,
                                @Context UriInfo uriInfo) {
