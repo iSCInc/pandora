@@ -1,5 +1,6 @@
 rootProject.name = 'pandora'
 
+include 'lib:test:annotation'
 include 'lib:service-core'
 include 'lib:facade-gateway'
 include 'lib:mediawiki-fluent-api'

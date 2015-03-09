@@ -1,4 +1,4 @@
-package com.wikia.pandora.core.test;
+package com.wikia.test.annotation;
 
 public interface IntegrationTest {
 }
