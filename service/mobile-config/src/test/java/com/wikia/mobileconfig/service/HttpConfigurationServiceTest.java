@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import com.wikia.mobileconfig.core.EmptyMobileConfiguration;
 import com.wikia.mobileconfig.core.MobileConfiguration;
+import com.wikia.pandora.core.testhelper.TestHelper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.HttpClient;
@@ -36,7 +37,7 @@ public class HttpConfigurationServiceTest {
 
   @Test
   public void getEmptyConfiguration() throws Exception {
-    when(httpClient.execute(any(HttpGet.class), any(BasicResponseHandler.class))).thenThrow(IOException.class);
+    TestHelper.addMockRequestException(httpClient, IOException.class);
     MobileConfiguration
         config = configService.getConfiguration("testPlatform", "testTag", "xx", "xx");
     assertThat(config).isExactlyInstanceOf(EmptyMobileConfiguration.class);
