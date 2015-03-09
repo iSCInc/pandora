@@ -1,6 +1,7 @@
 package com.wikia.mobileconfig.health;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -24,13 +25,13 @@ public class AppsDeployerHealthCheckTest {
   public void testHealthy() throws Exception {
     when(service.isUp()).thenReturn(true);
     Result result = healthCheck.check();
-    assertThat(result.isHealthy());
+    assertTrue(result.isHealthy());
   }
 
   @Test
   public void testUnhealthy() throws Exception {
     when(service.isUp()).thenReturn(false);
     Result result = healthCheck.check();
-    assertThat(!result.isHealthy());
+    assertFalse(result.isHealthy());
   }
 }
