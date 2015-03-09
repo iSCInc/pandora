@@ -15,21 +15,7 @@ logging:
         tags: rawTags
         context: rawContext
       customFields:
-        appname: pandora-example
-#server:
-#  type: default
-#  applicationConnectors:
-#  - type: http
-#    port: 8080
-#  adminConnectors:
-#  - type: http
-#    port: 8081
-#consulConfig:
-#  consulUrl: http://dev-consul:8500
-#  tags:
-#    - auto_testing
-#  heartbeatInterval: 2s
-#  heartbeatTTL: 5s
+        appname: notifications
 redis:
   # The redis server's address; required.
   endpoint: localhost:6379
