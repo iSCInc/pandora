@@ -1,5 +1,8 @@
 package com.wikia.mobileconfig;
 
+import com.google.inject.Injector;
+
+import com.hubspot.dropwizard.guice.GuiceBundle;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
@@ -7,13 +10,11 @@ import com.wikia.mobileconfig.gateway.AppsDeployerListContainer;
 import com.wikia.mobileconfig.health.AppsDeployerHealthCheck;
 import com.wikia.mobileconfig.health.MobileConfigHealthCheck;
 import com.wikia.mobileconfig.resources.ApplicationsResource;
-import com.wikia.mobileconfig.resources.ImageResource;
 import com.wikia.mobileconfig.resources.MobileConfigResource;
 import com.wikia.mobileconfig.service.HttpConfigurationService;
-import com.wikia.mobileconfig.service.ImageService;
 import com.wikia.pandora.core.consul.ConsulBundle;
-import com.wikia.pandora.core.consul.ConsulConfig;
 import com.wikia.pandora.core.consul.config.ConsulVariableInterpolationBundle;
+import com.wikia.pandora.core.dropwizard.GovernatorInjectorFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,8 +26,7 @@ import io.dropwizard.setup.Environment;
 public class MobileConfigApplication extends Application<MobileConfigConfiguration> {
 
   public static final RepresentationFactory
-      REPRESENTATION_FACTORY =
-      new StandardRepresentationFactory();
+      REPRESENTATION_FACTORY = new StandardRepresentationFactory();
 
   public static final Logger LOGGER = LoggerFactory.getLogger(MobileConfigApplication.class);
 
@@ -41,14 +41,24 @@ public class MobileConfigApplication extends Application<MobileConfigConfigurati
 
   @Override
   public void initialize(Bootstrap<MobileConfigConfiguration> bootstrap) {
-    bootstrap.addBundle(new ConsulVariableInterpolationBundle());
-    bootstrap.addBundle(new ConsulBundle<MobileConfigConfiguration>() {
-      @Override
-      protected ConsulConfig narrowConfig(MobileConfigConfiguration config) {
-        return config.getConsulConfig();
-      }
-    });
+    GuiceBundle<MobileConfigConfiguration> guiceBundle =
+        GuiceBundle.<MobileConfigConfiguration>newBuilder()
+            .addModule(new MobileConfigModule())
+            .setInjectorFactory(new GovernatorInjectorFactory())
+            .setConfigClass(MobileConfigConfiguration.class)
+            .build();
+
+    bootstrap.addBundle(guiceBundle);
+
+    Injector injector = guiceBundle.getInjector();
+    bootstrap.addBundle(
+        injector.getInstance(ConsulVariableInterpolationBundle.class)
+    );
+    bootstrap.addBundle(
+        injector.getInstance(ConsulBundle.class)
+    );
   }
+
 
   @Override
   public void run(MobileConfigConfiguration configuration, Environment environment) {
@@ -56,11 +66,9 @@ public class MobileConfigApplication extends Application<MobileConfigConfigurati
         environment,
         configuration
     );
-    ImageService imageService = new ImageService(
-        environment,
-        configuration
-    );
-    AppsDeployerListContainer listService = new AppsDeployerListContainer(environment, configuration);
+    AppsDeployerListContainer
+        listService =
+        new AppsDeployerListContainer(environment, configuration);
 
     final MobileConfigHealthCheck healthCheck = new MobileConfigHealthCheck();
     environment.healthChecks().register("mobile-config", healthCheck);
@@ -74,16 +82,11 @@ public class MobileConfigApplication extends Application<MobileConfigConfigurati
         mobileConfig =
         new MobileConfigResource(configService, listService);
 
-    final ImageResource
-        image =
-        new ImageResource(imageService);
-
     final ApplicationsResource
         appList =
         new ApplicationsResource(listService);
 
     environment.jersey().register(mobileConfig);
-    environment.jersey().register(image);
     environment.jersey().register(appList);
     environment.jersey().register(JaxRsHalBuilderSupport.class);
   }
