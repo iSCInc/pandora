@@ -1,4 +1,4 @@
-package com.wikia.pandora.core.metrics;
+package com.wikia.dropwizard.metrics.influx;
 
 import com.google.common.collect.ImmutableSet;
 

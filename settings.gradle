@@ -10,6 +10,7 @@ include 'lib:vignette'
 include 'lib:dropwizard:base'
 include 'lib:dropwizard:hal'
 include 'lib:dropwizard:consul'
+include 'lib:dropwizard:metrics-influx'
 
 include 'service:mobile-config'
 include 'service:facade'
