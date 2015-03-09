@@ -12,3 +12,4 @@ logging:
       currentLogFilename: /tmp/pandora.log
       archivedLogFilenamePattern: /tmp/pandora-%d.log.gz
       archivedFileCount: 5
+

@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 
 import io.dropwizard.util.Duration;
 
-public class ConsulConfig {
+public class ConsulConfiguration {
 
   @NotNull
   @Valid

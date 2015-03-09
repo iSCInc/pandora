@@ -7,13 +7,18 @@ import org.apache.commons.lang3.text.StrLookup;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nullable;
+import javax.inject.Inject;
+
 public class ConsulVariableLookup extends StrLookup {
+
   public static final Pattern VARIABLE_PATTERN = Pattern.compile("([\\w_]+)(:(.+))?");
   public static final String SUBSTITUTOR_PREFIX = "${consul:";
 
   protected ConsulKeyValueConfig keyValueConfig;
 
-  public ConsulVariableLookup(ConsulKeyValueConfig keyValueConfig) {
+  @Inject
+  public ConsulVariableLookup(@Nullable ConsulKeyValueConfig keyValueConfig) {
     this.keyValueConfig = keyValueConfig;
   }
 
@@ -37,7 +42,8 @@ public class ConsulVariableLookup extends StrLookup {
       if (defaultValue != null) {
         value = defaultValue;
       } else {
-        throw new RuntimeException(String.format("undefined variable and no default: %s", variable));
+        throw new RuntimeException(
+            String.format("undefined variable and no default: %s", variable));
       }
     }
 

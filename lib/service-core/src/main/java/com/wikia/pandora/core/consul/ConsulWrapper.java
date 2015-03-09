@@ -11,10 +11,10 @@ import io.dropwizard.util.Duration;
 
 public class ConsulWrapper {
 
-  private final ConsulConfig configuration;
+  private final ConsulConfiguration configuration;
   private final String applicationName;
 
-  ConsulWrapper(@Nonnull ConsulConfig configuration, @Nonnull String appName) {
+  ConsulWrapper(@Nonnull ConsulConfiguration configuration, @Nonnull String appName) {
     this.configuration = configuration;
     this.applicationName = appName;
   }
