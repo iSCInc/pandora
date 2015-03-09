@@ -1,0 +1,7 @@
+apply from: rootProject.file('gradle/pandora_common_deps.gradle')
+apply from: rootProject.file('gradle/publish_artifacts.gradle')
+
+dependencies {
+    compile project(':service:facade')
+    compile project(':lib:service-core')
+}

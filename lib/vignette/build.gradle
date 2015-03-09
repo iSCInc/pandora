@@ -1,0 +1,16 @@
+apply from: rootProject.file('gradle/common_deps.gradle')
+apply from: rootProject.file('gradle/publish_artifacts.gradle')
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+group = 'com.wikia'
+version = '0.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.apache.httpcomponents:httpclient:4.3.5'
+    compile 'com.google.guava:guava:17.0'
+}
