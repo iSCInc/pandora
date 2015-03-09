@@ -1,8 +1,10 @@
 package com.wikia.pandora.core.testhelper;
 
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Mockito.when;
+
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Matchers;
@@ -11,10 +13,6 @@ import org.mockito.Mockito;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
-
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Mockito.when;
 
 public class TestHelper {
 
@@ -34,10 +32,18 @@ public class TestHelper {
     return client;
   }
 
+  public static void addMockRequest(HttpClient client, String result) throws IOException {
+    addMockRequest(client, new HttpUriRequestMatch(null), result);
+  }
+
   public static void addMockRequest(HttpClient client, String url, String result)
       throws IOException {
-    when(client.execute(argThat(new HttpUriRequestMatch(url)),
-                        Matchers.<ResponseHandler<String>>any()))
+    addMockRequest(client, new HttpUriRequestMatch(url), result);
+  }
+
+  private static void addMockRequest(HttpClient client, HttpUriRequestMatch match, String result)
+      throws IOException {
+    when(client.execute(argThat(match), Matchers.<ResponseHandler<String>>any()))
         .thenReturn(result);
   }
 
