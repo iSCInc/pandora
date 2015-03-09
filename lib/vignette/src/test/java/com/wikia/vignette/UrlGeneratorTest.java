@@ -138,4 +138,15 @@ public class UrlGeneratorTest {
     String url = generator.domainShard(config.baseURL, "/a/ab/foo.png");
     assertEquals("http://vignette1.wikia.com", url);
   }
+
+  @Test
+  public void testFrame() throws URISyntaxException {
+    UrlConfig config = sampleConfig().build();
+    UrlGenerator generator = new UrlGenerator.Builder(config)
+        .frame(4)
+        .build();
+    assertEquals(
+        "http://images.vignette.com/tests/images/a/ab/foo.png/revision/latest?cb=12343&frame=4",
+        generator.url());
+  }
 }
