@@ -6,8 +6,10 @@ include 'lib:mediawiki-fluent-api'
 include 'lib:nirvana-api'
 include 'lib:consul-config'
 include 'lib:vignette'
+include 'lib:dropwizard:base'
+include 'lib:dropwizard:hal'
+include 'lib:dropwizard:consul'
 
 include 'service:mobile-config'
 include 'service:facade'
 include 'service:example'
-

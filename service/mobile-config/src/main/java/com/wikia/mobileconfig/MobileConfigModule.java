@@ -2,8 +2,8 @@ package com.wikia.mobileconfig;
 
 import com.google.inject.AbstractModule;
 
-import com.wikia.pandora.core.consul.ConsulModule;
-import com.wikia.pandora.core.consul.ProvidesConsulConfiguration;
+import com.wikia.dropwizard.consul.bundle.ConsulModule;
+import com.wikia.dropwizard.consul.bundle.ProvidesConsulConfiguration;
 
 
 public class MobileConfigModule extends AbstractModule {

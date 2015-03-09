@@ -1,4 +1,4 @@
-package com.wikia.pandora.core.consul.config;
+package com.wikia.dropwizard.consul.config;
 
 import org.apache.commons.lang3.text.StrSubstitutor;
 

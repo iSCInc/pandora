@@ -1,8 +1,8 @@
 package com.wikia.mobileconfig;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.wikia.pandora.core.consul.ConsulConfiguration;
-import com.wikia.pandora.core.consul.ProvidesConsulConfiguration;
+import com.wikia.dropwizard.consul.bundle.ConsulConfiguration;
+import com.wikia.dropwizard.consul.bundle.ProvidesConsulConfiguration;
 
 import org.hibernate.validator.constraints.NotEmpty;
 

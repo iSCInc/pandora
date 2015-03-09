@@ -1,4 +1,4 @@
-package com.wikia.pandora.core.consul;
+package com.wikia.dropwizard.consul.bundle;
 
 import java.net.URI;
 import java.util.List;

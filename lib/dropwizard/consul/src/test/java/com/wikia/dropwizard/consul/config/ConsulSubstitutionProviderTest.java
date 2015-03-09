@@ -1,4 +1,4 @@
-package com.wikia.pandora.core.consul.config;
+package com.wikia.dropwizard.consul.config;
 
 import com.wikia.gradle.ConsulKeyValueConfig;
 
@@ -14,7 +14,7 @@ import java.util.Map;
 
 import io.dropwizard.configuration.ConfigurationSourceProvider;
 
-import static com.wikia.pandora.core.consul.config.ConsulSubstitutionProvider.convertStreamToString;
+import static com.wikia.dropwizard.consul.config.ConsulSubstitutionProvider.convertStreamToString;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
