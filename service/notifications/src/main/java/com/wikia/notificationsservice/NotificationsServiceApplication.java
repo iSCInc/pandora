@@ -13,7 +13,7 @@ import io.dropwizard.setup.Environment;
 
 public class NotificationsServiceApplication extends Application<NotificationsConfiguration> {
 
-  private final String serviceName = "sirius-example";
+  private final String serviceName = "notifications";
 
   public static void main(String[] args) throws Exception {
     new NotificationsServiceApplication().run(args);
@@ -43,8 +43,8 @@ public class NotificationsServiceApplication extends Application<NotificationsCo
     environment.healthChecks().register("SimpleHealthCheck", healthCheck);
 
     StandardRepresentationFactory representationFactory = new StandardRepresentationFactory();
-    NotificationsResource siriusResource = new NotificationsResource(representationFactory, configuration);
-    environment.jersey().register(siriusResource);
+    NotificationsResource notificationsResource = new NotificationsResource(representationFactory, configuration);
+    environment.jersey().register(notificationsResource);
 
     //Optional
     environment.jersey().register(JaxRsHalBuilderSupport.class);

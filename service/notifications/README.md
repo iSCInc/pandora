@@ -28,16 +28,16 @@ To run the tests:
 
 # What is currently in?
 
-SiriusServiceApplication - Main class that start all things.
+NotificationsServiceApplication - Main class that start all things.
 Here you can setup your resources, healthChecks, writers.
 At least one resource and healthCheck is needed.
 
-SiriusConfiguration - Contains whatever you want.
+NotificationsConfiguration - Contains whatever you want.
 Data here are created from example.yaml by magic(reflection)
 
-SiriusResource - Controller handling your requests.
+NotificationsResource - Controller handling your requests.
 Contains entry points, and logic what, and how service should return
 
-SiriusHealthCheck - Self explanation class
+NotificationsHealthCheck - Self explanation class
 
 banner.txt - [Why this is important](https://dropwizard.github.io/dropwizard/manual/core.html#banners)
