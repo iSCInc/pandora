@@ -1,0 +1,34 @@
+[
+{
+"id": 1,
+"name": "Five Nights at Freddy's",
+"app_tag": "fivenightsatfreddys",
+"ad_unit_id": "/5441/SingleWikia_App/Gaming/fivenightsatfreddys",
+"languages": [
+{
+"id": 2,
+"wikia_id": 1030786,
+"title": "fivenightsatfreddys",
+"language_code": "en",
+"url": "http://freddy-fazbears-pizza.wikia.com/"
+}
+],
+"category_tag": "strategy",
+"quantcast_key": "1agrcbqlije9ni04-2h26tpua0hrpbv0q",
+"quantcast_label": "CA.fivenightsatfreddys",
+"screenshot_article": "Foxy",
+"hub": "Gaming",
+"theme": "dark",
+"action_bar_color": "002b58",
+"action_button_color": "ffffff",
+"active_element_color": "22acf4",
+"bar_title_color": "ffffff",
+"status_bar_style": "light",
+"ios_image": "images/iTunesArtwork2x_vmEPI9u.png",
+"android_image": "images/artwork_i5E4sSN.png",
+"android_promo_image": "images/CA_FiveNightsAtFreddys_GooglePlay_1024x500_FINAL.jpg",
+"firebase_url": "",
+"android_release": "com.wikia.singlewikia.fivenightsatfreddys",
+"ios_release": ""
+}
+]

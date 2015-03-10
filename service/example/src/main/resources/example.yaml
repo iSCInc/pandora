@@ -1,0 +1,32 @@
+greetingsWord: Take me to your leader
+logging:
+  level: INFO
+  appenders:
+    - type: console
+      threshold: ALL
+      timeZone: UTC
+      target: stdout
+    - type: logstash-socket
+      host: 127.0.0.1
+      port: 1410
+      fieldNames:
+        message: rawMessage
+        level: rawLevel
+        tags: rawTags
+        context: rawContext
+      customFields:
+        appname: pandora-example
+server:
+  type: default
+  applicationConnectors:
+  - type: http
+    port: 8080
+  adminConnectors:
+  - type: http
+    port: 8081
+consulConfiguration:
+  tags:
+    - auto_testing
+  heartbeatInterval: 2s
+  heartbeatTTL: 5s
+
