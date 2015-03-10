@@ -26,9 +26,9 @@ public class Translator {
   private static final String TRANSLATION_FILE_PATH =
       "translations/translations.%s.json";
 
-  private ConcurrentHashMap<String, Future<Map<String, String>>> translationCache = new ConcurrentHashMap<>();
+  private final ConcurrentHashMap<String, Future<Map<String, String>>> translationCache = new ConcurrentHashMap<>();
 
-  private ObjectMapper mapper = new ObjectMapper();
+  private final ObjectMapper mapper = new ObjectMapper();
 
   public static Translator getInstance() {
     return instance;
