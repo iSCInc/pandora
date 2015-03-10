@@ -37,9 +37,18 @@ public class CephAppsListService implements AppsListService {
 
   @Inject
   public CephAppsListService(Environment environment, MobileConfigConfiguration configuration) {
+    this(configuration.getCephDomain(), configuration.getCephPort());
+  }
+
+  public CephAppsListService(HttpClient client, String cephDomain, String cephPort) {
+    this(cephDomain, cephPort);
+    this.httpClient = client;
+  }
+
+  public CephAppsListService(String cephDomain, String cephPort) {
+    this.cephDomain = cephDomain;
+    this.cephPort = cephPort;
     this.mapper = new ObjectMapper();
-    this.cephDomain = configuration.getCephDomain();
-    this.cephPort = configuration.getCephPort();
   }
 
   @Override
@@ -61,7 +70,7 @@ public class CephAppsListService implements AppsListService {
       String listResponse = this.httpClient.execute(httpGet, responseHandler);
       return mapper.readValue(listResponse, new TypeReference<List<HashMap<String, Object>>>() {
       });
-    } catch (HttpResponseException e) {
+    } catch (NullPointerException | HttpResponseException e) {
       LOGGER.error("Cannot get app list from ceph", e);
       throw new CephAppsListServiceException("No data", e.getMessage());
     } catch (JsonProcessingException e) {

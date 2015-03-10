@@ -1,4 +1,4 @@
-package com.wikia.mobileconfig.service;
+package com.wikia.mobileconfig.service.configuration;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class HttpConfigurationServiceTest {
+public class CephConfigurationServiceTest {
   private HttpClient httpClient;
   private String cephDomain = "ceph-domain";
   private String cephPort = "80";
