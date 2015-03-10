@@ -1,4 +1,4 @@
-apply from: rootProject.file('gradle/pandora_common_deps.gradle')
+apply from: rootProject.file('gradle/dropwizard_service.gradle')
 apply plugin: 'application'
 version = "0.1"
 
@@ -16,11 +16,13 @@ buildscript {
 }
 apply from: rootProject.file('gradle/marathon_deployment.gradle')
 dependencies {
-    compile "redis.clients:jedis:2.6.2"
+    compile project(":lib:service-core")
+    testCompile project(path: ':lib:service-core', configuration: 'tests')
     compile "com.hubspot.dropwizard:dropwizard-guice:$dropwizardGuiceVersion"
     compile "io.dropwizard:dropwizard-assets:0.8.0-rc2"
     compile "io.dropwizard:dropwizard-views-freemarker:0.8.0-rc2"
     compile "org.projectlombok:lombok:1.16.2"
+    compile "redis.clients:jedis:2.6.2"
     testCompile "org.testng:testng:6.8"
     testCompile "org.hamcrest:hamcrest-core:$hamcrestVersion"
     testCompile "org.hamcrest:hamcrest-library:$hamcrestVersion"

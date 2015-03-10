@@ -13,12 +13,15 @@ import com.wikia.mobileconfig.gateway.AppsListService;
 import com.wikia.mobileconfig.service.ConfigurationService;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+
+import io.dropwizard.jersey.caching.CacheControl;
 
 @Path("/configurations/{platform}/apps/{app-tag}")
 @Produces(RepresentationFactory.HAL_JSON)
@@ -45,6 +48,7 @@ public class MobileConfigResource {
    */
   @GET
   @Timed
+  @CacheControl(maxAge = 5, maxAgeUnit = TimeUnit.SECONDS)
   public Representation getMobileApplicationConfig(
       @PathParam("platform") String platform,
       @PathParam("app-tag") String appTag,

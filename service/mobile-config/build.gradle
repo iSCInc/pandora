@@ -1,26 +1,14 @@
-apply plugin: 'application'
-
-version = "0.1.18-SNAPSHOT"
+version = "0.1.19-SNAPSHOT"
+apply from: rootProject.file('gradle/dropwizard_service.gradle')
 mainClassName = "com.wikia.mobileconfig.MobileConfigApplication"
-
-apply from: rootProject.file('gradle/pandora_common_deps.gradle')
-apply from: rootProject.file('gradle/marathon_deployment.gradle')
 
 applicationDefaultJvmArgs = [
         "-Xms100m", "-Xmn128m", "-Xmx300m", "-XX:+UseNUMA", "-XX:+UseCondCardMark", "-XX:+UseBiasedLocking", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC"
 ]
 
-applicationDistribution.from("${project.name}.yaml.sample") {
-    rename "${project.name}.yaml.sample", "${project.name}.yaml"
-    into 'conf'
-}
-
 dependencies {
     compile project(":lib:service-core")
-}
-
-run {
-    args 'server', 'mobile-config.yml'
+    testCompile project(path: ':lib:service-core', configuration: 'tests')
 }
 
 deployments {
@@ -32,6 +20,11 @@ deployments {
         }
         environment {
             CONSUL_KEY_VALUE_CONFIG_SOURCE = "http://localhost:8500/config/mobile-config/prod"
+        }
+    }
+    testing {
+        environment {
+            CONSUL_KEY_VALUE_CONFIG_SOURCE = "http://localhost:8500/config/mobile-config/testing"
         }
     }
 }

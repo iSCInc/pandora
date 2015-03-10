@@ -2,6 +2,11 @@ apply plugin: 'application'
 apply plugin: 'com.wikia.gradle.marathon'
 apply plugin: 'maven-publish'
 
+def defaultConfigLocation="src/main/resources"
+applicationDistribution.from("${defaultConfigLocation}/${project.name}.yaml") {
+    into 'conf'
+}
+
 startScripts {
     doFirst {
         applicationDefaultJvmArgs.add('-Ddw.server.applicationConnectors[0].port=\$PORT0')
@@ -50,7 +55,7 @@ deployments {
             }
         }
         marathon {
-            url = "http://mesos-s1.wikia-prod:8080"
+            url = marathonUrl
         }
         resources {
             cpus = 0.1
@@ -58,7 +63,5 @@ deployments {
             instances = 1
             useRandomPorts(2)
         }
-    }
-    testing {
     }
 }
