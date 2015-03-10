@@ -69,6 +69,7 @@ public class ThreadResource {
 
   @GET
   @Path("/{siteId}/threads/{threadId}")
+  @Produces(RepresentationFactory.HAL_JSON)
   @ApiOperation(value = "Get a specific thread for a site",
       notes = "Returns threads details and a list of posts.",
       response = ForumThread.class)
@@ -110,6 +111,7 @@ public class ThreadResource {
 
   @POST
   @Path("/{siteId}/forums/{forumId}/threads")
+  @Produces(RepresentationFactory.HAL_JSON)
   @ApiOperation(value = "Start a new thread for the forum",
       notes = "Returns the newly created thread.",
       response = ForumThread.class)

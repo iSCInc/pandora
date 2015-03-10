@@ -61,6 +61,7 @@ public class ForumResource {
 
   @GET
   @Path("/{siteId}/forums")
+  @Produces(RepresentationFactory.HAL_JSON)
   @ApiOperation(value = "Returns all the forums for a site", notes = "Returns a complete list of forums",
       response = ForumRoot.class)
   @ApiResponses(value = {
@@ -91,6 +92,7 @@ public class ForumResource {
 
   @GET
   @Path("/{siteId}/forums/{forumId}")
+  @Produces(RepresentationFactory.HAL_JSON)
   @ApiOperation(value = "Get a specific forum for a site",
       notes = "Returns forum details either a list of subforums or threads. Use responseGroups to control the amount of details.",
       response = ForumRoot.class)
@@ -129,6 +131,7 @@ public class ForumResource {
 
   @POST
   @Path("/{siteId}/forums")
+  @Produces(RepresentationFactory.HAL_JSON)
   @ApiOperation(value = "Create a new forum for a site", response = ForumRoot.class)
   @ApiResponses(value = {
       @ApiResponse(code = 201, message = "Successful creation of a forum", response = Forum.class),
@@ -157,6 +160,7 @@ public class ForumResource {
 
   @DELETE
   @Path("/{siteId}/forums/{forumId}")
+  @Produces(RepresentationFactory.HAL_JSON)
   @ApiOperation(value = "Delete a forum for a site")
   @ApiResponses(value = {
       @ApiResponse(code = 204, message = "Successful deletion of a forum"),
@@ -181,6 +185,7 @@ public class ForumResource {
 
   @PUT
   @Path("/{siteId}/forums")
+  @Produces(RepresentationFactory.HAL_JSON)
   @ApiOperation(value = "Update a forum for a site", notes = "If the forum does not exist it will be created")
   @ApiResponses(value = {
       @ApiResponse(code = 201, message = "Successful creation of a forum", response = Forum.class),

@@ -58,6 +58,7 @@ public class PostResource {
 
   @GET
   @Path("/{siteId}/posts/{postId}")
+  @Produces(RepresentationFactory.HAL_JSON)
   @ApiOperation(value = "Get a specific post for a site",
       notes = "Returns post details.",
       response = Post.class)
@@ -93,6 +94,7 @@ public class PostResource {
 
   @POST
   @Path("/{siteId}/posts")
+  @Produces(RepresentationFactory.HAL_JSON)
   @ApiOperation(value = "Create a new post",
       notes = "Returns the newly created post.",
       response = Post.class)
