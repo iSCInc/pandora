@@ -3,74 +3,99 @@ package com.wikia.mobileconfig.utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wikia.mobileconfig.MobileConfigApplication;
 
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.HashMap;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Collections;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 
 /**
  * Translates values based on the translation json file
  */
 public class Translator {
-
-  private static Translator instance = null;
+  private static Translator instance = new Translator();
 
   private static final String TRANSLATION_FILE_PATH =
-      "/translations/translations.%s.json";
+      "translations/translations.%s.json";
 
-  private Map<String, Map<String, String>> translationCache;
+  private ConcurrentHashMap<String, Future<Map<String, String>>> translationCache = new ConcurrentHashMap<>();
 
   private ObjectMapper mapper = new ObjectMapper();
 
-  private class TranslationFile {
-
-  }
-
-  private Translator() {
-    translationCache = new HashMap<>();
-  }
-
   public static Translator getInstance() {
-    if (instance == null) {
-      synchronized(Translator.class) {
-        if (instance == null) {
-          instance = new Translator();
-        }
-      }
-    }
     return instance;
   }
 
-  private void loadTranslations(String langCode) {
-    Map<String, String> result;
-    try {
-      byte[] encoded = Files.readAllBytes(Paths.get(
-          getClass().getResource(String.format(TRANSLATION_FILE_PATH, langCode)).getPath()));
+  private Translator() {
+  }
 
-      String translationFile = new String(encoded, Charset.defaultCharset());
+  private Map<String, String> loadTranslations(String langCode) throws IOException {
+    String translationFilePath = String.format(TRANSLATION_FILE_PATH, langCode);
 
-      result = (Map) this.mapper.readValue(
-          translationFile,
-          Map.class
-      );
-    } catch (Exception e) {
-      result = new HashMap<>();
-      MobileConfigApplication.LOGGER.error(
-          String.format("Error while parsing translation file: ", e.toString()), e
-      );
+    // Avoid classloader caching the file by accessing via URL 
+    URL resource = getClass().getClassLoader().getResource(translationFilePath);
+
+    if (resource == null) {
+      throw new FileNotFoundException(translationFilePath);
     }
 
-    translationCache.put(langCode, result);
+    return (Map<String, String>) this.mapper.readValue(
+        resource.openStream(),
+        Map.class
+    );
+  }
+
+  private Future<Map<String, String>> loadAndCacheTranslation(String langCode) {
+      CompletableFuture<Map<String, String>> futureTranslations = new CompletableFuture<>();
+      Future<Map<String, String>> existingFuture = translationCache.putIfAbsent(langCode, futureTranslations);
+
+      if (existingFuture == null) {
+        try {
+          futureTranslations.complete(loadTranslations(langCode));
+        } catch (Exception e) {
+          futureTranslations.completeExceptionally(e);
+        }
+
+        return futureTranslations;
+      } else {
+        return existingFuture;
+      }
   }
 
   private Map<String, String> getTranslationMap(String langCode) {
-    if (!translationCache.containsKey(langCode)) {
-      loadTranslations(langCode);
+    Future<Map<String, String>> translationSource = translationCache.get(langCode);
+
+    if (translationSource == null) {
+      translationSource = loadAndCacheTranslation(langCode);
     }
 
-    return translationCache.get(langCode);
+    Map<String, String> translations = null;
+    try {
+      translations = translationSource.get();
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      MobileConfigApplication.LOGGER.error("InterruptedException while waiting for translation file to load: {}", langCode);
+    } catch (ExecutionException e) {
+      MobileConfigApplication.LOGGER.error(
+          String.format("Error while loading translation file: %s", e.getCause().toString()), e.getCause());
+    } catch (CancellationException e) {
+      MobileConfigApplication.LOGGER.error("Cancelled loading translation file for language {}: {}", langCode, e.toString());
+    }
+
+    if (translations == null) {
+      translationCache.remove(langCode, translations);
+      translations = Collections.emptyMap();
+    }
+
+    return translations;
   }
 
   public String translate(String langCode, String key) {
