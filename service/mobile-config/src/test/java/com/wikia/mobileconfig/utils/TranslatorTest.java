@@ -6,15 +6,15 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class TranslatorTest {
-	private static final Translator translator = Translator.getInstance();
+  private static final Translator translator = Translator.getInstance();
 
-	@Test
-	public void translateSuccess() {
-		assertEquals("G'day!", translator.translate("en-au", "_hello_"));
+  @Test
+  public void translateSuccess() {
+    assertEquals("G'day!", translator.translate("en-au", "_hello_"));
     assertEquals("Seeya", translator.translate("en-au", "_goodbye_"));
     assertEquals("Hello.", translator.translate("en-gb", "_hello_"));
     assertEquals("Farewell", translator.translate("en-gb", "_goodbye_"));
-	}
+  }
 
   @Test
   public void translateMissingKey() {
@@ -28,7 +28,7 @@ public class TranslatorTest {
 
   // These tests document how the system behaves, not necessarily how
   // it was designed to behave.
-  
+
   @Test
   public void undefinedBehaviour_translateNullKey() {
     assertEquals(null, translator.translate("en-au", null));
