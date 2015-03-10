@@ -8,14 +8,26 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.*;
 import java.util.Optional;
 
+import com.wikia.discussionservice.services.JedisService;
+import lombok.NonNull;
+
+import javax.inject.Inject;
+
 /**
  * THIS IS TEMPORARY THROWAWAY CODE
  */
 
-public class ThreadDAO extends ContentDAO {
+public class ThreadDAO {
 
   private static int THREAD_SEQUENCE = 0;
 
+  @NonNull
+  ContentDAO contentDAO;
+
+  @Inject
+  public ThreadDAO(ContentDAO contentDAO) {
+    this.contentDAO = contentDAO;
+  }
 
   @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
   public Optional<ForumThread> createThread(int siteId, int forumId, Post post) {
@@ -34,20 +46,20 @@ public class ThreadDAO extends ContentDAO {
     user.setName("Made up user");
     forumThread.setThreadStarter(user);
 
-    createContent(siteId, forumThread);
+    contentDAO.createContent(siteId, forumThread);
 
     return Optional.ofNullable(forumThread);
   }
 
 
   public Optional<ForumThread> getForumThread(int siteId, int threadId, int offset, int limit) {
-    return Optional.ofNullable(getContent(siteId, threadId, ForumThread.class));
+    return Optional.ofNullable(contentDAO.getContent(siteId, threadId, ForumThread.class));
   }
 
   public Optional<ForumThread> deleteThread(int siteId, int threadId) {
     Optional<ForumThread> deletedThread = getForumThread(siteId, threadId, 0, 1);
     if (deletedThread.isPresent()) {
-      deleteContent(siteId, threadId, ForumThread.class);
+      contentDAO.deleteContent(siteId, threadId, ForumThread.class);
     }
 
     return deletedThread;

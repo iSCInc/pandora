@@ -15,11 +15,21 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import lombok.NonNull;
+
+import javax.inject.Inject;
+
 /**
  * Created by armon on 3/2/15.
  */
 public class ContentDAO {
-  private final JedisService jedisService = new JedisService();
+  @NonNull
+  private final JedisService jedisService;
+
+  @Inject
+  public ContentDAO(JedisService jedisService) {
+    this.jedisService = jedisService;
+  }
 
   public <T extends Content> ArrayList<T> getItems(int siteId, Class<? extends Content> U) {
     ArrayList<T> contentList = new ArrayList<>();

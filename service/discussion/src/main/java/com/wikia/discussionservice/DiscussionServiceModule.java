@@ -10,6 +10,8 @@ import com.wikia.discussionservice.mappers.*;
 import com.wikia.discussionservice.services.ForumService;
 import com.wikia.discussionservice.services.PostService;
 import com.wikia.discussionservice.services.ThreadService;
+import com.wikia.discussionservice.services.JedisService;
+import com.wikia.discussionservice.dao.ContentDAO;
 
 import javax.inject.Named;
 
@@ -44,4 +46,16 @@ public class DiscussionServiceModule extends AbstractModule {
     return injector.getInstance(ThreadService.class);
   }
 
+  @Provides
+  @Named("jedisService")
+  public JedisService provideJedisService() {
+    Injector injector = Guice.createInjector(new DiscussionServiceModule());
+    return injector.getInstance(JedisService.class);
+  }
+
+  @Provides
+  ContentDAO provideContentDAO(
+      @Named("jedisService") JedisService jedisService) {
+     return new ContentDAO(jedisService);
+  }
 }
