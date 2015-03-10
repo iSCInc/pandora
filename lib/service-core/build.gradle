@@ -2,9 +2,8 @@ apply from: rootProject.file('gradle/pandora_dependencies.gradle')
 apply from: rootProject.file('gradle/publish_artifacts.gradle')
 
 dependencies {
-    compile('com.orbitz.consul:consul-client:0.8') {
-        exclude group: 'org.apache.cxf'
-    }
-    compile 'net.alchim31:metrics-influxdb:0.6.0'
-    compile project(':lib:consul-config')
+    compile project(':lib:dropwizard:base')
+    compile project(':lib:dropwizard:hal')
+    compile project(':lib:dropwizard:consul')
+    compile project(':lib:dropwizard:metrics-influx')
 }

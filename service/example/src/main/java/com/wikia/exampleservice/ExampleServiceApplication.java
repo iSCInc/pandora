@@ -5,11 +5,11 @@ import com.google.inject.Injector;
 import com.hubspot.dropwizard.guice.GuiceBundle;
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
+import com.wikia.dropwizard.consul.bundle.ConsulBundle;
+import com.wikia.dropwizard.consul.config.ConsulVariableInterpolationBundle;
 import com.wikia.exampleservice.configuration.ExampleServiceConfiguration;
 import com.wikia.exampleservice.health.ExampleHealthCheck;
 import com.wikia.exampleservice.resources.ExampleResource;
-import com.wikia.pandora.core.consul.ConsulBundle;
-import com.wikia.pandora.core.consul.config.ConsulVariableInterpolationBundle;
 import com.wikia.pandora.core.dropwizard.GovernatorInjectorFactory;
 
 import io.dropwizard.Application;
@@ -49,7 +49,8 @@ public class ExampleServiceApplication extends Application<ExampleServiceConfigu
   }
 
   @Override
-  public void run(ExampleServiceConfiguration configuration, Environment environment) throws Exception {
+  public void run(ExampleServiceConfiguration configuration, Environment environment)
+      throws Exception {
 
     //register healthCheck (mandatory)
     final ExampleHealthCheck healthCheck = new ExampleHealthCheck();

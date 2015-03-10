@@ -3,7 +3,7 @@ package com.wikia.mobileconfig.integration;
 import com.squarespace.jersey2.guice.BootstrapUtils;
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.MobileConfigConfiguration;
-import com.wikia.pandora.core.test.IntegrationTest;
+import com.wikia.test.annotation.IntegrationTest;
 
 import org.junit.AfterClass;
 import org.junit.ClassRule;
