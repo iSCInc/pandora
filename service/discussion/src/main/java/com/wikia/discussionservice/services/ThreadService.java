@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import java.util.*;
 import java.util.Optional;
 
-public class ThreadService extends ContentService {
+public class ThreadService {
 
   @NonNull
   private final PostService postService;

@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-public class PostService extends ContentService {
+public class PostService {
 
   @NonNull
   private final PostDAO postDAO;

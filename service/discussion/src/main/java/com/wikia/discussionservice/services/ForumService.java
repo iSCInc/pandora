@@ -15,7 +15,7 @@ import java.util.Optional;
  * Responsible for handling all actions around
  * the forum domain.
  */
-public class ForumService extends ContentService {
+public class ForumService {
 
   @NonNull
   private final ThreadService threadService;
