@@ -91,7 +91,7 @@ public class Translator {
     }
 
     if (translations == null) {
-      translationCache.remove(langCode, translations);
+      translationCache.remove(langCode, translationSource);
       translations = Collections.emptyMap();
     }
 
