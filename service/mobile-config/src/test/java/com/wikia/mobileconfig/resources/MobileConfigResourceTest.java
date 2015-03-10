@@ -22,6 +22,8 @@ import java.io.IOException;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.NotFoundException;
 
+import static org.junit.Assert.*;
+
 /**
  * Unit tests for {@link MobileConfigResource}.
  */
@@ -104,7 +106,7 @@ public class MobileConfigResourceTest {
         .request()
         .get(String.class);
 
-    assert(response).contains("modules");
+    assertTrue(response.contains("modules"));
 
     verify(appsListMock).isValidAppTag("test-platform", "test-app");
     verify(httpServiceMock).getConfiguration("test-platform", "test-app", "en-us", "en-us");

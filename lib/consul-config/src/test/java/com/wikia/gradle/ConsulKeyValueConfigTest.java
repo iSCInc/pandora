@@ -21,7 +21,7 @@ public class ConsulKeyValueConfigTest {
     List<Value> expectedValues = new ArrayList<>();
     HashMap<String, String> configs = new HashMap<>();
 
-    configs.put("SOME_IP", "127.0.0.1");
+    configs.put("SOME_IP", "192.168.0.256");
     configs.put("SOME_PORT", "12345");
     configs.put("SOME_HOST", "www.wikia.com");
 

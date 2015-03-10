@@ -47,7 +47,7 @@ public class Translator {
     } catch (Exception e) {
       result = new HashMap<>();
       MobileConfigApplication.LOGGER.error(
-          String.format("Error while parsing translation file: ", e.toString()), e
+          String.format("Error while parsing translation file: %s", e.toString()), e
       );
     }
 

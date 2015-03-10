@@ -51,8 +51,8 @@ public class RegexFilter implements MetricFilter {
 
   @Override
   public boolean matches(String name, Metric metric) {
-    boolean useInclude = (includes != null);
-    boolean useExclude = (excludes != null);
+    boolean useInclude = includes != null;
+    boolean useExclude = excludes != null;
 
     if (useInclude && useExclude) {
       return matchesWithExcludeMethod(name);
