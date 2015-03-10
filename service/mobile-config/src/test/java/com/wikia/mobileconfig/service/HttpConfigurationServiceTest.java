@@ -39,7 +39,7 @@ public class HttpConfigurationServiceTest {
   @Test
   public void getDefaultConfiguration() throws Exception {
     String configContent = new String(Files.readAllBytes(
-            Paths.get("src/test/resources/fixtures/test-platform:test-app.json")));
+            Paths.get("src/test/resources/fixtures/test-platform_test-app.json")));
     TestHelper.addMockRequest(httpClient, configContent);
     MobileConfiguration config = configService.getDefault("testPlatform");
     assertThat(config).isExactlyInstanceOf(MobileConfiguration.class);
