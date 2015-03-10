@@ -2,6 +2,7 @@ apply from: rootProject.file('gradle/static_checks.gradle')
 def sl4jVersion = "1.7.5"
 def junitVersion = "4.11"
 def mockitoVersion = "1.10.17"
+def festAssertVersion = "2.0M10"
 
 dependencies {
     // The production code uses the SLF4J logging API at compile time
@@ -9,5 +10,5 @@ dependencies {
 
     testCompile "junit:junit:$junitVersion"
     testCompile "org.mockito:mockito-core:$mockitoVersion"
-    testCompile project(':lib:service-core')
+    testCompile "org.easytesting:fest-assert-core:$festAssertVersion"
 }

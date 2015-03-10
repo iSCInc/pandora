@@ -22,13 +22,13 @@ subprojects {
 
     task unitTest(type: Test) {
         useJUnit {
-            excludeCategories 'com.wikia.pandora.core.test.IntegrationTest'
+            excludeCategories 'com.wikia.test.annotation.IntegrationTest'
         }
     }
 
     task integrationTest(type: Test) {
         useJUnit {
-            includeCategories 'com.wikia.pandora.core.test.IntegrationTest'
+            includeCategories 'com.wikia.test.annotation.IntegrationTest'
         }
     }
 
@@ -43,5 +43,8 @@ subprojects {
 
     artifacts {
         tests testJar
+    }
+    dependencies {
+        testCompile project(":lib:test:annotation")
     }
 }
