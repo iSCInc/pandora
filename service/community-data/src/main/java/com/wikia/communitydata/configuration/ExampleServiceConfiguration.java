@@ -1,4 +1,4 @@
-package com.wikia.exampleservice.configuration;
+package com.wikia.communitydata.configuration;
 
 import com.wikia.dropwizard.consul.bundle.ConsulConfiguration;
 import com.wikia.dropwizard.consul.bundle.ProvidesConsulConfiguration;

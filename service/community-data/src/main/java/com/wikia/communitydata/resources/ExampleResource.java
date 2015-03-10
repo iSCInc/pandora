@@ -1,10 +1,11 @@
-package com.wikia.exampleservice.resources;
+package com.wikia.communitydata.resources;
 
 import com.codahale.metrics.annotation.Timed;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
-import com.wikia.exampleservice.domain.SimplePojo;
-import com.wikia.exampleservice.domain.builder.SimplePojoBuilder;
+
+import com.wikia.communitydata.domain.SimplePojo;
+import com.wikia.communitydata.domain.builder.SimplePojoBuilder;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

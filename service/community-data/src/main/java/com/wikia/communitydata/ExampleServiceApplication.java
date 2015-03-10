@@ -1,15 +1,16 @@
-package com.wikia.exampleservice;
+package com.wikia.communitydata;
 
 import com.google.inject.Injector;
 
 import com.hubspot.dropwizard.guice.GuiceBundle;
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
+
+import com.wikia.communitydata.configuration.ExampleServiceConfiguration;
+import com.wikia.communitydata.health.ExampleHealthCheck;
+import com.wikia.communitydata.resources.ExampleResource;
 import com.wikia.dropwizard.consul.bundle.ConsulBundle;
 import com.wikia.dropwizard.consul.config.ConsulVariableInterpolationBundle;
-import com.wikia.exampleservice.configuration.ExampleServiceConfiguration;
-import com.wikia.exampleservice.health.ExampleHealthCheck;
-import com.wikia.exampleservice.resources.ExampleResource;
 import com.wikia.pandora.core.dropwizard.GovernatorInjectorFactory;
 
 import io.dropwizard.Application;

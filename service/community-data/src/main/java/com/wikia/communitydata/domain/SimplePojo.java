@@ -1,4 +1,4 @@
-package com.wikia.exampleservice.domain;
+package com.wikia.communitydata.domain;
 
 public class SimplePojo {
 

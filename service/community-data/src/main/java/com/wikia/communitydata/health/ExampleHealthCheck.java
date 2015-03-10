@@ -1,4 +1,4 @@
-package com.wikia.exampleservice.health;
+package com.wikia.communitydata.health;
 
 import com.codahale.metrics.health.HealthCheck;
 
