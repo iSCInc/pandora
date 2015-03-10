@@ -47,13 +47,3 @@ task testAll(type: Test){
 }
 
 testAll.dependsOn testng
-
-// copy example file as a configuration file to the application dist
-applicationDistribution.from("discussionservice.yaml.sample") {
-    rename 'discussionservice.yaml.sample', "${project.name}.yml"
-    into 'conf'
-}
-
-run {
-    args 'server', 'discussionservice.yaml'
-}
