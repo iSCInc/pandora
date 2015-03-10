@@ -2,6 +2,8 @@ package com.wikia.pandora.core.metrics;
 
 import com.google.common.collect.ImmutableSet;
 
+import com.wikia.dropwizard.metrics.influx.RegexFilter;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;

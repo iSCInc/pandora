@@ -20,8 +20,8 @@ import com.wikia.mobileconfig.service.application.CephAppsListService;
 import com.wikia.mobileconfig.service.configuration.CephConfigurationService;
 import com.wikia.mobileconfig.service.configuration.ConfigurationService;
 import com.wikia.pandora.core.consul.ConsulConfiguration;
-import com.wikia.pandora.core.consul.ConsulModule;
-import com.wikia.pandora.core.consul.ProvidesConsulConfiguration;
+import com.wikia.dropwizard.consul.bundle.ConsulModule;
+import com.wikia.dropwizard.consul.bundle.ProvidesConsulConfiguration;
 
 
 public class MobileConfigModule extends AbstractModule {

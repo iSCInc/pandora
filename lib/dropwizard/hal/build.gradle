@@ -1,0 +1,10 @@
+dependencies {
+    compile 'com.theoryinpractise:halbuilder-api:4.0.1'
+    compile 'com.theoryinpractise:halbuilder-core:4.0.3'
+    compile 'com.theoryinpractise:halbuilder-json:4.0.2'
+    compile 'com.theoryinpractise:halbuilder-standard:4.0.1'
+
+    compile('com.theoryinpractise:halbuilder-jaxrs:1.1.1') {
+        exclude group: 'javax.ws.rs'
+    }
+}
