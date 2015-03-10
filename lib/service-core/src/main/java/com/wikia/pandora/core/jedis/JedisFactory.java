@@ -5,6 +5,7 @@ import com.google.common.net.HostAndPort;
 import io.dropwizard.setup.Environment;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import java.net.URI;
 
 import javax.validation.constraints.NotNull;
 /**
@@ -14,7 +15,11 @@ import javax.validation.constraints.NotNull;
  * [Name: Default Value - Description]
  *
  * * endpoint [required]: localhost:6379 - The redis server's host and port, i.e. localhost:6379.
- *     If no port is given, the default redis port {@value #DEFAULT_PORT} is assumed.
+ *     If no port is given, the default redis port {@value JedisFactory#DEFAULT_PORT} is assumed.
+ * * scheme: "redis" - URI scheme for redis server connection; Default is {@value JedisFactory#DEFAULT_SCHEME} "redis".
+ * * password: "" - Auth password for redis server connection; Default is empty string.
+ * 		If password is provided, then URI is build and looks like that: redis://:PASSWORD@localhost:6379
+ * 		If no password is given, then URI looks like: redis://localhost:6379
  * * minIdle: 0 - The minimum number of idle connections to maintain in the connection pool.
  * * maxIdle: 0 - The maximum number of idle connections to maintain in the connection pool.
  * * maxTotal: {@value JedisFactory#DEFAULT_MAX_TOTAL} - The maximum number of connections allowed in the connection pool.
@@ -23,26 +28,53 @@ import javax.validation.constraints.NotNull;
 public class JedisFactory {
     public static final int DEFAULT_PORT = 6379;
     public static final int DEFAULT_MAX_TOTAL = 1024;
+    public static final String DEFAULT_SCHEME = "redis";
     @JsonProperty
     @NotNull
     private HostAndPort endpoint;
+    @JsonProperty
+    private String password = "";
+    @JsonProperty
+    private String scheme = DEFAULT_SCHEME;
     @JsonProperty
     private int minIdle = 0;
     @JsonProperty
     private int maxIdle = 0;
     @JsonProperty
     private int maxTotal = DEFAULT_MAX_TOTAL;
+    private URI uri;
+
     public HostAndPort getEndpoint() {
         return endpoint;
     }
     public void setEndpoint(HostAndPort endpoint) {
         this.endpoint = endpoint;
     }
-    public String getHost() {
-        return endpoint.getHostText();
+    public String getPassword() {
+    	return password;
     }
-    public int getPort() {
-        return endpoint.getPortOrDefault(DEFAULT_PORT);
+    public void setPassword(String password) {
+    	this.password = password;
+    }
+    public void setScheme(String scheme) {
+        this.scheme = scheme;
+    }
+    public String getScheme() {
+    	return scheme;
+    }
+    public URI getUri() {
+    	if (this.uri == null) {
+	        try {
+				String pass = getPassword();
+	            this.uri = new URI(
+	            	getScheme() + "://" +
+	            	(pass != "" ? ":" + pass + "@" : "") +
+	            	getEndpoint()
+	            );
+	        }
+	        catch(Exception e) {}
+    	}
+        return this.uri;
     }
     public int getMinIdle() {
         return minIdle;
@@ -67,7 +99,7 @@ public class JedisFactory {
         poolConfig.setMinIdle(getMinIdle());
         poolConfig.setMaxIdle(getMaxIdle());
         poolConfig.setMaxTotal(getMaxTotal());
-        final JedisPool pool = new JedisPool(poolConfig, getHost(), getPort());
+        final JedisPool pool = new JedisPool(poolConfig, getUri());
         environment.lifecycle().manage(new JedisPoolManager(pool));
         return pool;
     }
