@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import io.dropwizard.client.HttpClientBuilder;
 import io.dropwizard.setup.Environment;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -40,17 +41,21 @@ public class AppsDeployerListContainer implements AppsListService {
   private ObjectMapper objectMapper;
 
   public AppsDeployerListContainer(HttpClient httpClient, String appsDeployerDomain) {
-    this.httpClient = httpClient;
-
-    this.appsDeployerDomain = appsDeployerDomain;
-    this.cacheTimeInSec = DEFAULT_CACHE_TIME_IN_SEC;
+    this(httpClient, appsDeployerDomain, DEFAULT_CACHE_TIME_IN_SEC);
   }
 
-  @Inject
-  public AppsDeployerListContainer(Environment environment,
-                                   MobileConfigConfiguration configuration) {
-    this.appsDeployerDomain = configuration.getAppsDeployerDomain();
-    this.cacheTimeInSec = configuration.getCacheTime();
+  public AppsDeployerListContainer(Environment environment, MobileConfigConfiguration configuration) {
+    this(new HttpClientBuilder(environment)
+             .using(configuration.getHttpClientConfiguration())
+             .build("apps-deployer-list-service"),
+         configuration.getAppsDeployerDomain(),
+         configuration.getCacheTime());
+  }
+
+  public AppsDeployerListContainer(HttpClient httpClient, String appsDeployerDomain, int cacheTimeInSec) {
+    this.httpClient = httpClient;
+    this.appsDeployerDomain = appsDeployerDomain;
+    this.cacheTimeInSec = cacheTimeInSec;
   }
 
   private List<HashMap<String, Object>> requestAppsList() throws IOException {
@@ -86,7 +91,7 @@ public class AppsDeployerListContainer implements AppsListService {
     HttpGet httpGet = new HttpGet(requestUrl);
     ResponseHandler<String> responseHandler = new BasicResponseHandler();
     String response = this.httpClient.execute(httpGet, responseHandler);
-    return Optional.of(response);
+    return Optional.fromNullable(response);
   }
 
   @Override
@@ -98,14 +103,14 @@ public class AppsDeployerListContainer implements AppsListService {
   @Override
   public List<HashMap<String, Object>> getAppList(String platform) throws IOException {
     if (isUsingCache()) {
-      return requestAppsList();
-    } else {
       return getAppListSync();
+    } else {
+      return requestAppsList();
     }
   }
 
   private boolean isUsingCache() {
-    return cacheTimeInSec <= 0;
+    return cacheTimeInSec > 0;
   }
 
   @Override

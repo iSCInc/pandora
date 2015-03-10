@@ -224,6 +224,24 @@ public class UrlGenerator {
       return this;
     }
 
+    /**
+     * for animated gifs, capture a specific frame of animation
+     * @param frame
+     * @return UrlGenerator.Builder
+     */
+    public Builder frame(int frame) {
+      queryParams.add(new BasicNameValuePair("frame", Integer.toString(frame)));
+      return this;
+    }
+
+    /**
+     * convenience for frame(0)
+     * @return UrlGenerator.Builder
+     */
+    public Builder frame() {
+      return frame(0);
+    }
+
     public Builder width(Integer width) {
       return width(Optional.of(width));
     }
