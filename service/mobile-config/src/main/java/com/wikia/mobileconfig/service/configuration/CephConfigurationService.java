@@ -1,6 +1,7 @@
 package com.wikia.mobileconfig.service.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.MobileConfigConfiguration;
 import com.wikia.mobileconfig.core.EmptyMobileConfiguration;
@@ -39,15 +40,16 @@ public class CephConfigurationService extends ConfigurationServiceBase {
       Environment environment,
       MobileConfigConfiguration configuration
   ) {
-    this(new HttpClientBuilder(environment)
-             .using(configuration.getHttpClientConfiguration())
-             .build("http-configuration-service"),
-         configuration.getCephDomain(),
+    this(configuration.getCephDomain(),
          configuration.getCephPort());
   }
 
   public CephConfigurationService(HttpClient httpClient, String cephDomain, String cephPort) {
+    this(cephDomain, cephPort);
     this.httpClient = httpClient;
+  }
+
+  public CephConfigurationService(String cephDomain, String cephPort) {
     this.mapper = new ObjectMapper();
     this.cephDomain = cephDomain;
     this.cephPort = cephPort;

@@ -34,11 +34,11 @@ public class MobileConfigResourceTest {
 
   @Rule
   public final ResourceTestRule resources = ResourceTestRule.builder()
-      .addResource(new MobileConfigResource(httpServiceMock, appsListMock)).build();
+      .addResource(new MobileConfigResource(HTTP_SERVICE_MOCK, APPS_LIST_MOCK)).build();
 
   @Test(expected=BadRequestException.class)
   public void isValidAppTagException() throws IOException {
-    when(appsListMock.isValidAppTag(anyString(), anyString())).thenThrow(IOException.class);
+    when(APPS_LIST_MOCK.isValidAppTag(anyString(), anyString())).thenThrow(IOException.class);
     resources.client()
         .target("/configurations/test-platform/apps/test-app")
         .request()
@@ -47,8 +47,8 @@ public class MobileConfigResourceTest {
 
   @Test(expected=NotFoundException.class)
   public void getConfigurationException() throws IOException {
-    when(appsListMock.isValidAppTag("test-platform", "test-app")).thenReturn(true);
-    when(httpServiceMock.getConfiguration("test-platform", "test-app", "en-us", "en-us"))
+    when(APPS_LIST_MOCK.isValidAppTag("test-platform", "test-app")).thenReturn(true);
+    when(HTTP_SERVICE_MOCK.getConfiguration("test-platform", "test-app", "en-us", "en-us"))
         .thenThrow(IOException.class);
 
     resources.client()
@@ -60,7 +60,7 @@ public class MobileConfigResourceTest {
 
   @Test(expected=BadRequestException.class)
   public void getMobileApplicationConfigFails_invalidAppTag() throws IOException {
-    when(appsListMock.isValidAppTag("test-platform", "test-app")).thenReturn(false);
+    when(APPS_LIST_MOCK.isValidAppTag("test-platform", "test-app")).thenReturn(false);
 
     resources.client()
         .target("/configurations/test-platform/apps/test-app")
@@ -70,10 +70,10 @@ public class MobileConfigResourceTest {
 
   @Test(expected=NotFoundException.class)
   public void getMobileApplicationConfigFails_notFound() throws IOException {
-    when(appsListMock.isValidAppTag("test-platform", "test-app")).thenReturn(true);
-    when(httpServiceMock.getConfiguration("test-platform", "test-app", "en-us", "en-us"))
+    when(APPS_LIST_MOCK.isValidAppTag("test-platform", "test-app")).thenReturn(true);
+    when(HTTP_SERVICE_MOCK.getConfiguration("test-platform", "test-app", "en-us", "en-us"))
         .thenReturn(new EmptyMobileConfiguration());
-    when(httpServiceMock.createSelfUrl("test-platform", "test-app"))
+    when(HTTP_SERVICE_MOCK.createSelfUrl("test-platform", "test-app"))
         .thenReturn(
             "/configurations/test-platform/apps/test-app?ui-lang=en-us&content-lang=en-us");
 
@@ -91,11 +91,11 @@ public class MobileConfigResourceTest {
         MobileConfiguration.class
     );
 
-    when(appsListMock.isValidAppTag("test-platform", "test-app")).thenReturn(true);
-    when(httpServiceMock.createSelfUrl("test-platform", "test-app"))
+    when(APPS_LIST_MOCK.isValidAppTag("test-platform", "test-app")).thenReturn(true);
+    when(HTTP_SERVICE_MOCK.createSelfUrl("test-platform", "test-app"))
       .thenReturn(
           "/configurations/test-platform/apps/test-app?ui-lang=en-us&content-lang=en-us");
-    when(httpServiceMock.getConfiguration("test-platform", "test-app", "en-us", "en-us"))
+    when(HTTP_SERVICE_MOCK.getConfiguration("test-platform", "test-app", "en-us", "en-us"))
         .thenReturn(cfgMock);
 
     String response = resources.client()
@@ -106,8 +106,8 @@ public class MobileConfigResourceTest {
 
     assert(response).contains("modules");
 
-    verify(appsListMock).isValidAppTag("test-platform", "test-app");
-    verify(httpServiceMock).getConfiguration("test-platform", "test-app", "en-us", "en-us");
-    verify(httpServiceMock, never()).getDefault("test-platform");
+    verify(APPS_LIST_MOCK).isValidAppTag("test-platform", "test-app");
+    verify(HTTP_SERVICE_MOCK).getConfiguration("test-platform", "test-app", "en-us", "en-us");
+    verify(HTTP_SERVICE_MOCK, never()).getDefault("test-platform");
   }
 }

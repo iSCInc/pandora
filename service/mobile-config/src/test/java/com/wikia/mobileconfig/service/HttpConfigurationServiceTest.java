@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 
 import com.wikia.mobileconfig.core.EmptyMobileConfiguration;
 import com.wikia.mobileconfig.core.MobileConfiguration;
+import com.wikia.mobileconfig.service.configuration.CephConfigurationService;
 import com.wikia.pandora.core.testhelper.TestHelper;
 
 import org.apache.http.client.HttpClient;
@@ -19,12 +20,12 @@ public class HttpConfigurationServiceTest {
   private HttpClient httpClient;
   private String cephDomain = "ceph-domain";
   private String cephPort = "80";
-  private HttpConfigurationService configService;
+  private CephConfigurationService configService;
 
   @Before
   public void initialize() {
     httpClient = mock(HttpClient.class);
-    configService = new HttpConfigurationService(httpClient, cephDomain, cephPort);
+    configService = new CephConfigurationService(httpClient, cephDomain, cephPort);
   }
 
   @Test

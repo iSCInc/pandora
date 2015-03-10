@@ -5,7 +5,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.wikia.mobileconfig.gateway.AppsListService;
+
+import com.wikia.mobileconfig.service.application.AppsListService;
 
 import com.codahale.metrics.health.HealthCheck.Result;
 import org.junit.Before;

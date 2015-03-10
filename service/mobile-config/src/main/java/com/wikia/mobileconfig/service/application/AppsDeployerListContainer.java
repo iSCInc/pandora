@@ -44,16 +44,20 @@ public class AppsDeployerListContainer implements AppsListService {
     this(httpClient, appsDeployerDomain, DEFAULT_CACHE_TIME_IN_SEC);
   }
 
-  public AppsDeployerListContainer(Environment environment, MobileConfigConfiguration configuration) {
-    this(new HttpClientBuilder(environment)
-             .using(configuration.getHttpClientConfiguration())
-             .build("apps-deployer-list-service"),
-         configuration.getAppsDeployerDomain(),
+  @Inject
+  public AppsDeployerListContainer(Environment environment,
+                                   MobileConfigConfiguration configuration) {
+    this(configuration.getAppsDeployerDomain(),
          configuration.getCacheTime());
   }
 
-  public AppsDeployerListContainer(HttpClient httpClient, String appsDeployerDomain, int cacheTimeInSec) {
+  public AppsDeployerListContainer(HttpClient httpClient, String appsDeployerDomain,
+                                   int cacheTimeInSec) {
+    this(appsDeployerDomain, cacheTimeInSec);
     this.httpClient = httpClient;
+  }
+
+  public AppsDeployerListContainer(String appsDeployerDomain, int cacheTimeInSec) {
     this.appsDeployerDomain = appsDeployerDomain;
     this.cacheTimeInSec = cacheTimeInSec;
   }
