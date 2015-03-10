@@ -32,12 +32,6 @@ public class DiscussionServiceApplication extends Application<DiscussionServiceC
             .build();
     bootstrap.addBundle(guiceBundle);
 
-    // View bundle for the document views
-    bootstrap.addBundle(new ViewBundle());
-
-    // AssetBundle for the Hal Browser
-    bootstrap.addBundle(new AssetsBundle());
-
     // Swagger bundle for the SwaggerUI
     bootstrap.addBundle(new SwaggerBundle<DiscussionServiceConfiguration>());
   }

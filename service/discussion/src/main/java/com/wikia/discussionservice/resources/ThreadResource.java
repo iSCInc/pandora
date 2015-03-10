@@ -4,7 +4,10 @@ import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Preconditions;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+
+import com.wikia.discussionservice.domain.ErrorResponse;
 import com.wikia.discussionservice.domain.Forum;
+import com.wikia.discussionservice.domain.ForumRoot;
 import com.wikia.discussionservice.domain.ForumThread;
 import com.wikia.discussionservice.domain.Post;
 import com.wikia.discussionservice.enums.ResponseGroup;
@@ -13,6 +16,14 @@ import com.wikia.discussionservice.services.ForumService;
 import com.wikia.discussionservice.services.PostService;
 import com.wikia.discussionservice.services.ThreadService;
 import com.wikia.discussionservice.utils.ErrorResponseBuilder;
+
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiImplicitParam;
+import com.wordnik.swagger.annotations.ApiImplicitParams;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 import io.dropwizard.jersey.params.IntParam;
 import lombok.NonNull;
 
@@ -22,11 +33,14 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.Optional;
 
 @Path("/")
+@Api(basePath = "/Threads", value = "Threads", consumes = MediaType.APPLICATION_JSON,
+    produces = RepresentationFactory.HAL_JSON, description = "APIs pertaining to Threads")
 @Produces(RepresentationFactory.HAL_JSON)
 public class ThreadResource {
 
@@ -55,14 +69,20 @@ public class ThreadResource {
 
   @GET
   @Path("/{siteId}/threads/{threadId}")
+  @ApiOperation(value = "Get a specific thread for a site",
+      notes = "Returns threads details and a list of posts.",
+      response = ForumThread.class)
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Successful retrieval of thread", response = ForumRoot.class),
+      @ApiResponse(code = 404, message = "No thread found", response = ErrorResponse.class)})
   @Timed
-  public Response getThread(@NotNull @PathParam("siteId") IntParam siteId,
-                            @NotNull @PathParam("threadId") IntParam threadId,
-                            @QueryParam("limit") @DefaultValue("10") IntParam limit,
-                            @QueryParam("offset") @DefaultValue("1") IntParam offset,
-                            @QueryParam("responseGroup") @DefaultValue("small")
-                            String requestedResponseGroup,
-                            @Context UriInfo uriInfo) {
+  public Response getThread(
+      @ApiParam(value = "The id of the site to list the forums") @NotNull @PathParam("siteId") IntParam siteId,
+      @ApiParam(value = "The id of a specific thread") @NotNull @PathParam("threadId") IntParam threadId,
+      @ApiParam(value = "The number of posts to return with this call") @QueryParam("limit") @DefaultValue("10") IntParam limit,
+      @ApiParam(value = "The pagination position") @QueryParam("offset") @DefaultValue("1") IntParam offset,
+      @ApiParam(value = "The responseGroup controls the level of details returned with this call", allowableValues = "small, large") @QueryParam("responseGroup") @DefaultValue("small") String requestedResponseGroup,
+      @Context UriInfo uriInfo) {
 
     Preconditions.checkArgument(offset.get() >= 1,
         "Offset was %s but expected 1 or greater", offset.get());
@@ -90,12 +110,19 @@ public class ThreadResource {
 
   @POST
   @Path("/{siteId}/forums/{forumId}/threads")
+  @ApiOperation(value = "Start a new thread for the forum",
+      notes = "Returns the newly created thread.",
+      response = ForumThread.class)
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Successful creation of a thread", response = ForumThread.class),
+      @ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
   @Timed
-  public Response startThread(@NotNull @PathParam("siteId") IntParam siteId,
-                              @NotNull @PathParam("forumId") IntParam forumId,
-                              @Valid Post post,
-                              @Context HttpServletRequest request,
-                              @Context UriInfo uriInfo) {
+  public Response startThread(
+      @ApiParam(value = "The id of the site to list the forums") @NotNull @PathParam("siteId") IntParam siteId,
+      @ApiParam(value = "The id of a specific forum") @NotNull @PathParam("forumId") IntParam forumId,
+      @Valid Post post,
+      @Context HttpServletRequest request,
+      @Context UriInfo uriInfo) {
     Optional<Forum> forum = forumService.getForum(siteId.get(), forumId.get());
 
     if (!forum.isPresent()) {

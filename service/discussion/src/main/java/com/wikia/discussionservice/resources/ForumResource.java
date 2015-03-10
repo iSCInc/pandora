@@ -1,5 +1,6 @@
 package com.wikia.discussionservice.resources;
 
+import com.wikia.discussionservice.domain.ErrorResponse;
 import com.wikia.discussionservice.domain.Forum;
 import com.wikia.discussionservice.domain.ForumRoot;
 import com.wikia.discussionservice.enums.ResponseGroup;
@@ -40,7 +41,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 @Path("/")
-@Api(basePath = "/", value = "Forums", consumes = MediaType.APPLICATION_JSON,
+@Api(basePath = "/Forums", value = "Forums", consumes = MediaType.APPLICATION_JSON,
     produces = RepresentationFactory.HAL_JSON, description = "APIs pertaining to Forums")
 @Produces(RepresentationFactory.HAL_JSON)
 public class ForumResource {
@@ -64,15 +65,12 @@ public class ForumResource {
       response = ForumRoot.class)
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "Successful retrieval of forum", response = ForumRoot.class),
-      @ApiResponse(code = 404, message = "No forums for the site")})
+      @ApiResponse(code = 404, message = "No forums found", response = ErrorResponse.class)})
   @Timed
   public Response getForums(
-      @ApiParam(name = "siteId", value = "The id of the site to list the forums", required = true)
-      @NotNull @PathParam("siteId") IntParam siteId,
-      @ApiParam(name = "responseGroup", value = "The responseGroup controls the level of details returned with this call", required = false, defaultValue = "small", allowableValues = "small, large")
-      @QueryParam("responseGroup") @DefaultValue("small") String requestedResponseGroup,
+      @ApiParam(value = "The id of the site to list the forums") @NotNull @PathParam("siteId") IntParam siteId,
+      @ApiParam(value = "The responseGroup controls the level of details returned with this call", allowableValues = "small, large") @QueryParam("responseGroup") @DefaultValue("small") String requestedResponseGroup,
       @Context UriInfo uriInfo) {
-
     ResponseGroup responseGroup = ResponseGroup.getResponseGroup(requestedResponseGroup);
     Preconditions.checkNotNull(responseGroup, "Invalid response group");
 
@@ -98,23 +96,14 @@ public class ForumResource {
       response = ForumRoot.class)
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "Successful retrieval of a forum", response = Forum.class),
-      @ApiResponse(code = 404, message = "No forum for the site")})
+      @ApiResponse(code = 404, message = "No forum found", response = ErrorResponse.class)})
   @Timed
   public Response getForum(
-      @ApiParam(name = "siteId", value = "The id of the site to list the forums", required = true)
-      @NotNull @PathParam("siteId") IntParam siteId,
-      @ApiParam(name = "forumId", value = "The id of a specific forum", required = true)
-      @NotNull @PathParam("forumId") IntParam forumId,
-      @ApiParam(name = "limit", value = "The number of threads to return with this call",
-          required = false, defaultValue = "10")
-      @QueryParam("limit") @DefaultValue("10") IntParam limit,
-      @ApiParam(name = "offset", value = "The pagination index for the threads of this forum",
-          required = false, defaultValue = "1")
-      @QueryParam("offset") @DefaultValue("1") IntParam offset,
-      @ApiParam(name = "responseGroup",
-          value = "The responseGroup controls the level of details returned with this call",
-          required = false, defaultValue = "small", allowableValues = "small, large")
-      @QueryParam("responseGroup") @DefaultValue("small") String requestedResponseGroup,
+      @ApiParam(value = "The id of the site to list the forums") @NotNull @PathParam("siteId") IntParam siteId,
+      @ApiParam(value = "The id of a specific forum") @NotNull @PathParam("forumId") IntParam forumId,
+      @ApiParam(value = "The number of threads to return with this call") @QueryParam("limit") @DefaultValue("10") IntParam limit,
+      @ApiParam(value = "The pagination position") @QueryParam("offset") @DefaultValue("1") IntParam offset,
+      @ApiParam(value = "The responseGroup controls the level of details returned with this call", allowableValues = "small, large") @QueryParam("responseGroup") @DefaultValue("small") String requestedResponseGroup,
       @Context UriInfo uriInfo) {
     Preconditions.checkArgument(forumId.get() >= 1,
                                 "Offset was %s but expected 1 or greater", forumId.get());
@@ -143,11 +132,10 @@ public class ForumResource {
   @ApiOperation(value = "Create a new forum for a site", response = ForumRoot.class)
   @ApiResponses(value = {
       @ApiResponse(code = 201, message = "Successful creation of a forum", response = Forum.class),
-      @ApiResponse(code = 400, message = "No forum for the site")})
+      @ApiResponse(code = 400, message = "No forum for the site", response = ErrorResponse.class)})
   @Timed
   public Response createForum(
-      @ApiParam(name = "siteId", value = "The id of the site to list the forums", required = true)
-      @NotNull @PathParam("siteId") IntParam siteId,
+      @ApiParam(value = "The id of the site to list the forums") @NotNull @PathParam("siteId") IntParam siteId,
       @Valid Forum forum,
       @Context HttpServletRequest request,
       @Context UriInfo uriInfo) {
@@ -172,13 +160,11 @@ public class ForumResource {
   @ApiOperation(value = "Delete a forum for a site")
   @ApiResponses(value = {
       @ApiResponse(code = 204, message = "Successful deletion of a forum"),
-      @ApiResponse(code = 404, message = "No forum for the site")})
+      @ApiResponse(code = 404, message = "No forum for the site", response = ErrorResponse.class)})
   @Timed
   public Response deleteForum(
-      @ApiParam(name = "siteId", value = "The id of the site to list the forums", required = true)
-      @NotNull @PathParam("siteId") IntParam siteId,
-      @ApiParam(name = "forumId", value = "The id of a specific forum", required = true)
-      @NotNull @PathParam("forumId") IntParam forumId,
+      @ApiParam(value = "The id of the site to list the forums") @NotNull @PathParam("siteId") IntParam siteId,
+      @ApiParam(value = "The id of a specific forum") @NotNull @PathParam("forumId") IntParam forumId,
       @Context HttpServletRequest request,
       @Context UriInfo uriInfo) {
     // TODO: perform validation
@@ -199,12 +185,13 @@ public class ForumResource {
   @ApiResponses(value = {
       @ApiResponse(code = 201, message = "Successful creation of a forum", response = Forum.class),
       @ApiResponse(code = 204, message = "Successful update of a forum"),
-      @ApiResponse(code = 404, message = "No forum for the site")})
+      @ApiResponse(code = 404, message = "No forum for the site", response = ErrorResponse.class)})
   @Timed
-  public Response updateForum(@NotNull @PathParam("siteId") IntParam siteId,
-                              @Valid Forum forum,
-                              @Context HttpServletRequest request,
-                              @Context UriInfo uriInfo) {
+  public Response updateForum(
+      @ApiParam(value = "The id of the site to list the forums") @NotNull @PathParam("siteId") IntParam siteId,
+      @Valid Forum forum,
+      @Context HttpServletRequest request,
+      @Context UriInfo uriInfo) {
     // TODO: perform validation
     Optional<Forum> updatedForum = forumService.updateForum(siteId.get(), forum);
 

@@ -22,9 +22,6 @@ dependencies {
     // following are required for the dropwizard swagger
     compile "commons-lang:commons-lang:2.6"
     compile "io.federecio:dropwizard-swagger:0.5.3"
-    // following is for the HAL Browser
-    compile "io.dropwizard:dropwizard-assets:0.8.0-rc2"
-    compile "io.dropwizard:dropwizard-views-freemarker:0.8.0-rc2"
     compile "org.projectlombok:lombok:1.16.2"
     testCompile "org.testng:testng:6.8"
     testCompile "org.hamcrest:hamcrest-core:$hamcrestVersion"
