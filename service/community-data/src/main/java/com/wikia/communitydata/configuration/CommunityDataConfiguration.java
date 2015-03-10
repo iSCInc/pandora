@@ -9,17 +9,9 @@ import javax.validation.constraints.NotNull;
 
 import io.dropwizard.Configuration;
 
-public class ExampleServiceConfiguration extends Configuration implements
+public class CommunityDataConfiguration extends Configuration implements
                                                                ProvidesConsulConfiguration {
-
-  @NotEmpty
-  @NotNull
-  private String greetingsWord; // value is set up by dropwizard reflection magic.
   private ConsulConfiguration consulConfiguration;
-
-  public String getGreetingsWord() {
-    return greetingsWord;
-  }
 
   public ConsulConfiguration getConsulConfiguration() {
     return consulConfiguration;

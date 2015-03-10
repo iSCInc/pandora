@@ -6,13 +6,11 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-import com.wikia.communitydata.health.ExampleHealthCheck;
-
-public class ExampleHealthCheckTest {
+public class CommunityDataHealthCheckTest {
 
   @Test
   public void testCheck() throws Exception {
-    ExampleHealthCheck healthCheck = new ExampleHealthCheck();
+    CommunityDataHealthCheck healthCheck = new CommunityDataHealthCheck();
     HealthCheck.Result result = healthCheck.check();
     assertTrue(result.isHealthy());
   }

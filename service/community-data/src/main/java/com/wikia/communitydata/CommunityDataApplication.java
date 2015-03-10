@@ -6,9 +6,9 @@ import com.hubspot.dropwizard.guice.GuiceBundle;
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 
-import com.wikia.communitydata.configuration.ExampleServiceConfiguration;
-import com.wikia.communitydata.health.ExampleHealthCheck;
-import com.wikia.communitydata.resources.ExampleResource;
+import com.wikia.communitydata.configuration.CommunityDataConfiguration;
+import com.wikia.communitydata.health.CommunityDataHealthCheck;
+import com.wikia.communitydata.resources.CommunityDataResource;
 import com.wikia.dropwizard.consul.bundle.ConsulBundle;
 import com.wikia.dropwizard.consul.config.ConsulVariableInterpolationBundle;
 import com.wikia.pandora.core.dropwizard.GovernatorInjectorFactory;
@@ -17,10 +17,10 @@ import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
-public class ExampleServiceApplication extends Application<ExampleServiceConfiguration> {
+public class CommunityDataApplication extends Application<CommunityDataConfiguration> {
 
   public static void main(String[] args) throws Exception {
-    new ExampleServiceApplication().run(args);
+    new CommunityDataApplication().run(args);
   }
 
   @Override
@@ -30,12 +30,12 @@ public class ExampleServiceApplication extends Application<ExampleServiceConfigu
 
 
   @Override
-  public void initialize(Bootstrap<ExampleServiceConfiguration> bootstrap) {
-    GuiceBundle<ExampleServiceConfiguration> guiceBundle =
-        GuiceBundle.<ExampleServiceConfiguration>newBuilder()
-            .addModule(new ExampleServiceModule())
+  public void initialize(Bootstrap<CommunityDataConfiguration> bootstrap) {
+    GuiceBundle<CommunityDataConfiguration> guiceBundle =
+        GuiceBundle.<CommunityDataConfiguration>newBuilder()
+            .addModule(new CommunityDataModule())
             .setInjectorFactory(new GovernatorInjectorFactory())
-            .setConfigClass(ExampleServiceConfiguration.class)
+            .setConfigClass(CommunityDataConfiguration.class)
             .build();
 
     bootstrap.addBundle(guiceBundle);
@@ -50,17 +50,16 @@ public class ExampleServiceApplication extends Application<ExampleServiceConfigu
   }
 
   @Override
-  public void run(ExampleServiceConfiguration configuration, Environment environment)
+  public void run(CommunityDataConfiguration configuration, Environment environment)
       throws Exception {
 
     //register healthCheck (mandatory)
-    final ExampleHealthCheck healthCheck = new ExampleHealthCheck();
+    final CommunityDataHealthCheck healthCheck = new CommunityDataHealthCheck();
     environment.healthChecks().register("SimpleHealthCheck", healthCheck);
 
     StandardRepresentationFactory representationFactory = new StandardRepresentationFactory();
-    ExampleResource exampleResource = new ExampleResource(representationFactory);
-    exampleResource.setGreetingsWord(configuration.getGreetingsWord());
-    environment.jersey().register(exampleResource);
+    CommunityDataResource communityDataResource = new CommunityDataResource(representationFactory);
+    environment.jersey().register(communityDataResource);
 
     //Optional
     environment.jersey().register(JaxRsHalBuilderSupport.class);

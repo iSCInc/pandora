@@ -1,6 +1,6 @@
 version = "0.1.9-SNAPSHOT"
 apply from: rootProject.file('gradle/dropwizard_service.gradle')
-mainClassName = "com.wikia.exampleservice.ExampleServiceApplication"
+mainClassName = "ExampleServiceApplication"
 
 // configure jvm parameters
 applicationDefaultJvmArgs = [
