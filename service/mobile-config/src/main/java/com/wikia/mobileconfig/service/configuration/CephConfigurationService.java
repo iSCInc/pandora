@@ -1,4 +1,4 @@
-package com.wikia.mobileconfig.service;
+package com.wikia.mobileconfig.service.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -23,7 +23,7 @@ import io.dropwizard.setup.Environment;
  * A class responsible for getting mobile applications' configuration from our Ceph buckets via
  * HTTP
  */
-public class HttpConfigurationService extends ConfigurationServiceBase {
+public class CephConfigurationService extends ConfigurationServiceBase {
 
   private static final String
       CEPH_URL_FORMAT = "http://%s:%s/mobile-configuration-service/%s/%s/config.json";
@@ -36,13 +36,10 @@ public class HttpConfigurationService extends ConfigurationServiceBase {
   private HttpClient httpClient;
 
   @Inject
-  public HttpConfigurationService(
+  public CephConfigurationService(
       Environment environment,
       MobileConfigConfiguration configuration
   ) {
-    this.httpClient = new HttpClientBuilder(environment)
-        .using(configuration.getHttpClientConfiguration())
-        .build("http-configuration-service");
     this.mapper = new ObjectMapper();
     this.cephDomain = configuration.getCephDomain();
     this.cephPort = configuration.getCephPort();

@@ -11,8 +11,8 @@ import com.wikia.mobileconfig.core.MobileConfiguration;
 import com.wikia.mobileconfig.exceptions.ConfigurationNotFoundException;
 import com.wikia.mobileconfig.exceptions.InvalidApplicationTagException;
 import com.wikia.mobileconfig.exceptions.MobileConfigException;
-import com.wikia.mobileconfig.gateway.AppsListService;
-import com.wikia.mobileconfig.service.ConfigurationService;
+import com.wikia.mobileconfig.service.application.AppsListService;
+import com.wikia.mobileconfig.service.configuration.ConfigurationService;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;

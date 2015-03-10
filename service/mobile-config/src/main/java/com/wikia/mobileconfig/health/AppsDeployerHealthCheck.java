@@ -1,7 +1,7 @@
 package com.wikia.mobileconfig.health;
 
 
-import com.wikia.mobileconfig.gateway.AppsListService;
+import com.wikia.mobileconfig.service.application.AppsListService;
 
 import com.codahale.metrics.health.HealthCheck;
 import com.google.inject.Inject;

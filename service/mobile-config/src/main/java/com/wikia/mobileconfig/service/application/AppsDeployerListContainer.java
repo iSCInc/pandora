@@ -1,15 +1,14 @@
-package com.wikia.mobileconfig.gateway;
-
-import com.google.common.base.Optional;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+package com.wikia.mobileconfig.service.application;
 
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.MobileConfigConfiguration;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import io.dropwizard.setup.Environment;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -21,9 +20,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import io.dropwizard.client.HttpClientBuilder;
-import io.dropwizard.setup.Environment;
 
 public class AppsDeployerListContainer implements AppsListService {
 
@@ -41,6 +37,7 @@ public class AppsDeployerListContainer implements AppsListService {
   private List<HashMap<String, Object>> appsList;
 
   private Date appsListUpdateTime = new Date();
+  private ObjectMapper objectMapper;
 
   public AppsDeployerListContainer(HttpClient httpClient, String appsDeployerDomain) {
     this.httpClient = httpClient;
@@ -49,12 +46,9 @@ public class AppsDeployerListContainer implements AppsListService {
     this.cacheTimeInSec = DEFAULT_CACHE_TIME_IN_SEC;
   }
 
+  @Inject
   public AppsDeployerListContainer(Environment environment,
                                    MobileConfigConfiguration configuration) {
-    this.httpClient = new HttpClientBuilder(environment)
-        .using(configuration.getHttpClientConfiguration())
-        .build("apps-deployer-list-service");
-
     this.appsDeployerDomain = configuration.getAppsDeployerDomain();
     this.cacheTimeInSec = configuration.getCacheTime();
   }
@@ -62,11 +56,12 @@ public class AppsDeployerListContainer implements AppsListService {
   private List<HashMap<String, Object>> requestAppsList() throws IOException {
     String appsDeployerUrl = String.format(APPS_DEPLOYER_LIST_URL_FORMAT, appsDeployerDomain);
     Optional<String> response = this.executeHttpRequest(appsDeployerUrl);
-    ObjectMapper mapper = new ObjectMapper();
+    objectMapper = new ObjectMapper();
 
     if (response.isPresent()) {
-      return mapper.readValue(response.get(), new TypeReference<List<HashMap<String, Object>>>() {
-      });
+      return objectMapper
+          .readValue(response.get(), new TypeReference<List<HashMap<String, Object>>>() {
+          });
     } else {
       throw new IllegalStateException(
           String.format(APPS_LIST_RESPONSE_ERROR_FORMAT, appsDeployerUrl)
@@ -130,7 +125,6 @@ public class AppsDeployerListContainer implements AppsListService {
           "Apps deployer host is unreachable", exception
       );
     }
-
     return result;
   }
 }

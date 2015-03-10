@@ -1,4 +1,4 @@
-package com.wikia.mobileconfig.service;
+package com.wikia.mobileconfig.service.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wikia.mobileconfig.MobileConfigApplication;

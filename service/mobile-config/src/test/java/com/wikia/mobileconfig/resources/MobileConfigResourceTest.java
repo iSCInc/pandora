@@ -3,8 +3,8 @@ package com.wikia.mobileconfig.resources;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wikia.mobileconfig.core.EmptyMobileConfiguration;
 import com.wikia.mobileconfig.core.MobileConfiguration;
-import com.wikia.mobileconfig.gateway.AppsDeployerListContainer;
-import com.wikia.mobileconfig.service.HttpConfigurationService;
+import com.wikia.mobileconfig.service.application.AppsDeployerListContainer;
+import com.wikia.mobileconfig.service.configuration.CephConfigurationService;
 
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -31,8 +31,8 @@ import static org.mockito.Mockito.when;
 public class MobileConfigResourceTest {
 
   private static final AppsDeployerListContainer APPS_LIST_MOCK = mock(AppsDeployerListContainer.class);
-  private static final HttpConfigurationService HTTP_SERVICE_MOCK = mock(
-      HttpConfigurationService.class
+  private static final CephConfigurationService HTTP_SERVICE_MOCK = mock(
+      CephConfigurationService.class
   );
 
   @ClassRule
@@ -53,7 +53,8 @@ public class MobileConfigResourceTest {
       // safely ignore
     }
     verify(APPS_LIST_MOCK, times(1)).isValidAppTag("test-platform", "test-app");
-    verify(HTTP_SERVICE_MOCK, never()).getConfiguration("test-platform", "test-app", "en-us", "en-us");
+    verify(HTTP_SERVICE_MOCK, never()).getConfiguration("test-platform", "test-app", "en-us",
+                                                        "en-us");
     reset(APPS_LIST_MOCK, HTTP_SERVICE_MOCK);
   }
 
