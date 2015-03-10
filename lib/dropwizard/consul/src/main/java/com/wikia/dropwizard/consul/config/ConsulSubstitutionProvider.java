@@ -23,11 +23,11 @@ public class ConsulSubstitutionProvider implements ConfigurationSourceProvider {
   public InputStream open(String path) throws IOException {
     String config = convertStreamToString(baseProvider.open(path));
     String substitutedConfig = substitutor.replace(config);
-    return new ByteArrayInputStream(substitutedConfig.getBytes());
+    return new ByteArrayInputStream(substitutedConfig.getBytes("UTF-8"));
   }
 
   static String convertStreamToString(InputStream is) {
-    Scanner s = new Scanner(is).useDelimiter("\\A");
+    Scanner s = new Scanner(is, "UTF-8").useDelimiter("\\A");
     return s.hasNext() ? s.next() : "";
   }
 }

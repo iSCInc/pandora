@@ -7,3 +7,7 @@ dependencies {
     compile project(':lib:dropwizard:consul')
     compile project(':lib:dropwizard:metrics-influx')
 }
+
+findbugs {
+	excludeFilter = file("findbugs-excludes.xml")
+}

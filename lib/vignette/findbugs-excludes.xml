@@ -1,0 +1,6 @@
+<FindBugsFilter>
+	<!-- causes false positives against final local variables -->
+    <Match>
+        <Bug pattern="DLS_DEAD_LOCAL_STORE" />
+    </Match>
+</FindBugsFilter>

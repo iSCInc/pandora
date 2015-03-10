@@ -7,6 +7,7 @@ import com.orbitz.consul.model.kv.Value;
 import org.apache.commons.codec.binary.Base64;
 import org.junit.Test;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +40,7 @@ public class ConsulKeyValueConfigTest {
   private Value generateValue(String key, String value) {
     Value v = new Value();
     v.setKey(key);
-    v.setValue(Base64.encodeBase64String(value.getBytes()));
+    v.setValue(Base64.encodeBase64String(value.getBytes(StandardCharsets.UTF_8)));
 
     return v;
   }

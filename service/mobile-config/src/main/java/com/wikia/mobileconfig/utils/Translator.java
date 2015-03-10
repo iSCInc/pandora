@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class Translator {
 
-  private static Translator instance = null;
+  private static final Translator instance = new Translator();
 
   private static final String TRANSLATION_FILE_PATH =
       "/translations/translations.%s.json";
@@ -29,13 +29,6 @@ public class Translator {
   }
 
   public static Translator getInstance() {
-    if (instance == null) {
-      synchronized(Translator.class) {
-        if (instance == null) {
-          instance = new Translator();
-        }
-      }
-    }
     return instance;
   }
 

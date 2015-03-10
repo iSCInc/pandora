@@ -1,0 +1,7 @@
+<FindBugsFilter>
+    <!-- Ignore initialization warning in JSON-managed object -->
+    <Match>
+    	<Class name="com.wikia.pandora.core.impl.configuration.PandoraConfiguration"/>
+    	<Bug pattern="NP_NONNULL_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+    </Match>
+</FindBugsFilter>

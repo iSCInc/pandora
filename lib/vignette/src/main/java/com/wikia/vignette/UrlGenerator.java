@@ -7,6 +7,7 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.slf4j.LoggerFactory;
 
+import java.nio.charset.StandardCharsets;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.MessageDigest;
@@ -157,7 +158,7 @@ public class UrlGenerator {
       return "";
     }
 
-    byte[] hash = md.digest(input.getBytes());
+    byte[] hash = md.digest(input.getBytes(StandardCharsets.UTF_8));
     Integer shard = 1 + (int)hash[0] % config.domainShardCount;
     return shard.toString();
   }

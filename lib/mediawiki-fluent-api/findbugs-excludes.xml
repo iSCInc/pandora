@@ -1,0 +1,13 @@
+<FindBugsFilter>
+	<!-- ignore initializer errors in generated reflective code -->
+    <Match>
+        <Package name="com.wikia.mwapi.domain" />
+        <Bug pattern="UWF_UNWRITTEN_FIELD,EI_EXPOSE_REP" />
+    </Match>
+
+    <!-- False positive -->
+    <Match>
+    	<Class name="com.wikia.mwapi.util.URIBuilderHelper"/>
+    	<Bug pattern="VA_PRIMITIVE_ARRAY_PASSED_TO_OBJECT_VARARG"/>
+    </Match>
+</FindBugsFilter>

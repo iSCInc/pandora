@@ -31,7 +31,7 @@ public class QueryContinue {
     return allCategories;
   }
 
-  public class Revisions {
+  public static class Revisions {
 
     private int rvStartId;
 
@@ -41,7 +41,7 @@ public class QueryContinue {
     }
   }
 
-  public class AllPages {
+  public static class AllPages {
 
     private String apfrom;
 
@@ -50,7 +50,7 @@ public class QueryContinue {
     }
   }
 
-  public class CategoryMembers {
+  public static class CategoryMembers {
 
     private String cmcontinue;
 
@@ -60,7 +60,7 @@ public class QueryContinue {
     }
   }
 
-  public class AllCategories {
+  public static class AllCategories {
 
     private String acfrom;
 

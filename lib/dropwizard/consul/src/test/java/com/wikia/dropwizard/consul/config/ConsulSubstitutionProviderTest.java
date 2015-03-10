@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,6 +67,6 @@ public class ConsulSubstitutionProviderTest {
   }
 
   private InputStream getStreamForString(String s) {
-    return new ByteArrayInputStream(s.getBytes());
+    return new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8));
   }
 }

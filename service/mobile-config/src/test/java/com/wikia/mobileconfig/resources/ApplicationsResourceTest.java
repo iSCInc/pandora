@@ -55,8 +55,7 @@ public class ApplicationsResourceTest {
     reset(HTTP_CLIENT_MOCK);
   }
 
-  class HttpGetWithURL extends ArgumentMatcher<HttpGet> {
-
+  private static class HttpGetWithURL extends ArgumentMatcher<HttpGet> {
     private String url;
 
     public HttpGetWithURL(String url) {

@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -38,7 +39,7 @@ public class HttpConfigurationServiceTest {
   @Test
   public void getDefaultConfiguration() throws Exception {
     String configContent = new String(Files.readAllBytes(
-            Paths.get("src/test/resources/fixtures/test-platform:test-app.json")));
+            Paths.get("src/test/resources/fixtures/test-platform:test-app.json")), StandardCharsets.UTF_8);
     TestHelper.addMockRequest(httpClient, configContent);
     MobileConfiguration config = configService.getDefault("testPlatform");
     assertThat(config).isExactlyInstanceOf(MobileConfiguration.class);
