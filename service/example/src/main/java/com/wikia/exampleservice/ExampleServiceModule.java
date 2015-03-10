@@ -2,9 +2,9 @@ package com.wikia.exampleservice;
 
 import com.google.inject.AbstractModule;
 
+import com.wikia.dropwizard.consul.bundle.ConsulModule;
+import com.wikia.dropwizard.consul.bundle.ProvidesConsulConfiguration;
 import com.wikia.exampleservice.configuration.ExampleServiceConfiguration;
-import com.wikia.pandora.core.consul.ConsulModule;
-import com.wikia.pandora.core.consul.ProvidesConsulConfiguration;
 
 public class ExampleServiceModule extends AbstractModule {
 

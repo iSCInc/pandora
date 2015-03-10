@@ -7,7 +7,7 @@ import com.wikia.mwapi.domain.Image;
 import com.wikia.mwapi.domain.Page;
 import com.wikia.mwapi.domain.Revision;
 import com.wikia.mwapi.fluent.WikiaChoose;
-import com.wikia.pandora.core.test.IntegrationTest;
+import com.wikia.test.annotation.IntegrationTest;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;

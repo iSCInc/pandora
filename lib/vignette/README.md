@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.wikia:vignette:0.1'
+    compile 'com.wikia:vignette:1.0.0'
 }
 ```
 
