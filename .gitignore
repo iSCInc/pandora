@@ -16,3 +16,4 @@ pandora.yaml
 pandora-example/example.yaml
 **/.gradle
 **/build
+dev.yaml

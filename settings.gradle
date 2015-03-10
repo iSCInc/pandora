@@ -13,5 +13,6 @@ include 'lib:dropwizard:consul'
 include 'lib:dropwizard:metrics-influx'
 
 include 'service:mobile-config'
+include 'service:community-data'
 include 'service:facade'
 include 'service:example'
