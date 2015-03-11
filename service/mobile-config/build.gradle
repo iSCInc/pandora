@@ -23,13 +23,13 @@ deployments {
             instances = 2
         }
         environment {
-            MOBILE_CONFIG_SERVICE_STAGE = prodStage
+            MOBILE_CONFIG_SERVICE_ENVIRONMENT = prodStage
             CONSUL_KEY_VALUE_CONFIG_SOURCE = consulMobileConfigSourceUrl + prodStage
         }
     }
     testing {
         environment {
-            MOBILE_CONFIG_SERVICE_STAGE = testingStage
+            MOBILE_CONFIG_SERVICE_ENVIRONMENT = testingStage
             CONSUL_KEY_VALUE_CONFIG_SOURCE = consulMobileConfigSourceUrl + testingStage
         }
     }
@@ -41,7 +41,7 @@ deployments {
             instances = 1
         }
         environment {
-            MOBILE_CONFIG_SERVICE_STAGE = qaStage
+            MOBILE_CONFIG_SERVICE_ENVIRONMENT = qaStage
             CONSUL_KEY_VALUE_CONFIG_SOURCE = consulMobileConfigSourceUrl + qaStage
         }
     }

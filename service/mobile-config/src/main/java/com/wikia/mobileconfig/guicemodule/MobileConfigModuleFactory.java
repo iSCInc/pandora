@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 public class MobileConfigModuleFactory {
 
-  public static final String MOBILE_CONFIG_SERVICE_STAGE = "MOBILE_CONFIG_SERVICE_STAGE";
+  public static final String MOBILE_CONFIG_SERVICE_ENVIRONMENT = "MOBILE_CONFIG_SERVICE_ENVIRONMENT";
   public static final String STAGE_PROD = "prod";
   public static final String STAGE_QA = "qa";
   public static final String STAGE_TESTING = "testing";
@@ -15,7 +15,7 @@ public class MobileConfigModuleFactory {
 
   public static MobileConfigModuleBase CreateMobileConfigModule() {
     MobileConfigModuleBase module;
-    String stage = System.getenv(MOBILE_CONFIG_SERVICE_STAGE);
+    String stage = System.getenv(MOBILE_CONFIG_SERVICE_ENVIRONMENT);
 
     switch (stage) {
       case STAGE_PROD:
@@ -29,7 +29,7 @@ public class MobileConfigModuleFactory {
         break;
       default:
         MobileConfigModuleNotSetException cause = new MobileConfigModuleNotSetException(stage);
-        LOGGER.error("MOBILE_CONFIG_SERVICE_STAGE not set", cause);
+        LOGGER.error("MOBILE_CONFIG_SERVICE_ENVIRONMENT not set", cause);
         throw new RuntimeException(cause);
     }
 
