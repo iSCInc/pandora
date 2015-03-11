@@ -29,8 +29,8 @@ public class NotificationsConfiguration extends Configuration implements Provide
   }
 
   public ConsulConfiguration getConsulConfiguration() {
-        return consulConfiguration;
-    }
+    return consulConfiguration;
+  }
 
   public void setConsulConfiguration(ConsulConfiguration consulConfiguration) {
     this.consulConfiguration = consulConfiguration;
