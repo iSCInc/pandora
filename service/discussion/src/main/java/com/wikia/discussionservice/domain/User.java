@@ -2,10 +2,12 @@ package com.wikia.discussionservice.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
-public @Data class User {
+@EqualsAndHashCode(callSuper=false)
+public @Data class User extends Content {
   
   @JsonProperty
   private int id;
@@ -24,6 +26,8 @@ public @Data class User {
   
   @JsonProperty
   private String avatar;
-  
-  
+
+  public static String getType() {
+    return "user";
+  }
 }

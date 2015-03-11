@@ -3,11 +3,13 @@ package com.wikia.discussionservice.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
+@EqualsAndHashCode(callSuper=false)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public @Data class Post {
+public @Data class Post extends Content {
   
   @JsonProperty
   private int id;
@@ -26,4 +28,9 @@ public @Data class Post {
 
   @JsonProperty
   private String body;
+
+  public static String getType() {
+    return "post";
+  }
+
 }

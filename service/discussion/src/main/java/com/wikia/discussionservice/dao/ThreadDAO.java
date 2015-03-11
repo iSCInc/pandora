@@ -6,6 +6,12 @@ import com.wikia.discussionservice.domain.User;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.util.*;
+import java.util.Optional;
+
+import com.wikia.discussionservice.services.JedisService;
+import lombok.NonNull;
+
+import javax.inject.Inject;
 
 /**
  * THIS IS TEMPORARY THROWAWAY CODE
@@ -13,10 +19,15 @@ import java.util.*;
 
 public class ThreadDAO {
 
-  private static final Map<Integer, ForumThread> FORUM_THREADS = new HashMap<>();
-
   private static int THREAD_SEQUENCE = 0;
 
+  @NonNull
+  ContentDAO contentDAO;
+
+  @Inject
+  public ThreadDAO(ContentDAO contentDAO) {
+    this.contentDAO = contentDAO;
+  }
 
   @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
   public Optional<ForumThread> createThread(int siteId, int forumId, Post post) {
@@ -34,14 +45,24 @@ public class ThreadDAO {
     user.setId(post.getPosterId());
     user.setName("Made up user");
     forumThread.setThreadStarter(user);
-    FORUM_THREADS.put(threadId, forumThread);
-    
-    return Optional.of(forumThread);
+
+    contentDAO.createContent(siteId, forumThread);
+
+    return Optional.ofNullable(forumThread);
   }
 
 
   public Optional<ForumThread> getForumThread(int siteId, int threadId, int offset, int limit) {
-    ForumThread forumThread = FORUM_THREADS.get(threadId);
-    return Optional.ofNullable(forumThread);
+    return Optional.ofNullable(contentDAO.getContent(siteId, threadId, ForumThread.class));
   }
+
+  public Optional<ForumThread> deleteThread(int siteId, int threadId) {
+    Optional<ForumThread> deletedThread = getForumThread(siteId, threadId, 0, 1);
+    if (deletedThread.isPresent()) {
+      contentDAO.deleteContent(siteId, threadId, ForumThread.class);
+    }
+
+    return deletedThread;
+  }
+
 }
