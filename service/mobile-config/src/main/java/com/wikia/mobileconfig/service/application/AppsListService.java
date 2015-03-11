@@ -1,4 +1,4 @@
-package com.wikia.mobileconfig.gateway;
+package com.wikia.mobileconfig.service.application;
 
 import java.io.IOException;
 import java.util.HashMap;
