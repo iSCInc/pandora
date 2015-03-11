@@ -1,4 +1,5 @@
-package com.wikia.mobileconfig.gateway;
+package com.wikia.mobileconfig.service.application;
+import com.wikia.mobileconfig.service.application.AppsDeployerListContainer;
 import com.wikia.pandora.core.testhelper.TestHelper;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
