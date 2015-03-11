@@ -2,18 +2,16 @@ package com.wikia.discussionservice.services;
 
 import com.wikia.discussionservice.mappers.DataStore;
 
-import java.lang.String;
-import java.util.ArrayList;
-import java.util.Set;
-
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.ScanParams;
-import redis.clients.jedis.ScanResult;
+
+import java.util.ArrayList;
 
 /**
  * Created by armon on 2/27/15.
  */
 public class JedisService implements DataStore {
+
   private String host = "localhost";
 
   private int port = 6379;
@@ -31,7 +29,9 @@ public class JedisService implements DataStore {
   public ArrayList<String> getList(int siteId, String contentType) {
     Jedis jedis = getInstance();
     ArrayList<String> keyResults = (ArrayList<String>) jedis.scan("0",
-        new ScanParams().match(getKeyPattern(siteId, contentType))
+                                                                  new ScanParams().match(
+                                                                      getKeyPattern(siteId,
+                                                                                    contentType))
     ).getResult();
     if (keyResults.isEmpty()) {
       return new ArrayList<>();

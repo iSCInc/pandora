@@ -4,6 +4,9 @@ import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Preconditions;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+
+import com.wikia.discussionservice.domain.ErrorResponse;
+import com.wikia.discussionservice.domain.ForumRoot;
 import com.wikia.discussionservice.domain.ForumThread;
 import com.wikia.discussionservice.domain.Post;
 import com.wikia.discussionservice.enums.ResponseGroup;
@@ -11,6 +14,12 @@ import com.wikia.discussionservice.mappers.PostRepresentationMapper;
 import com.wikia.discussionservice.services.PostService;
 import com.wikia.discussionservice.services.ThreadService;
 import com.wikia.discussionservice.utils.ErrorResponseBuilder;
+
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 import io.dropwizard.jersey.params.IntParam;
 import lombok.NonNull;
 
@@ -19,11 +28,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.Optional;
 
 @Path("/")
+@Api(basePath = "/Posts", value = "Posts", consumes = MediaType.APPLICATION_JSON,
+    produces = RepresentationFactory.HAL_JSON, description = "APIs pertaining to Posts")
 @Produces(RepresentationFactory.HAL_JSON)
 public class PostResource {
 
@@ -47,6 +59,13 @@ public class PostResource {
 
   @GET
   @Path("/{siteId}/posts/{postId}")
+  @Produces(RepresentationFactory.HAL_JSON)
+  @ApiOperation(value = "Get a specific post for a site",
+      notes = "Returns post details.",
+      response = Post.class)
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Successful retrieval of post", response = ForumRoot.class),
+      @ApiResponse(code = 404, message = "No post found", response = ErrorResponse.class)})
   @Timed
   public Response getPost(@NotNull @PathParam("siteId") IntParam siteId,
                           @NotNull @PathParam("postId") IntParam postId,
@@ -76,10 +95,18 @@ public class PostResource {
 
   @POST
   @Path("/{siteId}/posts")
+  @Produces(RepresentationFactory.HAL_JSON)
+  @ApiOperation(value = "Create a new post",
+      notes = "Returns the newly created post.",
+      response = Post.class)
+  @ApiResponses(value = {
+      @ApiResponse(code = 201, message = "Successful creation of a thread", response = Post.class),
+      @ApiResponse(code = 400, message = "Bad request", response = ErrorResponse.class)})
   @Timed
-  public Response createPost(@NotNull @PathParam("siteId") IntParam siteId,
-                             Post post,
-                             @Context UriInfo uriInfo) {
+  public Response createPost(
+    @ApiParam(value = "The id of the site") @NotNull @PathParam("siteId") IntParam siteId,
+    Post post,
+    @Context UriInfo uriInfo) {
 
     Optional<ForumThread> thread = threadService.getForumThread(siteId.get(), post.getThreadId());
 

@@ -5,10 +5,9 @@ import com.wikia.discussionservice.configuration.DiscussionServiceConfiguration;
 import com.hubspot.dropwizard.guice.GuiceBundle;
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
 import io.dropwizard.Application;
-import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import io.dropwizard.views.ViewBundle;
+import io.federecio.dropwizard.swagger.SwaggerBundle;
 
 public class DiscussionServiceApplication extends Application<DiscussionServiceConfiguration> {
 
@@ -31,11 +30,8 @@ public class DiscussionServiceApplication extends Application<DiscussionServiceC
             .build();
     bootstrap.addBundle(guiceBundle);
 
-    // View bundle for the document views
-    bootstrap.addBundle(new ViewBundle());
-
-    // AssetBundle for the Hal Browser
-    bootstrap.addBundle(new AssetsBundle());
+    // Swagger bundle for the SwaggerUI
+    bootstrap.addBundle(new SwaggerBundle<DiscussionServiceConfiguration>());
   }
 
   @Override
@@ -45,4 +41,5 @@ public class DiscussionServiceApplication extends Application<DiscussionServiceC
     // be compatible with HAL Browser and other industry standards
     environment.jersey().register(JaxRsHalBuilderSupport.class);
   }
+
 }

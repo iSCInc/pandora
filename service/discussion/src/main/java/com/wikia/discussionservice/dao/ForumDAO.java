@@ -47,26 +47,6 @@ public class ForumDAO {
     return Optional.ofNullable(contentDAO.getContent(siteId, forumId, Forum.class));
   }
 
-
-  public List<Forum> createForumList(int offset, int limit) {
-    List<Forum> forumList = new ArrayList<>();
-
-    int start = offset == 1
-        ? 1
-        : (limit * offset) - (limit - 1);
-
-    IntStream.range(start, limit + 1).forEach(
-        i -> {
-          Forum forum =
-              new Forum(i, ROOT_ID, String.format("Forum: %s", i), new ArrayList<>(), new ArrayList<>());
-          forumList.add(forum);
-        }
-    );
-
-    return forumList;
-  }
-
-  @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
   public Optional<Forum> createForum(int siteId, Forum forum) {
     Optional<Forum> parentForum = retrieveForum(siteId, forum.getParentId());
     boolean foundExisting = false;
