@@ -1,4 +1,16 @@
 apply from: rootProject.file('gradle/dropwizard_service.gradle')
-version = "0.1.9"
+version = "0.1.14-SNAPSHOT"
 
 mainClassName = "com.wikia.notificationsservice.NotificationsServiceApplication"
+
+deployments {
+    production {
+        resources {
+            cpus = 1
+            mem = 400
+            instances = 1
+        }
+    }
+    testing {
+    }
+}
