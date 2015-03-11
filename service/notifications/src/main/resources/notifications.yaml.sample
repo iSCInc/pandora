@@ -1,4 +1,3 @@
-greetingsWord: Take me to your leader
 logging:
   level: INFO
   appenders:
@@ -16,6 +15,19 @@ logging:
         context: rawContext
       customFields:
         appname: notifications
+server:
+  applicationConnectors:
+  - type: http
+    port: 8080
+  adminConnectors:
+  - type: http
+    port: 8081
+
+consulConfiguration:
+  tags: ${consul:CONSUL_TAGS:[testing]}
+  consulUri: ${consul:CONSUL_URI:http://localhost:8500}
+  heartbeatInterval: 2s
+  heartbeatTTL: 5s
 redis:
   # The redis server's address; required.
   endpoint: localhost:6379

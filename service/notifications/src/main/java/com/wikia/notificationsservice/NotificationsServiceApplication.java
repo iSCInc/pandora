@@ -1,7 +1,12 @@
 package com.wikia.notificationsservice;
 
+import com.google.inject.Injector;
+import com.hubspot.dropwizard.guice.GuiceBundle;
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
+import com.wikia.pandora.core.consul.ConsulBundle;
+import com.wikia.pandora.core.consul.config.ConsulVariableInterpolationBundle;
+import com.wikia.pandora.core.dropwizard.GovernatorInjectorFactory;
 import com.wikia.pandora.core.jedis.JedisBundle;
 import com.wikia.pandora.core.jedis.JedisFactory;
 import com.wikia.notificationsservice.configuration.NotificationsConfiguration;
@@ -27,11 +32,28 @@ public class NotificationsServiceApplication extends Application<NotificationsCo
 
   @Override
   public void initialize(Bootstrap<NotificationsConfiguration> bootstrap) {
+    GuiceBundle<NotificationsConfiguration> guiceBundle =
+            GuiceBundle.<NotificationsConfiguration>newBuilder()
+                    .addModule(new NotificationsModule())
+                    .setInjectorFactory(new GovernatorInjectorFactory())
+                    .setConfigClass(NotificationsConfiguration.class)
+                    .build();
+
+    bootstrap.addBundle(guiceBundle);
+
+    Injector injector = guiceBundle.getInjector();
+    bootstrap.addBundle(
+            injector.getInstance(ConsulVariableInterpolationBundle.class)
+    );
+    bootstrap.addBundle(
+            injector.getInstance(ConsulBundle.class)
+    );
+
     bootstrap.addBundle(new JedisBundle<NotificationsConfiguration>() {
-        @Override
-        public JedisFactory getJedisFactory(NotificationsConfiguration configuration) {
-            return configuration.getJedisFactory();
-        }
+      @Override
+      public JedisFactory getJedisFactory(NotificationsConfiguration configuration) {
+        return configuration.getJedisFactory();
+      }
     });
   }
 
