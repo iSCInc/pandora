@@ -29,7 +29,7 @@ public class CephConfigurationServiceTest {
   }
 
   @Test
-  public void getEmptyConfiguration() throws Exception {
+  public void testGetEmptyConfiguration() throws Exception {
     TestHelper.addMockRequestException(httpClient, IOException.class);
     MobileConfiguration
         config = configService.getConfiguration("testPlatform", "testTag", "xx", "xx");
@@ -37,7 +37,7 @@ public class CephConfigurationServiceTest {
   }
 
   @Test
-  public void getDefaultConfiguration() throws Exception {
+  public void testDefaultConfiguration() throws Exception {
     String configContent = new String(Files.readAllBytes(
             Paths.get("src/test/resources/fixtures/test-platform_test-app.json")));
     TestHelper.addMockRequest(httpClient, configContent);

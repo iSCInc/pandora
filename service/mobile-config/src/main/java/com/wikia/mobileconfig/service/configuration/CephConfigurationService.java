@@ -36,10 +36,7 @@ public class CephConfigurationService extends ConfigurationServiceBase {
   private HttpClient httpClient;
 
   @Inject
-  public CephConfigurationService(
-      Environment environment,
-      MobileConfigConfiguration configuration
-  ) {
+  public CephConfigurationService(MobileConfigConfiguration configuration) {
     this(configuration.getCephDomain(),
          configuration.getCephPort());
   }

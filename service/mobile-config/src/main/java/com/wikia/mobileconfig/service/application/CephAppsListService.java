@@ -11,6 +11,7 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import io.dropwizard.client.HttpClientBuilder;
 import io.dropwizard.setup.Environment;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
@@ -36,7 +37,7 @@ public class CephAppsListService implements AppsListService {
   private HttpClient httpClient;
 
   @Inject
-  public CephAppsListService(Environment environment, MobileConfigConfiguration configuration) {
+  public CephAppsListService(MobileConfigConfiguration configuration) {
     this(configuration.getCephDomain(), configuration.getCephPort());
   }
 
@@ -83,6 +84,15 @@ public class CephAppsListService implements AppsListService {
 
   @Override
   public boolean isUp() throws IOException {
-    return true;
+    boolean isUp = false;
+    String cephUrl = String.format("http://%s:%s/", cephDomain, cephPort);
+    HttpGet httpGet = new HttpGet(cephUrl);
+    try {
+      HttpResponse response = this.httpClient.execute(httpGet);
+      isUp = response.getStatusLine().getStatusCode() == 200;
+    } catch (IOException e) {
+      LOGGER.error("Ceph is unavaible", e);
+    }
+    return isUp;
   }
 }

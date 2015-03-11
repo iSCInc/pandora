@@ -2,6 +2,7 @@ package com.wikia.mobileconfig.service.application;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -10,6 +11,8 @@ import com.wikia.mobileconfig.exceptions.CephAppsListServiceException;
 import com.wikia.pandora.core.testhelper.TestHelper;
 
 import io.dropwizard.testing.FixtureHelpers;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -61,10 +64,30 @@ public class CephAppsListServiceTest {
     cephAppsList.getAppList("platform");
   }
 
-  /// CephApps is only for Qa, and it always up
   @Test
   public void testIsUp() throws Exception {
-    CephAppsListService cephAppsList = new CephAppsListService("ceph", "80");
+    HttpClient client = mock(HttpClient.class);
+    HttpResponse response = mock(HttpResponse.class);
+    StatusLine statusLine = mock(StatusLine.class);
+    when(statusLine.getStatusCode()).thenReturn(200);
+    when(response.getStatusLine()).thenReturn(statusLine);
+    when(client.execute(any())).thenReturn(response);
+
+    CephAppsListService cephAppsList = new CephAppsListService(client, "ceph", "80");
     assertTrue(cephAppsList.isUp());
   }
+
+  @Test
+  public void testIsUpFail() throws Exception {
+    HttpClient client = mock(HttpClient.class);
+    HttpResponse response = mock(HttpResponse.class);
+    StatusLine statusLine = mock(StatusLine.class);
+    when(statusLine.getStatusCode()).thenReturn(404);
+    when(response.getStatusLine()).thenReturn(statusLine);
+    when(client.execute(any())).thenReturn(response);
+
+    CephAppsListService cephAppsList = new CephAppsListService(client, "ceph", "80");
+    assertFalse(cephAppsList.isUp());
+  }
+
 }

@@ -45,8 +45,7 @@ public class AppsDeployerListContainer implements AppsListService {
   }
 
   @Inject
-  public AppsDeployerListContainer(Environment environment,
-                                   MobileConfigConfiguration configuration) {
+  public AppsDeployerListContainer(MobileConfigConfiguration configuration) {
     this(configuration.getAppsDeployerDomain(),
          configuration.getCacheTime());
   }
