@@ -29,8 +29,10 @@ consulConfiguration:
   heartbeatInterval: 2s
   heartbeatTTL: 5s
 redis:
-  # The redis server's address; required.
+  # The redis server's address in format: host:port; required.
   endpoint: localhost:6379
+  # Password - id needed for authorization; default: null
+  password:
   # The minimum number of idle connections to maintain in the pool.  (default: 0)
   minIdle: 0
   # The maximum number of idle connections allowed in the pool.  (default: 0)

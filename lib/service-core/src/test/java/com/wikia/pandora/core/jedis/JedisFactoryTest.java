@@ -40,6 +40,15 @@ public class JedisFactoryTest {
     }
 
     @Test
+    public void checkPasswordIfSet() {
+        factory.setPassword(null);
+        assert_().about(jedisFactory()).that(factory).hasNullPassword();
+
+        factory.setPassword("swordfish");
+        assert_().about(jedisFactory()).that(factory).hasPassword("swordfish");
+    }
+
+    @Test
     public void getsHostAndPortFromEndpoint() {
         factory.setEndpoint(HostAndPort.fromString("127.0.0.2:11211"));
 
