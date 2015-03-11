@@ -6,10 +6,6 @@ import com.wikia.mobileconfig.MobileConfigConfiguration;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Optional;
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-import io.dropwizard.client.HttpClientBuilder;
-import io.dropwizard.setup.Environment;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -21,6 +17,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 public class AppsDeployerListContainer implements AppsListService {
 

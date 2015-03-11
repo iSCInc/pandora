@@ -3,10 +3,9 @@ package com.wikia.mobileconfig.health;
 
 import com.wikia.mobileconfig.service.application.AppsListService;
 
-import com.codahale.metrics.health.HealthCheck;
-import com.google.inject.Inject;
 import com.hubspot.dropwizard.guice.InjectableHealthCheck;
-import org.apache.commons.lang3.NotImplementedException;
+
+import javax.inject.Inject;
 
 public class AppsDeployerHealthCheck extends InjectableHealthCheck {
 

@@ -3,14 +3,9 @@ package com.wikia.mobileconfig.service.application;
 import com.wikia.mobileconfig.MobileConfigConfiguration;
 import com.wikia.mobileconfig.exceptions.CephAppsListServiceException;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-import io.dropwizard.client.HttpClientBuilder;
-import io.dropwizard.setup.Environment;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpResponseException;
@@ -23,6 +18,9 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 public class CephAppsListService implements AppsListService {
 
