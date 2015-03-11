@@ -88,7 +88,7 @@ public class ConsulBundle implements ConfiguredBundle<Configuration> {
                 .ifPresent((connector) -> {
                   logger.info("Registering in consul connector");
                   consul.registerConnector(connector);
-                  logger.info("Registered in consul");
+                  logger.debug("Registered in consul");
 
                   // scheduling heartbeat
                   String serviceId = consul.getServiceId(connector);
@@ -98,7 +98,7 @@ public class ConsulBundle implements ConfiguredBundle<Configuration> {
                   logger.info("Scheduling Consul heartbeats");
                   scheduleHeartbeat(environment, this.configurationProvider.get(), heartbeat::send,
                                     true);
-                  logger.info("Heartbeats are scheduled");
+                  logger.debug("Heartbeats have been scheduled");
                 })
         );
   }

@@ -31,7 +31,7 @@ deployments {
 
     qa {
         resources {
-            cpus = 1
+            cpus = 0.1
             mem = 400
             instances = 1
         }
