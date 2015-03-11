@@ -1,8 +1,8 @@
 package com.wikia.notificationsservice.configuration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.wikia.pandora.core.consul.ConsulConfiguration;
-import com.wikia.pandora.core.consul.ProvidesConsulConfiguration;
+import com.wikia.dropwizard.consul.bundle.ConsulConfiguration;
+import com.wikia.dropwizard.consul.bundle.ProvidesConsulConfiguration;
 import com.wikia.pandora.core.jedis.JedisFactory;
 import io.dropwizard.Configuration;
 
