@@ -104,8 +104,9 @@ public class ForumDAO {
       rootForum.getChildren().remove(deletedForum.get());
       for(Forum forum: rootForum.getChildren()) {
         forum.getChildren().remove(deletedForum.get());
+        updateForum(siteId, forum);
       }
-      createForum(siteId, rootForum);
+      updateForum(siteId, rootForum);
     }
 
     return deletedForum;
