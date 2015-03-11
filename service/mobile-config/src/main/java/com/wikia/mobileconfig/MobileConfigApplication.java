@@ -44,6 +44,7 @@ public class MobileConfigApplication extends Application<MobileConfigConfigurati
     guiceBundle = GuiceBundle.<MobileConfigConfiguration>newBuilder()
         .addModule(new MobileConfigModule())
         .setInjectorFactory(new GovernatorInjectorFactory())
+        .enableAutoConfig(getClass().getPackage().getName())
         .setConfigClass(MobileConfigConfiguration.class)
         .build();
 
@@ -57,27 +58,6 @@ public class MobileConfigApplication extends Application<MobileConfigConfigurati
 
   @Override
   public void run(MobileConfigConfiguration configuration, Environment environment) {
-
-    Injector injector = guiceBundle.getInjector();
-
-    registerHealthChecks(environment, injector);
-
-    final MobileConfigResource mobileConfig = injector.getInstance(MobileConfigResource.class);
-
-    final ApplicationsResource appList = injector.getInstance(ApplicationsResource.class);
-
-    environment.jersey().register(mobileConfig);
-    environment.jersey().register(appList);
     environment.jersey().register(JaxRsHalBuilderSupport.class);
-  }
-
-  private void registerHealthChecks(Environment environment, Injector injector) {
-    final MobileConfigHealthCheck healthCheck = new MobileConfigHealthCheck();
-    environment.healthChecks().register("mobile-config", healthCheck);
-
-    final AppsDeployerHealthCheck
-        appsListService =
-        injector.getInstance(AppsDeployerHealthCheck.class);
-    environment.healthChecks().register("apps-deployer", appsListService);
   }
 }
