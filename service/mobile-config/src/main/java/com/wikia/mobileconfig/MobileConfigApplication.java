@@ -6,14 +6,14 @@ import com.hubspot.dropwizard.guice.GuiceBundle;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
+import com.wikia.dropwizard.consul.bundle.ConsulBundle;
+import com.wikia.dropwizard.consul.config.ConsulVariableInterpolationBundle;
 import com.wikia.mobileconfig.gateway.AppsDeployerListContainer;
 import com.wikia.mobileconfig.health.AppsDeployerHealthCheck;
 import com.wikia.mobileconfig.health.MobileConfigHealthCheck;
 import com.wikia.mobileconfig.resources.ApplicationsResource;
 import com.wikia.mobileconfig.resources.MobileConfigResource;
 import com.wikia.mobileconfig.service.HttpConfigurationService;
-import com.wikia.pandora.core.consul.ConsulBundle;
-import com.wikia.pandora.core.consul.config.ConsulVariableInterpolationBundle;
 import com.wikia.pandora.core.dropwizard.GovernatorInjectorFactory;
 
 import org.slf4j.Logger;

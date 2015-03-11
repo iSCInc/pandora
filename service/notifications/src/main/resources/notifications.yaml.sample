@@ -14,7 +14,7 @@ logging:
         tags: rawTags
         context: rawContext
       customFields:
-        appname: pandora-example
+        appname: notifications
 server:
   applicationConnectors:
   - type: http
