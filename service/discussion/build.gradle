@@ -24,6 +24,7 @@ dependencies {
     compile "io.dropwizard:dropwizard-views-freemarker:0.8.0-rc2"
     compile "io.federecio:dropwizard-swagger:0.5.3"
     compile "org.projectlombok:lombok:1.16.2"
+    compile "redis.clients:jedis:2.6.2"
     testCompile "org.testng:testng:6.8"
     testCompile "org.hamcrest:hamcrest-core:$hamcrestVersion"
     testCompile "org.hamcrest:hamcrest-library:$hamcrestVersion"

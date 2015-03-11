@@ -24,6 +24,7 @@ import io.dropwizard.jersey.params.IntParam;
 import lombok.NonNull;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -131,5 +132,28 @@ public class PostResource {
     return ErrorResponseBuilder.buildErrorResponse(10101, String.format(
             "Unable to create post for site id: %s on thread id: %s", siteId.get(), 
             post.getThreadId()), null, Response.Status.BAD_REQUEST);
+  }
+
+  @DELETE
+  @Path("/{siteId}/posts/{postId}")
+  @Timed
+  public Response deletePost(@NotNull @PathParam("siteId") IntParam siteId,
+                               @NotNull @PathParam("postId") IntParam postId,
+                               @Context HttpServletRequest request,
+                               @Context UriInfo uriInfo) {
+    try {
+      // TODO: perform validation
+      Optional<Post> deletedPost = postService.deletePost(siteId.get(), postId.get());
+
+      if (deletedPost.isPresent()) {
+        return Response.noContent().build();
+      }
+    } catch (IllegalArgumentException iae) {
+      return Response.status(Response.Status.BAD_REQUEST).build();
+    }
+
+    return ErrorResponseBuilder.buildErrorResponse(10101, String.format(
+        "No post found for site id: %s with id: %s",
+        siteId.get(), postId.get()), null, Response.Status.NOT_FOUND);
   }
 }

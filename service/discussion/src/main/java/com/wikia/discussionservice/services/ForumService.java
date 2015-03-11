@@ -22,9 +22,10 @@ public class ForumService {
 
   @NonNull
   private final ForumDAO forumDAO;
-  
+
   @Inject
   public ForumService(ThreadService threadService, ForumDAO forumDAO) {
+    super();
     this.threadService = threadService;
     this.forumDAO = forumDAO;
   }
@@ -42,8 +43,7 @@ public class ForumService {
   }
   
   public Optional<Forum> getForum(int siteId, int forumId, int offset, int limit) {
-    Optional<Forum> forum = forumDAO.retrieveForum(siteId, forumId);
-    return forum;
+    return forumDAO.retrieveForum(siteId, forumId);
   }
 
   public Optional<Forum> createForum(int siteId, Forum forum) {

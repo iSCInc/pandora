@@ -12,10 +12,13 @@ import lombok.ToString;
 import java.util.ArrayList;
 import java.util.List;
 
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper=false)
 @ToString
 @JsonIgnoreProperties(ignoreUnknown=true)
-public @Data class ForumRoot {
+public @Data class ForumRoot extends Content {
+
+  @JsonProperty
+  private int id = 1;
 
   @JsonProperty
   @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS,
@@ -26,4 +29,8 @@ public @Data class ForumRoot {
 
   @JsonProperty
   private int siteId;
+
+  public static String getType() {
+    return "forumroot";
+  }
 }

@@ -14,11 +14,12 @@ import java.util.List;
  * Domain model that represents a Forum object
  */
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper=false)
 @AllArgsConstructor
-public @Data class Forum {
+public @Data class Forum extends Content {
 
   private Forum() {
+    super();
     // Jackson deserialization
   }
 
@@ -45,7 +46,11 @@ public @Data class Forum {
     property = "@class")
   @NonNull
   public List<ForumThread> threads;
- 
+
+  public static String getType() {
+    return "forum";
+  }
+
   public boolean hasChildren() {
     return getChildren() != null && !getChildren().isEmpty();
   }

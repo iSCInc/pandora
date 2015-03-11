@@ -151,4 +151,28 @@ public class ThreadResource {
             "Unable to create thread for site id: %s", siteId.get()),
         null, Response.Status.BAD_REQUEST);
   }
+
+  @DELETE
+  @Path("/{siteId}/threads/{threadId}")
+  @Timed
+  public Response deleteThread(@NotNull @PathParam("siteId") IntParam siteId,
+                              @NotNull @PathParam("threadId") IntParam threadId,
+                              @Context HttpServletRequest request,
+                              @Context UriInfo uriInfo) {
+    try {
+      // TODO: perform validation
+      Optional<ForumThread> deletedThread = threadService.deleteThread(siteId.get(), threadId.get());
+
+      if (deletedThread.isPresent()) {
+        return Response.noContent().build();
+      }
+    } catch (IllegalArgumentException iae) {
+      return Response.status(Response.Status.BAD_REQUEST).build();
+    }
+
+    return ErrorResponseBuilder.buildErrorResponse(10101, String.format(
+        "No forum thread found for site id: %s with id: %s",
+        siteId.get(), threadId.get()), null, Response.Status.NOT_FOUND);
+  }
+
 }
