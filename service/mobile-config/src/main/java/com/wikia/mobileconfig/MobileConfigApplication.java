@@ -1,14 +1,11 @@
 package com.wikia.mobileconfig;
 
 import com.wikia.dropwizard.consul.bundle.ConsulBundle;
+import com.wikia.dropwizard.consul.bundle.ConsulModule;
 import com.wikia.dropwizard.consul.config.ConsulVariableInterpolationBundle;
-import com.wikia.mobileconfig.health.AppsDeployerHealthCheck;
-import com.wikia.mobileconfig.health.MobileConfigHealthCheck;
-import com.wikia.mobileconfig.resources.ApplicationsResource;
-import com.wikia.mobileconfig.resources.MobileConfigResource;
-import com.wikia.mobileconfig.service.application.AppsListService;
-import com.wikia.mobileconfig.service.application.CephAppsListService;
-import com.wikia.mobileconfig.service.configuration.CephConfigurationService;
+import com.wikia.mobileconfig.exceptions.MobileConfigModuleNotSetException;
+import com.wikia.mobileconfig.guicemodule.MobileConfigModuleBase;
+import com.wikia.mobileconfig.guicemodule.MobileConfigModuleFactory;
 import com.wikia.pandora.core.dropwizard.GovernatorInjectorFactory;
 
 import com.google.inject.Injector;
@@ -28,7 +25,9 @@ public class MobileConfigApplication extends Application<MobileConfigConfigurati
       REPRESENTATION_FACTORY = new StandardRepresentationFactory();
 
   public static final Logger LOGGER = LoggerFactory.getLogger(MobileConfigApplication.class);
+
   private GuiceBundle<MobileConfigConfiguration> guiceBundle;
+  private MobileConfigModuleBase mobileConfigModule;
 
   public static void main(String[] args) throws Exception {
     new MobileConfigApplication().run(args);
@@ -41,8 +40,12 @@ public class MobileConfigApplication extends Application<MobileConfigConfigurati
 
   @Override
   public void initialize(Bootstrap<MobileConfigConfiguration> bootstrap) {
+
+    mobileConfigModule = MobileConfigModuleFactory.CreateMobileConfigModule();
+
     guiceBundle = GuiceBundle.<MobileConfigConfiguration>newBuilder()
-        .addModule(new MobileConfigModule())
+        .addModule(mobileConfigModule)
+        .addModule(new ConsulModule())
         .setInjectorFactory(new GovernatorInjectorFactory())
         .enableAutoConfig(getClass().getPackage().getName())
         .setConfigClass(MobileConfigConfiguration.class)

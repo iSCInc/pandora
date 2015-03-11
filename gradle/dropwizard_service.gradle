@@ -5,14 +5,16 @@ tasks.withType(Test) {
     environment = [
             CONSUL_KEY_VALUE_CONFIG_SOURCE:
                     "http://${testConsulHost}:8500/config/${project.name}/integration",
+            MOBILE_CONFIG_SERVICE_STAGE   : "testing",
     ]
 }
 
-def defaultConfigLocation="src/main/resources"
+def defaultConfigLocation = "src/main/resources"
 run {
     environment = [
             CONSUL_KEY_VALUE_CONFIG_SOURCE:
                     "http://${testConsulHost}:8500/config/${project.name}/integration",
+            MOBILE_CONFIG_SERVICE_STAGE   : "prod",
     ]
     args 'server', "${defaultConfigLocation}/${project.name}.yaml"
 }
