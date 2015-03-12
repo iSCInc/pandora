@@ -43,7 +43,7 @@ public class CommunityDataResource {
   @GET
   @Path("/{domain}")
   @Timed
-  public Representation getById(@PathParam("domain") String domain) {
+  public Representation getData(@PathParam("domain") String domain) {
     String url = String.format("jdbc:mysql://%s:%s/%s", wikiDb.getHost(), wikiDb.getPort(), wikiDb.getDb());
     Representation representation = representationFactory.newRepresentation();
 
