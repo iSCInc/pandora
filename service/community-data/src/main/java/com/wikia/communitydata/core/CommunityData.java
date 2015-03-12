@@ -4,6 +4,7 @@ import static com.wikia.jooq.wikicities.Tables.CITY_DOMAINS;
 import static com.wikia.jooq.wikicities.Tables.CITY_LIST;
 import static com.wikia.jooq.wikicities.Tables.CITY_VARIABLES;
 import static com.wikia.jooq.wikicities.Tables.CITY_VERTICALS;
+import static net.logstash.logback.marker.Markers.appendEntries;
 
 import com.wikia.communitydata.configuration.MysqlConfiguration;
 import com.wikia.jooq.wikicities.tables.records.CityListRecord;
@@ -11,10 +12,14 @@ import com.wikia.jooq.wikicities.tables.records.CityVariablesRecord;
 import com.wikia.jooq.wikicities.tables.records.CityVerticalsRecord;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.collect.ImmutableMap;
+import de.ailis.pherialize.Pherialize;
+import de.ailis.pherialize.exceptions.UnserializeException;
 import org.jooq.Record;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import org.jooq.types.UShort;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -66,7 +71,29 @@ public class CommunityData {
 
   @JsonProperty
   public String getArticlePath() {
-    return cityVariablesRecord.getCvValue();
+    String path = cityVariablesRecord.getCvValue();
+
+    if (path == null) {
+      path = DEFAULT_ARTICLE_PATH;
+    } else {
+      try {
+        path = Pherialize.unserialize(path).toString();
+      } catch (Exception e) {
+        LoggerFactory.getLogger(this.getClass()).error(
+            appendEntries(
+                new ImmutableMap.Builder<String, String>()
+                    .put("value", cityVariablesRecord.getCvValue())
+                    .build()
+            ),
+            "error during deserialization",
+            e
+        );
+
+        path = DEFAULT_ARTICLE_PATH;
+      }
+    }
+
+    return path;
   }
 
   public static final class Builder {
@@ -103,13 +130,23 @@ public class CommunityData {
             .where(CITY_DOMAINS.CITY_DOMAIN.equal(domain))
             .fetchOne();
 
-        CityListRecord listRecord = result.into(CITY_LIST);
-        CityVerticalsRecord verticalsRecord = result.into(CITY_VERTICALS);
-        CityVariablesRecord variablesRecord = result.into(CITY_VARIABLES);
+        if (result != null) {
+          CityListRecord listRecord = result.into(CITY_LIST);
+          CityVerticalsRecord verticalsRecord = result.into(CITY_VERTICALS);
+          CityVariablesRecord variablesRecord = result.into(CITY_VARIABLES);
 
-        communityData = new CommunityData(listRecord, verticalsRecord, variablesRecord);
+          communityData = new CommunityData(listRecord, verticalsRecord, variablesRecord);
+        }
       } catch (Exception e) {
-
+        LoggerFactory.getLogger(this.getClass()).error(
+            appendEntries(
+                new ImmutableMap.Builder<String, String>()
+                    .put("domain", domain)
+                    .build()
+            ),
+            "error fetching configuration",
+            e
+        );
       }
 
       return communityData;

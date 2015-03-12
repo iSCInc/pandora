@@ -13,7 +13,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path("/community-data")
+@Path("/{domain}")
 @Produces(MediaType.APPLICATION_JSON)
 public class CommunityDataResource {
   private static final UShort ARTICLE_PATH_ID = UShort.valueOf(15);
@@ -27,7 +27,6 @@ public class CommunityDataResource {
   }
 
   @GET
-  @Path("/{domain}")
   @Timed
   public CommunityData getData(@PathParam("domain") String domain) {
     return new CommunityData.Builder(wikiDb, domain).build();

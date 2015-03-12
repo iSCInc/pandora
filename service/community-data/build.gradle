@@ -7,9 +7,14 @@ applicationDefaultJvmArgs = [
         "-Xms100m", "-Xmn128m", "-Xmx300m", "-XX:+UseNUMA", "-XX:+UseCondCardMark", "-XX:+UseBiasedLocking", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC"
 ]
 
+repositories {
+    maven { url "${archivaUrl}/repository/internal" }
+}
+
 dependencies {
     compile project(":lib:jooq")
     compile project(":lib:service-core")
+    compile "de.ailis.pherialize:pherialize:1.2.1"
 }
 
 deployments {
