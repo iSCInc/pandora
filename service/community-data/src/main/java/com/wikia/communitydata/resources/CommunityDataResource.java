@@ -11,6 +11,7 @@ import com.wikia.jooq.wikicities.tables.records.CityVariablesRecord;
 import com.wikia.jooq.wikicities.tables.records.CityVerticalsRecord;
 
 import com.codahale.metrics.annotation.Timed;
+import com.google.inject.Inject;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import org.jooq.Record;
@@ -35,6 +36,7 @@ public class CommunityDataResource {
   private final RepresentationFactory representationFactory;
   private final MysqlConfiguration wikiDb;
 
+  @Inject
   public CommunityDataResource(RepresentationFactory representationFactory, MysqlConfiguration wikiDb) {
     this.representationFactory = representationFactory;
     this.wikiDb = wikiDb;

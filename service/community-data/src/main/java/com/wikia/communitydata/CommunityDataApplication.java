@@ -10,6 +10,7 @@ import com.wikia.communitydata.configuration.CommunityDataConfiguration;
 import com.wikia.communitydata.health.CommunityDataHealthCheck;
 import com.wikia.communitydata.resources.CommunityDataResource;
 import com.wikia.dropwizard.consul.bundle.ConsulBundle;
+import com.wikia.dropwizard.consul.bundle.ConsulModule;
 import com.wikia.dropwizard.consul.config.ConsulVariableInterpolationBundle;
 import com.wikia.pandora.core.dropwizard.GovernatorInjectorFactory;
 
@@ -34,7 +35,8 @@ public class CommunityDataApplication extends Application<CommunityDataConfigura
     GuiceBundle<CommunityDataConfiguration> guiceBundle =
         GuiceBundle.<CommunityDataConfiguration>newBuilder()
             .addModule(new CommunityDataModule())
-            .setInjectorFactory(new GovernatorInjectorFactory())
+            .addModule(new ConsulModule())
+            .enableAutoConfig(getClass().getPackage().getName())
             .setConfigClass(CommunityDataConfiguration.class)
             .build();
 
@@ -50,15 +52,5 @@ public class CommunityDataApplication extends Application<CommunityDataConfigura
   public void run(CommunityDataConfiguration configuration, Environment environment)
       throws Exception {
 
-    //register healthCheck (mandatory)
-    final CommunityDataHealthCheck healthCheck = new CommunityDataHealthCheck();
-    environment.healthChecks().register("SimpleHealthCheck", healthCheck);
-
-    StandardRepresentationFactory representationFactory = new StandardRepresentationFactory();
-    CommunityDataResource communityDataResource = new CommunityDataResource(representationFactory, configuration.getWikicitiesDb());
-    environment.jersey().register(communityDataResource);
-
-    //Optional
-    environment.jersey().register(JaxRsHalBuilderSupport.class);
   }
 }
