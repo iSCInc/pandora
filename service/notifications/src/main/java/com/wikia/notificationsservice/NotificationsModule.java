@@ -1,9 +1,9 @@
 package com.wikia.notificationsservice;
 
 import com.google.inject.AbstractModule;
-import com.wikia.notificationsservice.configuration.NotificationsConfiguration;
 import com.wikia.dropwizard.consul.bundle.ConsulModule;
 import com.wikia.dropwizard.consul.bundle.ProvidesConsulConfiguration;
+import com.wikia.notificationsservice.configuration.NotificationsConfiguration;
 
 public class NotificationsModule extends AbstractModule {
 

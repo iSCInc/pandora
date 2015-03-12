@@ -14,26 +14,28 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JedisFactoryTest {
-    @Mock JedisPool pool;
-    @Mock Jedis jedis;
+  @Mock
+  JedisPool pool;
+  @Mock
+  Jedis jedis;
 
-    private JedisFactory factory;
+  private JedisFactory factory;
 
-    @Before
-    public void setup() {
-        when(pool.getResource()).thenReturn(jedis);
-        factory = new JedisFactory(pool);
-    }
+  @Before
+  public void setup() {
+    when(pool.getResource()).thenReturn(jedis);
+    factory = new JedisFactory(pool);
+  }
 
-    @Test
-    public void providesAJedisClientInstance() {
-        assert_().that(factory.provide()).isA(Jedis.class);
-        verify(pool).getResource();
-    }
+  @Test
+  public void providesAJedisClientInstance() {
+    assert_().that(factory.provide()).isA(Jedis.class);
+    verify(pool).getResource();
+  }
 
-    @Test
-    public void disposesAJedisConnectionProperly() {
-        factory.dispose(jedis);
-        verify(jedis).close();
-    }
+  @Test
+  public void disposesAJedisConnectionProperly() {
+    factory.dispose(jedis);
+    verify(jedis).close();
+  }
 }

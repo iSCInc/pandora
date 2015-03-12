@@ -1,4 +1,5 @@
 package com.wikia.jedis.jersey;
+
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.process.internal.RequestScoped;
 import redis.clients.jedis.Jedis;
@@ -11,18 +12,18 @@ import redis.clients.jedis.JedisPool;
  */
 
 public class JedisPoolBinder extends AbstractBinder {
-    private final JedisPool pool;
+  private final JedisPool pool;
 
-    public JedisPoolBinder(JedisPool pool) {
-        this.pool = pool;
-    }
+  public JedisPoolBinder(JedisPool pool) {
+    this.pool = pool;
+  }
 
-    @Override
-    protected void configure() {
+  @Override
+  protected void configure() {
 // Always return the same pool when/where ever it's asked for
-        bind(pool).to(JedisPool.class);
-        bindFactory(new JedisFactory(pool))
-                .to(Jedis.class)
-                .in(RequestScoped.class);
-    }
+    bind(pool).to(JedisPool.class);
+    bindFactory(new JedisFactory(pool))
+            .to(Jedis.class)
+            .in(RequestScoped.class);
+  }
 }

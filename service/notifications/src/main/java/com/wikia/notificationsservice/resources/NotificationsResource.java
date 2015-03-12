@@ -27,44 +27,44 @@ public class NotificationsResource {
     this.configuration = configuration;
   }
 
-    @GET
-    @Timed
-    public Response show(@PathParam("name") String name, @Context Jedis jedis) {
-        String jedisValue;
+  @GET
+  @Timed
+  public Response show(@PathParam("name") String name, @Context Jedis jedis) {
+    String jedisValue;
 
-        jedisValue = jedis.get(name);
+    jedisValue = jedis.get(name);
 
-        if (jedisValue == null) {
-            return Response
-                    .status(Response.Status.NOT_FOUND)
-                    .type(MediaType.APPLICATION_JSON_TYPE)
-                    .entity("Notification doesn't exist").build();
-        }
-
-        return Response
-                .status(Response.Status.OK)
-                .entity(new Notification(jedisValue)).build();
+    if (jedisValue == null) {
+      return Response
+              .status(Response.Status.NOT_FOUND)
+              .type(MediaType.APPLICATION_JSON_TYPE)
+              .entity("Notification doesn't exist").build();
     }
 
-    @POST
-    @Timed
-    public Representation update(@PathParam("name") String name, @Valid Notification notification, @Context Jedis jedis) {
-        jedis.set(name, notification.getText());
+    return Response
+            .status(Response.Status.OK)
+            .entity(new Notification(jedisValue)).build();
+  }
 
-        Representation representation = representationFactory.newRepresentation();
-        representation.withProperty("uri", UriBuilder.fromResource(NotificationsResource.class)
-                .build(name));
-        return representation;
-    }
+  @POST
+  @Timed
+  public Representation update(@PathParam("name") String name, @Valid Notification notification, @Context Jedis jedis) {
+    jedis.set(name, notification.getText());
 
-    @DELETE
-    @Timed
-    public Representation delete(@PathParam("name") String name, @Context Jedis jedis) {
-        Representation representation = representationFactory.newRepresentation();
+    Representation representation = representationFactory.newRepresentation();
+    representation.withProperty("uri", UriBuilder.fromResource(NotificationsResource.class)
+            .build(name));
+    return representation;
+  }
 
-        jedis.del(name);
+  @DELETE
+  @Timed
+  public Representation delete(@PathParam("name") String name, @Context Jedis jedis) {
+    Representation representation = representationFactory.newRepresentation();
 
-        representation.withProperty("status", "ok");
-        return representation;
-    }
+    jedis.del(name);
+
+    representation.withProperty("status", "ok");
+    return representation;
+  }
 }

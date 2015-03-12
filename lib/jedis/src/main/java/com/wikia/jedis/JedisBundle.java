@@ -9,22 +9,22 @@ import redis.clients.jedis.JedisPool;
 
 public abstract class JedisBundle<T extends Configuration> implements ConfiguredBundle<T>, JedisConfiguration<T> {
 
-    private JedisPool pool;
+  private JedisPool pool;
 
-    public JedisPool getPool() {
-        return pool;
-    }
+  public JedisPool getPool() {
+    return pool;
+  }
 
-    @Override
-    public void initialize(Bootstrap<?> bootstrap) {
-    }
+  @Override
+  public void initialize(Bootstrap<?> bootstrap) {
+  }
 
-    @Override
-    public void run(T appConfiguration, Environment environment) throws Exception {
-        pool = getJedisFactory(appConfiguration).build(environment);
+  @Override
+  public void run(T appConfiguration, Environment environment) throws Exception {
+    pool = getJedisFactory(appConfiguration).build(environment);
 
-        environment.healthChecks().register("redis", new JedisHealthCheck(pool));
-        environment.jersey().register(new JedisPoolBinder(pool));
+    environment.healthChecks().register("redis", new JedisHealthCheck(pool));
+    environment.jersey().register(new JedisPoolBinder(pool));
 
-    }
+  }
 }

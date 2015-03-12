@@ -3,25 +3,23 @@ package com.wikia.jedis;
 import org.junit.Test;
 import redis.clients.jedis.JedisPool;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.*;
 
 public class JedisPoolManagerTest {
-    @Test
-    public void destroysManagedPool() throws Exception {
-        JedisPool pool = mock(JedisPool.class);
-        JedisPoolManager manager = new JedisPoolManager(pool);
+  @Test
+  public void destroysManagedPool() throws Exception {
+    JedisPool pool = mock(JedisPool.class);
+    JedisPoolManager manager = new JedisPoolManager(pool);
 
-        manager.stop();
+    manager.stop();
 
-        verify(pool).destroy();
-    }
+    verify(pool).destroy();
+  }
 
-    @Test
-    public void doesNothingOnStart() throws Exception {
-        JedisPool pool = mock(JedisPool.class);
-        new JedisPoolManager(pool).start();
-        verifyZeroInteractions(pool);
-    }
+  @Test
+  public void doesNothingOnStart() throws Exception {
+    JedisPool pool = mock(JedisPool.class);
+    new JedisPoolManager(pool).start();
+    verifyZeroInteractions(pool);
+  }
 }
