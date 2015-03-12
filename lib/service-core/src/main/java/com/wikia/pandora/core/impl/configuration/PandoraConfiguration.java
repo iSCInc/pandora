@@ -12,11 +12,11 @@ import io.dropwizard.client.HttpClientConfiguration;
 public class PandoraConfiguration extends Configuration {
 
   @Valid
-  @Nonnull
+  @NotNull
   private String internalProxyHost;
 
   @Valid
-  @Nonnull
+  @NotNull
   private Integer internalProxyPort = 80;
 
   @Valid
