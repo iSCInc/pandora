@@ -1,4 +1,4 @@
-package com.wikia.pandora.core.jedis;
+package com.wikia.jedis;
 
 import com.codahale.metrics.health.HealthCheckRegistry;
 import io.dropwizard.Configuration;

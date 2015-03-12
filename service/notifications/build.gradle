@@ -3,6 +3,10 @@ version = "0.1.14-SNAPSHOT"
 
 mainClassName = "com.wikia.notificationsservice.NotificationsServiceApplication"
 
+dependencies {
+    compile project(":lib:jedis")
+}
+
 deployments {
     production {
         resources {

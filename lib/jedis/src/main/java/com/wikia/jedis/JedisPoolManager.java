@@ -1,4 +1,4 @@
-package com.wikia.pandora.core.jedis;
+package com.wikia.jedis;
 
 import io.dropwizard.lifecycle.Managed;
 import redis.clients.jedis.JedisPool;

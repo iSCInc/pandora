@@ -1,6 +1,6 @@
-package com.wikia.pandora.core.jedis.testing;
+package com.wikia.jedis.testing;
 
-import com.wikia.pandora.core.jedis.JedisFactory;
+import com.wikia.jedis.JedisFactory;
 import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.Subject;
 

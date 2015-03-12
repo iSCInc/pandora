@@ -1,4 +1,4 @@
-package com.wikia.pandora.core.jedis;
+package com.wikia.jedis;
 
 import com.google.common.net.HostAndPort;
 import io.dropwizard.jersey.setup.JerseyEnvironment;
@@ -10,9 +10,8 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import redis.clients.jedis.JedisPool;
 
-import static com.wikia.pandora.core.jedis.testing.Subjects.jedisFactory;
+import static com.wikia.jedis.testing.Subjects.jedisFactory;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assert_;
 import static org.mockito.Mockito.verify;

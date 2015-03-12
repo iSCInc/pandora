@@ -1,4 +1,4 @@
-package com.wikia.pandora.core.jedis.jersey;
+package com.wikia.jedis.jersey;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package com.wikia.pandora.core.jedis.testing;
+package com.wikia.jedis.testing;
 
 import com.codahale.metrics.health.HealthCheck;
 import com.google.common.truth.FailureStrategy;

@@ -1,4 +1,4 @@
-package com.wikia.pandora.core.jedis;
+package com.wikia.jedis;
 
 import org.junit.Test;
 import redis.clients.jedis.JedisPool;

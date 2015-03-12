@@ -6,6 +6,4 @@ dependencies {
     compile project(':lib:dropwizard:hal')
     compile project(':lib:dropwizard:consul')
     compile project(':lib:dropwizard:metrics-influx')
-    compile 'redis.clients:jedis:2.6.2'
-    testCompile 'com.google.truth:truth:0.25'
 }

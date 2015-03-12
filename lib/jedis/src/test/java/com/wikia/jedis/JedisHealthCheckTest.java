@@ -1,5 +1,6 @@
-package com.wikia.pandora.core.jedis;
+package com.wikia.jedis;
 
+import com.wikia.jedis.testing.Subjects;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +11,6 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.jedis.exceptions.JedisException;
 
-import static com.wikia.pandora.core.jedis.testing.Subjects.healthCheck;
 import static com.google.common.truth.Truth.assert_;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -31,13 +31,13 @@ public class JedisHealthCheckTest {
     @Test
     public void isHealthyWhenPingCompletes() throws Exception {
         when(jedis.ping()).thenReturn("PONG");
-        assert_().about(healthCheck()).that(healthcheck.check()).isHealthy();
+        assert_().about(Subjects.healthCheck()).that(healthcheck.check()).isHealthy();
     }
 
     @Test
     public void isUnhealthyWhenPingFails() throws Exception {
         when(jedis.ping()).thenReturn("huh?");
-        assert_().about(healthCheck()).that(healthcheck.check()).isUnhealthy();
+        assert_().about(Subjects.healthCheck()).that(healthcheck.check()).isUnhealthy();
     }
 
     @Test(expected = JedisException.class)
