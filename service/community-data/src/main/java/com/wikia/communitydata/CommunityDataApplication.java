@@ -1,17 +1,14 @@
 package com.wikia.communitydata;
 
-import com.bendb.dropwizard.jooq.JooqBundle;
-import com.google.inject.Injector;
-
-import com.hubspot.dropwizard.guice.GuiceBundle;
-
 import com.wikia.communitydata.configuration.CommunityDataConfiguration;
 import com.wikia.dropwizard.consul.bundle.ConsulBundle;
 import com.wikia.dropwizard.consul.bundle.ConsulModule;
 import com.wikia.dropwizard.consul.config.ConsulVariableInterpolationBundle;
 
+import com.bendb.dropwizard.jooq.JooqBundle;
+import com.google.inject.Injector;
+import com.hubspot.dropwizard.guice.GuiceBundle;
 import io.dropwizard.Application;
-import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
@@ -41,12 +38,7 @@ public class CommunityDataApplication extends Application<CommunityDataConfigura
 
     Injector injector = guiceBundle.getInjector();
 
-    bootstrap.addBundle(new JooqBundle<CommunityDataConfiguration>() {
-      @Override
-      public DataSourceFactory getDataSourceFactory(CommunityDataConfiguration configuration) {
-        return configuration.getDataSourceFactory();
-      }
-    });
+    bootstrap.addBundle(injector.getInstance(JooqBundle.class));
     bootstrap.addBundle(injector.getInstance(ConsulVariableInterpolationBundle.class));
     bootstrap.addBundle(injector.getInstance(ConsulBundle.class));
   }
