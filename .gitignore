@@ -16,4 +16,3 @@ pandora.yaml
 pandora-example/example.yaml
 **/.gradle
 **/build
-service/notifications/src/main/resources/notifications.yaml
