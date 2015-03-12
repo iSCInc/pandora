@@ -10,12 +10,14 @@ about this project that’s a good place to start.
 ## Configuration
 
 To be able to use our consul bundle you need to create a "~/.gradle/gradle.properties" file in your local directory (for location of the file in Windows consult gradle documentation) and add the following properties:
+```
 archivaUsername=YOUR_USERNAME
 archivaPassword=YOUR_PASSWORD
 archivaUrl=INTERNAL_MAVEN_REPO
 dockerRegistryHost=DOCKER_REGISTERY_HOST
 testConsulHost=CONSUL_HOST
 marathonUrl=MESOS_URL
+```
 
 ## Usage
 
