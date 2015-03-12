@@ -12,3 +12,9 @@ dependencies {
     testCompile "org.mockito:mockito-core:$mockitoVersion"
     testCompile "org.easytesting:fest-assert-core:$festAssertVersion"
 }
+
+test {
+  testLogging {
+    exceptionFormat = 'full'
+ }
+}
