@@ -1,22 +1,43 @@
 package com.wikia.discussionservice.services;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.wikia.discussionservice.mappers.DataStore;
 
+import java.lang.Integer;
 import java.lang.String;
 import java.util.ArrayList;
-import java.util.Set;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.ScanParams;
-import redis.clients.jedis.ScanResult;
 
 /**
  * Created by armon on 2/27/15.
  */
 public class JedisService implements DataStore {
-  private String host = "localhost";
+  public JedisService(String host, String port) {
+    this.host = host;
+    this.port = port;
+  }
+  @NotNull
+  @Valid
+  @JsonProperty
+  private String host;// = "localhost";
 
-  private int port = 6379;
+  @NotNull
+  @Valid
+  @JsonProperty
+  private String port;// = "6379";
+
+  public String getHost() {
+    return host;
+  }
+
+  public String getPort() {
+    return port;
+  }
 
   @Override
   public String get(int siteId, String contentType, int contentId) {
@@ -53,8 +74,10 @@ public class JedisService implements DataStore {
     return siteId + ":" + contentType + ":" + contentId;
   }
 
-  private Jedis getInstance() {
-    return new Jedis(host, port);
+  public Jedis getInstance() {
+//    return new Jedis(host != null ? host : "localhost", port != null ? Integer.parseInt(port) : 6379);
+
+    return new Jedis(host, Integer.parseInt(port));
   }
 
 }

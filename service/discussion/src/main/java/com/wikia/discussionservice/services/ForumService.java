@@ -25,7 +25,6 @@ public class ForumService {
 
   @Inject
   public ForumService(ThreadService threadService, ForumDAO forumDAO) {
-    super();
     this.threadService = threadService;
     this.forumDAO = forumDAO;
   }

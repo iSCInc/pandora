@@ -24,7 +24,7 @@ public class ConsulConfiguration {
 
   @NotNull
   @Valid
-  private URI consulUri = URI.create("http://localhost:8500");
+  private URI consulUri;// = System.getenv(ConsulModule.CONSUL_URI_ENV_KEY);//URI.create("http://localhost:8500");
 
   public Duration getHeartbeatInterval() {
     return heartbeatInterval;

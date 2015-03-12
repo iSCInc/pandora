@@ -1,14 +1,30 @@
 package com.wikia.discussionservice.configuration;
 
+import com.wikia.discussionservice.services.JedisService;
+import com.wikia.dropwizard.consul.bundle.ConsulConfiguration;
+import com.wikia.dropwizard.consul.bundle.ProvidesConsulConfiguration;
+
 import io.dropwizard.Configuration;
+import redis.clients.jedis.Jedis;
 
-public class DiscussionServiceConfiguration extends Configuration {
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
-//  @NotEmpty
-//  private ConsulConfig consulConfig;
-//
-//  @SuppressFBWarnings(value="UWF_UNWRITTEN_FIELD", justification="Injected via YML")
-//  public ConsulConfig getConsulConfig() {
-//    return consulConfig;
-//  }
+public class DiscussionServiceConfiguration extends Configuration
+  implements ProvidesConsulConfiguration {
+
+  @NotNull
+  @Valid
+  private JedisService redis;
+
+  private ConsulConfiguration consulConfiguration;
+
+  public JedisService getRedis() {
+    return redis;
+  }
+
+  public ConsulConfiguration getConsulConfiguration() {
+    return consulConfiguration;
+  }
+
 }

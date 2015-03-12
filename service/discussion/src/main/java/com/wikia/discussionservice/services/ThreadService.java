@@ -19,7 +19,6 @@ public class ThreadService {
 
   @Inject
   public ThreadService(PostService postService, ThreadDAO threadDAO) {
-    super();
     this.threadDAO = threadDAO;
     this.postService = postService;
   }

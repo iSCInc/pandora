@@ -23,7 +23,17 @@ server:
   adminConnectors:
   - type: http
     port: 8081
-#consulConfig:
+redis:
+  host: ${consul:REDIS_HOST:localhost}
+  port: ${consul:REDIS_PORT:6379}
+consulConfiguration:
+  tags:
+    - auto_testing
+  consulUri: http://consul.service.sjc.consul:8500
+#  consulUri: ${consul:CONSUL_URI:http://localhost:8500}
+  heartbeatInterval: 2s
+  heartbeatTTL: 5s
+#consulConfiguration:
 #  tags:
 #    - auto_testing
 #  heartbeatInterval: 2s

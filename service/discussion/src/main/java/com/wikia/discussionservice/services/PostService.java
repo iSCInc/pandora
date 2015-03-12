@@ -20,7 +20,6 @@ public class PostService {
 
   @Inject
   public PostService(PostDAO postDAO) {
-    super();
     this.postDAO = postDAO;
   }
 

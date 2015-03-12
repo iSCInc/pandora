@@ -1,9 +1,15 @@
 package com.wikia.discussionservice;
 
+import com.google.inject.Injector;
+
 import com.wikia.discussionservice.configuration.DiscussionServiceConfiguration;
 
 import com.hubspot.dropwizard.guice.GuiceBundle;
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
+import com.wikia.dropwizard.consul.bundle.ConsulBundle;
+import com.wikia.dropwizard.consul.config.ConsulVariableInterpolationBundle;
+import com.wikia.pandora.core.dropwizard.GovernatorInjectorFactory;
+
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
@@ -36,6 +42,14 @@ public class DiscussionServiceApplication extends Application<DiscussionServiceC
 
     // AssetBundle for the Hal Browser
     bootstrap.addBundle(new AssetsBundle());
+
+    Injector injector = guiceBundle.getInjector();
+    bootstrap.addBundle(
+        injector.getInstance(ConsulVariableInterpolationBundle.class)
+    );
+    bootstrap.addBundle(
+        injector.getInstance(ConsulBundle.class)
+    );
   }
 
   @Override
