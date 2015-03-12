@@ -6,7 +6,6 @@ import static com.wikia.jooq.wikicities.Tables.CITY_VARIABLES;
 import static com.wikia.jooq.wikicities.Tables.CITY_VERTICALS;
 import static net.logstash.logback.marker.Markers.appendEntries;
 
-import com.wikia.communitydata.configuration.MysqlConfiguration;
 import com.wikia.jooq.wikicities.tables.records.CityListRecord;
 import com.wikia.jooq.wikicities.tables.records.CityVariablesRecord;
 import com.wikia.jooq.wikicities.tables.records.CityVerticalsRecord;
@@ -16,13 +15,8 @@ import com.google.common.collect.ImmutableMap;
 import de.ailis.pherialize.Pherialize;
 import org.jooq.DSLContext;
 import org.jooq.Record;
-import org.jooq.SQLDialect;
-import org.jooq.impl.DSL;
 import org.jooq.types.UShort;
 import org.slf4j.LoggerFactory;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
 
 public class CommunityData {
   private static final String DEFAULT_ARTICLE_PATH = "/wiki/$1";
