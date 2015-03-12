@@ -8,8 +8,8 @@ import static org.mockito.Mockito.when;
 
 import com.wikia.mobileconfig.core.EmptyMobileConfiguration;
 import com.wikia.mobileconfig.core.MobileConfiguration;
-import com.wikia.mobileconfig.gateway.AppsDeployerListContainer;
-import com.wikia.mobileconfig.service.HttpConfigurationService;
+import com.wikia.mobileconfig.service.application.AppsDeployerListContainer;
+import com.wikia.mobileconfig.service.configuration.CephConfigurationService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.testing.junit.ResourceTestRule;
@@ -28,8 +28,8 @@ import javax.ws.rs.NotFoundException;
 public class MobileConfigResourceTest {
 
   private final AppsDeployerListContainer appsListMock = mock(AppsDeployerListContainer.class);
-  private final HttpConfigurationService httpServiceMock = mock(
-      HttpConfigurationService.class
+  private final CephConfigurationService httpServiceMock = mock(
+      CephConfigurationService.class
   );
 
   @Rule

@@ -1,13 +1,18 @@
 package com.wikia.mobileconfig.health;
 
-import com.codahale.metrics.health.HealthCheck;
-import com.wikia.mobileconfig.gateway.AppsListService;
 
-public class AppsDeployerHealthCheck extends HealthCheck {
+import com.wikia.mobileconfig.service.application.AppsListService;
 
-  private final AppsListService service;
+import com.hubspot.dropwizard.guice.InjectableHealthCheck;
+
+import javax.inject.Inject;
+
+public class AppsDeployerHealthCheck extends InjectableHealthCheck {
+
   private final static String CONNECTION_ERROR_MSG = "Cannot connect to apps-deployer-panel";
+  private final AppsListService service;
 
+  @Inject
   public AppsDeployerHealthCheck(AppsListService service) {
     this.service = service;
   }
@@ -19,5 +24,10 @@ public class AppsDeployerHealthCheck extends HealthCheck {
     } else {
       return Result.unhealthy(CONNECTION_ERROR_MSG);
     }
+  }
+
+  @Override
+  public String getName() {
+    return "apps-deployer";
   }
 }

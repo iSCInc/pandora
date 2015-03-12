@@ -1,6 +1,6 @@
 package com.wikia.mobileconfig.resources;
 
-import com.wikia.mobileconfig.gateway.AppsDeployerListContainer;
+import com.wikia.mobileconfig.service.application.AppsDeployerListContainer;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
