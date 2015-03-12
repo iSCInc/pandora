@@ -2,19 +2,19 @@ logging:
   level: INFO
   appenders:
     - type: console
-      threshold: ALL
+      threshold: WARN
       timeZone: UTC
       target: stdout
     - type: logstash-socket
-      host: 127.0.0.1
-      port: 1410
+      host: ${consul:LOG_HOST:127.0.0.1}
+      port: ${consul:LOG_PORT:1410}
       fieldNames:
         message: rawMessage
         level: rawLevel
         tags: rawTags
         context: rawContext
       customFields:
-        appname: pandora-example
+        appname: community-data
 server:
   type: default
   applicationConnectors:
@@ -23,9 +23,23 @@ server:
   adminConnectors:
   - type: http
     port: 8081
+metrics:
+  reporters:
+    - type: influxdb
+      host: ${consul:INFLUXDB_HOST:127.0.0.1}
+      port: ${consul:INFLUXDB_HOST:5551}
+      prefix: community-data
+      frequency: 5 seconds
+      includes:
+        - com\.wikia\.communitydata\..*
 consulConfiguration:
-  tags:
-    - auto_testing
+  tags: ${consul:CONSUL_TAGS:[testing]}
+  consulUri: ${consul:CONSUL_URI:http://localhost:8500}
   heartbeatInterval: 2s
   heartbeatTTL: 5s
-
+wikicitiesDb:
+  db: ${consul:MYSLQ_DB:wikicities}
+  host: ${consul:MYSQL_HOST}
+  port: ${consul:MYSQL_PORT:3306}
+  user: ${consul:MYSQL_USER}
+  password: ${consul:MYSQL_PASS}
