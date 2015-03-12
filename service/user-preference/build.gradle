@@ -1,0 +1,19 @@
+version = "0.1.9-SNAPSHOT"
+apply from: rootProject.file('gradle/dropwizard_service.gradle')
+mainClassName = "com.wikia.userpreference.UserPreferenceApplication"
+
+// configure jvm parameters
+applicationDefaultJvmArgs = [
+        "-Xms100m", "-Xmn128m", "-Xmx300m", "-XX:+UseNUMA", "-XX:+UseCondCardMark", "-XX:+UseBiasedLocking", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC"
+]
+
+dependencies {
+    compile group: 'org.projectlombok', name: 'lombok', version:'1.12.6'
+    compile project(":lib:service-core")
+    testCompile project(path: ':lib:service-core', configuration: 'tests')
+}
+
+deployments {
+    testing {
+    }
+}
