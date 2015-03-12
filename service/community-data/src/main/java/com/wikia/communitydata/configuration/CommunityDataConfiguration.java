@@ -3,7 +3,7 @@ package com.wikia.communitydata.configuration;
 import com.wikia.dropwizard.consul.bundle.ConsulConfiguration;
 import com.wikia.dropwizard.consul.bundle.ProvidesConsulConfiguration;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import io.dropwizard.db.DataSourceFactory;
 
 import javax.validation.constraints.NotNull;
 
@@ -14,13 +14,13 @@ public class CommunityDataConfiguration extends Configuration implements
   private ConsulConfiguration consulConfiguration;
 
   @NotNull
-  private MysqlConfiguration wikicitiesDb;
+  private DataSourceFactory dataSourceFactory;
 
   public ConsulConfiguration getConsulConfiguration() {
     return consulConfiguration;
   }
 
-  public MysqlConfiguration getWikicitiesDb() {
-    return wikicitiesDb;
+  public DataSourceFactory getDataSourceFactory() {
+    return dataSourceFactory;
   }
 }

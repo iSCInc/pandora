@@ -14,6 +14,7 @@ import com.wikia.jooq.wikicities.tables.records.CityVerticalsRecord;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableMap;
 import de.ailis.pherialize.Pherialize;
+import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
@@ -103,23 +104,19 @@ public class CommunityData {
   public static final class Builder {
     private static final UShort ARTICLE_PATH_ID = UShort.valueOf(15);
 
-    private final MysqlConfiguration config;
+    private final DSLContext db;
     private final String domain;
 
-    public Builder(MysqlConfiguration config, String domain) {
-      this.config = config;
+    public Builder(DSLContext db, String domain) {
+      this.db = db;
       this.domain = domain;
     }
 
     public CommunityData build() {
-      String url = String.format("jdbc:mysql://%s:%s/%s", config.getHost(),
-                                 config.getPort(), config.getDb());
-
       CommunityData communityData = null;
 
-      try (Connection conn = DriverManager
-          .getConnection(url, config.getUser(), config.getPassword())) {
-        Record result = DSL.using(conn, SQLDialect.MYSQL)
+      try {
+        Record result = db
             .select(CITY_LIST.CITY_DBNAME, CITY_LIST.CITY_LANG, CITY_LIST.CITY_SITENAME,
                     CITY_LIST.CITY_ADULT, CITY_LIST.CITY_TITLE, CITY_LIST.CITY_DESCRIPTION,
                     CITY_VERTICALS.VERTICAL_NAME, CITY_VARIABLES.CV_VALUE)

@@ -9,12 +9,14 @@ applicationDefaultJvmArgs = [
 
 repositories {
     maven { url "${archivaUrl}/repository/internal" }
+    maven { url "${archivaUrl}/repository/snapshots" }
 }
 
 dependencies {
     compile project(":lib:jooq")
     compile project(":lib:service-core")
     compile "de.ailis.pherialize:pherialize:1.2.1"
+    compile "com.bendb.dropwizard:dropwizard-jooq:0.8.0-0-SNAPSHOT"
 }
 
 deployments {

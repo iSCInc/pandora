@@ -37,9 +37,8 @@ consulConfiguration:
   consulUri: ${consul:CONSUL_URI:http://localhost:8500}
   heartbeatInterval: 2s
   heartbeatTTL: 5s
-wikicitiesDb:
-  db: ${consul:MYSLQ_DB:wikicities}
-  host: ${consul:MYSQL_HOST}
-  port: ${consul:MYSQL_PORT:3306}
+dataSourceFactory:
+  driverClass: com.mysql.jdbc.Driver
+  url: jdbc:mysql://${consul:MYSQL_HOST}:${consul:MYSQL_PORT:3306}/${consul:MYSLQ_DB:wikicities}
   user: ${consul:MYSQL_USER}
   password: ${consul:MYSQL_PASS}
