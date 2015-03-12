@@ -16,9 +16,6 @@ import javax.ws.rs.core.MediaType;
 @Path("/{domain}")
 @Produces(MediaType.APPLICATION_JSON)
 public class CommunityDataResource {
-  private static final UShort ARTICLE_PATH_ID = UShort.valueOf(15);
-  private static final String DEFAULT_ARTICLE_PATH = "/wiki/$1";
-
   private final MysqlConfiguration wikiDb;
 
   @Inject

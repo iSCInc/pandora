@@ -14,7 +14,6 @@ import com.wikia.jooq.wikicities.tables.records.CityVerticalsRecord;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableMap;
 import de.ailis.pherialize.Pherialize;
-import de.ailis.pherialize.exceptions.UnserializeException;
 import org.jooq.Record;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
@@ -67,6 +66,11 @@ public class CommunityData {
   @JsonProperty
   public String getVertical() {
     return cityVerticalsRecord.getVerticalName();
+  }
+
+  @JsonProperty
+  public boolean getIsAdult() {
+    return cityListRecord.getCityAdult() == 1;
   }
 
   @JsonProperty
