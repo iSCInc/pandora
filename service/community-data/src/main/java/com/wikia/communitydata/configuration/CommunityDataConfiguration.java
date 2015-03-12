@@ -13,7 +13,14 @@ public class CommunityDataConfiguration extends Configuration implements
                                                                ProvidesConsulConfiguration {
   private ConsulConfiguration consulConfiguration;
 
+  @NotNull
+  private MysqlConfiguration wikicitiesDb;
+
   public ConsulConfiguration getConsulConfiguration() {
     return consulConfiguration;
+  }
+
+  public MysqlConfiguration getWikicitiesDb() {
+    return wikicitiesDb;
   }
 }

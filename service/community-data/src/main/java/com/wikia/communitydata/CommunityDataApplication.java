@@ -25,7 +25,7 @@ public class CommunityDataApplication extends Application<CommunityDataConfigura
 
   @Override
   public String getName() {
-    return "example"; // no uppercase letters
+    return "community-data"; // no uppercase letters
   }
 
 
@@ -41,12 +41,9 @@ public class CommunityDataApplication extends Application<CommunityDataConfigura
     bootstrap.addBundle(guiceBundle);
 
     Injector injector = guiceBundle.getInjector();
-    bootstrap.addBundle(
-        injector.getInstance(ConsulVariableInterpolationBundle.class)
-    );
-    bootstrap.addBundle(
-        injector.getInstance(ConsulBundle.class)
-    );
+
+    bootstrap.addBundle(injector.getInstance(ConsulVariableInterpolationBundle.class));
+    bootstrap.addBundle(injector.getInstance(ConsulBundle.class));
   }
 
   @Override
@@ -58,7 +55,7 @@ public class CommunityDataApplication extends Application<CommunityDataConfigura
     environment.healthChecks().register("SimpleHealthCheck", healthCheck);
 
     StandardRepresentationFactory representationFactory = new StandardRepresentationFactory();
-    CommunityDataResource communityDataResource = new CommunityDataResource(representationFactory);
+    CommunityDataResource communityDataResource = new CommunityDataResource(representationFactory, configuration.getWikicitiesDb());
     environment.jersey().register(communityDataResource);
 
     //Optional

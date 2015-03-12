@@ -1,0 +1,16 @@
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+def jooqVersion = '3.5.3'
+dependencies {
+    compile "org.jooq:jooq:${jooqVersion}"
+    compile "org.jooq:jooq-meta:${jooqVersion}"
+    compile "org.jooq:jooq-codegen:${jooqVersion}"
+    compile "mysql:mysql-connector-java:5.1.34"
+}

@@ -8,6 +8,7 @@ applicationDefaultJvmArgs = [
 ]
 
 dependencies {
+    compile project(":lib:jooq")
     compile project(":lib:service-core")
 }
 

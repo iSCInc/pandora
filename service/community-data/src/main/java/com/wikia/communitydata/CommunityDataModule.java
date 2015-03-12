@@ -10,9 +10,7 @@ public class CommunityDataModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    bind(ProvidesConsulConfiguration.class)
-        .to(CommunityDataConfiguration.class);
+    bind(ProvidesConsulConfiguration.class).to(CommunityDataConfiguration.class);
     binder().install(new ConsulModule());
   }
-
 }
