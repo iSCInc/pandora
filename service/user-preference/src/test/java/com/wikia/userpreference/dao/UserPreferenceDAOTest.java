@@ -18,7 +18,7 @@ public class UserPreferenceDAOTest {
     String name = "a-key";
     String value = "a-value";
     ImmutableList<UserPreference> userPreferenceList = new ImmutableList.Builder<UserPreference>()
-        .add(new UserPreference(name, value)).build();
+        .add(UserPreference.newBuilder().name(name).value(value).build()).build();
     WikiCitiesDAO wikiCitiesDAO = Mockito.mock(WikiCitiesDAO.class);
     Mockito.when(wikiCitiesDAO.getUserPreferences(userId)).thenReturn(Optional.of(userPreferenceList));
 

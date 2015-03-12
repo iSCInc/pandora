@@ -13,6 +13,7 @@ import com.wikia.userpreference.resources.UserPreferenceResource;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.federecio.dropwizard.swagger.SwaggerBundle;
 
 public class UserPreferenceApplication extends Application<UserPreferenceConfiguration> {
 
@@ -33,13 +34,15 @@ public class UserPreferenceApplication extends Application<UserPreferenceConfigu
             .addModule(new UserPreferenceModule())
             .setInjectorFactory(new GovernatorInjectorFactory())
             .setConfigClass(UserPreferenceConfiguration.class)
+            .enableAutoConfig(getClass().getPackage().getName())
             .build();
 
     bootstrap.addBundle(guiceBundle);
 
     Injector injector = guiceBundle.getInjector();
-    bootstrap.addBundle(injector.getInstance(ConsulVariableInterpolationBundle.class));
-    bootstrap.addBundle(injector.getInstance(ConsulBundle.class));
+    //bootstrap.addBundle(injector.getInstance(ConsulVariableInterpolationBundle.class));
+    //bootstrap.addBundle(injector.getInstance(ConsulBundle.class));
+    bootstrap.addBundle(new SwaggerBundle<UserPreferenceConfiguration>());
   }
 
   @Override
@@ -48,9 +51,6 @@ public class UserPreferenceApplication extends Application<UserPreferenceConfigu
 
     //register healthCheck (mandatory)
     final UserPreferenceHealthCheck healthCheck = new UserPreferenceHealthCheck();
-    environment.healthChecks().register("SimpleHealthCheck", healthCheck);
-
-    UserPreferenceResource preferenceResource = new UserPreferenceResource();
-    environment.jersey().register(preferenceResource);
+    environment.healthChecks().register("AmIUpHealthCheck", healthCheck);
   }
 }

@@ -9,14 +9,13 @@ import javax.validation.constraints.NotNull;
 
 import io.dropwizard.Configuration;
 
-public class UserPreferenceConfiguration extends Configuration implements
-                                                               ProvidesConsulConfiguration {
+public class UserPreferenceConfiguration extends Configuration /* implements ProvidesConsulConfiguration */ {
 
-  @NotEmpty
-  @NotNull
-  private ConsulConfiguration consulConfiguration;
-
-  public ConsulConfiguration getConsulConfiguration() {
-    return consulConfiguration;
-  }
+//  @NotEmpty
+//  @NotNull
+//  private ConsulConfiguration consulConfiguration;
+//
+//  public ConsulConfiguration getConsulConfiguration() {
+//    return consulConfiguration;
+//  }
 }
