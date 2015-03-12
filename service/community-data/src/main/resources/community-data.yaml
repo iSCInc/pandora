@@ -2,7 +2,7 @@ logging:
   level: INFO
   appenders:
     - type: console
-      threshold: WARN
+      threshold: INFO
       timeZone: UTC
       target: stdout
     - type: logstash-socket
