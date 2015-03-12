@@ -1,6 +1,6 @@
 version = "0.1.9-SNAPSHOT"
 apply from: rootProject.file('gradle/dropwizard_service.gradle')
-mainClassName = "ExampleServiceApplication"
+mainClassName = "CommunityDataApplication"
 
 // configure jvm parameters
 applicationDefaultJvmArgs = [
