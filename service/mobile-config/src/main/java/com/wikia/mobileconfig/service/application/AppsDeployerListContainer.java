@@ -1,12 +1,11 @@
-package com.wikia.mobileconfig.gateway;
+package com.wikia.mobileconfig.service.application;
 
-import com.google.common.base.Optional;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.MobileConfigConfiguration;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Optional;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -19,8 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.dropwizard.client.HttpClientBuilder;
-import io.dropwizard.setup.Environment;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 public class AppsDeployerListContainer implements AppsListService {
 
@@ -31,26 +30,32 @@ public class AppsDeployerListContainer implements AppsListService {
       APPS_LIST_RESPONSE_ERROR_FORMAT = "Error, the response for %s is not valid!";
   //How long to cache the result. Set to 0 to disable caching.
   private final int cacheTimeInSec;
-  private final HttpClient httpClient;
   private final String appsDeployerDomain;
+  @Inject
+  @Named("apps-deployer-list-service")
+  private HttpClient httpClient;
   private List<HashMap<String, Object>> appsList;
 
   private Date appsListUpdateTime = new Date();
+  private ObjectMapper objectMapper;
 
   public AppsDeployerListContainer(HttpClient httpClient, String appsDeployerDomain) {
     this(httpClient, appsDeployerDomain, DEFAULT_CACHE_TIME_IN_SEC);
   }
 
-  public AppsDeployerListContainer(Environment environment, MobileConfigConfiguration configuration) {
-    this(new HttpClientBuilder(environment)
-             .using(configuration.getHttpClientConfiguration())
-             .build("apps-deployer-list-service"),
-         configuration.getAppsDeployerDomain(),
+  @Inject
+  public AppsDeployerListContainer(MobileConfigConfiguration configuration) {
+    this(configuration.getAppsDeployerDomain(),
          configuration.getCacheTime());
   }
 
-  public AppsDeployerListContainer(HttpClient httpClient, String appsDeployerDomain, int cacheTimeInSec) {
+  public AppsDeployerListContainer(HttpClient httpClient, String appsDeployerDomain,
+                                   int cacheTimeInSec) {
+    this(appsDeployerDomain, cacheTimeInSec);
     this.httpClient = httpClient;
+  }
+
+  public AppsDeployerListContainer(String appsDeployerDomain, int cacheTimeInSec) {
     this.appsDeployerDomain = appsDeployerDomain;
     this.cacheTimeInSec = cacheTimeInSec;
   }
@@ -58,11 +63,12 @@ public class AppsDeployerListContainer implements AppsListService {
   private List<HashMap<String, Object>> requestAppsList() throws IOException {
     String appsDeployerUrl = String.format(APPS_DEPLOYER_LIST_URL_FORMAT, appsDeployerDomain);
     Optional<String> response = this.executeHttpRequest(appsDeployerUrl);
-    ObjectMapper mapper = new ObjectMapper();
+    objectMapper = new ObjectMapper();
 
     if (response.isPresent()) {
-      return mapper.readValue(response.get(), new TypeReference<List<HashMap<String, Object>>>() {
-      });
+      return objectMapper
+          .readValue(response.get(), new TypeReference<List<HashMap<String, Object>>>() {
+          });
     } else {
       throw new IllegalStateException(
           String.format(APPS_LIST_RESPONSE_ERROR_FORMAT, appsDeployerUrl)
@@ -126,7 +132,6 @@ public class AppsDeployerListContainer implements AppsListService {
           "Apps deployer host is unreachable", exception
       );
     }
-
     return result;
   }
 }

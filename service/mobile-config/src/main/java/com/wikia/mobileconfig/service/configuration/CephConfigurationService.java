@@ -1,4 +1,4 @@
-package com.wikia.mobileconfig.service;
+package com.wikia.mobileconfig.service.configuration;
 
 import com.wikia.mobileconfig.MobileConfigApplication;
 import com.wikia.mobileconfig.MobileConfigConfiguration;
@@ -6,8 +6,6 @@ import com.wikia.mobileconfig.core.EmptyMobileConfiguration;
 import com.wikia.mobileconfig.core.MobileConfiguration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.dropwizard.client.HttpClientBuilder;
-import io.dropwizard.setup.Environment;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -15,32 +13,37 @@ import org.apache.http.impl.client.BasicResponseHandler;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 /**
- * A class responsible for getting mobile applications' configuration from our Ceph buckets via HTTP
+ * A class responsible for getting mobile applications' configuration from our Ceph buckets via
+ * HTTP
  */
-public class HttpConfigurationService extends ConfigurationServiceBase {
+public class CephConfigurationService extends ConfigurationServiceBase {
 
   private static final String
       CEPH_URL_FORMAT = "http://%s:%s/mobile-configuration-service/%s/%s/config.json";
 
-  private final HttpClient httpClient;
   private final ObjectMapper mapper;
   private final String cephDomain;
   private final String cephPort;
+  @Inject
+  @Named("http-configuration-service")
+  private HttpClient httpClient;
 
-  public HttpConfigurationService(
-      Environment environment,
-      MobileConfigConfiguration configuration
-  ) {
-    this(new HttpClientBuilder(environment)
-             .using(configuration.getHttpClientConfiguration())
-             .build("http-configuration-service"),
-         configuration.getCephDomain(),
+  @Inject
+  public CephConfigurationService(MobileConfigConfiguration configuration) {
+    this(configuration.getCephDomain(),
          configuration.getCephPort());
   }
 
-  public HttpConfigurationService(HttpClient httpClient, String cephDomain, String cephPort) {
+  public CephConfigurationService(HttpClient httpClient, String cephDomain, String cephPort) {
+    this(cephDomain, cephPort);
     this.httpClient = httpClient;
+  }
+
+  public CephConfigurationService(String cephDomain, String cephPort) {
     this.mapper = new ObjectMapper();
     this.cephDomain = cephDomain;
     this.cephPort = cephPort;
@@ -62,7 +65,8 @@ public class HttpConfigurationService extends ConfigurationServiceBase {
   }
 
   @Override
-  public MobileConfiguration getConfiguration(String platform, String appTag, String uiLang, String contentLang) throws IOException {
+  public MobileConfiguration getConfiguration(String platform, String appTag, String uiLang,
+                                              String contentLang) throws IOException {
 
     MobileConfiguration configuration = null;
 
