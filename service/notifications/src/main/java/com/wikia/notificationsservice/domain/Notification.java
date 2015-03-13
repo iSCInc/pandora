@@ -10,9 +10,8 @@ public class Notification {
   }
 
   public Notification() {
+    
   }
-
-  ;
 
   @JsonProperty
   public String getText() {
