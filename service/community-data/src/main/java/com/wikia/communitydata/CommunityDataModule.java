@@ -7,6 +7,7 @@ import com.bendb.dropwizard.jooq.JooqBundle;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import io.dropwizard.db.DataSourceFactory;
+import io.federecio.dropwizard.swagger.SwaggerBundle;
 
 public class CommunityDataModule extends AbstractModule {
 
@@ -23,5 +24,10 @@ public class CommunityDataModule extends AbstractModule {
         return configuration.getDataSourceFactory();
       }
     };
+  }
+
+  @Provides
+  public SwaggerBundle getSwaggerBundle() {
+    return new SwaggerBundle<CommunityDataConfiguration>();
   }
 }

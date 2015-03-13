@@ -11,9 +11,9 @@ import com.hubspot.dropwizard.guice.GuiceBundle;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.federecio.dropwizard.swagger.SwaggerBundle;
 
 public class CommunityDataApplication extends Application<CommunityDataConfiguration> {
-
   public static void main(String[] args) throws Exception {
     new CommunityDataApplication().run(args);
   }
@@ -39,6 +39,7 @@ public class CommunityDataApplication extends Application<CommunityDataConfigura
     Injector injector = guiceBundle.getInjector();
 
     bootstrap.addBundle(injector.getInstance(JooqBundle.class));
+    bootstrap.addBundle(injector.getInstance(SwaggerBundle.class));
     bootstrap.addBundle(injector.getInstance(ConsulVariableInterpolationBundle.class));
     bootstrap.addBundle(injector.getInstance(ConsulBundle.class));
   }
@@ -46,6 +47,5 @@ public class CommunityDataApplication extends Application<CommunityDataConfigura
   @Override
   public void run(CommunityDataConfiguration configuration, Environment environment)
       throws Exception {
-
   }
 }

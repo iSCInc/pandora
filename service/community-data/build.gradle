@@ -17,6 +17,8 @@ dependencies {
     compile project(":lib:service-core")
     compile "de.ailis.pherialize:pherialize:1.2.1"
     compile "com.bendb.dropwizard:dropwizard-jooq:0.8.0-0-SNAPSHOT"
+    compile "io.federecio:dropwizard-swagger:0.5.3"
+    compile "io.dropwizard:dropwizard-views-freemarker:0.8.0-rc2"
 }
 
 deployments {
