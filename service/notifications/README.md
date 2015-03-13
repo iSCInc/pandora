@@ -1,4 +1,4 @@
-# Pandora-example
+# Notifications-service prototype
 
 Copy/Paste service example
 
@@ -7,7 +7,7 @@ Copy/Paste service example
 To run the server:
 
 ```bash
-cp example.yaml.sample example.yaml
+cp resources/notifications.yaml.sample resources/notifications.yaml
 ../gradlew run # launch application
 # or from the main folder:
 gradle service:notifications:run
@@ -15,12 +15,12 @@ gradle service:notifications:run
 ```
 
 And put proper storage host name into the config:
-example.yaml:redis.endpoint property
+notifications.yaml:redis.endpoint property
 
 To make a request from the server:
 
 ```bash
-curl -v http://localhost:8080/HelloWorld/Your_Name_Here
+curl -v http://localhost:8080/notification/<notification_id>
 ```
 
 To run the tests:
