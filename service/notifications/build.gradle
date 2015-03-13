@@ -3,12 +3,6 @@ version = "0.1.14-SNAPSHOT"
 
 mainClassName = "com.wikia.notificationsservice.NotificationsServiceApplication"
 
-repositories {
-    jcenter()
-    mavenCentral();
-    maven { url "${archivaUrl}/repository/internal" }
-}
-
 dependencies {
     compile 'redis.clients:jedis:2.6.2'
     compile 'com.bendb.dropwizard:dropwizard-redis:0.8.0-0-Wikia'
