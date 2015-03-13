@@ -1,6 +1,9 @@
 package com.wikia.communitydata.resources;
 
 import com.wikia.communitydata.core.CommunityData;
+import com.wikia.communitydata.exception.CommunityDataException;
+import com.wikia.communitydata.exception.CommunityNotFoundException;
+import com.wikia.communitydata.exception.ErrorResponse;
 
 import com.codahale.metrics.annotation.Timed;
 import com.wordnik.swagger.annotations.Api;
@@ -28,10 +31,27 @@ public class CommunityDataResource {
       produces=MediaType.APPLICATION_JSON
   )
   @ApiResponses(value={
-      @ApiResponse(code=200, response=CommunityData.class, message="community data")
+      @ApiResponse(code=200, response=CommunityData.class, message="community data"),
+      @ApiResponse(code=404, response=ErrorResponse.class, message="community does not exist"),
+      @ApiResponse(code=500, response=ErrorResponse.class, message="error while fetching data")
   })
   @Timed
   public CommunityData getData(@PathParam("domain") String domain, @Context DSLContext db) {
-    return new CommunityData.Builder(db, domain).build();
+    CommunityData data;
+
+    try {
+      data = new CommunityData.Builder(db, domain).build();
+    } catch (Exception e) {
+      throw new CommunityDataException.Builder()
+          .setDomain(domain)
+          .setException(e)
+          .build();
+    }
+
+    if (data == null) {
+      throw new CommunityNotFoundException.Builder(domain).build();
+    }
+
+    return data;
   }
 }
