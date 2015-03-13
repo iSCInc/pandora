@@ -3,32 +3,45 @@ package com.wikia.exampleservice.resources;
 import com.codahale.metrics.annotation.Timed;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+import com.wikia.exampleservice.ExampleServiceApplication;
 import com.wikia.exampleservice.domain.SimplePojo;
 import com.wikia.exampleservice.domain.builder.SimplePojoBuilder;
+import com.wikia.exampleservice.service.helloworld.HelloWorldService;
 
+import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import io.dropwizard.jersey.caching.CacheControl;
+
 @Path("/")
 @Produces(RepresentationFactory.HAL_JSON)
 public class ExampleResource {
 
-  private final RepresentationFactory representationFactory;
-  private String greetingsWord;
+  private HelloWorldService helloWorldService;
 
-  public ExampleResource(RepresentationFactory representationFactory) {
-    this.representationFactory = representationFactory;
+  @Inject
+  public ExampleResource(HelloWorldService helloWorldService) {
+    this.helloWorldService = helloWorldService;
   }
 
   @GET
   @Path("/HelloWorld/{name}")
   @Timed
+  @CacheControl(maxAge = 5, maxAgeUnit = TimeUnit.SECONDS)
   public Representation getHelloWorld(@PathParam("name") String name) {
-    Representation representation = representationFactory.newRepresentation();
 
-    representation.withProperty("Greetings", String.format("%s %s", getGreetingsWord(), name));
+    String welcomeMessage = helloWorldService.getWelcomeMessage(name);
+
+    Representation
+        representation =
+        ExampleServiceApplication.REPRESENTATION_FACTORY.newRepresentation();
+
+    representation.withProperty("Greetings", welcomeMessage);
     return representation;
   }
 
@@ -39,22 +52,16 @@ public class ExampleResource {
       @PathParam("id") int id,
       @PathParam("name") String name,
       @PathParam("bool") boolean bool) {
-    Representation representation = representationFactory.newRepresentation();
+    Representation
+        representation =
+        ExampleServiceApplication.REPRESENTATION_FACTORY.newRepresentation();
 
-    SimplePojo pojo = SimplePojoBuilder.aSimplePojo()
+    SimplePojo pojo = SimplePojoBuilder.createSimplePojo()
         .withId(id)
         .withSomeBool(bool)
         .withSomeString(name)
         .build();
     representation.withBean(pojo);
     return representation;
-  }
-
-  public void setGreetingsWord(String greetingsWord) {
-    this.greetingsWord = greetingsWord;
-  }
-
-  public String getGreetingsWord() {
-    return greetingsWord;
   }
 }

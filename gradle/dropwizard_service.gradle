@@ -6,6 +6,7 @@ tasks.withType(Test) {
             CONSUL_KEY_VALUE_CONFIG_SOURCE:
                     "http://${testConsulHost}:8500/config/${project.name}/integration",
             MOBILE_CONFIG_SERVICE_ENVIRONMENT   : "testing",
+            EXAMPLE_SERVICE_ENVIRONMENT   : "testing",
     ]
 }
 
@@ -15,6 +16,7 @@ run {
             CONSUL_KEY_VALUE_CONFIG_SOURCE:
                     "http://${testConsulHost}:8500/config/${project.name}/integration",
             MOBILE_CONFIG_SERVICE_ENVIRONMENT   : "prod",
+            EXAMPLE_SERVICE_ENVIRONMENT   : "prod",
     ]
     args 'server', "${defaultConfigLocation}/${project.name}.yaml"
 }

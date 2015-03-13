@@ -2,7 +2,6 @@ package com.wikia.exampleservice.domain.builder;
 
 import com.wikia.exampleservice.domain.SimplePojo;
 
-///Builder was built by Builder Generator (Plugin in InteliJ)
 public class SimplePojoBuilder {
 
   private int id;
@@ -12,7 +11,7 @@ public class SimplePojoBuilder {
   private SimplePojoBuilder() {
   }
 
-  public static SimplePojoBuilder aSimplePojo() {
+  public static SimplePojoBuilder createSimplePojo() {
     return new SimplePojoBuilder();
   }
 
@@ -32,7 +31,7 @@ public class SimplePojoBuilder {
   }
 
   public SimplePojoBuilder but() {
-    return aSimplePojo().withId(id).withSomeString(someString).withSomeBool(someBool);
+    return createSimplePojo().withId(id).withSomeString(someString).withSomeBool(someBool);
   }
 
   public SimplePojo build() {

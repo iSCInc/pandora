@@ -6,7 +6,6 @@ public class SimplePojo {
   private final String someString;
   private final boolean someBool;
 
-
   public SimplePojo(int id, String someString, boolean someBool) {
     this.id = id;
     this.someString = someString;

@@ -1,4 +1,4 @@
-greetingsWord: Take me to your leader
+greetingsWord: ${consul:GREETINGS_WORD}
 logging:
   level: INFO
   appenders:
@@ -7,8 +7,8 @@ logging:
       timeZone: UTC
       target: stdout
     - type: logstash-socket
-      host: 127.0.0.1
-      port: 1410
+      host: ${consul:LOG_HOST:127.0.0.1}
+      port: ${consul:LOG_PORT:1410}
       fieldNames:
         message: rawMessage
         level: rawLevel
@@ -16,6 +16,15 @@ logging:
         context: rawContext
       customFields:
         appname: pandora-example
+metrics:
+  reporters:
+    - type: influxdb
+      host: ${consul:INFLUXDB_HOST:127.0.0.1}
+      port: ${consul:INFLUXDB_HOST:5551}
+      prefix: example
+      frequency: 5 seconds
+      includes:
+        - com\.wikia\.example\.resources\..*
 server:
   type: default
   applicationConnectors:
@@ -25,8 +34,7 @@ server:
   - type: http
     port: 8081
 consulConfiguration:
-  tags:
-    - auto_testing
+  tags: ${consul:CONSUL_TAGS:[testing]}
+  consulUri: ${consul:CONSUL_URI:http://localhost:8500}
   heartbeatInterval: 2s
   heartbeatTTL: 5s
-

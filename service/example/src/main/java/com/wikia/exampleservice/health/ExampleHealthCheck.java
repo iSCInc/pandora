@@ -1,11 +1,16 @@
 package com.wikia.exampleservice.health;
 
-import com.codahale.metrics.health.HealthCheck;
+import com.hubspot.dropwizard.guice.InjectableHealthCheck;
 
-public class ExampleHealthCheck extends HealthCheck {
+public class ExampleHealthCheck extends InjectableHealthCheck {
 
   @Override
   protected Result check() throws Exception {
     return Result.healthy();
+  }
+
+  @Override
+  public String getName() {
+    return "example";
   }
 }

@@ -1,4 +1,4 @@
-package com.wikia.exampleservice.configuration;
+package com.wikia.exampleservice;
 
 import com.wikia.dropwizard.consul.bundle.ConsulConfiguration;
 import com.wikia.dropwizard.consul.bundle.ProvidesConsulConfiguration;
@@ -12,10 +12,11 @@ import io.dropwizard.Configuration;
 public class ExampleServiceConfiguration extends Configuration implements
                                                                ProvidesConsulConfiguration {
 
+  private ConsulConfiguration consulConfiguration;
+
   @NotEmpty
   @NotNull
-  private String greetingsWord; // value is set up by dropwizard reflection magic.
-  private ConsulConfiguration consulConfiguration;
+  private String greetingsWord;
 
   public String getGreetingsWord() {
     return greetingsWord;
