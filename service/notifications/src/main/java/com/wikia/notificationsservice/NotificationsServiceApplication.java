@@ -1,13 +1,13 @@
 package com.wikia.notificationsservice;
 
+import com.bendb.dropwizard.redis.JedisBundle;
+import com.bendb.dropwizard.redis.JedisFactory;
 import com.google.inject.Injector;
 import com.hubspot.dropwizard.guice.GuiceBundle;
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 import com.wikia.dropwizard.consul.bundle.ConsulBundle;
 import com.wikia.dropwizard.consul.config.ConsulVariableInterpolationBundle;
-import com.wikia.jedis.JedisBundle;
-import com.wikia.jedis.JedisFactory;
 import com.wikia.notificationsservice.configuration.NotificationsConfiguration;
 import com.wikia.notificationsservice.health.NotificationsHealthCheck;
 import com.wikia.notificationsservice.resources.NotificationsResource;

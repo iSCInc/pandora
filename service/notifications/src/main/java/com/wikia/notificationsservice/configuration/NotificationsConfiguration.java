@@ -1,9 +1,9 @@
 package com.wikia.notificationsservice.configuration;
 
+import com.bendb.dropwizard.redis.JedisFactory;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.wikia.dropwizard.consul.bundle.ConsulConfiguration;
 import com.wikia.dropwizard.consul.bundle.ProvidesConsulConfiguration;
-import com.wikia.jedis.JedisFactory;
 import io.dropwizard.Configuration;
 
 import javax.validation.Valid;
