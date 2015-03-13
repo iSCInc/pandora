@@ -5,8 +5,11 @@ import com.wikia.discussionservice.domain.Forum;
 import com.wikia.discussionservice.domain.ForumRoot;
 import com.wikia.discussionservice.domain.ForumThread;
 import lombok.NonNull;
+import redis.clients.jedis.Jedis;
 
 import javax.inject.Inject;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,38 +32,59 @@ public class ForumService {
     this.forumDAO = forumDAO;
   }
 
-  public Optional<ForumRoot> getForums(int siteId) {
-    List<Forum> forumList = forumDAO.retrieveForums(siteId);
+  /**
+   * This just creates a site=1 root forum
+   * If another site needs a root, it gets created on the fly
+   * @param jedis Jedis
+   */
+  public void init(Jedis jedis) {
+    if (!forumDAO.retrieveForum(jedis, forumDAO.DEFAULT_SITE_ID, forumDAO.ROOT_ID).isPresent()) {
+      forumDAO.getContentDAO().createContent(
+          jedis,
+          forumDAO.DEFAULT_SITE_ID,
+          new Forum(
+              forumDAO.ROOT_ID,
+              forumDAO.PARENT_ROOT_ID,
+              "Root",
+              new ArrayList<>(),
+              new ArrayList<>()
+          )
+      );
+    }
+  }
+
+  public Optional<ForumRoot> getForums(Jedis jedis, int siteId) {
+    List<Forum> forumList = forumDAO.retrieveForums(jedis, siteId);
     ForumRoot forumRoot = new ForumRoot();
     forumRoot.setForums(forumList);
     forumRoot.setSiteId(siteId);
     return Optional.of(forumRoot);
   }
 
-  public Optional<Forum> getForum(int siteId, int forumId) {
-    return getForum(siteId, forumId, 0, 10);
+  public Optional<Forum> getForum(Jedis jedis, int siteId, int forumId) {
+    return getForum(jedis, siteId, forumId, 0, 10);
   }
   
-  public Optional<Forum> getForum(int siteId, int forumId, int offset, int limit) {
-    return forumDAO.retrieveForum(siteId, forumId);
+  public Optional<Forum> getForum(Jedis jedis, int siteId, int forumId, int offset, int limit) {
+    return forumDAO.retrieveForum(jedis, siteId, forumId);
   }
 
-  public Optional<Forum> createForum(int siteId, Forum forum) {
-    return forumDAO.createForum(siteId, forum);
+  public Optional<Forum> createForum(Jedis jedis, int siteId, Forum forum) {
+    return forumDAO.createForum(jedis, siteId, forum);
   }
 
-  public Optional<Forum> deleteForum(int siteId, int forumId) {
-    return forumDAO.deleteForum(siteId, forumId);
+  public Optional<Forum> deleteForum(Jedis jedis, int siteId, int forumId) {
+    return forumDAO.deleteForum(jedis, siteId, forumId);
   }
 
-  public Optional<Forum> updateForum(int siteId, Forum forum) {
-    Optional<Forum> updatedForum = forumDAO.updateForum(siteId, forum);
+  public Optional<Forum> updateForum(Jedis jedis, int siteId, Forum forum) {
+    Optional<Forum> updatedForum = forumDAO.updateForum(jedis, siteId, forum);
     
     if (updatedForum.isPresent()) {
       return updatedForum;
     }
     
-    updatedForum = createForum(siteId, forum);
+    updatedForum = createForum(jedis, siteId, forum);
     return updatedForum;
   }
 }

@@ -15,6 +15,7 @@ import com.wikia.discussionservice.services.ThreadService;
 import com.wikia.discussionservice.utils.ErrorResponseBuilder;
 import io.dropwizard.jersey.params.IntParam;
 import lombok.NonNull;
+import redis.clients.jedis.Jedis;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -62,6 +63,7 @@ public class ThreadResource {
                             @QueryParam("offset") @DefaultValue("1") IntParam offset,
                             @QueryParam("responseGroup") @DefaultValue("small")
                             String requestedResponseGroup,
+                            @Context Jedis jedis,
                             @Context UriInfo uriInfo) {
 
     Preconditions.checkArgument(offset.get() >= 1,
@@ -73,7 +75,8 @@ public class ThreadResource {
     ResponseGroup responseGroup = ResponseGroup.getResponseGroup(requestedResponseGroup);
     Preconditions.checkNotNull(responseGroup, "Invalid response group");
 
-    Optional<ForumThread> forumThread = threadService.getForumThread(siteId.get(), threadId.get(),
+    Optional<ForumThread> forumThread =
+        threadService.getForumThread(jedis, siteId.get(), threadId.get(),
         offset.get(), limit.get());
 
     if (forumThread.isPresent()) {
@@ -95,8 +98,9 @@ public class ThreadResource {
                               @NotNull @PathParam("forumId") IntParam forumId,
                               @Valid Post post,
                               @Context HttpServletRequest request,
+                              @Context Jedis jedis,
                               @Context UriInfo uriInfo) {
-    Optional<Forum> forum = forumService.getForum(siteId.get(), forumId.get());
+    Optional<Forum> forum = forumService.getForum(jedis, siteId.get(), forumId.get());
 
     if (!forum.isPresent()) {
       return ErrorResponseBuilder.buildErrorResponse(1234,
@@ -104,7 +108,8 @@ public class ThreadResource {
               forumId.get()), null, Response.Status.NOT_FOUND);
     }
 
-    Optional<ForumThread> createdThread = threadService.createThread(siteId.get(),
+    Optional<ForumThread> createdThread = threadService.createThread(jedis,
+        siteId.get(),
         forumId.get(), post);
 
     if (createdThread.isPresent()) {
@@ -129,10 +134,11 @@ public class ThreadResource {
   public Response deleteThread(@NotNull @PathParam("siteId") IntParam siteId,
                               @NotNull @PathParam("threadId") IntParam threadId,
                               @Context HttpServletRequest request,
+                              @Context Jedis jedis,
                               @Context UriInfo uriInfo) {
     try {
       // TODO: perform validation
-      Optional<ForumThread> deletedThread = threadService.deleteThread(siteId.get(), threadId.get());
+      Optional<ForumThread> deletedThread = threadService.deleteThread(jedis, siteId.get(), threadId.get());
 
       if (deletedThread.isPresent()) {
         return Response.noContent().build();

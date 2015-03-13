@@ -8,8 +8,8 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.*;
 import java.util.Optional;
 
-import com.wikia.discussionservice.services.JedisService;
 import lombok.NonNull;
+import redis.clients.jedis.Jedis;
 
 import javax.inject.Inject;
 
@@ -30,7 +30,7 @@ public class ThreadDAO {
   }
 
   @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
-  public Optional<ForumThread> createThread(int siteId, int forumId, Post post) {
+  public Optional<ForumThread> createThread(Jedis jedis, int siteId, int forumId, Post post) {
     int threadId = THREAD_SEQUENCE++;
     
     ForumThread forumThread = new ForumThread();
@@ -46,20 +46,20 @@ public class ThreadDAO {
     user.setName("Made up user");
     forumThread.setThreadStarter(user);
 
-    contentDAO.createContent(siteId, forumThread);
+    contentDAO.createContent(jedis, siteId, forumThread);
 
     return Optional.ofNullable(forumThread);
   }
 
 
-  public Optional<ForumThread> getForumThread(int siteId, int threadId, int offset, int limit) {
-    return Optional.ofNullable(contentDAO.getContent(siteId, threadId, ForumThread.class));
+  public Optional<ForumThread> getForumThread(Jedis jedis, int siteId, int threadId, int offset, int limit) {
+    return Optional.ofNullable(contentDAO.getContent(jedis, siteId, threadId, ForumThread.class));
   }
 
-  public Optional<ForumThread> deleteThread(int siteId, int threadId) {
-    Optional<ForumThread> deletedThread = getForumThread(siteId, threadId, 0, 1);
+  public Optional<ForumThread> deleteThread(Jedis jedis, int siteId, int threadId) {
+    Optional<ForumThread> deletedThread = getForumThread(jedis, siteId, threadId, 0, 1);
     if (deletedThread.isPresent()) {
-      contentDAO.deleteContent(siteId, threadId, ForumThread.class);
+      contentDAO.deleteContent(jedis, siteId, threadId, ForumThread.class);
     }
 
     return deletedThread;

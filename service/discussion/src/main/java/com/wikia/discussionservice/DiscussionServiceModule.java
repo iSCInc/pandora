@@ -55,36 +55,41 @@ public class DiscussionServiceModule extends AbstractModule {
     return injector.getInstance(ThreadService.class);
   }
 
-  @Provides
-  @Named("jedisHost")
-  String getJedisHost() {
-    return "localhost";
-  }
+//  @Provides
+//  @Named("jedisHost")
+//  String getJedisHost() {
+//    return "localhost";
+//  }
+//
+//  @Provides
+//  @Named("jedisPort")
+//  String getJedisPort() {
+//    return "6379";
+//  }
 
-  @Provides
-  @Named("jedisPort")
-  String getJedisPort() {
-    return "6379";
-  }
-
-  @Provides
-  @Named("jedisService")
-  public JedisService provideJedisService(
-      @Named("jedisHost") String jedisHost,
-      @Named("jedisPort") String jedisPort
-  ) {
-    return new JedisService(jedisHost, jedisPort);
-//    return new JedisService()
-//  public JedisService provideJedisService(Provider<DiscussionServiceConfiguration> config) {
-//    DiscussionServiceConfiguration c = config.get();
-//    return c.getRedis();
+//  @Provides
+//  @Named("jedisService")
+//  public JedisService provideJedisService(
+////      @Named("jedisHost") String jedisHost,
+////      @Named("jedisPort") String jedisPort
+//  ) {
+////    return new JedisService(jedisHost, jedisPort);
+////  public JedisService provideJedisService(Provider<DiscussionServiceConfiguration> config) {
+////    DiscussionServiceConfiguration c = config.get();
+////    return c.getRedis();
 //    Injector injector = Guice.createInjector(new DiscussionServiceModule());
 //    return injector.getInstance(JedisService.class);
-  }
+//  }
 
-  @Provides
-  public ContentDAO provideContentDAO(
-      @Named("jedisService") JedisService jedisService) {
-     return new ContentDAO(jedisService);
-  }
+//  @Provides
+//  public ContentDAO provideContentDAO(
+//      @Named("jedisService") JedisService jedisService) {
+//     return new ContentDAO(jedisService);
+//  }
+//  @Provides
+//  public ContentDAO provideContentDAO() {
+//    Injector injector = Guice.createInjector(new DiscussionServiceModule());
+//    return injector.getInstance(ContentDAO.class);
+////     return new ContentDAO(jedis);
+//  }
 }

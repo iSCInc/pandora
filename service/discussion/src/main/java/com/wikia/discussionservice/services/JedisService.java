@@ -1,5 +1,7 @@
 package com.wikia.discussionservice.services;
 
+import javax.inject.Inject;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.wikia.discussionservice.mappers.DataStore;
 
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.core.Context;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.ScanParams;
@@ -17,10 +20,12 @@ import redis.clients.jedis.ScanParams;
  * Created by armon on 2/27/15.
  */
 public class JedisService implements DataStore {
-  public JedisService(String host, String port) {
-    this.host = host;
-    this.port = port;
-  }
+//  @Inject
+//  public JedisService(String host, String port) {
+//    this.host = host;
+//    this.port = port;
+//  }
+
   @NotNull
   @Valid
   @JsonProperty
@@ -30,6 +35,14 @@ public class JedisService implements DataStore {
   @Valid
   @JsonProperty
   private String port;// = "6379";
+
+  @Context
+  private Jedis jedis;
+
+  @Inject
+  public JedisService() {
+    jedis = new Jedis(host, Integer.parseInt(port));
+  }
 
   public String getHost() {
     return host;
@@ -77,7 +90,8 @@ public class JedisService implements DataStore {
   public Jedis getInstance() {
 //    return new Jedis(host != null ? host : "localhost", port != null ? Integer.parseInt(port) : 6379);
 
-    return new Jedis(host, Integer.parseInt(port));
+//    return new Jedis(host, Integer.parseInt(port));
+    return jedis;
   }
 
 }

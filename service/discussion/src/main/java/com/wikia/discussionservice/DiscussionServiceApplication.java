@@ -2,13 +2,14 @@ package com.wikia.discussionservice;
 
 import com.google.inject.Injector;
 
+import com.bendb.dropwizard.redis.JedisBundle;
+import com.bendb.dropwizard.redis.JedisFactory;
 import com.wikia.discussionservice.configuration.DiscussionServiceConfiguration;
 
 import com.hubspot.dropwizard.guice.GuiceBundle;
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderSupport;
 import com.wikia.dropwizard.consul.bundle.ConsulBundle;
 import com.wikia.dropwizard.consul.config.ConsulVariableInterpolationBundle;
-import com.wikia.pandora.core.dropwizard.GovernatorInjectorFactory;
 
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
@@ -50,6 +51,12 @@ public class DiscussionServiceApplication extends Application<DiscussionServiceC
     bootstrap.addBundle(
         injector.getInstance(ConsulBundle.class)
     );
+    bootstrap.addBundle(new JedisBundle<DiscussionServiceConfiguration>() {
+      @Override
+      public JedisFactory getJedisFactory(DiscussionServiceConfiguration configuration) {
+        return configuration.getJedisFactory();
+      }
+    });
   }
 
   @Override

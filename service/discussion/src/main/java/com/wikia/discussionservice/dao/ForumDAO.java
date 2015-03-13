@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-import com.wikia.discussionservice.services.JedisService;
 import lombok.NonNull;
+import redis.clients.jedis.Jedis;
 
 import javax.inject.Inject;
 
@@ -25,50 +25,35 @@ public class ForumDAO {
   @Inject
   public ForumDAO(ContentDAO contentDAO) {
     this.contentDAO = contentDAO;
-    createRoot();
+//    createRoot();
   }
 
-  private static final int ROOT_ID = 1;
-  private static final int DEFAULT_SITE_ID = 1;
+  public static final int ROOT_ID = 1;
+  public static final int PARENT_ROOT_ID = -1;
+  public static final int DEFAULT_SITE_ID = 1;
   private static int SEQUENCE = 2;
 
-  private void createRoot() {
-    if (!retrieveForum(DEFAULT_SITE_ID, ROOT_ID).isPresent()) {
-      contentDAO.createContent(DEFAULT_SITE_ID,
-                               new Forum(ROOT_ID, -1, "Root", new ArrayList<>(), new ArrayList<>()));
-    }
+//  private void createRoot() {
+//    if (!retrieveForum(DEFAULT_SITE_ID, ROOT_ID).isPresent()) {
+//      contentDAO.createContent(jedis, DEFAULT_SITE_ID,
+//                               new Forum(ROOT_ID, -1, "Root", new ArrayList<>(), new ArrayList<>()));
+//    }
+//  }
+
+  public ContentDAO getContentDAO() {
+    return contentDAO;
   }
 
-  public ArrayList<Forum> retrieveForums(int siteId) {
-    return contentDAO.getItems(siteId, Forum.class);
+  public ArrayList<Forum> retrieveForums(Jedis jedis, int siteId) {
+    return contentDAO.getItems(jedis, siteId, Forum.class);
   }
 
-  public Optional<Forum> retrieveForum(int siteId, int forumId) {
-    return Optional.ofNullable(contentDAO.getContent(siteId, forumId, Forum.class));
+  public Optional<Forum> retrieveForum(Jedis jedis, int siteId, int forumId) {
+    return Optional.ofNullable(contentDAO.getContent(jedis, siteId, forumId, Forum.class));
   }
 
-
-  public List<Forum> createForumList(int offset, int limit) {
-    List<Forum> forumList = new ArrayList<>();
-
-    int start = offset == 1
-        ? 1
-        : (limit * offset) - (limit - 1);
-
-    IntStream.range(start, limit + 1).forEach(
-        i -> {
-          Forum forum =
-              new Forum(i, ROOT_ID, String.format("Forum: %s", i), new ArrayList<>(), new ArrayList<>());
-          forumList.add(forum);
-        }
-    );
-
-    return forumList;
-  }
-
-  @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
-  public Optional<Forum> createForum(int siteId, Forum forum) {
-    Optional<Forum> parentForum = retrieveForum(siteId, forum.getParentId());
+  public Optional<Forum> createForum(Jedis jedis, int siteId, Forum forum) {
+    Optional<Forum> parentForum = retrieveForum(jedis, siteId, forum.getParentId());
     boolean foundExisting = false;
 
     if (!parentForum.isPresent()) {
@@ -86,40 +71,40 @@ public class ForumDAO {
       int forumId = ForumDAO.SEQUENCE++;
       forum.setId(forumId);
       parentForum.get().getChildren().add(forum);
-      forum = contentDAO.createContent(siteId, forum);
-      updateForum(siteId, parentForum.get());
+      forum = contentDAO.createContent(jedis, siteId, forum);
+      updateForum(jedis, siteId, parentForum.get());
     }
 
     return Optional.ofNullable(forum);
   }
 
-  public Optional<Forum> deleteForum(int siteId, int forumId) {
+  public Optional<Forum> deleteForum(Jedis jedis, int siteId, int forumId) {
     Preconditions.checkArgument(forumId != ROOT_ID, "Cannot delete the root forum.");
-    Optional<Forum> deletedForum = retrieveForum(siteId, forumId);
+    Optional<Forum> deletedForum = retrieveForum(jedis, siteId, forumId);
     if (deletedForum.isPresent()) {
-      contentDAO.deleteContent(siteId, forumId, Forum.class);
+      contentDAO.deleteContent(jedis, siteId, forumId, Forum.class);
       // delete the forum from the Root's children then
       // delete forum from children's children (not recursive)
-      Forum rootForum = retrieveForum(siteId, ROOT_ID).get();
+      Forum rootForum = retrieveForum(jedis, siteId, ROOT_ID).get();
       rootForum.getChildren().remove(deletedForum.get());
       for(Forum forum: rootForum.getChildren()) {
         forum.getChildren().remove(deletedForum.get());
-        updateForum(siteId, forum);
+        updateForum(jedis, siteId, forum);
       }
-      updateForum(siteId, rootForum);
+      updateForum(jedis, siteId, rootForum);
     }
 
     return deletedForum;
   }
 
-  public Optional<Forum> updateForum(int siteId, Forum forum) {
-    Optional<Forum> retrievedForum = retrieveForum(siteId, forum.getId());
+  public Optional<Forum> updateForum(Jedis jedis, int siteId, Forum forum) {
+    Optional<Forum> retrievedForum = retrieveForum(jedis, siteId, forum.getId());
 
     if (retrievedForum.isPresent()) {
       // Changes may be anything, including list of sub forums
       // Hence removing the old forum and re-writing it
-      contentDAO.deleteContent(siteId, forum.getId(), Forum.class);
-      return Optional.ofNullable(contentDAO.createContent(siteId, forum));
+      contentDAO.deleteContent(jedis, siteId, forum.getId(), Forum.class);
+      return Optional.ofNullable(contentDAO.createContent(jedis, siteId, forum));
     }
 
     return Optional.empty();

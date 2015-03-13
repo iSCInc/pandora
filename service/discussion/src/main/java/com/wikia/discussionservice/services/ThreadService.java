@@ -4,9 +4,9 @@ import com.wikia.discussionservice.dao.ThreadDAO;
 import com.wikia.discussionservice.domain.ForumThread;
 import com.wikia.discussionservice.domain.Post;
 import lombok.NonNull;
+import redis.clients.jedis.Jedis;
 
 import javax.inject.Inject;
-import java.util.*;
 import java.util.Optional;
 
 public class ThreadService {
@@ -23,20 +23,20 @@ public class ThreadService {
     this.postService = postService;
   }
 
-  public Optional<ForumThread> getForumThread(int siteId, int threadId) {
-    return threadDAO.getForumThread(siteId, threadId, 0, 10);
+  public Optional<ForumThread> getForumThread(Jedis jedis, int siteId, int threadId) {
+    return threadDAO.getForumThread(jedis, siteId, threadId, 0, 10);
   }
 
-  public Optional<ForumThread> getForumThread(int siteId, int threadId, int offset, int limit) {
-    return threadDAO.getForumThread(siteId, threadId, offset, limit);
+  public Optional<ForumThread> getForumThread(Jedis jedis, int siteId, int threadId, int offset, int limit) {
+    return threadDAO.getForumThread(jedis, siteId, threadId, offset, limit);
   }
   
-  public Optional<ForumThread> createThread(int siteId, int forumId, Post post) {
-    return threadDAO.createThread(siteId, forumId, post);
+  public Optional<ForumThread> createThread(Jedis jedis, int siteId, int forumId, Post post) {
+    return threadDAO.createThread(jedis, siteId, forumId, post);
   }
 
-  public Optional<ForumThread> deleteThread(int siteId, int threadId) {
-    return threadDAO.deleteThread(siteId, threadId);
+  public Optional<ForumThread> deleteThread(Jedis jedis, int siteId, int threadId) {
+    return threadDAO.deleteThread(jedis, siteId, threadId);
   }
 
 }

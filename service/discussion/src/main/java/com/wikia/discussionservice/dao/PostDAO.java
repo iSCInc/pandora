@@ -8,8 +8,8 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.*;
 import java.util.Optional;
 
-import com.wikia.discussionservice.services.JedisService;
 import lombok.NonNull;
+import redis.clients.jedis.Jedis;
 
 import javax.inject.Inject;
 
@@ -30,22 +30,22 @@ public class PostDAO {
   }
 
   @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
-  public Optional<Post> createPost(int siteId, int threadId, Post post) {
+  public Optional<Post> createPost(Jedis jedis, int siteId, int threadId, Post post) {
     int postId = POST_SEQUENCE++;
 
     post.setThreadId(threadId);
     post.setId(postId);
-    return Optional.ofNullable(contentDAO.createContent(siteId, post));
+    return Optional.ofNullable(contentDAO.createContent(jedis, siteId, post));
   }
 
-  public Optional<Post> getPost(int siteId, int postId) {
-    return Optional.ofNullable(contentDAO.getContent(siteId, postId, Post.class));
+  public Optional<Post> getPost(Jedis jedis, int siteId, int postId) {
+    return Optional.ofNullable(contentDAO.getContent(jedis, siteId, postId, Post.class));
   }
 
-  public Optional<Post> deletePost(int siteId, int postId) {
-    Optional<Post> deletedPost = getPost(siteId, postId);
+  public Optional<Post> deletePost(Jedis jedis, int siteId, int postId) {
+    Optional<Post> deletedPost = getPost(jedis, siteId, postId);
     if (deletedPost.isPresent()) {
-      contentDAO.deleteContent(siteId, postId, Post.class);
+      contentDAO.deleteContent(jedis, siteId, postId, Post.class);
     }
 
     return deletedPost;

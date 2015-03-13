@@ -22,6 +22,7 @@ dependencies {
     compile "io.dropwizard:dropwizard-assets:0.8.0-rc2"
     compile "io.dropwizard:dropwizard-views-freemarker:0.8.0-rc2"
     compile "org.projectlombok:lombok:1.16.2"
+    compile "com.bendb.dropwizard:dropwizard-redis:0.8.0-0"
     compile "redis.clients:jedis:2.6.2"
     testCompile "org.testng:testng:6.8"
     testCompile "org.hamcrest:hamcrest-core:$hamcrestVersion"
@@ -55,7 +56,7 @@ deployments {
     }
     testing {
         environment {
-            CONSUL_KEY_VALUE_CONFIG_SOURCE = "http://localhost:8500/config/discussion/testing"
+            CONSUL_KEY_VALUE_CONFIG_SOURCE = "http://consul.service.sjc.consul:8500/config/discussion/testing"
         }
     }
     dev {

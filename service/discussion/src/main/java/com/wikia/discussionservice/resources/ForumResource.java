@@ -12,6 +12,7 @@ import com.wikia.discussionservice.services.ForumService;
 import com.wikia.discussionservice.utils.ErrorResponseBuilder;
 import io.dropwizard.jersey.params.IntParam;
 import lombok.NonNull;
+import redis.clients.jedis.Jedis;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -36,9 +37,13 @@ public class ForumResource {
 
 
   @Inject
-  public ForumResource(ForumService forumService, ForumRepresentationMapper forumMapper) {
+  public ForumResource(ForumService forumService,
+                       ForumRepresentationMapper forumMapper,
+                       @Context Jedis jedis
+  ) {
     this.forumService = forumService;
     this.forumMapper = forumMapper;
+//    this.forumService.init(jedis);
   }
 
   @GET
@@ -47,12 +52,13 @@ public class ForumResource {
   public Response getForums(@NotNull @PathParam("siteId") IntParam siteId,
                             @QueryParam("responseGroup") @DefaultValue("small")
                             String requestedResponseGroup,
+                            @Context Jedis jedis,
                             @Context UriInfo uriInfo) {
 
     ResponseGroup responseGroup = ResponseGroup.getResponseGroup(requestedResponseGroup);
     Preconditions.checkNotNull(responseGroup, "Invalid response group");
 
-    Optional<ForumRoot> forumRoot = forumService.getForums(siteId.get());
+    Optional<ForumRoot> forumRoot = forumService.getForums(jedis, siteId.get());
 
     if (forumRoot.isPresent()) {
       Representation representation = forumMapper.buildRepresentation(siteId.get(),
@@ -75,11 +81,12 @@ public class ForumResource {
                            @QueryParam("offset") @DefaultValue("1") IntParam offset,
                            @QueryParam("responseGroup") @DefaultValue("small")
                            String requestedResponseGroup,
+                           @Context Jedis jedis,
                            @Context UriInfo uriInfo) {
     Preconditions.checkArgument(forumId.get() >= 1,
         "Offset was %s but expected 1 or greater", forumId.get());
 
-    Optional<Forum> forum = forumService.getForum(siteId.get(), forumId.get(),
+    Optional<Forum> forum = forumService.getForum(jedis, siteId.get(), forumId.get(),
         offset.get(), limit.get());
 
     if (forum.isPresent()) {
@@ -103,9 +110,10 @@ public class ForumResource {
   public Response createForum(@NotNull @PathParam("siteId") IntParam siteId,
                               @Valid Forum forum,
                               @Context HttpServletRequest request,
+                              @Context Jedis jedis,
                               @Context UriInfo uriInfo) {
     // TODO: perform validation
-    Optional<Forum> createdForum = forumService.createForum(siteId.get(), forum);
+    Optional<Forum> createdForum = forumService.createForum(jedis, siteId.get(), forum);
 
     if (createdForum.isPresent()) {
       Representation representation =
@@ -126,10 +134,11 @@ public class ForumResource {
   public Response deleteForum(@NotNull @PathParam("siteId") IntParam siteId,
                               @NotNull @PathParam("forumId") IntParam forumId,
                               @Context HttpServletRequest request,
+                              @Context Jedis jedis,
                               @Context UriInfo uriInfo) {
     try {
       // TODO: perform validation
-      Optional<Forum> deletedForum = forumService.deleteForum(siteId.get(), forumId.get());
+      Optional<Forum> deletedForum = forumService.deleteForum(jedis, siteId.get(), forumId.get());
 
       if (deletedForum.isPresent()) {
         return Response.noContent().build();
@@ -149,11 +158,12 @@ public class ForumResource {
   public Response updateForum(@NotNull @PathParam("siteId") IntParam siteId,
                               @Valid Forum forum,
                               @Context HttpServletRequest request,
+                              @Context Jedis jedis,
                               @Context UriInfo uriInfo) {
     // TODO: perform validation
 
 
-    Optional<Forum> updatedForum = forumService.updateForum(siteId.get(), forum);
+    Optional<Forum> updatedForum = forumService.updateForum(jedis, siteId.get(), forum);
 
     if (updatedForum.isPresent()) {
       if (updatedForum.get().getId() == forum.getId()) {

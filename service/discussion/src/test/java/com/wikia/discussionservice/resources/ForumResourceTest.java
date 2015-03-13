@@ -7,6 +7,8 @@ import com.wikia.discussionservice.domain.ForumRoot;
 import com.wikia.discussionservice.mappers.*;
 import com.wikia.discussionservice.services.ForumService;
 import io.dropwizard.testing.junit.ResourceTestRule;
+import redis.clients.jedis.Jedis;
+
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -37,9 +39,11 @@ public class ForumResourceTest {
   private static final ForumRepresentationMapper forumRepresentationMapper =
       new HALForumRepresentationMapper(representationFactory, threadRepresentationMapper);
 
+  private static final Jedis jedis = new Jedis("localhost", 6379);
+
   @ClassRule
   public static final ResourceTestRule resources = ResourceTestRule.builder()
-      .addResource(new ForumResource(forumService, forumRepresentationMapper))
+      .addResource(new ForumResource(forumService, forumRepresentationMapper, jedis))
       .build();
 
   private ForumRoot firstOffsetForumRoot;
@@ -51,8 +55,8 @@ public class ForumResourceTest {
     
     firstOffsetForumRoot = new ForumRoot();
     firstOffsetForumRoot.setForums(createForumList(1, 10));
-    
-    when(forumService.getForums(anyInt())).thenReturn(Optional.of(firstOffsetForumRoot));
+
+    when(forumService.getForums(jedis, anyInt())).thenReturn(Optional.of(firstOffsetForumRoot));
   }
 
   private List<Forum> createForumList(int offset, int limit) {
@@ -77,6 +81,6 @@ public class ForumResourceTest {
   public void testDefaultGetForums() {
     Response response = resources.client().target("/1/forums").request().get();
     assertThat(response.getStatus()).isEqualTo(200);
-    verify(forumService).getForums(1);
+    verify(forumService).getForums(jedis, 1);
   }
 }

@@ -13,6 +13,7 @@ import com.wikia.discussionservice.services.ThreadService;
 import com.wikia.discussionservice.utils.ErrorResponseBuilder;
 import io.dropwizard.jersey.params.IntParam;
 import lombok.NonNull;
+import redis.clients.jedis.Jedis;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -52,12 +53,13 @@ public class PostResource {
                           @NotNull @PathParam("postId") IntParam postId,
                           @QueryParam("responseGroup") @DefaultValue("small")
                           String requestedResponseGroup,
+                          @Context Jedis jedis,
                           @Context UriInfo uriInfo) {
 
     ResponseGroup responseGroup = ResponseGroup.getResponseGroup(requestedResponseGroup);
     Preconditions.checkNotNull(responseGroup, "Invalid response group");
 
-    Optional<Post> post = postService.getPost(siteId.get(), postId.get());
+    Optional<Post> post = postService.getPost(jedis, siteId.get(), postId.get());
 
     if (post.isPresent()) {
       Representation representation = postMapper.buildRepresentation(
@@ -79,9 +81,11 @@ public class PostResource {
   @Timed
   public Response createPost(@NotNull @PathParam("siteId") IntParam siteId,
                              Post post,
+                             @Context Jedis jedis,
                              @Context UriInfo uriInfo) {
 
-    Optional<ForumThread> thread = threadService.getForumThread(siteId.get(), post.getThreadId());
+    Optional<ForumThread> thread =
+        threadService.getForumThread(jedis, siteId.get(), post.getThreadId());
 
     if (!thread.isPresent()) {
       return ErrorResponseBuilder.buildErrorResponse(1234,
@@ -89,7 +93,8 @@ public class PostResource {
               post.getThreadId()), null, Response.Status.NOT_FOUND);
     }
 
-    Optional<Post> createdPost = postService.createPost(siteId.get(), post.getThreadId(), post);
+    Optional<Post> createdPost =
+        postService.createPost(jedis, siteId.get(), post.getThreadId(), post);
 
     if (createdPost.isPresent()) {
       thread.get().getPosts().add(post);
@@ -113,10 +118,11 @@ public class PostResource {
   public Response deletePost(@NotNull @PathParam("siteId") IntParam siteId,
                                @NotNull @PathParam("postId") IntParam postId,
                                @Context HttpServletRequest request,
+                               @Context Jedis jedis,
                                @Context UriInfo uriInfo) {
     try {
       // TODO: perform validation
-      Optional<Post> deletedPost = postService.deletePost(siteId.get(), postId.get());
+      Optional<Post> deletedPost = postService.deletePost(jedis, siteId.get(), postId.get());
 
       if (deletedPost.isPresent()) {
         return Response.noContent().build();
