@@ -40,7 +40,10 @@ public class CommunityDataResource {
     CommunityData data;
 
     try {
-      data = new CommunityData.Builder(db, domain).build();
+      data = new CommunityData.Builder()
+          .setDomain(domain)
+          .setDb(db)
+          .build();
     } catch (Exception e) {
       throw new CommunityDataException.Builder()
           .setDomain(domain)

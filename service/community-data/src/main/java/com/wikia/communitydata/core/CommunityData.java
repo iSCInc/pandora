@@ -13,58 +13,67 @@ import com.wikia.jooq.wikicities.tables.records.CityVerticalsRecord;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableMap;
 import de.ailis.pherialize.Pherialize;
-import de.ailis.pherialize.exceptions.UnserializeException;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.types.UShort;
 import org.slf4j.LoggerFactory;
 
 public class CommunityData {
-  private final CityListRecord cityListRecord;
-  private final CityVerticalsRecord cityVerticalsRecord;
+  private final String dbName;
+  private final String lang;
+  private final String siteName;
+  private final String description;
+  private final String mainPageTitle;
+  private final String vertical;
+  private final boolean isAdult;
   private final String articlePath;
 
-  private CommunityData(CityListRecord cityListRecord,
-                        CityVerticalsRecord cityVerticalsRecord,
-                        String articlePath) {
-    this.cityListRecord = cityListRecord;
-    this.cityVerticalsRecord = cityVerticalsRecord;
+  private CommunityData(String dbName, String lang, String siteName, String description,
+                       String mainPageTitle, String vertical, boolean isAdult,
+                       String articlePath) {
+    this.dbName = dbName;
+    this.lang = lang;
+    this.siteName = siteName;
+    this.description = description;
+    this.mainPageTitle = mainPageTitle;
+    this.vertical = vertical;
+    this.isAdult = isAdult;
     this.articlePath = articlePath;
   }
 
   @JsonProperty
   public String getDbName() {
-    return cityListRecord.getCityDbname();
+    return dbName;
   }
 
   @JsonProperty
   public String getLang() {
-    return cityListRecord.getCityLang();
+    return lang;
   }
 
   @JsonProperty
   public String getSiteName() {
-    return cityListRecord.getCitySitename();
+    return siteName;
   }
 
   @JsonProperty
   public String getDescription() {
-    return cityListRecord.getCityDescription();
+    return description;
   }
 
   @JsonProperty
   public String getMainPageTitle() {
-    return cityListRecord.getCityTitle();
+    return mainPageTitle;
   }
 
   @JsonProperty
   public String getVertical() {
-    return cityVerticalsRecord.getVerticalName();
+    return vertical;
   }
 
   @JsonProperty
   public boolean getIsAdult() {
-    return cityListRecord.getCityAdult() == 1;
+    return isAdult;
   }
 
   @JsonProperty
@@ -76,12 +85,17 @@ public class CommunityData {
     private static final UShort ARTICLE_PATH_ID = UShort.valueOf(15);
     private static final String DEFAULT_ARTICLE_PATH = "/wiki/$1";
 
-    private final DSLContext db;
-    private final String domain;
+    private DSLContext db;
+    private String domain;
 
-    public Builder(DSLContext db, String domain) {
+    public Builder setDb(DSLContext db) {
       this.db = db;
+      return this;
+    }
+
+    public Builder setDomain(String domain) {
       this.domain = domain;
+      return this;
     }
 
     public CommunityData build() throws Exception {
@@ -103,11 +117,19 @@ public class CommunityData {
           .fetchOne();
 
       if (result != null) {
-        CityListRecord listRecord = result.into(CITY_LIST);
-        CityVerticalsRecord verticalsRecord = result.into(CITY_VERTICALS);
-        String articlePath = parseArticlePath(result.into(CITY_VARIABLES));
+        CityListRecord cityListRecord = result.into(CITY_LIST);
+        CityVerticalsRecord cityVerticalsRecord = result.into(CITY_VERTICALS);
 
-        communityData = new CommunityData(listRecord, verticalsRecord, articlePath);
+        communityData = new CommunityData(
+            cityListRecord.getCityDbname(),
+            cityListRecord.getCityLang(),
+            cityListRecord.getCitySitename(),
+            cityListRecord.getCityDescription(),
+            cityListRecord.getCityTitle(),
+            cityVerticalsRecord.getVerticalName(),
+            cityListRecord.getCityAdult() == 1,
+            parseArticlePath(result.into(CITY_VARIABLES))
+        );
       }
 
       return communityData;
